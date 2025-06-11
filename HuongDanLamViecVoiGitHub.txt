@@ -1,0 +1,18 @@
+Yêu cầu: Tải git bash
+B1: clone(từ lần 2 ko cần)
+git clone https://github.com/HienNNCE/SWP_PROJECT.git  		# Clone repo về máy tính
+cd SWP_Project  	# Vào thư mục của project
+
+B2: lấy code mới nhất (mỗi lần code phải pull về)
+git checkout master      	# Chuyển sang nhánh chính
+git pull origin master    	# Cập nhật code mới nhất từ GitHub
+
+B3: Làm việc trên nhánh của bản thân (quan trọng, pull về phải checkout trước khi code)
+git checkout hien       	# Chuyển sang branch 'hien'
+
+B4: add code mới vào git local
+git add .              		# Thêm tất cả các thay đổi vào staging (chuẩn bị commit)
+git commit -m "comment message"  # Commit với mô tả đã làm gì (VD:"add createCar method")
+
+B5: push code lên nhánh của bản thân
+git push origin hien    	# Push các thay đổi lên GitHub vào branch 'hien'
