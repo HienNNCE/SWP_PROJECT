@@ -1,42 +1,63 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package DB;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+/**
+ *
+ * @author Ainzle
+ */
 public class DBContext {
-    
-    private static final String URL = "jdbc:sqlserver://LAPTOP-FT0Q1NI1\\SQLEXPRESS:1433;databaseName=DriveXO;encrypt=true;trustServerCertificate=true";
-    private static final String USER = "sa";
-    private static final String PASSWORD = "123456";
 
-    static {
-        //Try to connect database and check exception
+    private Connection conn;
+    private final String DB_URL = "jdbc:sqlserver://localhost:1433;databaseName=DriveXO;trustServerCertificate=true;";
+    private final String DB_USER = "sa";
+    private final String DB_PWD = "1234";
+
+    public DBContext() {
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Unable to load SQLServer JDBC Driver", e);
+            this.conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PWD);
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    //Sting connect by url database, acc,pass
-    public Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(URL, USER, PASSWORD);
+    public Connection getConnection() {
+        return conn;
+    }
+
+    // Phuong thuc cac lenh INSERT, UPDATE, DELETE
+    public int execQuery(String query, Object[] params) throws SQLException {
+        PreparedStatement pStatement = conn.prepareStatement(query);
+        if (params != null) {
+            for (int i = 0; i < params.length; i++) {
+                pStatement.setObject(i + 1, params[i]);
+            }
+        }
+        return pStatement.executeUpdate();
+    }
+
+    public ResultSet execSelectQuery(String query, Object[] params) throws SQLException {
+        PreparedStatement pStatement = conn.prepareStatement(query);
+        if (params != null) {
+            for (int i = 0; i < params.length; i++) {
+                pStatement.setObject(i + 1, params[i]);
+            }
+        }
+        return pStatement.executeQuery();
     }
     
-    //Test 
-    public static void main(String[] args) {
-        DBContext db = new DBContext();
-        try (Connection conn = db.getConnection()) {
-            if (conn != null && !conn.isClosed()) {
-                System.out.println("Kết nối thành công đến DB!");
-            } else {
-                System.out.println("Kết nối thất bại!");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public ResultSet execSelectQuery(String query) throws SQLException {
+        return this.execSelectQuery(query,null);
     }
-
-
 }
