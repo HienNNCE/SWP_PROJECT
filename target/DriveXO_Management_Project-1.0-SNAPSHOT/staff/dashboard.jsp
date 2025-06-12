@@ -19,7 +19,7 @@
     <!-- Main Content -->
     <div class="main-content">
         <!-- Header -->
-        <jsp:include page="../components/dashboardHeader.jsp" />
+        <jsp:include page="../components/staffDashboardHeader.jsp" />
 
         <!-- Content -->
         <div class="content">
