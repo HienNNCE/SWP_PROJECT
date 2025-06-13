@@ -1,8 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <div class="sidebar">
     <div class="sidebar-header">
-        <a href="../home.jsp" class="logo-link">
-            <img src="../asset/img/driverxo-logo-white.png" alt="DriverXO" class="logo-icon">
+        <a href="${pageContext.request.contextPath}/home" class="logo-link">
+            <img src="${pageContext.request.contextPath}/asset/img/driverxo-logo-white.png" alt="DriverXO" class="logo-icon">
             <span>DriverXO</span>
         </a>
     </div>
@@ -10,7 +10,7 @@
     <div class="sidebar-body">
         <div class="user-panel">
             <div class="user-image">
-                <img src="../asset/img/avt/adminavt.png" alt="Admin Avatar">
+                <img src="${pageContext.request.contextPath}/asset/img/avt/adminavt.png" alt="Admin Avatar">
             </div>
             <div class="user-info">
                 <h6>Welcome back,</h6>
@@ -22,59 +22,59 @@
             <li class="nav-section">
                 <span class="nav-section-text">MAIN NAVIGATION</span>
             </li>
-            
+
             <li class="nav-item">
-                <a href="dashboard.jsp" class="nav-link active">
+                <a href="${pageContext.request.contextPath}/admin/dashboard.jsp" class="nav-link">
                     <i class="fas fa-tachometer-alt"></i>
                     <span>Dashboard</span>
-                    <span class="badge badge-primary">New</span>
                 </a>
             </li>
 
             <li class="nav-section">
                 <span class="nav-section-text">MANAGEMENT</span>
             </li>
-            
+
             <li class="nav-item">
-                <a href="car.jsp" class="nav-link">
+                <a href="${pageContext.request.contextPath}/admin/car.jsp" class="nav-link">
                     <i class="fas fa-car"></i>
                     <span>Cars</span>
-                    <span class="badge badge-warning">8</span>
                 </a>
             </li>
-            
+
             <li class="nav-item">
-                <a href="user.jsp" class="nav-link">
+                <a href="${pageContext.request.contextPath}/admin/part" class="nav-link">
+                    <i class="fas fa-cogs"></i>
+                    <span>Parts</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="${pageContext.request.contextPath}/admin/user.jsp" class="nav-link">
                     <i class="fas fa-users"></i>
                     <span>Users</span>
-                    <span class="badge badge-info">24</span>
                 </a>
             </li>
-            
-          
-            
+
             <li class="nav-item">
-                <a href="order.jsp" class="nav-link">
+                <a href="${pageContext.request.contextPath}/admin/order.jsp" class="nav-link">
                     <i class="fas fa-shopping-cart"></i>
                     <span>Orders</span>
-                    <span class="badge badge-danger">3</span>
                 </a>
             </li>
 
             <li class="nav-section">
                 <span class="nav-section-text">EXTRAS</span>
             </li>
-            
+
             <li class="nav-item">
-                <a href="reports.jsp" class="nav-link">
+                <a href="${pageContext.request.contextPath}/admin/reports.jsp" class="nav-link">
                     <i class="fas fa-chart-bar"></i>
                     <span>Feedback</span>
                 </a>
             </li>
-            
-            
+
             <li class="nav-item">
-                <a href="settings.jsp" class="nav-link">
+                <a href="${pageContext.request.contextPath}/admin/settings.jsp" class="nav-link">
                     <i class="fas fa-cog"></i>
                     <span>Settings</span>
                 </a>
@@ -88,4 +88,4 @@
             </div>
         </div>
     </div>
-</div> 
+</div>

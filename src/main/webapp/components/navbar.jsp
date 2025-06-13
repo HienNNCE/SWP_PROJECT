@@ -6,7 +6,10 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
+<%@ page import="jakarta.servlet.http.HttpServletRequest" %>
+<%
+    String uri = ((HttpServletRequest) request).getRequestURI();
+%>
 <header class="header">
     <div class="container">
         <div class="top-header">
@@ -38,16 +41,19 @@
         <div class="main-header">
             <div class="logo">
                 <a href="${pageContext.request.contextPath}/home">
-                    <!-- Logo: 120x40px -->
                     <img src="${pageContext.request.contextPath}/asset/img/driverxo-logo.png" alt="DriverXO">
                     <span>DriverXO</span>
                 </a>
             </div>
             <nav class="main-nav">
                 <ul>
-                    <li><a href="${pageContext.request.contextPath}/home" class="active">Home</a></li>
+                    <li><a href="${pageContext.request.contextPath}/home"
+                           class="<%= uri.contains("/home") ? "active" : ""%>">Home</a></li>
                     <li class="has-dropdown">
-                        <a href="${pageContext.request.contextPath}/car/list">Cars <i class="fas fa-chevron-down"></i></a>
+                        <a href="${pageContext.request.contextPath}/car/list"
+                           class="<%= uri.contains("/car") ? "active" : ""%>">
+                            Cars <i class="fas fa-chevron-down"></i>
+                        </a>
                         <div class="dropdown-menu">
                             <a href="${pageContext.request.contextPath}/car/list?type=sedan">Sedan</a>
                             <a href="${pageContext.request.contextPath}/car/list?type=suv">SUV</a>
@@ -59,10 +65,18 @@
                             <a href="${pageContext.request.contextPath}/car/list?brand=mercedes">Mercedes</a>
                         </div>
                     </li>
-                    <li><a href="${pageContext.request.contextPath}/part/list">Part</a></li>
-                    <li><a href="${pageContext.request.contextPath}/repair-service">Repair Service</a></li>
-                    <li><a href="${pageContext.request.contextPath}/about-us">About Us</a></li>
-                    <li><a href="${pageContext.request.contextPath}/blog">Blog</a></li>
+                    </li>
+                    <li><a href="${pageContext.request.contextPath}/parts"
+                           class="<%= uri.contains("/parts") ? "active" : ""%>">Parts</a></li>
+
+                    <li><a href="${pageContext.request.contextPath}/repair-service"
+                           class="<%= uri.contains("/repair-service") ? "active" : ""%>">Repair Service</a></li>
+
+                    <li><a href="${pageContext.request.contextPath}/about-us"
+                           class="<%= uri.contains("/about-us") ? "active" : ""%>">About Us</a></li>
+
+                    <li><a href="${pageContext.request.contextPath}/blog"
+                           class="<%= uri.contains("/blog") ? "active" : ""%>">Blog</a></li>
                 </ul>
             </nav>
             <div class="header-actions">
@@ -129,18 +143,18 @@
         align-items: center;
         gap: 15px;
     }
-    
+
     .header-actions a {
         position: relative;
         font-size: 18px;
         color: var(--text-color);
         transition: color 0.3s;
     }
-    
+
     .header-actions a:hover {
         color: var(--primary-color);
     }
-    
+
     .header-actions .item-count,
     .header-actions .booking-count {
         position: absolute;
@@ -156,7 +170,7 @@
         align-items: center;
         justify-content: center;
     }
-    
+
     /* Sidebar Styling */
     .sidebar-overlay {
         position: fixed;
@@ -170,7 +184,7 @@
         opacity: 0;
         transition: opacity 0.3s, visibility 0.3s;
     }
-    
+
     .sidebar {
         position: fixed;
         top: 0;
@@ -184,16 +198,16 @@
         display: flex;
         flex-direction: column;
     }
-    
+
     .sidebar.active {
         right: 0;
     }
-    
+
     .sidebar-overlay.active {
         visibility: visible;
         opacity: 1;
     }
-    
+
     .sidebar-header {
         display: flex;
         align-items: center;
@@ -201,14 +215,14 @@
         padding: 20px;
         border-bottom: 1px solid #eee;
     }
-    
+
     .sidebar-header h3 {
         font-size: 18px;
         font-weight: 600;
         margin: 0;
         color: var(--primary-color);
     }
-    
+
     .close-sidebar {
         background: none;
         border: none;
@@ -217,43 +231,43 @@
         color: #999;
         transition: color 0.3s;
     }
-    
+
     .close-sidebar:hover {
         color: var(--primary-color);
     }
-    
+
     .sidebar-content {
         flex: 1;
         overflow-y: auto;
         padding: 20px;
     }
-    
+
     .sidebar-footer {
         padding: 15px 20px;
         border-top: 1px solid #eee;
         background-color: #f8f9fa;
     }
-    
+
     /* Cart Items Styling */
     .empty-cart,
     .empty-bookings {
         text-align: center;
         padding: 30px 0;
     }
-    
+
     .empty-cart i,
     .empty-bookings i {
         font-size: 50px;
         color: #ddd;
         margin-bottom: 15px;
     }
-    
+
     .empty-cart p,
     .empty-bookings p {
         color: #999;
         margin-bottom: 20px;
     }
-    
+
     .browse-btn {
         display: inline-block;
         padding: 8px 16px;
@@ -263,11 +277,11 @@
         text-decoration: none;
         transition: background-color 0.3s;
     }
-    
+
     .browse-btn:hover {
         background-color: var(--secondary-color);
     }
-    
+
     .cart-total {
         display: flex;
         justify-content: space-between;
@@ -275,7 +289,7 @@
         font-size: 16px;
         margin-bottom: 15px;
     }
-    
+
     .view-cart-btn,
     .checkout-btn,
     .view-bookings-btn {
@@ -288,80 +302,85 @@
         margin-bottom: 10px;
         transition: all 0.3s;
     }
-    
+
     .view-cart-btn {
         background-color: #f8f9fa;
         color: var(--primary-color);
         border: 1px solid var(--primary-color);
     }
-    
+
     .checkout-btn,
     .view-bookings-btn {
         background-color: var(--primary-color);
         color: white;
     }
-    
+
     .view-cart-btn:hover {
         background-color: #eaeaea;
     }
-    
+
     .checkout-btn:hover,
     .view-bookings-btn:hover {
         background-color: var(--secondary-color);
     }
+    nav.main-nav a.active {
+        color: var(--primary-color);
+        font-weight: bold;
+        border-bottom: 2px solid var(--primary-color);
+    }
 </style>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         // Cart sidebar toggle
         const cartToggle = document.getElementById('cartToggle');
         const cartSidebar = document.getElementById('cartSidebar');
         const cartOverlay = document.getElementById('cartOverlay');
         const closeCart = document.getElementById('closeCart');
-        
+
         // Booking sidebar toggle
         const bookingToggle = document.getElementById('bookingToggle');
         const bookingSidebar = document.getElementById('bookingSidebar');
         const bookingOverlay = document.getElementById('bookingOverlay');
         const closeBooking = document.getElementById('closeBooking');
-        
+
         // Toggle cart sidebar
-        cartToggle.addEventListener('click', function(e) {
+        cartToggle.addEventListener('click', function (e) {
             e.preventDefault();
             cartSidebar.classList.add('active');
             cartOverlay.classList.add('active');
             document.body.style.overflow = 'hidden';
         });
-        
+
         // Close cart sidebar
-        closeCart.addEventListener('click', function() {
+        closeCart.addEventListener('click', function () {
             cartSidebar.classList.remove('active');
             cartOverlay.classList.remove('active');
             document.body.style.overflow = '';
         });
-        
-        cartOverlay.addEventListener('click', function() {
+
+        cartOverlay.addEventListener('click', function () {
             cartSidebar.classList.remove('active');
             cartOverlay.classList.remove('active');
             document.body.style.overflow = '';
         });
-        
+
         // Toggle booking sidebar
-        bookingToggle.addEventListener('click', function(e) {
+        bookingToggle.addEventListener('click', function (e) {
             e.preventDefault();
             bookingSidebar.classList.add('active');
             bookingOverlay.classList.add('active');
             document.body.style.overflow = 'hidden';
         });
-        
+
         // Close booking sidebar
-        closeBooking.addEventListener('click', function() {
+        closeBooking.addEventListener('click', function () {
             bookingSidebar.classList.remove('active');
             bookingOverlay.classList.remove('active');
             document.body.style.overflow = '';
         });
-        
-        bookingOverlay.addEventListener('click', function() {
+
+        bookingOverlay.addEventListener('click', function () {
             bookingSidebar.classList.remove('active');
             bookingOverlay.classList.remove('active');
             document.body.style.overflow = '';

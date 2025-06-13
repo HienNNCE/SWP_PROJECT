@@ -17,11 +17,10 @@ import java.util.logging.Logger;
  * @author Ainzle
  */
 public class DBContext {
-
-    private Connection conn;
-    private final String DB_URL = "jdbc:sqlserver://localhost:1433;databaseName=DriveXO;trustServerCertificate=true;";
-    private final String DB_USER = "sa";
-    private final String DB_PWD = "1234";
+    
+    private static final String URL = "jdbc:sqlserver://LAPTOP-FT0Q1NI1\\SQLEXPRESS:1433;databaseName=DriveXO;encrypt=true;trustServerCertificate=true";
+    private static final String USER = "sa";
+    private static final String PASSWORD = "123456";
 
     public DBContext() {
         try {
