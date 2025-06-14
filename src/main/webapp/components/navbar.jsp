@@ -1,389 +1,564 @@
-<%-- 
-    Document   : navbar
-    Created on : May 25, 2025
-    Author     : AI Assistant
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page import="jakarta.servlet.http.HttpServletRequest" %>
-<%
-    String uri = ((HttpServletRequest) request).getRequestURI();
-%>
-<header class="header">
-    <div class="container">
-        <div class="top-header">
-            <div class="contact-info">
-                <a href="mailto:Huyvgce181516@fpt.edu.vn"><i class="fas fa-envelope"></i> fpt@gmail.com</a>
-                <a href="tel: +84 915456680"><i class="fas fa-phone"></i> 0915456680</a>
-            </div>
-            <div class="header-right">
-                <div class="dropdown">
-                    <button class="dropdown-btn">$ USD <i class="fas fa-chevron-down"></i></button>
-                    <div class="dropdown-menu">
-                        <a href="#">$ USD</a>
-                        <a href="#">€ EUR</a>
-                        <a href="#">£ GBP</a>
-                    </div>
-                </div>
-                <div class="dropdown">
-                    <button class="dropdown-btn">English <i class="fas fa-chevron-down"></i></button>
-                    <div class="dropdown-menu">
-                        <a href="#">English</a>
-                        <a href="#">French</a>
-                        <a href="#">Spanish</a>
-                        <a href="#">Vietnamese</a>
-                    </div>
-                </div>
-                <a href="${pageContext.request.contextPath}/auth/login" class="login-btn">Login</a>
-            </div>
-        </div>
-        <div class="main-header">
-            <div class="logo">
-                <a href="${pageContext.request.contextPath}/home">
-                    <img src="${pageContext.request.contextPath}/asset/img/driverxo-logo.png" alt="DriverXO">
-                    <span>DriverXO</span>
-                </a>
-            </div>
-            <nav class="main-nav">
-                <ul>
-                    <li><a href="${pageContext.request.contextPath}/home"
-                           class="<%= uri.contains("/home") ? "active" : ""%>">Home</a></li>
-                    <li class="has-dropdown">
-                        <a href="${pageContext.request.contextPath}/car/list"
-                           class="<%= uri.contains("/car") ? "active" : ""%>">
-                            Cars <i class="fas fa-chevron-down"></i>
-                        </a>
-                        <div class="dropdown-menu">
-                            <a href="${pageContext.request.contextPath}/car/list?type=sedan">Sedan</a>
-                            <a href="${pageContext.request.contextPath}/car/list?type=suv">SUV</a>
-                            <a href="${pageContext.request.contextPath}/car/list?type=sports">Sports</a>
-                            <a href="${pageContext.request.contextPath}/car/list?type=luxury">Luxury</a>
-                            <a href="${pageContext.request.contextPath}/car/list?brand=toyota">Toyota</a>
-                            <a href="${pageContext.request.contextPath}/car/list?brand=honda">Honda</a>
-                            <a href="${pageContext.request.contextPath}/car/list?brand=bmw">BMW</a>
-                            <a href="${pageContext.request.contextPath}/car/list?brand=mercedes">Mercedes</a>
-                        </div>
-                    </li>
-                    </li>
-                    <li><a href="${pageContext.request.contextPath}/parts"
-                           class="<%= uri.contains("/parts") ? "active" : ""%>">Parts</a></li>
-
-                    <li><a href="${pageContext.request.contextPath}/repair-service"
-                           class="<%= uri.contains("/repair-service") ? "active" : ""%>">Repair Service</a></li>
-
-                    <li><a href="${pageContext.request.contextPath}/about-us"
-                           class="<%= uri.contains("/about-us") ? "active" : ""%>">About Us</a></li>
-
-                    <li><a href="${pageContext.request.contextPath}/blog"
-                           class="<%= uri.contains("/blog") ? "active" : ""%>">Blog</a></li>
-                </ul>
-            </nav>
-            <div class="header-actions">
-                <a href="#" class="cart-btn" id="cartToggle"><i class="fas fa-shopping-cart"></i><span class="item-count">0</span></a>
-                <a href="#" class="booking-btn" id="bookingToggle"><i class="fas fa-calendar-alt"></i><span class="booking-count">0</span></a>
-            </div>
-        </div>
-    </div>
-</header> 
-
-<!-- Cart Sidebar -->
-<div class="sidebar-overlay" id="cartOverlay"></div>
-<div class="sidebar" id="cartSidebar">
-    <div class="sidebar-header">
-        <h3>Shopping Cart</h3>
-        <button class="close-sidebar" id="closeCart"><i class="fas fa-times"></i></button>
-    </div>
-    <div class="sidebar-content">
-        <div class="cart-items">
-            <!-- Cart items will be dynamically loaded here -->
-            <div class="empty-cart">
-                <i class="fas fa-shopping-cart"></i>
-                <p>Your cart is empty</p>
-                <a href="${pageContext.request.contextPath}/car/list" class="browse-btn">Browse Cars</a>
-            </div>
-        </div>
-    </div>
-    <div class="sidebar-footer">
-        <div class="cart-total">
-            <span>Total:</span>
-            <span class="total-amount">$0.00</span>
-        </div>
-        <a href="${pageContext.request.contextPath}/cart" class="view-cart-btn">View Cart</a>
-        <a href="${pageContext.request.contextPath}/checkout" class="checkout-btn">Checkout</a>
-    </div>
-</div>
-
-<!-- Booking Sidebar -->
-<div class="sidebar-overlay" id="bookingOverlay"></div>
-<div class="sidebar" id="bookingSidebar">
-    <div class="sidebar-header">
-        <h3>Your Bookings</h3>
-        <button class="close-sidebar" id="closeBooking"><i class="fas fa-times"></i></button>
-    </div>
-    <div class="sidebar-content">
-        <div class="booking-items">
-            <!-- Booking items will be dynamically loaded here -->
-            <div class="empty-bookings">
-                <i class="fas fa-calendar-alt"></i>
-                <p>You have no bookings</p>
-                <a href="${pageContext.request.contextPath}/car/list" class="browse-btn">Book a Test Drive</a>
-            </div>
-        </div>
-    </div>
-    <div class="sidebar-footer">
-        <a href="${pageContext.request.contextPath}/bookings" class="view-bookings-btn">View All Bookings</a>
-    </div>
-</div>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <style>
-    /* Header Actions Styling */
-    .header-actions {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-    }
-
-    .header-actions a {
-        position: relative;
-        font-size: 18px;
-        color: var(--text-color);
-        transition: color 0.3s;
-    }
-
-    .header-actions a:hover {
-        color: var(--primary-color);
-    }
-
-    .header-actions .item-count,
-    .header-actions .booking-count {
-        position: absolute;
-        top: -8px;
-        right: -8px;
-        background-color: var(--primary-color);
-        color: white;
-        font-size: 10px;
-        width: 18px;
-        height: 18px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    /* Sidebar Styling */
-    .sidebar-overlay {
+    /* Minimal Modern Navbar Styles */
+    .header {
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        z-index: 999;
-        visibility: hidden;
-        opacity: 0;
-        transition: opacity 0.3s, visibility 0.3s;
-    }
-
-    .sidebar {
-        position: fixed;
-        top: 0;
-        right: -400px;
-        width: 350px;
-        height: 100%;
-        background-color: white;
-        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
         z-index: 1000;
-        transition: right 0.3s ease-in-out;
-        display: flex;
-        flex-direction: column;
+        transition: all 0.3s ease;
+        background-color: transparent;
     }
-
-    .sidebar.active {
-        right: 0;
+    
+    .header.scrolled {
+        background-color: #fff;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     }
-
-    .sidebar-overlay.active {
-        visibility: visible;
-        opacity: 1;
-    }
-
-    .sidebar-header {
+    
+    .compact-header .main-header {
+        padding: 20px 0;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 20px;
-        border-bottom: 1px solid #eee;
     }
-
-    .sidebar-header h3 {
-        font-size: 18px;
-        font-weight: 600;
-        margin: 0;
-        color: var(--primary-color);
-    }
-
-    .close-sidebar {
-        background: none;
-        border: none;
-        font-size: 18px;
-        cursor: pointer;
-        color: #999;
-        transition: color 0.3s;
-    }
-
-    .close-sidebar:hover {
-        color: var(--primary-color);
-    }
-
-    .sidebar-content {
-        flex: 1;
-        overflow-y: auto;
-        padding: 20px;
-    }
-
-    .sidebar-footer {
-        padding: 15px 20px;
-        border-top: 1px solid #eee;
-        background-color: #f8f9fa;
-    }
-
-    /* Cart Items Styling */
-    .empty-cart,
-    .empty-bookings {
-        text-align: center;
-        padding: 30px 0;
-    }
-
-    .empty-cart i,
-    .empty-bookings i {
-        font-size: 50px;
-        color: #ddd;
-        margin-bottom: 15px;
-    }
-
-    .empty-cart p,
-    .empty-bookings p {
-        color: #999;
-        margin-bottom: 20px;
-    }
-
-    .browse-btn {
-        display: inline-block;
-        padding: 8px 16px;
-        background-color: var(--primary-color);
-        color: white;
-        border-radius: 4px;
-        text-decoration: none;
-        transition: background-color 0.3s;
-    }
-
-    .browse-btn:hover {
-        background-color: var(--secondary-color);
-    }
-
-    .cart-total {
+    
+    .compact-header .logo a {
+        font-size: 22px;
+        font-weight: 400;
+        letter-spacing: 1px;
+        color: #fff;
         display: flex;
-        justify-content: space-between;
-        font-weight: 600;
-        font-size: 16px;
-        margin-bottom: 15px;
-    }
-
-    .view-cart-btn,
-    .checkout-btn,
-    .view-bookings-btn {
-        display: block;
-        padding: 10px;
-        text-align: center;
+        align-items: center;
         text-decoration: none;
-        border-radius: 4px;
-        font-weight: 600;
-        margin-bottom: 10px;
-        transition: all 0.3s;
     }
-
-    .view-cart-btn {
-        background-color: #f8f9fa;
-        color: var(--primary-color);
-        border: 1px solid var(--primary-color);
+    
+    .header.scrolled .logo a {
+        color: #000;
     }
-
-    .checkout-btn,
-    .view-bookings-btn {
-        background-color: var(--primary-color);
-        color: white;
+    
+    .compact-header .logo img {
+        height: 28px;
+        margin-right: 10px;
     }
-
-    .view-cart-btn:hover {
-        background-color: #eaeaea;
+    
+    /* Contact Icons */
+    .contact-icons {
+        display: flex;
+        gap: 20px;
+        margin-left: 30px;
     }
-
-    .checkout-btn:hover,
-    .view-bookings-btn:hover {
-        background-color: var(--secondary-color);
+    
+    .contact-icons a {
+        font-size: 14px;
+        color: #fff;
+        transition: all 0.3s ease;
     }
-    nav.main-nav a.active {
-        color: var(--primary-color);
-        font-weight: bold;
-        border-bottom: 2px solid var(--primary-color);
+    
+    .header.scrolled .contact-icons a {
+        color: #555;
+    }
+    
+    .contact-icons a:hover {
+        opacity: 0.8;
+    }
+    
+    /* Left and Right Sections */
+    .left-section {
+        display: flex;
+        align-items: center;
+    }
+    
+    .right-section {
+        display: flex;
+        align-items: center;
+        gap: 30px;
+    }
+    
+    /* Main Navigation */
+    .main-nav {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+    }
+    
+    .main-nav ul {
+        display: flex;
+        gap: 40px;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .main-nav ul li {
+        list-style: none;
+        position: relative;
+    }
+    
+    .main-nav a {
+        color: #fff;
+        font-size: 14px;
+        font-weight: 400;
+        text-decoration: none;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        padding: 5px 0;
+        position: relative;
+    }
+    
+    .header.scrolled .main-nav a {
+        color: #000;
+    }
+    
+    .main-nav a:after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 1px;
+        background-color: #fff;
+        transition: width 0.3s ease;
+    }
+    
+    .header.scrolled .main-nav a:after {
+        background-color: #000;
+    }
+    
+    .main-nav a:hover:after,
+    .main-nav a.active:after {
+        width: 100%;
+    }
+    
+    /* Dropdown Toggle */
+    .dropdown-toggle {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        cursor: pointer;
+    }
+    
+    .dropdown-toggle i {
+        font-size: 9px;
+        transition: transform 0.3s ease;
+    }
+    
+    /* Mega Dropdown - Minimal Style */
+    .mega-dropdown {
+        position: absolute;
+        top: 100%;
+        left: -300px;
+        width: 1000px;
+        background-color: #fff;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(10px);
+        transition: all 0.3s ease;
+        z-index: 1000;
+        display: flex;
+        margin-top: 20px;
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+    
+    .dropdown-container:hover .mega-dropdown {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+    
+    .dropdown-container:hover .dropdown-toggle i {
+        transform: rotate(180deg);
+    }
+    
+    /* Sidebar Categories - Minimal Style */
+    .mega-menu-sidebar {
+        width: 250px;
+        background-color: #f9f9f9;
+        border-right: 1px solid #f0f0f0;
+    }
+    
+    .mega-menu-sidebar ul {
+        display: block;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .mega-menu-sidebar ul li {
+        padding: 0;
+        border-bottom: 1px solid #f0f0f0;
+    }
+    
+    .mega-menu-sidebar ul li a {
+        padding: 15px 20px;
+        color: #333;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        transition: all 0.2s ease;
+    }
+    
+    .mega-menu-sidebar ul li a:hover {
+        background-color: #f5f5f5;
+        color: #000;
+    }
+    
+    .mega-menu-sidebar ul li a:after {
+        display: none;
+    }
+    
+    .mega-menu-sidebar ul li a i {
+        font-size: 10px;
+        color: #999;
+    }
+    
+    /* Cars Grid - Minimal Style */
+    .mega-menu-content {
+        flex: 1;
+        padding: 30px;
+        background-color: #fff;
+    }
+    
+    .cars-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 25px;
+    }
+    
+    .car-preview {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 10px;
+        transition: all 0.3s ease;
+    }
+    
+    .car-preview:hover {
+        transform: translateY(-5px);
+    }
+    
+    .car-preview img {
+        width: 100%;
+        height: auto;
+        margin-bottom: 15px;
+        transition: all 0.3s ease;
+    }
+    
+    .car-model {
+        font-weight: 500;
+        color: #000;
+        margin-bottom: 5px;
+        font-size: 14px;
+    }
+    
+    .car-model-badge {
+        font-size: 10px;
+        vertical-align: super;
+    }
+    
+    .car-price {
+        color: #666;
+        font-size: 13px;
+        margin-bottom: 8px;
+    }
+    
+    .car-price sup {
+        font-size: 9px;
+    }
+    
+    .car-badge {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 11px;
+        color: #559900;
+    }
+    
+    .car-badge.electric {
+        color: #0066cc;
+    }
+    
+    .car-badge i {
+        font-size: 12px;
+    }
+    
+    /* See All Link */
+    .see-all-link {
+        display: inline-block;
+        margin-top: 25px;
+        color: #000;
+        font-size: 14px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border-bottom: 1px solid transparent;
+    }
+    
+    .see-all-link:hover {
+        border-bottom: 1px solid #000;
+    }
+    
+    .see-all-link i {
+        font-size: 10px;
+        margin-left: 5px;
+    }
+    
+    /* Login Button */
+    .login-btn {
+        padding: 8px 20px;
+        background-color: transparent;
+        border: 1px solid #fff;
+        color: #fff;
+        font-size: 13px;
+        text-decoration: none;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+    }
+    
+    .header.scrolled .login-btn {
+        border: 1px solid #000;
+        color: #000;
+    }
+    
+    .login-btn:hover {
+        background-color: #fff;
+        color: #000;
+    }
+    
+    .header.scrolled .login-btn:hover {
+        background-color: #000;
+        color: #fff;
+    }
+    
+    /* Header Actions */
+    .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+    
+    .header-actions a {
+        color: #fff;
+        font-size: 16px;
+        transition: all 0.3s ease;
+    }
+    
+    .header.scrolled .header-actions a {
+        color: #000;
+    }
+    
+    .header-actions a:hover {
+        opacity: 0.8;
+    }
+    
+    /* Responsive Styles */
+    @media (max-width: 1200px) {
+        .mega-dropdown {
+            width: 900px;
+            left: -250px;
+        }
+        
+        .cars-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+        
+        .main-nav ul {
+            gap: 30px;
+        }
+    }
+    
+    @media (max-width: 992px) {
+        .mega-dropdown {
+            width: 700px;
+            left: -200px;
+        }
+        
+        .cars-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        
+        .main-nav ul {
+            gap: 20px;
+        }
+        
+        .contact-icons {
+            display: none;
+        }
     }
 </style>
 
+<!-- Fetch all car data from the backend -->
+<c:set var="brands" value="${requestScope.carBrands}" />
+<c:set var="categories" value="${requestScope.carCategories}" />
+
+<!-- Header -->
+<header class="header compact-header">
+    <div class="container">
+        <div class="main-header">
+            <div class="left-section">
+                <div class="logo">
+                    <a href="home.jsp">
+                        <img src="asset/img/driverxo-logo-white.png" alt="DriverXO" class="logo-white">
+                        <img src="asset/img/driverxo-logo.png" alt="DriverXO" class="logo-dark" style="display: none;">
+                        DriverXO
+                    </a>
+                </div>
+                <div class="contact-icons">
+                    <a href="mailto:fpt@gmail.com"><i class="far fa-envelope"></i></a>
+                    <a href="tel:0915456680"><i class="fas fa-phone"></i></a>
+                </div>
+            </div>
+            
+            <nav class="main-nav">
+                <ul>
+                    <li class="dropdown-container">
+                        <a href="car-list.jsp" class="dropdown-toggle ${pageContext.request.servletPath eq '/car-list.jsp' ? 'active' : ''}">
+                            Cars <i class="fas fa-chevron-down"></i>
+                        </a>
+                        <div class="mega-dropdown">
+                            <!-- Sidebar Categories -->
+                            <div class="mega-menu-sidebar">
+                                <ul>
+                                    <li><a href="${pageContext.request.contextPath}/car/list?category=suv">SUVs & Cars <i class="fas fa-chevron-right"></i></a></li>
+                                    <li><a href="${pageContext.request.contextPath}/car/list?category=truck">Trucks & Vans <i class="fas fa-chevron-right"></i></a></li>
+                                    <li><a href="${pageContext.request.contextPath}/car/list?category=electric">Electric & Hybrid <i class="fas fa-chevron-right"></i></a></li>
+                                    <li><a href="${pageContext.request.contextPath}/car/list?category=performance">Performance Vehicles <i class="fas fa-chevron-right"></i></a></li>
+                                    <li><a href="${pageContext.request.contextPath}/car/list?category=commercial">Commercial Vehicles <i class="fas fa-chevron-right"></i></a></li>
+                                    <li><a href="${pageContext.request.contextPath}/car/list?category=future">Future Vehicles <i class="fas fa-chevron-right"></i></a></li>
+                                    <li><a href="${pageContext.request.contextPath}/car/list">All Vehicles <i class="fas fa-chevron-right"></i></a></li>
+                                </ul>
+                            </div>
+                            
+                            <!-- Car Previews -->
+                            <div class="mega-menu-content">
+                                <div class="cars-grid">
+                                    <c:forEach var="car" items="${latestCars}" varStatus="loop">
+                                        <c:if test="${loop.index < 8}">
+                                            <div class="car-preview">
+                                                <img src="asset/img/cars/${car.carBrand.toLowerCase()}-${car.model.toLowerCase().replace(' ', '-')}.png" alt="${car.carBrand} ${car.carName}">
+                                                <div class="car-model">
+                                                    ${car.carName} <span class="car-model-badge">®</span>
+                                                </div>
+                                                <div class="car-price">
+                                                    Starting at $${car.carPrice}<sup>1</sup>
+                                                </div>
+                                                <c:if test="${car.categoryId == 3}">
+                                                    <div class="car-badge">
+                                                        <i class="fas fa-leaf"></i> Hybrid Available
+                                                    </div>
+                                                </c:if>
+                                                <c:if test="${car.categoryId == 4}">
+                                                    <div class="car-badge electric">
+                                                        <i class="fas fa-bolt"></i> All Electric
+                                                    </div>
+                                                </c:if>
+                                            </div>
+                                        </c:if>
+                                    </c:forEach>
+                                    
+                                    <!-- Fallback if no cars in database -->
+                                    <c:if test="${empty latestCars}">
+                                        <div class="car-preview">
+                                            <img src="asset/img/cars/mercedes-s-class.png" alt="Mercedes S-Class">
+                                            <div class="car-model">
+                                                S-Class <span class="car-model-badge">®</span>
+                                            </div>
+                                            <div class="car-price">
+                                                Starting at $110,000<sup>1</sup>
+                                            </div>
+                                        </div>
+                                        <div class="car-preview">
+                                            <img src="asset/img/cars/bmw-7-series.png" alt="BMW 7 Series">
+                                            <div class="car-model">
+                                                7 Series <span class="car-model-badge">®</span>
+                                            </div>
+                                            <div class="car-price">
+                                                Starting at $93,300<sup>1</sup>
+                                            </div>
+                                            <div class="car-badge electric">
+                                                <i class="fas fa-bolt"></i> All Electric
+                                            </div>
+                                        </div>
+                                        <div class="car-preview">
+                                            <img src="asset/img/cars/audi-a8.png" alt="Audi A8">
+                                            <div class="car-model">
+                                                A8 <span class="car-model-badge">®</span>
+                                            </div>
+                                            <div class="car-price">
+                                                Starting at $86,500<sup>1</sup>
+                                            </div>
+                                        </div>
+                                        <div class="car-preview">
+                                            <img src="asset/img/cars/lexus-ls.png" alt="Lexus LS">
+                                            <div class="car-model">
+                                                LS <span class="car-model-badge">®</span>
+                                            </div>
+                                            <div class="car-price">
+                                                Starting at $77,250<sup>1</sup>
+                                            </div>
+                                            <div class="car-badge">
+                                                <i class="fas fa-leaf"></i> Hybrid Available
+                                            </div>
+                                        </div>
+                                    </c:if>
+                                </div>
+                                
+                                <a href="${pageContext.request.contextPath}/car/list" class="see-all-link">
+                                    See the DriveXO Family of Luxury Cars <i class="fas fa-chevron-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                    <li><a href="#" class="${pageContext.request.servletPath eq '/services.jsp' ? 'active' : ''}">Services</a></li>
+                    <li><a href="#" class="${pageContext.request.servletPath eq '/about.jsp' ? 'active' : ''}">About</a></li>
+                    <li><a href="#" class="${pageContext.request.servletPath eq '/contact.jsp' ? 'active' : ''}">Contact</a></li>
+                    <li><a href="feedback.jsp" class="${pageContext.request.servletPath eq '/feedback.jsp' ? 'active' : ''}">Feedback</a></li>
+                </ul>
+            </nav>
+            
+            <div class="right-section">
+                <c:if test="${sessionScope.account != null}">
+                    <div class="header-actions">
+                        <a href="cart.jsp" class="cart-icon"><i class="fas fa-shopping-cart"></i></a>
+                        <a href="#" class="compare-icon"><i class="fas fa-exchange-alt"></i></a>
+                    </div>
+                </c:if>
+                <a href="auth/login.jsp" class="login-btn">
+                    <c:choose>
+                        <c:when test="${sessionScope.account != null}">
+                            My Account
+                        </c:when>
+                        <c:otherwise>
+                            Login
+                        </c:otherwise>
+                    </c:choose>
+                </a>
+            </div>
+        </div>
+    </div>
+</header>
+
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Cart sidebar toggle
-        const cartToggle = document.getElementById('cartToggle');
-        const cartSidebar = document.getElementById('cartSidebar');
-        const cartOverlay = document.getElementById('cartOverlay');
-        const closeCart = document.getElementById('closeCart');
-
-        // Booking sidebar toggle
-        const bookingToggle = document.getElementById('bookingToggle');
-        const bookingSidebar = document.getElementById('bookingSidebar');
-        const bookingOverlay = document.getElementById('bookingOverlay');
-        const closeBooking = document.getElementById('closeBooking');
-
-        // Toggle cart sidebar
-        cartToggle.addEventListener('click', function (e) {
-            e.preventDefault();
-            cartSidebar.classList.add('active');
-            cartOverlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        });
-
-        // Close cart sidebar
-        closeCart.addEventListener('click', function () {
-            cartSidebar.classList.remove('active');
-            cartOverlay.classList.remove('active');
-            document.body.style.overflow = '';
-        });
-
-        cartOverlay.addEventListener('click', function () {
-            cartSidebar.classList.remove('active');
-            cartOverlay.classList.remove('active');
-            document.body.style.overflow = '';
-        });
-
-        // Toggle booking sidebar
-        bookingToggle.addEventListener('click', function (e) {
-            e.preventDefault();
-            bookingSidebar.classList.add('active');
-            bookingOverlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        });
-
-        // Close booking sidebar
-        closeBooking.addEventListener('click', function () {
-            bookingSidebar.classList.remove('active');
-            bookingOverlay.classList.remove('active');
-            document.body.style.overflow = '';
-        });
-
-        bookingOverlay.addEventListener('click', function () {
-            bookingSidebar.classList.remove('active');
-            bookingOverlay.classList.remove('active');
-            document.body.style.overflow = '';
-        });
+    // Header scroll effect
+    window.addEventListener('scroll', function() {
+        const header = document.querySelector('.header');
+        const logoWhite = document.querySelector('.logo-white');
+        const logoDark = document.querySelector('.logo-dark');
+        
+        if (window.scrollY > 50) {
+            header.classList.add('scrolled');
+            logoWhite.style.display = 'none';
+            logoDark.style.display = 'block';
+        } else {
+            header.classList.remove('scrolled');
+            logoWhite.style.display = 'block';
+            logoDark.style.display = 'none';
+        }
     });
-</script> 
+</script>

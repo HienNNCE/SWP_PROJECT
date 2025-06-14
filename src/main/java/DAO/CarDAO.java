@@ -54,6 +54,35 @@ public class CarDAO extends DBContext {
         }
         return cars;
     }
+    
+    public ArrayList<Car> getRandomCars(int limit) {
+        ArrayList<Car> cars = new ArrayList<>();
+        String query = "SELECT TOP (?) * FROM Car ORDER BY NEWID()";
+        try {
+            PreparedStatement ps = this.getConnection().prepareStatement(query);
+            ps.setInt(1, limit);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                cars.add(new Car(
+                        rs.getInt("car_id"),
+                        rs.getString("car_name"),
+                        rs.getString("car_brand"),
+                        rs.getString("model"),
+                        rs.getBigDecimal("car_price"),
+                        rs.getDate("car_year"),
+                        rs.getString("car_img"),
+                        rs.getInt("car_stock"),
+                        rs.getBigDecimal("car_odo"),
+                        rs.getString("fuel_type"),
+                        rs.getBigDecimal("displacement"),
+                        rs.getInt("category_id")
+                ));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CarDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return cars;
+    }
 
     public byte[] getCarImageById(int carId) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
