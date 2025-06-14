@@ -18,9 +18,19 @@ import java.util.logging.Logger;
  */
 public class DBContext {
     
+<<<<<<< HEAD
     private static final String URL = "jdbc:sqlserver://LAPTOP-FT0Q1NI1\\SQLEXPRESS:1433;databaseName=DriveXO;encrypt=true;trustServerCertificate=true";
     private static final String USER = "sa";
     private static final String PASSWORD = "123456";
+=======
+
+    private static final String URL = "jdbc:sqlserver://LAPTOP-FT0Q1NI1\\SQLEXPRESS;databaseName=DriveXO;encrypt=true;trustServerCertificate=true;";
+    private static final String USER = "sa";
+    private static final String PASSWORD = "123456";    
+//    private static final String URL = "jdbc:sqlserver://LAPTOP-FT0Q1NI1\\SQLEXPRESS;databaseName=DriveXO;encrypt=true;trustServerCertificate=true;";
+//    private static final String USER = "sa";
+//    private static final String PASSWORD = "123456";
+>>>>>>> master
 
     public DBContext() {
         try {

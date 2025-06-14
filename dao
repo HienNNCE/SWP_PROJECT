@@ -1,0 +1,484 @@
+[1mdiff --git a/HuongDanLamViecVoiGitHub.txt b/HuongDanLamViecVoiGitHub.txt[m
+[1mdeleted file mode 100644[m
+[1mindex 61c73be..0000000[m
+[1m--- a/HuongDanLamViecVoiGitHub.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,18 +0,0 @@[m
+[31m-Yêu cầu: Tải git bash[m
+[31m-B1: clone(từ lần 2 ko cần)[m
+[31m-git clone https://github.com/HienNNCE/SWP_PROJECT.git  		# Clone repo về máy tính[m
+[31m-cd SWP_Project  	# Vào thư mục của project[m
+[31m-[m
+[31m-B2: lấy code mới nhất (mỗi lần code phải pull về)[m
+[31m-git checkout master      	# Chuyển sang nhánh chính[m
+[31m-git pull origin master    	# Cập nhật code mới nhất từ GitHub[m
+[31m-[m
+[31m-B3: Làm việc trên nhánh của bản thân (quan trọng, pull về phải checkout trước khi code)[m
+[31m-git checkout hien       	# Chuyển sang branch 'hien'[m
+[31m-[m
+[31m-B4: add code mới vào git local[m
+[31m-git add .              		# Thêm tất cả các thay đổi vào staging (chuẩn bị commit)[m
+[31m-git commit -m "comment message"  # Commit với mô tả đã làm gì (VD:"add createCar method")[m
+[31m-[m
+[31m-B5: push code lên nhánh của bản thân[m
+[31m-git push origin hien    	# Push các thay đổi lên GitHub vào branch 'hien'[m
+[1mdiff --git a/adlsd b/adlsd[m
+[1mdeleted file mode 100644[m
+[1mindex 2d8e3bb..0000000[m
+[1m--- a/adlsd[m
+[1m+++ /dev/null[m
+[36m@@ -1,171 +0,0 @@[m
+[31m-[1mdiff --git a/HuongDanLamViecVoiGitHub.txt b/HuongDanLamViecVoiGitHub.txt[m[m
+[31m-[1mdeleted file mode 100644[m[m
+[31m-[1mindex 61c73be..0000000[m[m
+[31m-[1m--- a/HuongDanLamViecVoiGitHub.txt[m[m
+[31m-[1m+++ /dev/null[m[m
+[31m-[36m@@ -1,18 +0,0 @@[m[m
+[31m-[31m-Yêu cầu: Tải git bash[m[m
+[31m-[31m-B1: clone(từ lần 2 ko cần)[m[m
+[31m-[31m-git clone https://github.com/HienNNCE/SWP_PROJECT.git  		# Clone repo về máy tính[m[m
+[31m-[31m-cd SWP_Project  	# Vào thư mục của project[m[m
+[31m-[31m-[m[m
+[31m-[31m-B2: lấy code mới nhất (mỗi lần code phải pull về)[m[m
+[31m-[31m-git checkout master      	# Chuyển sang nhánh chính[m[m
+[31m-[31m-git pull origin master    	# Cập nhật code mới nhất từ GitHub[m[m
+[31m-[31m-[m[m
+[31m-[31m-B3: Làm việc trên nhánh của bản thân (quan trọng, pull về phải checkout trước khi code)[m[m
+[31m-[31m-git checkout hien       	# Chuyển sang branch 'hien'[m[m
+[31m-[31m-[m[m
+[31m-[31m-B4: add code mới vào git local[m[m
+[31m-[31m-git add .              		# Thêm tất cả các thay đổi vào staging (chuẩn bị commit)[m[m
+[31m-[31m-git commit -m "comment message"  # Commit với mô tả đã làm gì (VD:"add createCar method")[m[m
+[31m-[31m-[m[m
+[31m-[31m-B5: push code lên nhánh của bản thân[m[m
+[31m-[31m-git push origin hien    	# Push các thay đổi lên GitHub vào branch 'hien'[m[m
+[31m-[1mdiff --git a/src/main/java/DAO/ServiceDAO.java b/src/main/java/DAO/ServiceDAO.java[m[m
+[31m-[1mindex 2aca0b4..de59f9b 100644[m[m
+[31m-[1m--- a/src/main/java/DAO/ServiceDAO.java[m[m
+[31m-[1m+++ b/src/main/java/DAO/ServiceDAO.java[m[m
+[31m-[36m@@ -1,108 +1,39 @@[m[m
+[31m-[31m-package DAO;[m[m
+[31m-[31m-[m[m
+[31m-[31m-import DB.DBContext;[m[m
+[31m-[31m-import Model.Service;[m[m
+[31m-[31m-import java.math.BigDecimal;[m[m
+[31m-[31m-import java.sql.*;[m[m
+[31m-[31m-import java.util.ArrayList;[m[m
+[31m-[31m-import java.util.List;[m[m
+[31m-[31m-[m[m
+[31m-[31m-public class ServiceDAO extends DBContext {[m[m
+[31m-[31m-[m[m
+[31m-[31m-    // Method to get all services from the database[m[m
+[31m-[31m-    public List<Service> getAllService() {[m[m
+[31m-[31m-        List<Service> list = new ArrayList<>();[m[m
+[31m-[31m-        String sql = "SELECT * FROM Service";[m[m
+[31m-[31m-[m[m
+[31m-[31m-        try (PreparedStatement ps = this.getConnection().prepareStatement(sql); ResultSet rs = ps.executeQuery()) {[m[m
+[31m-[31m-[m[m
+[31m-[31m-            while (rs.next()) {[m[m
+[31m-[31m-                Service rsObj = new Service();[m[m
+[31m-[31m-                // Set fields for each Service object[m[m
+[31m-[31m-                rsObj.setServiceId(rs.getInt("service_id"));[m[m
+[31m-[31m-                rsObj.setServiceName(rs.getString("service_name"));[m[m
+[31m-[31m-                rsObj.setServiceDescription(rs.getString("service_description"));[m[m
+[31m-[31m-                rsObj.setServicePrice(rs.getBigDecimal("service_price"));[m[m
+[31m-[31m-                rsObj.setEstimateTime(rs.getTimestamp("estimate_time").toLocalDateTime());[m[m
+[31m-[31m-                rsObj.setServiceImg(rs.getString("service_img"));[m[m
+[31m-[31m-                [m[m
+[31m-[31m-                list.add(rsObj);[m[m
+[31m-[31m-            }[m[m
+[31m-[31m-[m[m
+[31m-[31m-        } catch (SQLException e) {[m[m
+[31m-[31m-            e.printStackTrace();[m[m
+[31m-[31m-        }[m[m
+[31m-[31m-[m[m
+[31m-[31m-        return list;[m[m
+[31m-[31m-    }[m[m
+[31m-[31m-[m[m
+[31m-[31m-    // Method to add a new service to the database[m[m
+[31m-[31m-    public boolean addNewService(Service service) {[m[m
+[31m-[31m-        String sql = "INSERT INTO Service(service_name, service_description, service_price, estimate_time, service_img) VALUES (?,?,?,?,?)";[m[m
+[31m-[31m-[m[m
+[31m-[31m-        try (PreparedStatement ps = this.getConnection().prepareStatement(sql)) {[m[m
+[31m-[31m-            ps.setString(1, service.getServiceName());[m[m
+[31m-[31m-            ps.setString(2, service.getServiceDescription());[m[m
+[31m-[31m-            ps.setBigDecimal(3, service.getServicePrice());[m[m
+[31m-[31m-            ps.setTimestamp(4, Timestamp.valueOf(service.getEstimateTime()));[m[m
+[31m-[31m-            ps.setString(5, service.getServiceImg());[m[m
+[31m-[31m-[m[m
+[31m-[31m-            // Execute update and return true if successful[m[m
+[31m-[31m-            return ps.executeUpdate() > 0;[m[m
+[31m-[31m-[m[m
+[31m-[31m-        } catch (SQLException e) {[m[m
+[31m-[31m-            e.printStackTrace();[m[m
+[31m-[31m-        }[m[m
+[31m-[31m-[m[m
+[31m-[31m-        return false;[m[m
+[31m-[31m-    }[m[m
+[31m-[31m-[m[m
+[31m-[31m-    // Method to get a service by its ID[m[m
+[31m-[31m-    public Service getServiceById(int serviceId) {[m[m
+[31m-[31m-        String sql = "SELECT * FROM Service WHERE service_id = ?";[m[m
+[31m-[31m-[m[m
+[31m-[31m-        try (PreparedStatement ps = this.getConnection().prepareStatement(sql)) {[m[m
+[31m-[31m-            ps.setInt(1, serviceId);[m[m
+[31m-[31m-            try (ResultSet rs = ps.executeQuery()) {[m[m
+[31m-[31m-                if (rs.next()) {[m[m
+[31m-[31m-                    Service service = new Service();[m[m
+[31m-[31m-                    service.setServiceId(rs.getInt("service_id"));[m[m
+[31m-[31m-                    service.setServiceName(rs.getString("service_name"));[m[m
+[31m-[31m-                    service.setServiceDescription(rs.getString("service_description"));[m[m
+[31m-[31m-                    service.setServicePrice(rs.getBigDecimal("service_price"));[m[m
+[31m-[31m-                    service.setEstimateTime(rs.getTimestamp("estimate_time").toLocalDateTime());[m[m
+[31m-[31m-                    service.setServiceImg(rs.getString("service_img"));[m[m
+[31m-[31m-[m[m
+[31m-[31m-                    return service;[m[m
+[31m-[31m-                }[m[m
+[31m-[31m-            }[m[m
+[31m-[31m-        } catch (SQLException e) {[m[m
+[31m-[31m-            e.printStackTrace();[m[m
+[31m-[31m-        }[m[m
+[31m-[31m-[m[m
+[31m-[31m-        return null;[m[m
+[31m-[31m-    }[m[m
+[31m-[31m-[m[m
+[31m-[31m-    // Method to update a service in the database[m[m
+[31m-[31m-    public boolean updateService(Service service) {[m[m
+[31m-[31m-        String sql = "UPDATE Service SET service_name=?, service_description=?, service_price=?, estimate_time=?, service_img=? WHERE service_id =?";[m[m
+[31m-[31m-[m[m
+[31m-[31m-        try (PreparedStatement ps = this.getConnection().prepareStatement(sql)) {[m[m
+[31m-[31m-            ps.setString(1, service.getServiceName());[m[m
+[31m-[31m-            ps.setString(2, service.getServiceDescription());[m[m
+[31m-[31m-            ps.setBigDecimal(3, service.getServicePrice());[m[m
+[31m-[31m-            ps.setTimestamp(4, Timestamp.valueOf(service.getEstimateTime()));[m[m
+[31m-[31m-            ps.setString(5, service.getServiceImg());[m[m
+[31m-[31m-            ps.setInt(6, service.getServiceId());[m[m
+[31m-[31m-[m[m
+[31m-[31m-            // Execute update and return true if successful[m[m
+[31m-[31m-            return ps.executeUpdate() > 0;[m[m
+[31m-[31m-        } catch (SQLException e) {[m[m
+[31m-[31m-            e.printStackTrace();[m[m
+[31m-[31m-        }[m[m
+[31m-[31m-[m[m
+[31m-[31m-        return false;[m[m
+[31m-[31m-    }[m[m
+[31m-[31m-[m[m
+[31m-[31m-   [m[m
+[31m-[31m-}[m[m
+[31m-[32m+[m[32m/*[m[m
+[31m-[32m+[m[32m * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license[m[m
+[31m-[32m+[m[32m * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template[m[m
+[31m-[32m+[m[32m */[m[m
+[31m-[32m+[m[32mpackage DAO;[m[m
+[31m-[32m+[m[m
+[31m-[32m+[m[32mimport DB.DBContext;[m[m
+[31m-[32m+[m[32mimport Model.Service;[m[m
+[31m-[32m+[m[32mimport java.sql.PreparedStatement;[m[m
+[31m-[32m+[m[32mimport java.sql.ResultSet;[m[m
+[31m-[32m+[m[32mimport java.sql.SQLException;[m[m
+[31m-[32m+[m[32mimport java.util.ArrayList;[m[m
+[31m-[32m+[m[32mimport java.util.List;[m[m
+[31m-[32m+[m[m
+[31m-[32m+[m[32m/**[m[m
+[31m-[32m+[m[32m *[m[m
+[31m-[32m+[m[32m * @author thien[m[m
+[31m-[32m+[m[32m */[m[m
+[31m-[32m+[m[32mpublic class ServiceDAO extends DBContext {[m[m
+[31m-[32m+[m[m
+[31m-[32m+[m[32m    public List<Service> getAllRepairService() {[m[m
+[31m-[32m+[m[32m        List<Service> list = new ArrayList<>();[m[m
+[31m-[32m+[m[32m        String sql = "SELECT * FROM RepairService";[m[m
+[31m-[32m+[m[m
+[31m-[32m+[m[32m        try (PreparedStatement ps = this.getConnection().prepareStatement(sql); ResultSet rs = ps.executeQuery()) {[m[m
+[31m-[32m+[m[m
+[31m-[32m+[m[32m            while (rs.next()) {[m[m
+[31m-[32m+[m[32m                Service rsObj = new Service();[m[m
+[31m-[32m+[m[32m                // set fields...[m[m
+[31m-[32m+[m[32m                list.add(rsObj);[m[m
+[31m-[32m+[m[32m            }[m[m
+[31m-[32m+[m[m
+[31m-[32m+[m[32m        } catch (SQLException e) {[m[m
+[31m-[32m+[m[32m            e.[m
+\ No newline at end of file[m
+[1mdiff --git a/src/main/java/DAO/ServiceDAO.java b/src/main/java/DAO/ServiceDAO.java[m
+[1mindex 2aca0b4..de59f9b 100644[m
+[1m--- a/src/main/java/DAO/ServiceDAO.java[m
+[1m+++ b/src/main/java/DAO/ServiceDAO.java[m
+[36m@@ -1,108 +1,39 @@[m
+[31m-package DAO;[m
+[31m-[m
+[31m-import DB.DBContext;[m
+[31m-import Model.Service;[m
+[31m-import java.math.BigDecimal;[m
+[31m-import java.sql.*;[m
+[31m-import java.util.ArrayList;[m
+[31m-import java.util.List;[m
+[31m-[m
+[31m-public class ServiceDAO extends DBContext {[m
+[31m-[m
+[31m-    // Method to get all services from the database[m
+[31m-    public List<Service> getAllService() {[m
+[31m-        List<Service> list = new ArrayList<>();[m
+[31m-        String sql = "SELECT * FROM Service";[m
+[31m-[m
+[31m-        try (PreparedStatement ps = this.getConnection().prepareStatement(sql); ResultSet rs = ps.executeQuery()) {[m
+[31m-[m
+[31m-            while (rs.next()) {[m
+[31m-                Service rsObj = new Service();[m
+[31m-                // Set fields for each Service object[m
+[31m-                rsObj.setServiceId(rs.getInt("service_id"));[m
+[31m-                rsObj.setServiceName(rs.getString("service_name"));[m
+[31m-                rsObj.setServiceDescription(rs.getString("service_description"));[m
+[31m-                rsObj.setServicePrice(rs.getBigDecimal("service_price"));[m
+[31m-                rsObj.setEstimateTime(rs.getTimestamp("estimate_time").toLocalDateTime());[m
+[31m-                rsObj.setServiceImg(rs.getString("service_img"));[m
+[31m-                [m
+[31m-                list.add(rsObj);[m
+[31m-            }[m
+[31m-[m
+[31m-        } catch (SQLException e) {[m
+[31m-            e.printStackTrace();[m
+[31m-        }[m
+[31m-[m
+[31m-        return list;[m
+[31m-    }[m
+[31m-[m
+[31m-    // Method to add a new service to the database[m
+[31m-    public boolean addNewService(Service service) {[m
+[31m-        String sql = "INSERT INTO Service(service_name, service_description, service_price, estimate_time, service_img) VALUES (?,?,?,?,?)";[m
+[31m-[m
+[31m-        try (PreparedStatement ps = this.getConnection().prepareStatement(sql)) {[m
+[31m-            ps.setString(1, service.getServiceName());[m
+[31m-            ps.setString(2, service.getServiceDescription());[m
+[31m-            ps.setBigDecimal(3, service.getServicePrice());[m
+[31m-            ps.setTimestamp(4, Timestamp.valueOf(service.getEstimateTime()));[m
+[31m-            ps.setString(5, service.getServiceImg());[m
+[31m-[m
+[31m-            // Execute update and return true if successful[m
+[31m-            return ps.executeUpdate() > 0;[m
+[31m-[m
+[31m-        } catch (SQLException e) {[m
+[31m-            e.printStackTrace();[m
+[31m-        }[m
+[31m-[m
+[31m-        return false;[m
+[31m-    }[m
+[31m-[m
+[31m-    // Method to get a service by its ID[m
+[31m-    public Service getServiceById(int serviceId) {[m
+[31m-        String sql = "SELECT * FROM Service WHERE service_id = ?";[m
+[31m-[m
+[31m-        try (PreparedStatement ps = this.getConnection().prepareStatement(sql)) {[m
+[31m-            ps.setInt(1, serviceId);[m
+[31m-            try (ResultSet rs = ps.executeQuery()) {[m
+[31m-                if (rs.next()) {[m
+[31m-                    Service service = new Service();[m
+[31m-                    service.setServiceId(rs.getInt("service_id"));[m
+[31m-                    service.setServiceName(rs.getString("service_name"));[m
+[31m-                    service.setServiceDescription(rs.getString("service_description"));[m
+[31m-                    service.setServicePrice(rs.getBigDecimal("service_price"));[m
+[31m-                    service.setEstimateTime(rs.getTimestamp("estimate_time").toLocalDateTime());[m
+[31m-                    service.setServiceImg(rs.getString("service_img"));[m
+[31m-[m
+[31m-                    return service;[m
+[31m-                }[m
+[31m-            }[m
+[31m-        } catch (SQLException e) {[m
+[31m-            e.printStackTrace();[m
+[31m-        }[m
+[31m-[m
+[31m-        return null;[m
+[31m-    }[m
+[31m-[m
+[31m-    // Method to update a service in the database[m
+[31m-    public boolean updateService(Service service) {[m
+[31m-        String sql = "UPDATE Service SET service_name=?, service_description=?, service_price=?, estimate_time=?, service_img=? WHERE service_id =?";[m
+[31m-[m
+[31m-        try (PreparedStatement ps = this.getConnection().prepareStatement(sql)) {[m
+[31m-            ps.setString(1, service.getServiceName());[m
+[31m-            ps.setString(2, service.getServiceDescription());[m
+[31m-            ps.setBigDecimal(3, service.getServicePrice());[m
+[31m-            ps.setTimestamp(4, Timestamp.valueOf(service.getEstimateTime()));[m
+[31m-            ps.setString(5, service.getServiceImg());[m
+[31m-            ps.setInt(6, service.getServiceId());[m
+[31m-[m
+[31m-            // Execute update and return true if successful[m
+[31m-            return ps.executeUpdate() > 0;[m
+[31m-        } catch (SQLException e) {[m
+[31m-            e.printStackTrace();[m
+[31m-        }[m
+[31m-[m
+[31m-        return false;[m
+[31m-    }[m
+[31m-[m
+[31m-   [m
+[31m-}[m
+[32m+[m[32m/*[m
+[32m+[m[32m * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license[m
+[32m+[m[32m * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template[m
+[32m+[m[32m */[m
+[32m+[m[32mpackage DAO;[m
+[32m+[m
+[32m+[m[32mimport DB.DBContext;[m
+[32m+[m[32mimport Model.Service;[m
+[32m+[m[32mimport java.sql.PreparedStatement;[m
+[32m+[m[32mimport java.sql.ResultSet;[m
+[32m+[m[32mimport java.sql.SQLException;[m
+[32m+[m[32mimport java.util.ArrayList;[m
+[32m+[m[32mimport java.util.List;[m
+[32m+[m
+[32m+[m[32m/**[m
+[32m+[m[32m *[m
+[32m+[m[32m * @author thien[m
+[32m+[m[32m */[m
+[32m+[m[32mpublic class ServiceDAO extends DBContext {[m
+[32m+[m
+[32m+[m[32m    public List<Service> getAllRepairService() {[m
+[32m+[m[32m        List<Service> list = new ArrayList<>();[m
+[32m+[m[32m        String sql = "SELECT * FROM RepairService";[m
+[32m+[m
+[32m+[m[32m        try (PreparedStatement ps = this.getConnection().prepareStatement(sql); ResultSet rs = ps.executeQuery()) {[m
+[32m+[m
+[32m+[m[32m            while (rs.next()) {[m
+[32m+[m[32m                Service rsObj = new Service();[m
+[32m+[m[32m                // set fields...[m
+[32m+[m[32m                list.add(rsObj);[m
+[32m+[m[32m            }[m
+[32m+[m
+[32m+[m[32m        } catch (SQLException e) {[m
+[32m+[m[32m            e.printStackTrace();[m
+[32m+[m[32m        }[m
+[32m+[m
+[32m+[m[32m        return list;[m
+[32m+[m[32m    }[m
+[32m+[m[32m}[m
+[1mdiff --git a/src/main/java/Model/Service.java b/src/main/java/Model/Service.java[m
+[1mindex ec5bbca..c6400f8 100644[m
+[1m--- a/src/main/java/Model/Service.java[m
+[1m+++ b/src/main/java/Model/Service.java[m
+[36m@@ -21,53 +21,4 @@[m [mpublic class Service {[m
+     private String serviceImg;[m
+ [m
+     // Constructor, getters, setters[m
+[31m-[m
+[31m-    public int getServiceId() {[m
+[31m-        return serviceId;[m
+[31m-    }[m
+[31m-[m
+[31m-    public void setServiceId(int serviceId) {[m
+[31m-        this.serviceId = serviceId;[m
+[31m-    }[m
+[31m-[m
+[31m-    public String getServiceName() {[m
+[31m-        return serviceName;[m
+[31m-    }[m
+[31m-[m
+[31m-    public void setServiceName(String serviceName) {[m
+[31m-        this.serviceName = serviceName;[m
+[31m-    }[m
+[31m-[m
+[31m-    public String getServiceDescription() {[m
+[31m-        return serviceDescription;[m
+[31m-    }[m
+[31m-[m
+[31m-    public void setServiceDescription(String serviceDescription) {[m
+[31m-        this.serviceDescription = serviceDescription;[m
+[31m-    }[m
+[31m-[m
+[31m-    public BigDecimal getServicePrice() {[m
+[31m-        return servicePrice;[m
+[31m-    }[m
+[31m-[m
+[31m-    public void setServicePrice(BigDecimal servicePrice) {[m
+[31m-        this.servicePrice = servicePrice;[m
+[31m-    }[m
+[31m-[m
+[31m-    public LocalDateTime getEstimateTime() {[m
+[31m-        return estimateTime;[m
+[31m-    }[m
+[31m-[m
+[31m-    public void setEstimateTime(LocalDateTime estimateTime) {[m
+[31m-        this.estimateTime = estimateTime;[m
+[31m-    }[m
+[31m-[m
+[31m-    public String getServiceImg() {[m
+[31m-        return serviceImg;[m
+[31m-    }[m
+[31m-[m
+[31m-    public void setServiceImg(String serviceImg) {[m
+[31m-        this.serviceImg = serviceImg;[m
+[31m-    }[m
+[31m-    [m
+ }[m
+[1mdiff --git a/src/main/webapp/service-list.jsp b/src/main/webapp/service-list.jsp[m
+[1mdeleted file mode 100644[m
+[1mindex 4e54bcc..0000000[m
+[1m--- a/src/main/webapp/service-list.jsp[m
+[1m+++ /dev/null[m
+[36m@@ -1,17 +0,0 @@[m
+[31m-<%-- [m
+[31m-    Document   : service-list[m
+[31m-    Created on : Jun 11, 2025, 10:17:50 AM[m
+[31m-    Author     : acer[m
+[31m---%>[m
+[31m-[m
+[31m-<%@page contentType="text/html" pageEncoding="UTF-8"%>[m
+[31m-<!DOCTYPE html>[m
+[31m-<html>[m
+[31m-    <head>[m
+[31m-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">[m
+[31m-        <title>JSP Page</title>[m
+[31m-    </head>[m
+[31m-    <body>[m
+[31m-        <h1>Hello World!</h1>[m
+[31m-    </body>[m
+[31m-</html>[m
+[1mdiff --git a/target/DriveXO_Management_Project-1.0-SNAPSHOT.war b/target/DriveXO_Management_Project-1.0-SNAPSHOT.war[m
+[1mindex dc6ba3a..b610f23 100644[m
+Binary files a/target/DriveXO_Management_Project-1.0-SNAPSHOT.war and b/target/DriveXO_Management_Project-1.0-SNAPSHOT.war differ
+[1mdiff --git a/target/DriveXO_Management_Project-1.0-SNAPSHOT/WEB-INF/classes/DAO/ServiceDAO.class b/target/DriveXO_Management_Project-1.0-SNAPSHOT/WEB-INF/classes/DAO/ServiceDAO.class[m
+[1mindex 09969a3..528bb3e 100644[m
+Binary files a/target/DriveXO_Management_Project-1.0-SNAPSHOT/WEB-INF/classes/DAO/ServiceDAO.class and b/target/DriveXO_Management_Project-1.0-SNAPSHOT/WEB-INF/classes/DAO/ServiceDAO.class differ
+[1mdiff --git a/target/DriveXO_Management_Project-1.0-SNAPSHOT/WEB-INF/classes/Model/Service.class b/target/DriveXO_Management_Project-1.0-SNAPSHOT/WEB-INF/classes/Model/Service.class[m
+[1mindex 3218ab3..2c00e04 100644[m
+Binary files a/target/DriveXO_Management_Project-1.0-SNAPSHOT/WEB-INF/classes/Model/Service.class and b/target/DriveXO_Management_Project-1.0-SNAPSHOT/WEB-INF/classes/Model/Service.class differ
+[1mdiff --git a/target/DriveXO_Management_Project-1.0-SNAPSHOT/service-list.jsp b/target/DriveXO_Management_Project-1.0-SNAPSHOT/service-list.jsp[m
+[1mdeleted file mode 100644[m
+[1mindex 4e54bcc..0000000[m
+[1m--- a/target/DriveXO_Management_Project-1.0-SNAPSHOT/service-list.jsp[m
+[1m+++ /dev/null[m
+[36m@@ -1,17 +0,0 @@[m
+[31m-<%-- [m
+[31m-    Document   : service-list[m
+[31m-    Created on : Jun 11, 2025, 10:17:50 AM[m
+[31m-    Author     : acer[m
+[31m---%>[m
+[31m-[m
+[31m-<%@page contentType="text/html" pageEncoding="UTF-8"%>[m
+[31m-<!DOCTYPE html>[m
+[31m-<html>[m
+[31m-    <head>[m
+[31m-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">[m
+[31m-        <title>JSP Page</title>[m
+[31m-    </head>[m
+[31m-    <body>[m
+[31m-        <h1>Hello World!</h1>[m
+[31m-    </body>[m
+[31m-</html>[m
+[1mdiff --git a/target/classes/DAO/ServiceDAO.class b/target/classes/DAO/ServiceDAO.class[m
+[1mindex 09969a3..528bb3e 100644[m
+Binary files a/target/classes/DAO/ServiceDAO.class and b/target/classes/DAO/ServiceDAO.class differ
+[1mdiff --git a/target/classes/Model/Service.class b/target/classes/Model/Service.class[m
+[1mindex 3218ab3..2c00e04 100644[m
+Binary files a/target/classes/Model/Service.class and b/target/classes/Model/Service.class differ
+[1mdiff --git a/target/maven-archiver/pom.properties b/target/maven-archiver/pom.properties[m
+[1mindex 549ef72..dfd1b04 100644[m
+[1m--- a/target/maven-archiver/pom.properties[m
+[1m+++ b/target/maven-archiver/pom.properties[m
+[36m@@ -1,3 +1,3 @@[m
+[31m-artifactId=DriveXO_Management_Project[m
+[31m-groupId=com.mycompany[m
+[31m-version=1.0-SNAPSHOT[m
+[32m+[m[32martifactId=DriveXO_Management_Project[m
+[32m+[m[32mgroupId=com.mycompany[m
+[32m+[m[32mversion=1.0-SNAPSHOT[m
