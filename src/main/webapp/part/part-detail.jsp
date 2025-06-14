@@ -113,7 +113,7 @@
                 <div class="breadcrumb">
                     <a href="${pageContext.request.contextPath}/home">Home</a>
                     <span><i class="fas fa-angle-right"></i></span>
-                    <a href="part-list.jsp">Part</a>
+                    <a href="${pageContext.request.contextPath}/parts">Parts</a>
                     <span><i class="fas fa-angle-right"></i></span>
                     <span>${part.partName}</span>
                 </div>

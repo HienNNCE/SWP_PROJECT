@@ -55,7 +55,7 @@
                     <div class="breadcrumb">
                         <a href="${pageContext.request.contextPath}/home">Home</a>
                         <span><i class="fas fa-angle-right"></i></span>
-                        <a href="parts-list.jsp">Parts</a>
+                        <a href="${pageContext.request.contextPath}/parts">Parts</a>
                     </div>
                 </div>
             </section>
