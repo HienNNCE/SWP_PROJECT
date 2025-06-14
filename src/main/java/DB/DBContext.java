@@ -16,7 +16,7 @@ public class DBContext {
     // Database connection details
     private static final String DB_URL = "jdbc:sqlserver://LAPTOP-FT0Q1NI1\\SQLEXPRESS;databaseName=DriveXO;encrypt=true;trustServerCertificate=true;";
     private static final String DB_USER = "sa";
-    private static final String DB_PWD = "123456";
+    private static final String DB_PWD = "05102004@aZ09";
 
     // Constructor to initialize the connection
     public DBContext() {
