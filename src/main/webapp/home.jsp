@@ -542,4 +542,5 @@
         <!-- JavaScript -->
         <script src="asset/js/main.js"></script>
     </body>
+    <script src="${pageContext.servletContext.contextPath}/assets/js/cart_addToCart.js?v=<%= System.currentTimeMillis()%>"></script>
 </html>
