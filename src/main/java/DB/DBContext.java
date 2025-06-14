@@ -13,14 +13,10 @@ public class DBContext {
     // Declare the connection variable
     private Connection conn;
 
-    // Database connection details for hien
+    // Database connection details
     private static final String DB_URL = "jdbc:sqlserver://LAPTOP-FT0Q1NI1\\SQLEXPRESS;databaseName=DriveXO;encrypt=true;trustServerCertificate=true;";
     private static final String DB_USER = "sa";
     private static final String DB_PWD = "123456";
-//    // Database connection details for other
-//    private static final String DB_URL = "jdbc:sqlserver://LAPTOP-FT0Q1NI1\\SQLEXPRESS;databaseName=DriveXO;encrypt=true;trustServerCertificate=true;";
-//    private static final String DB_USER = "sa";
-//    private static final String DB_PWD = "123456";
 
     // Constructor to initialize the connection
     public DBContext() {
