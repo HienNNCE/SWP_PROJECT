@@ -6,13 +6,15 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>DriverXO - World of Luxury Automobiles</title>
-        <link rel="stylesheet" href="asset/css/style.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/asset/css/style.css">
+
         <!-- Font Awesome -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     </head>
@@ -172,7 +174,9 @@
                             </div>
                             <div class="card-content">
                                 <div class="car-brand">${car.carBrand}</div>
-                                <h3 class="car-name">${car.year} ${car.carName}</h3>
+                                <h3 class="car-name">
+                                    <fmt:formatDate value="${car.carYear}" pattern="yyyy" /> ${car.carName}
+                                </h3>
                                 <div class="car-price">$<c:out value="${car.carPrice}" /></div>
                                 <div class="car-specs">
                                     <div class="spec">
@@ -216,7 +220,7 @@
                             <img src="asset/img/cars/featured-main.png" alt="Luxurious Car">
                             <div class="featured-overlay">
                                 <div class="featured-logo">DriverXO</div>
-                             
+
                                 <div class="featured-content">
                                     <h3>Buy Our Latest Luxurious Car</h3>
                                     <p>So Hurry Up</p>
@@ -295,7 +299,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="featured-grid-bottom">
                             <div class="car-mini-card">
                                 <div class="card-image">
@@ -490,7 +494,7 @@
                         <ul>
                             <li><a href="#"><i class="fas fa-chevron-right"></i> About Us</a></li>
                             <li><a href="#"><i class="fas fa-chevron-right"></i> Contact Us</a></li>
-                           
+
                         </ul>
                     </div>
                     <div class="footer-col">
@@ -533,7 +537,7 @@
             <button class="close-btn"><i class="fas fa-times"></i></button>
         </div>
 
-        
+
 
         <!-- JavaScript -->
         <script src="asset/js/main.js"></script>
