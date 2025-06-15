@@ -26,8 +26,10 @@ public class HomeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            List<Car> latestCars = carDAO.getAllCars();
-            request.setAttribute("latestCars", latestCars);
+            // Lấy 8 xe ngẫu nhiên cho phần Featured Vehicles
+            List<Car> featuredCars = carDAO.getRandomCars(8);
+            request.setAttribute("latestCars", featuredCars);
+            
             request.getRequestDispatcher("/home.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace(); // Log the exception

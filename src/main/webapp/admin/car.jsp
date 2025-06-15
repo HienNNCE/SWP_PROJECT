@@ -186,6 +186,31 @@
             color: white;
             border-color: var(--primary-color);
         }
+        
+        .empty-message {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+            font-style: italic;
+        }
+        
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
     </style>
 </head>
 <body class="admin-panel">
@@ -212,6 +237,20 @@
 
             <!-- Main Content -->
             <div class="container-fluid">
+                <!-- Display success or error messages if any -->
+                <c:if test="${not empty sessionScope.successMessage}">
+                    <div class="alert alert-success">
+                        ${sessionScope.successMessage}
+                        <c:remove var="successMessage" scope="session" />
+                    </div>
+                </c:if>
+                <c:if test="${not empty sessionScope.errorMessage}">
+                    <div class="alert alert-danger">
+                        ${sessionScope.errorMessage}
+                        <c:remove var="errorMessage" scope="session" />
+                    </div>
+                </c:if>
+                
                 <div class="card">
                     <div class="card-header">
                         <h5 class="card-title">Car List</h5>
@@ -227,12 +266,10 @@
                             <div class="filter-group">
                                 <label>Brand:</label>
                                 <select id="brandFilter">
-                                    <option value="">All</option>
-                                    <option value="Toyota">Toyota</option>
-                                    <option value="Honda">Honda</option>
-                                    <option value="BMW">BMW</option>
-                                    <option value="Mercedes">Mercedes</option>
-                                    <option value="Audi">Audi</option>
+                                    <option value="">All Brands</option>
+                                    <c:forEach var="brand" items="${brandList}">
+                                        <option value="${brand}">${brand}</option>
+                                    </c:forEach>
                                 </select>
                             </div>
                             <div class="filter-group">
@@ -270,7 +307,7 @@
                                 <tbody>
                                     <c:if test="${empty carList}">
                                         <tr>
-                                            <td colspan="10" style="text-align: center;">No car data available</td>
+                                            <td colspan="10" class="empty-message">No car data available. Add your first car!</td>
                                         </tr>
                                     </c:if>
                                     
@@ -280,10 +317,10 @@
                                             <td>
                                                 <c:choose>
                                                     <c:when test="${not empty car.carImg}">
-                                                        <img src="data:image/jpeg;base64,${car.base64Image}" alt="${car.carName}" class="car-img">
+                                                        <img src="${pageContext.request.contextPath}/asset/img/cars/${car.carImg}" alt="${car.carName}" class="car-img">
                                                     </c:when>
                                                     <c:otherwise>
-                                                        <img src="../asset/img/cars/default-car.png" alt="Default Car" class="car-img">
+                                                        <img src="${pageContext.request.contextPath}/asset/img/cars/default-car.png" alt="Default Car" class="car-img">
                                                     </c:otherwise>
                                                 </c:choose>
                                             </td>
@@ -293,7 +330,7 @@
                                             <td class="car-price">
                                                 $<fmt:formatNumber value="${car.carPrice}" type="number" maxFractionDigits="2" minFractionDigits="2"/>
                                             </td>
-                                            <td>${car.year}</td>
+                                            <td>${car.carYear.getYear() + 1900}</td>
                                             <td>${car.carStock}</td>
                                             <td>
                                                 <c:choose>
@@ -327,13 +364,15 @@
                             </table>
                         </div>
                         
-                        <!-- Pagination -->
-                        <div class="pagination">
-                            <a href="#" class="active">1</a>
-                            <a href="#">2</a>
-                            <a href="#">3</a>
-                            <a href="#">&raquo;</a>
-                        </div>
+                        <!-- Pagination - Sẽ triển khai sau khi có phân trang -->
+                        <c:if test="${not empty carList && carList.size() > 10}">
+                            <div class="pagination">
+                                <a href="#" class="active">1</a>
+                                <a href="#">2</a>
+                                <a href="#">3</a>
+                                <a href="#">&raquo;</a>
+                            </div>
+                        </c:if>
                     </div>
                 </div>
             </div>
@@ -365,7 +404,7 @@
                 }
             });
             
-            // Simple client-side filtering
+            // Simple client-side filtering for search
             $("#searchInput").on("keyup", function() {
                 var value = $(this).val().toLowerCase();
                 $(".car-table tbody tr").filter(function() {
@@ -379,19 +418,56 @@
                 if (value === "") {
                     $(".car-table tbody tr").show();
                 } else {
+                    $(".car-table tbody tr").hide();
                     $(".car-table tbody tr").filter(function() {
                         return $(this).children("td:nth-child(4)").text().toLowerCase() === value;
                     }).show();
-                    $(".car-table tbody tr").filter(function() {
-                        return $(this).children("td:nth-child(4)").text().toLowerCase() !== value;
-                    }).hide();
                 }
+            });
+            
+            // Sorting functionality
+            $("#sortBy").on("change", function() {
+                var value = $(this).val();
+                var rows = $(".car-table tbody tr").toArray();
+                
+                rows.sort(function(a, b) {
+                    var aValue, bValue;
+                    
+                    switch(value) {
+                        case "name":
+                            aValue = $(a).children("td:nth-child(3)").text().toLowerCase();
+                            bValue = $(b).children("td:nth-child(3)").text().toLowerCase();
+                            return aValue.localeCompare(bValue);
+                            
+                        case "price_asc":
+                            aValue = parseFloat($(a).children("td:nth-child(6)").text().replace('$', '').replace(',', ''));
+                            bValue = parseFloat($(b).children("td:nth-child(6)").text().replace('$', '').replace(',', ''));
+                            return aValue - bValue;
+                            
+                        case "price_desc":
+                            aValue = parseFloat($(a).children("td:nth-child(6)").text().replace('$', '').replace(',', ''));
+                            bValue = parseFloat($(b).children("td:nth-child(6)").text().replace('$', '').replace(',', ''));
+                            return bValue - aValue;
+                            
+                        case "year":
+                            aValue = parseInt($(a).children("td:nth-child(7)").text());
+                            bValue = parseInt($(b).children("td:nth-child(7)").text());
+                            return bValue - aValue; // Newest first
+                            
+                        default:
+                            return 0;
+                    }
+                });
+                
+                $.each(rows, function(index, row) {
+                    $(".car-table tbody").append(row);
+                });
             });
         });
         
         // Confirm delete function
         function confirmDelete(carId) {
-            if (confirm("Are you sure you want to delete this car?")) {
+            if (confirm("Bạn có chắc chắn muốn xóa xe này không? Hành động này không thể hoàn tác.")) {
                 window.location.href = "${pageContext.request.contextPath}/admin/car/delete?id=" + carId;
             }
         }
