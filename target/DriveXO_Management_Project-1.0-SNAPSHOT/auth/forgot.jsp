@@ -39,7 +39,7 @@
 <body>
     <section class="auth-section">
         <img src="../asset/img/hero-car.png" alt="Hero Car" class="auth-hero-img">
-        <form class="auth-card login" id="forgotForm" action="#" method="post" autocomplete="off" onsubmit="return false;">
+        <form class="auth-card login" id="forgotForm" action="ForgotServlet" method="post" autocomplete="off">
             <a href="../home.jsp" class="auth-home-btn" title="Back to Home"><i class="fas fa-home"></i></a>
             <div class="auth-logo-inline">
                 <img src="../asset/img/driverxo-logo.png" alt="DriverXO Logo" class="auth-logo-img-inline">
@@ -53,49 +53,11 @@
                         <input type="email" id="email" name="email" placeholder="Enter your email" required>
                     </div>
                 </div>
-                <button type="button" class="auth-btn" id="sendCodeBtn">Send Reset Link</button>
+                <button type="submit" class="auth-btn" >Send Reset Link</button>
                 <a href="login.jsp" class="auth-link">Back to Login</a>
-            </div>
-            <div id="codeSection" style="display:none;">
-                <div class="reset-code-label">Enter the 5-digit code sent to your email</div>
-                <div class="reset-code-group">
-                    <input type="text" maxlength="1" class="reset-code-input" inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code">
-                    <input type="text" maxlength="1" class="reset-code-input" inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code">
-                    <input type="text" maxlength="1" class="reset-code-input" inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code">
-                    <input type="text" maxlength="1" class="reset-code-input" inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code">
-                    <input type="text" maxlength="1" class="reset-code-input" inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code">
-                </div>
-                <button type="submit" class="auth-btn">Verify Code</button>
+                <div class="auth-link">${err}</div>
             </div>
         </form>
     </section>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const heroImg = document.querySelector('.auth-hero-img');
-            if(heroImg) {
-                heroImg.style.transition = 'transform 1.2s cubic-bezier(.68,-0.55,.27,1.55)';
-                heroImg.style.transform = 'scale(0.85)';
-                setTimeout(()=>{ heroImg.style.transform = 'scale(1.08)'; }, 300);
-            }
-
-            // Hiện form nhập code khi nhấn gửi email
-            document.getElementById('sendCodeBtn').onclick = function() {
-                document.getElementById('emailSection').style.display = 'none';
-                document.getElementById('codeSection').style.display = 'block';
-                document.querySelector('.reset-code-input').focus();
-            };
-
-            // Tự động focus sang ô tiếp theo khi nhập số
-            document.querySelectorAll('.reset-code-input').forEach((input, idx, arr) => {
-                input.addEventListener('input', function(e) {
-                    this.value = this.value.replace(/[^0-9]/g, '');
-                    if(this.value && idx < arr.length-1) arr[idx+1].focus();
-                });
-                input.addEventListener('keydown', function(e) {
-                    if(e.key === 'Backspace' && !this.value && idx > 0) arr[idx-1].focus();
-                });
-            });
-        });
-    </script>
 </body>
 </html> 

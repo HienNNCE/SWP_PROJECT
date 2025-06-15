@@ -1,32 +1,42 @@
-C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\Model\Payment.java
-C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\Model\Comment.java
-C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\Controller\CartServlet.java
-C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\DAO\OrderDAO.java
-C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\Controller\PartServlet.java
-C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\DAO\ServiceDAO.java
-C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\Model\User.java
-C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\Controller\AdminCarServlet.java
-C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\Controller\HomeServlet.java
-C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\Model\ServiceSchedule.java
-C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\Controller\BookingsServlet.java
-C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\Model\Cart.java
-C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\Controller\CarImageServlet.java
-C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\Controller\StaffPartServlet.java
-C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\Controller\AdminDashboardServlet.java
-C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\Controller\CarListServlet.java
-C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\DB\DBContext.java
-C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\Controller\AdminPartServlet.java
-C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\DAO\PartDAO.java
-C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\Model\Part.java
-C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\Model\Car.java
-C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\Model\Role.java
-C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\com\mycompany\drivexo_management_project\resources\JakartaEE10Resource.java
-C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\Controller\CarDetailServlet.java
-C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\DAO\UserDAO.java
-C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\Model\CarAppointment.java
-C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\Model\Order.java
-C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\DAO\RoleDAO.java
-C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\Model\Category.java
-C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\com\mycompany\drivexo_management_project\JakartaRestConfiguration.java
-C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\DAO\CarDAO.java
-C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\Model\Service.java
+C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\DAO\PartDAO.java
+C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\DAO\ServiceScheduleDAO.java
+C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\DAO\OrderDAO.java
+C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\DB\TestDBConnect.java
+C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\Model\Comment.java
+C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\Model\Payment.java
+C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\Model\User.java
+C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\Model\CarAppointment.java
+C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\Controller\CarListServlet.java
+C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\DAO\OrderDetailDAO.java
+C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\Model\Category.java
+C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\Controller\ForgotServler.java
+C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\Controller\AdminCarServlet.java
+C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\Controller\HomeServlet.java
+C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\Model\Car.java
+C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\com\mycompany\drivexo_management_project\JakartaRestConfiguration.java
+C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\DAO\CarAppointmentDAO.java
+C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\Controller\CarDetailServlet.java
+C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\Controller\AddToCartServlet.java
+C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\Model\Service.java
+C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\DAO\CarDAO.java
+C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\Model\Part.java
+C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\DB\DBContext.java
+C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\DAO\RoleDAO.java
+C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\Controller\CarImageServlet.java
+C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\com\mycompany\drivexo_management_project\resources\JakartaEE10Resource.java
+C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\Controller\RegisterServlet.java
+C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\DAO\CartDAO.java
+C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\Model\ServiceSchedule.java
+C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\Controller\CartServlet.java
+C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\Model\Cart.java
+C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\Controller\AdminPartServlet.java
+C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\DAO\ServiceDAO.java
+C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\Model\Order.java
+C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\Controller\AdminDashboardServlet.java
+C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\Controller\BookingsServlet.java
+C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\EmailSender\EmailSender.java
+C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\Controller\LoginServlet.java
+C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\Model\Role.java
+C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\Controller\PartServlet.java
+C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\Controller\StaffPartServlet.java
+C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\DAO\UserDAO.java

@@ -10,7 +10,7 @@
 <body>
     <section class="auth-section">
         <img src="../asset/img/hero-car.png" alt="Hero Car" class="auth-hero-img">
-        <form class="auth-card register" action="../home.jsp" method="get">
+        <form class="auth-card register" action="RegisterServlet" method="post">
             <a href="../home.jsp" class="auth-home-btn" title="Back to Home"><i class="fas fa-home"></i></a>
             <div class="auth-logo-inline">
                 <img src="../asset/img/driverxo-logo.png" alt="DriverXO Logo" class="auth-logo-img-inline">
@@ -49,6 +49,7 @@
             </div>
             <button type="submit" class="auth-btn">Register</button>
             <a href="login.jsp" class="auth-link">Already have an account? Login</a>
+            <div>${err}</div>
         </form>
     </section>
     <script>

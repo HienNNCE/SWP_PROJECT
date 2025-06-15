@@ -16,11 +16,10 @@ public class User {
     }
 
     // Constructor with parameters
-    public User(int userId, String userName, String email, String password, long phone, String address, Integer roleId, String userStatus) {
+    public User(int userId, String userName, String email, long phone, String address, Integer roleId, String userStatus) {
         this.userId = userId;
         this.userName = userName;
         this.email = email;
-        this.password = password;
         this.phone = phone;
         this.address = address;
         this.roleId = roleId;
