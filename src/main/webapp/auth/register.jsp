@@ -3,63 +3,251 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - DriverXO</title>
     <link rel="stylesheet" href="../asset/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .auth-container {
+            display: flex;
+            min-height: 100vh;
+            background-color: #f9f9f9;
+        }
+        
+        .auth-image {
+            flex: 1;
+            background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.6)), url('../asset/img/sidelog.jpg');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+        }
+        
+        .auth-image-content {
+            text-align: center;
+            max-width: 80%;
+        }
+        
+        .auth-image-content h2 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+            letter-spacing: 1px;
+        }
+        
+        .auth-image-content p {
+            font-size: 1rem;
+            font-weight: 300;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        
+        .auth-form-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+        
+        .auth-form {
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .auth-logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .auth-logo img {
+            height: 28px;
+            margin-right: 10px;
+        }
+        
+        .auth-logo span {
+            font-size: 20px;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+        
+        .auth-heading {
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            color: #111;
+        }
+        
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            color: #555;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            font-size: 0.875rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            transition: all 0.2s;
+            background-color: #fff;
+        }
+        
+        .form-control:focus {
+            border-color: #111;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(0,0,0,0.05);
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        .form-text {
+            font-size: 0.75rem;
+            color: #777;
+            margin-top: 0.25rem;
+        }
+        
+        .btn-auth {
+            display: block;
+            width: 100%;
+            padding: 0.875rem;
+            background-color: #111;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .btn-auth:hover {
+            background-color: #000;
+        }
+        
+        .auth-footer {
+            text-align: center;
+            font-size: 0.875rem;
+            color: #555;
+        }
+        
+        .auth-link {
+            color: #111;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .auth-link:hover {
+            text-decoration: underline;
+        }
+        
+        .home-link {
+            position: absolute;
+            top: 1.5rem;
+            left: 1.5rem;
+            color: #fff;
+            font-size: 1.2rem;
+            transition: opacity 0.2s;
+        }
+        
+        .home-link:hover {
+            opacity: 0.8;
+        }
+        
+        @media (max-width: 992px) {
+            .auth-image {
+                display: none;
+            }
+            
+            .auth-form-container {
+                flex: 1;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+    </style>
 </head>
 <body>
-    <section class="auth-section">
-        <img src="../asset/img/hero-car.png" alt="Hero Car" class="auth-hero-img">
-        <form class="auth-card register" action="../home.jsp" method="get">
-            <a href="../home.jsp" class="auth-home-btn" title="Back to Home"><i class="fas fa-home"></i></a>
-            <div class="auth-logo-inline">
-                <img src="../asset/img/driverxo-logo.png" alt="DriverXO Logo" class="auth-logo-img-inline">
-                <span class="auth-logo-text-inline">DriverXO</span>
+    <div class="auth-container">
+        <div class="auth-image">
+            <a href="../home" class="home-link">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <div class="auth-image-content">
+                <h2>Join DriverXO</h2>
+                <p>Create an account to explore our premium collection of vehicles and enjoy exclusive benefits.</p>
             </div>
-            <h2>Create Your Account</h2>
-            <div class="form-group">
-                <div class="input-icon">
-                    <i class="fas fa-user"></i>
-                    <input type="text" id="fullname" name="fullname" placeholder="Full Name" required>
+        </div>
+        
+        <div class="auth-form-container">
+            <div class="auth-form">
+                <div class="auth-logo">
+                    <img src="../asset/img/driverxo-logo.png" alt="DriverXO Logo">
+                    <span>DriverXO</span>
                 </div>
+                
+                <h1 class="auth-heading">Create your account</h1>
+                
+                <form action="../home" method="get">
+                    <div class="form-group">
+                        <label class="form-label" for="fullname">Full Name</label>
+                        <input type="text" class="form-control" id="fullname" name="fullname" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="email">Email Address</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                        <div class="form-text">We'll never share your email with anyone else.</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="username">Username</label>
+                        <input type="text" class="form-control" id="username" name="username" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="password">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                        <div class="form-text">Use 8+ characters with a mix of letters, numbers & symbols</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="confirm">Confirm Password</label>
+                        <input type="password" class="form-control" id="confirm" name="confirm" required>
+                    </div>
+                    
+                    <button type="submit" class="btn-auth">Create Account</button>
+                    
+                    <div class="auth-footer">
+                        Already have an account? <a href="login.jsp" class="auth-link">Sign in</a>
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <div class="input-icon">
-                    <i class="fas fa-envelope"></i>
-                    <input type="email" id="email" name="email" placeholder="Email" required>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="input-icon">
-                    <i class="fas fa-user-circle"></i>
-                    <input type="text" id="username" name="username" placeholder="Username" required>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="input-icon">
-                    <i class="fas fa-lock"></i>
-                    <input type="password" id="password" name="password" placeholder="Password" required>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="input-icon">
-                    <i class="fas fa-lock"></i>
-                    <input type="password" id="confirm" name="confirm" placeholder="Confirm Password" required>
-                </div>
-            </div>
-            <button type="submit" class="auth-btn">Register</button>
-            <a href="login.jsp" class="auth-link">Already have an account? Login</a>
-        </form>
-    </section>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const heroImg = document.querySelector('.auth-hero-img');
-            if(heroImg) {
-                heroImg.style.transition = 'transform 1.2s cubic-bezier(.68,-0.55,.27,1.55)';
-                heroImg.style.transform = 'scale(0.85)';
-                setTimeout(()=>{ heroImg.style.transform = 'scale(1.08)'; }, 300);
-            }
-        });
-    </script>
+        </div>
+    </div>
 </body>
 </html> 

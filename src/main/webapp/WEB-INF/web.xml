@@ -13,5 +13,26 @@
     <welcome-file-list>
         <welcome-file>home</welcome-file>
     </welcome-file-list>
+    
+    <!-- Multipart configuration for AdminCarServlet -->
+    <servlet>
+        <servlet-name>AdminCarServlet</servlet-name>
+        <servlet-class>Controller.AdminCarServlet</servlet-class>
+        <multipart-config>
+            <location></location>
+            <max-file-size>10485760</max-file-size> <!-- 10MB -->
+            <max-request-size>20971520</max-request-size> <!-- 20MB -->
+            <file-size-threshold>1048576</file-size-threshold> <!-- 1MB -->
+        </multipart-config>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>AdminCarServlet</servlet-name>
+        <url-pattern>/admin/car</url-pattern>
+        <url-pattern>/admin/car/add</url-pattern>
+        <url-pattern>/admin/car/edit</url-pattern>
+        <url-pattern>/admin/car/delete</url-pattern>
+        <url-pattern>/admin/car/view</url-pattern>
+    </servlet-mapping>
 
 </web-app>
