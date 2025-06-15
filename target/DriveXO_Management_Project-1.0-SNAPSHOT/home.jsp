@@ -6,541 +6,649 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>DriverXO - World of Luxury Automobiles</title>
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/asset/css/style.css">
-
+        <title>DriverXO - World of Cars</title>
+        <link rel="stylesheet" href="asset/css/style.css">
         <!-- Font Awesome -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        <!-- Google Fonts - Montserrat -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        <style>
+            /* Hero Banner Styles - Modern & Minimal */
+            .hero-banner {
+                position: relative;
+                height: 100vh;
+                width: 100%;
+                overflow: hidden;
+                background-color: #000;
+            }
+            
+            .hero-banner img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                opacity: 0.5;
+            }
+            
+            .hero-banner::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.7));
+                z-index: 1;
+            }
+            
+            .hero-content {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                text-align: center;
+                color: #fff;
+                width: 80%;
+                max-width: 800px;
+                z-index: 2;
+            }
+            
+            .hero-title {
+                font-size: 72px;
+                font-weight: 700;
+                letter-spacing: 2px;
+                margin-bottom: 20px;
+                line-height: 1.1;
+                text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            }
+            
+            .hero-subtitle {
+                font-size: 24px;
+                font-weight: 300;
+                margin-bottom: 40px;
+                line-height: 1.4;
+                text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+            }
+            
+            .hero-btn {
+                display: inline-block;
+                padding: 15px 40px;
+                background-color: transparent;
+                border: 1px solid #fff;
+                color: #fff;
+                font-size: 16px;
+                font-weight: 500;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                transition: all 0.3s ease;
+                position: relative;
+                z-index: 2;
+            }
+            
+            .hero-btn:hover {
+                background-color: #fff;
+                color: #000;
+            }
+            
+            /* Luxury Brands Section - Minimal Design */
+            .luxury-brands {
+                padding: 120px 0;
+                background-color: #fff;
+            }
+            
+            .section-header {
+                text-align: center;
+                margin-bottom: 80px;
+            }
+            
+            .section-title {
+                font-size: 42px;
+                font-weight: 600;
+                margin-bottom: 15px;
+                color: #000;
+            }
+            
+            .section-subtitle {
+                font-size: 18px;
+                color: #555;
+                max-width: 600px;
+                margin: 0 auto;
+                font-weight: 300;
+            }
+            
+            .brands-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 40px;
+            }
+            
+            .brand-item {
+                background-color: #fff;
+                padding: 40px;
+                text-align: center;
+                transition: all 0.3s ease;
+                border: 1px solid #f0f0f0;
+            }
+            
+            .brand-item:hover {
+                transform: translateY(-10px);
+            }
+            
+            .brand-logo {
+                height: 80px;
+                margin-bottom: 30px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            .brand-logo img {
+                max-height: 100%;
+                max-width: 80%;
+                filter: none;
+                transition: all 0.3s ease;
+            }
+            
+            .brand-item:hover .brand-logo img {
+                transform: scale(1.05);
+            }
+            
+            .brand-name {
+                font-size: 24px;
+                font-weight: 500;
+                margin-bottom: 10px;
+                color: #000;
+            }
+            
+            .brand-models {
+                color: #555;
+                font-size: 14px;
+                margin-bottom: 20px;
+            }
+            
+            .brand-link {
+                display: inline-block;
+                font-size: 14px;
+                font-weight: 500;
+                color: #000;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                border-bottom: 1px solid transparent;
+                transition: all 0.3s ease;
+            }
+            
+            .brand-link:hover {
+                border-bottom: 1px solid #000;
+            }
+            
+            /* Featured Cars Section - Ultra Minimalist Design */
+            .featured-cars {
+                padding: 80px 0;
+                background-color: #fff;
+            }
+            
+            .section-header {
+                text-align: center;
+                margin-bottom: 50px;
+            }
+            
+            .section-title {
+                font-size: 32px;
+                font-weight: 300;
+                color: #000;
+                letter-spacing: 1px;
+            }
+            
+            .cars-grid {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 30px;
+            }
+            
+            .car-card {
+                background-color: #fff;
+                overflow: hidden;
+                transition: transform 0.3s ease;
+            }
+            
+            .car-card:hover {
+                transform: translateY(-5px);
+            }
+            
+            .car-image {
+                height: 180px;
+                overflow: hidden;
+                position: relative;
+            }
+            
+            .car-image img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                transition: transform 0.5s ease;
+            }
+            
+            .car-card:hover .car-image img {
+                transform: scale(1.05);
+            }
+            
+            .car-details {
+                padding: 20px 0;
+                text-align: center;
+            }
+            
+            .car-brand {
+                font-size: 12px;
+                color: #777;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                margin-bottom: 5px;
+            }
+            
+            .car-name {
+                font-size: 18px;
+                font-weight: 500;
+                margin-bottom: 5px;
+                color: #000;
+            }
+            
+            .car-specs {
+                font-size: 14px;
+                color: #555;
+                margin-bottom: 10px;
+            }
+            
+            .car-specs span {
+                margin: 0 3px;
+            }
+            
+            .car-price {
+                font-size: 16px;
+                font-weight: 600;
+                color: #000;
+                margin-bottom: 15px;
+            }
+            
+            .car-btn {
+                display: inline-block;
+                padding: 8px 30px;
+                background-color: transparent;
+                border: 1px solid #000;
+                color: #000;
+                font-size: 12px;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                transition: all 0.3s ease;
+            }
+            
+            .car-btn:hover {
+                background-color: #000;
+                color: #fff;
+            }
+            
+            .view-all {
+                text-align: center;
+                margin-top: 50px;
+            }
+            
+            .view-all-btn {
+                display: inline-block;
+                padding: 10px 40px;
+                background-color: transparent;
+                border: 1px solid #000;
+                color: #000;
+                font-size: 14px;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                transition: all 0.3s ease;
+            }
+            
+            .view-all-btn:hover {
+                background-color: #000;
+                color: #fff;
+            }
+            
+            @media (max-width: 1200px) {
+                .cars-grid {
+                    grid-template-columns: repeat(3, 1fr);
+                }
+            }
+            
+            @media (max-width: 992px) {
+                .cars-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+            }
+            
+            @media (max-width: 576px) {
+                .cars-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+            
+            /* Services Section - Minimal */
+            .services {
+                padding: 120px 0;
+                background-color: #fff;
+            }
+            
+            .services-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 40px;
+            }
+            
+            .service-item {
+                text-align: center;
+                padding: 40px 30px;
+            }
+            
+            .service-icon {
+                font-size: 48px;
+                margin-bottom: 25px;
+                color: #000;
+            }
+            
+            .service-title {
+                font-size: 24px;
+                font-weight: 500;
+                margin-bottom: 15px;
+                color: #000;
+            }
+            
+            .service-desc {
+                font-size: 16px;
+                color: #555;
+                line-height: 1.6;
+            }
+            
+            /* Testimonials - Clean & Simple */
+            .testimonials {
+                padding: 120px 0;
+                background-color: #f8f8f8;
+                text-align: center;
+            }
+            
+            .testimonial-quote {
+                font-size: 24px;
+                line-height: 1.6;
+                max-width: 800px;
+                margin: 0 auto 30px;
+                color: #000;
+                font-weight: 300;
+                font-style: italic;
+            }
+            
+            .testimonial-author {
+                font-size: 18px;
+                font-weight: 500;
+                color: #000;
+            }
+            
+            .testimonial-role {
+                font-size: 14px;
+                color: #555;
+            }
+            
+            /* Contact CTA - Minimal */
+            .contact-cta {
+                padding: 100px 0;
+                background-color: #000;
+                color: #fff;
+                text-align: center;
+            }
+            
+            .cta-title {
+                font-size: 42px;
+                font-weight: 600;
+                margin-bottom: 20px;
+            }
+            
+            .cta-text {
+                font-size: 18px;
+                margin-bottom: 40px;
+                max-width: 600px;
+                margin-left: auto;
+                margin-right: auto;
+                font-weight: 300;
+            }
+            
+            .cta-btn {
+                display: inline-block;
+                padding: 15px 40px;
+                background-color: transparent;
+                border: 1px solid #fff;
+                color: #fff;
+                font-size: 16px;
+                font-weight: 500;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                transition: all 0.3s ease;
+            }
+            
+            .cta-btn:hover {
+                background-color: #fff;
+                color: #000;
+            }
+        </style>
     </head>
     <body>
-        <!-- Header -->
-        <jsp:include page="/components/navbar.jsp" />
+        <!-- Include Navbar -->
+        <jsp:include page="components/navbar.jsp" />
 
-        <!-- Hero Section -->
-        <section class="hero-section">
-            <div class="container">
-                <div class="hero-content">
-                    <h2>Find Your Perfect Car</h2>
-                    <h1>Best Car Showroom from FPT</h1>
-
-                    <div class="search-tabs">
-                        <div class="tab-buttons">
-                            <button class="tab-btn active">All Car</button>
-                            <button class="tab-btn">Used Car</button>
-                            <button class="tab-btn">New Car</button>
-                        </div>
-                        <div class="search-form">
-                            <div class="form-group">
-                                <input type="text" placeholder="Type here">
-                            </div>
-                            <div class="form-group">
-                                <select>
-                                    <option>Select Brand</option>
-                                    <!-- Brand options will go here -->
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <select>
-                                    <option>Country</option>
-                                    <!-- Country options will go here -->
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <select>
-                                    <option>Sort By</option>
-                                    <!-- Sort options will go here -->
-                                </select>
-                            </div>
-                            <button class="search-btn"><i class="fas fa-search"></i></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="hero-image">
-                <!-- Hero Car Image: Kích thước được điều chỉnh để phù hợp với layout -->
-                <img src="asset/img/hero-car.png" alt="Luxury Car" id="hero-car-image">
+        <!-- Hero Banner - Minimal & Modern -->
+        <section class="hero-banner">
+            <img src="asset/img/banner.jpg" alt="Luxury Cars">
+            <div class="hero-content">
+                <h1 class="hero-title">Luxury Redefined</h1>
+                <p class="hero-subtitle">Experience the pinnacle of automotive excellence with our curated collection of premium vehicles</p>
+                <a href="car/list" class="hero-btn">Explore Collection</a>
             </div>
         </section>
 
-        <!-- Stats Section -->
-        <section class="stats-section">
-            <div class="container">
-                <div class="car-stats">
-                    <div class="stat-item">
-                        <div class="stat-number total-cars">500+</div>
-                        <div class="stat-label">Luxury Cars</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number happy-customers">1200+</div>
-                        <div class="stat-label">Happy Customers</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number dealers">150</div>
-                        <div class="stat-label">Premium Dealers</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Popular Brands Section -->
-        <section class="brands-section">
+        <!-- Luxury Brands Section - Minimal Design -->
+        <section class="luxury-brands">
             <div class="container">
                 <div class="section-header">
-                    <h4 class="section-label">Brands</h4>
-                    <h2 class="section-title">Explore Popular Brand</h2>
-                    <a href="#" class="view-all-link">View All</a>
+                    <h2 class="section-title">Premium Brands</h2>
+                    <p class="section-subtitle">Discover prestigious automotive brands that define luxury, performance, and innovation</p>
                 </div>
-                <div class="brand-cards">
-                    <div class="brand-card">
-                        <div class="brand-image">
-                            <!-- Brand Logo: 120x80px -->
-                            <img src="asset/img/brands/chevrolet.png" alt="Chevrolet">
+                
+                <div class="brands-grid">
+                        <!-- Brand 1 -->
+                    <div class="brand-item">
+                        <div class="brand-logo">
+                            <img src="asset/img/brands/mercedes.png" alt="Mercedes-Benz">
+                                </div>
+                                    <h3 class="brand-name">Mercedes-Benz</h3>
+                        <p class="brand-models">3 Models Available</p>
+                        <a href="#" class="brand-link">View Collection</a>
                         </div>
-                        <h3>Chevrolet</h3>
-                        <span class="count">3</span>
-                    </div>
-                    <div class="brand-card">
-                        <div class="brand-image">
-                            <!-- Brand Logo: 120x80px -->
-                            <img src="asset/img/brands/honda.png" alt="Honda">
+                        
+                        <!-- Brand 2 -->
+                    <div class="brand-item">
+                        <div class="brand-logo">
+                                    <img src="asset/img/brands/bmw.png" alt="BMW">
+                                </div>
+                                    <h3 class="brand-name">BMW</h3>
+                        <p class="brand-models">5 Models Available</p>
+                        <a href="#" class="brand-link">View Collection</a>
                         </div>
-                        <h3>Honda</h3>
-                        <span class="count">3</span>
-                    </div>
-                    <div class="brand-card">
-                        <div class="brand-image">
-                            <!-- Brand Logo: 120x80px -->
-                            <img src="asset/img/brands/bmw.png" alt="BMW">
+                        
+                        <!-- Brand 3 -->
+                    <div class="brand-item">
+                        <div class="brand-logo">
+                                    <img src="asset/img/brands/chevrolet.png" alt="Chevrolet">
+                                </div>
+                                    <h3 class="brand-name">Chevrolet</h3>
+                        <p class="brand-models">4 Models Available</p>
+                        <a href="#" class="brand-link">View Collection</a>
                         </div>
-                        <h3>BMW</h3>
-                        <span class="count">2</span>
-                    </div>
-                    <div class="brand-card">
-                        <div class="brand-image">
-                            <!-- Brand Logo: 120x80px -->
-                            <img src="asset/img/brands/hyundai.png" alt="Hyundai">
+                        
+                        <!-- Brand 4 -->
+                    <div class="brand-item">
+                        <div class="brand-logo">
+                                    <img src="asset/img/brands/honda.png" alt="Honda">
+                                </div>
+                                    <h3 class="brand-name">Honda</h3>
+                        <p class="brand-models">3 Models Available</p>
+                        <a href="#" class="brand-link">View Collection</a>
                         </div>
-                        <h3>Hyundai</h3>
-                        <span class="count">2</span>
-                    </div>
-                    <div class="brand-card">
-                        <div class="brand-image">
-                            <!-- Brand Logo: 120x80px -->
-                            <img src="asset/img/brands/mercedes.png" alt="Mercedes">
+                        
+                        <!-- Brand 5 -->
+                    <div class="brand-item">
+                        <div class="brand-logo">
+                                    <img src="asset/img/brands/hyundai.png" alt="Hyundai">
+                                </div>
+                                    <h3 class="brand-name">Hyundai</h3>
+                        <p class="brand-models">2 Models Available</p>
+                        <a href="#" class="brand-link">View Collection</a>
                         </div>
-                        <h3>Mercedes</h3>
-                        <span class="count">0</span>
-                    </div>
-                    <div class="brand-card">
-                        <div class="brand-image">
-                            <!-- Brand Logo: 120x80px -->
-                            <img src="asset/img/brands/nissan.png" alt="Nissan">
+                        
+                        <!-- Brand 6 -->
+                    <div class="brand-item">
+                        <div class="brand-logo">
+                                    <img src="asset/img/brands/nissan.png" alt="Nissan">
                         </div>
-                        <h3>Nissan</h3>
-                        <span class="count">1</span>
+                        <h3 class="brand-name">Nissan</h3>
+                        <p class="brand-models">4 Models Available</p>
+                        <a href="#" class="brand-link">View Collection</a>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Latest Car Listings Section -->
-        <section class="car-listings-section">
+        <!-- Featured Cars Section - Ultra Minimalist Design -->
+        <section class="featured-cars">
             <div class="container">
                 <div class="section-header">
-                    <h4 class="section-label">Available Brand Car</h4>
-                    <h2 class="section-title">Latest Car Listings</h2>
-                    <div class="car-filter-buttons">
-                        <button class="filter-btn active">New Car</button>
-                        <button class="filter-btn">Used Car</button>
-                    </div>
+                    <h2 class="section-title">Featured Vehicles</h2>
                 </div>
-                <div class="car-cards">
+                
+                <div class="cars-grid">
                     <c:forEach var="car" items="${latestCars}">
-                        <div class="car-card" data-id="car${car.carId}">
-                            <div class="card-image">
-                                <span class="tag">New</span> <%-- Assume all are New for now, can be made dynamic --%>
-                                <!-- Car Image: 300x200px -->
-                                <img src="asset/img/cars/${car.carBrand.toLowerCase()}-${car.model.toLowerCase().replace(' ', '-')}.png" alt="${car.carBrand} ${car.carName}"> <%-- Basic dynamic image path, might need adjustment --%>
-                                <div class="card-actions">
-                                    <button class="wishlist-btn"><i class="far fa-heart"></i></button>
-                                    <button class="compare-btn"><i class="fas fa-exchange-alt"></i></button>
-                                </div>
+                        <div class="car-card">
+                            <div class="car-image">
+                                <img src="asset/img/cars/${car.carBrand.toLowerCase()}-${car.model.toLowerCase().replace(' ', '-')}.png" alt="${car.carBrand} ${car.carName}">
                             </div>
-                            <div class="card-content">
+                            <div class="car-details">
                                 <div class="car-brand">${car.carBrand}</div>
-                                <h3 class="car-name">
-                                    <fmt:formatDate value="${car.carYear}" pattern="yyyy" /> ${car.carName}
-                                </h3>
-                                <div class="car-price">$<c:out value="${car.carPrice}" /></div>
+                                <h3 class="car-name">${car.carName}</h3>
                                 <div class="car-specs">
-                                    <div class="spec">
-                                        <i class="fas fa-tachometer-alt"></i>
-                                        <span>${car.carOdo}(mi)</span>
-                                    </div>
-                                    <div class="spec">
-                                        <i class="fas fa-gas-pump"></i>
-                                        <span>Gasoline</span> <%-- Placeholder, can be made dynamic --%>
-                                    </div>
-                                    <div class="spec">
-                                        <i class="fas fa-cog"></i>
-                                        <span>${car.displacement} (cc)</span>
-                                    </div>
+                                    <span>${car.carYear.getYear() + 1900}</span>
+                                    <span>&bull;</span>
+                                    <span>${car.fuelType}</span>
                                 </div>
-                                <div class="card-footer">
-                                    <span class="listing-author">Listed by: John Doe</span> <%-- Placeholder --%>
-                                </div>
+                                <div class="car-price">$<fmt:formatNumber value="${car.carPrice}" type="number" pattern="#,###" /></div>
+                                <a href="car-detail.jsp?id=${car.carId}" class="car-btn">Explore</a>
                             </div>
                         </div>
                     </c:forEach>
                 </div>
-                <div class="view-more-container">
-                    <a href="${pageContext.request.contextPath}/car/list" class="view-more-btn">View More Car List</a>
+                
+                <div class="view-all">
+                    <a href="${pageContext.request.contextPath}/car/list" class="view-all-btn">View All</a>
                 </div>
             </div>
         </section>
 
-        <!-- Featured Car Listings Section -->
-        <section class="featured-section">
+        <!-- Services Section - Minimal -->
+        <section class="services">
             <div class="container">
                 <div class="section-header">
-                    <h4 class="section-label">Our Featured Cars</h4>
-                    <h2 class="section-title">Featured Car Listings</h2>
-                    <a href="#" class="view-more-link">View More</a>
+                    <h2 class="section-title">Our Services</h2>
+                    <p class="section-subtitle">Exceptional automotive services tailored to your needs</p>
                 </div>
-                <div class="featured-cars">
-                    <div class="featured-main">
-                        <div class="featured-image">
-                            <!-- Featured Car Image: Ảnh theo chiều dọc (450x700px) -->
-                            <img src="asset/img/cars/featured-main.png" alt="Luxurious Car">
-                            <div class="featured-overlay">
-                                <div class="featured-logo">DriverXO</div>
-
-                                <div class="featured-content">
-                                    <h3>Buy Our Latest Luxurious Car</h3>
-                                    <p>So Hurry Up</p>
-                                    <div class="call-action">
-                                        <span>Call Us Now</span>
-                                        <a href="tel:+00 23904 0244">+00 23904 0244</a>
-                                    </div>
-                                </div>
-                            </div>
+                
+                <div class="services-grid">
+                    <!-- Service 1 -->
+                    <div class="service-item">
+                        <div class="service-icon">
+                            <i class="fas fa-car"></i>
                         </div>
+                        <h3 class="service-title">Premium Selection</h3>
+                        <p class="service-desc">Access to a curated collection of luxury and high-performance vehicles from prestigious brands worldwide.</p>
                     </div>
-                    <div class="featured-grid">
-                        <div class="car-card">
-                            <div class="card-image">
-                                <span class="tag">Used</span>
-                                <!-- Car Image: 300x200px -->
-                                <img src="asset/img/cars/honda-civic.png" alt="Honda City">
-                                <div class="card-actions">
-                                    <button class="wishlist-btn"><i class="far fa-heart"></i></button>
-                                    <button class="compare-btn"><i class="fas fa-exchange-alt"></i></button>
-                                </div>
-                            </div>
-                            <div class="card-content">
-                                <div class="car-brand">Honda</div>
-                                <h3 class="car-name">2018 Honda City 1.3 i-VTEC</h3>
-                                <div class="car-price">$120.00</div>
-                                <div class="car-specs">
-                                    <div class="spec">
-                                        <i class="fas fa-tachometer-alt"></i>
-                                        <span>1,20,520(mi)</span>
-                                    </div>
-                                    <div class="spec">
-                                        <i class="fas fa-gas-pump"></i>
-                                        <span>Gasoline</span>
-                                    </div>
-                                    <div class="spec">
-                                        <i class="fas fa-cog"></i>
-                                        <span>2,350 (cc)</span>
-                                    </div>
-                                </div>
-                                <div class="card-footer">
-                                    <span class="listing-author">Listed by: David Richard</span>
-                                </div>
-                            </div>
+                    
+                    <!-- Service 2 -->
+                    <div class="service-item">
+                        <div class="service-icon">
+                            <i class="fas fa-tools"></i>
                         </div>
-                        <div class="car-card">
-                            <div class="card-image">
-                                <span class="tag">New</span>
-                                <!-- Car Image: 300x200px -->
-                                <img src="asset/img/cars/camry-explorer.png" alt="Chevrolet CamFó Explorer">
-                                <div class="card-actions">
-                                    <button class="wishlist-btn"><i class="far fa-heart"></i></button>
-                                    <button class="compare-btn"><i class="fas fa-exchange-alt"></i></button>
-                                </div>
-                            </div>
-                            <div class="card-content">
-                                <div class="car-brand">Chevrolet</div>
-                                <h3 class="car-name">2019 CamFó Explorer</h3>
-                                <div class="car-price">$120.00</div>
-                                <div class="car-specs">
-                                    <div class="spec">
-                                        <i class="fas fa-tachometer-alt"></i>
-                                        <span>1,20,520(mi)</span>
-                                    </div>
-                                    <div class="spec">
-                                        <i class="fas fa-gas-pump"></i>
-                                        <span>Gasoline</span>
-                                    </div>
-                                    <div class="spec">
-                                        <i class="fas fa-cog"></i>
-                                        <span>2,350 (cc)</span>
-                                    </div>
-                                </div>
-                                <div class="card-footer">
-                                    <span class="listing-author">Listed by: John Doe</span>
-                                </div>
-                            </div>
+                        <h3 class="service-title">Expert Maintenance</h3>
+                        <p class="service-desc">Professional maintenance and repair services performed by certified technicians using genuine parts.</p>
+                    </div>
+                    
+                    <!-- Service 3 -->
+                    <div class="service-item">
+                        <div class="service-icon">
+                            <i class="fas fa-handshake"></i>
                         </div>
-
-                        <div class="featured-grid-bottom">
-                            <div class="car-mini-card">
-                                <div class="card-image">
-                                    <span class="tag">Used</span>
-                                    <!-- Mini Car Image: 150x100px -->
-                                    <img src="asset/img/cars/bmw-portofino.png" alt="BMW Camé Ferrari Portofino">
-                                    <div class="card-actions">
-                                        <button class="wishlist-btn"><i class="far fa-heart"></i></button>
-                                        <button class="compare-btn"><i class="fas fa-exchange-alt"></i></button>
-                                    </div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="car-brand">BMW</div>
-                                    <h3 class="car-name">1998 Camé Ferrari Portofino</h3>
-                                    <div class="car-price">$50.00</div>
-                                    <div class="card-footer">
-                                        <span class="listing-author">Listed by: John Doe</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="car-mini-card">
-                                <div class="card-image">
-                                    <span class="tag">New</span>
-                                    <!-- Mini Car Image: 150x100px -->
-                                    <img src="asset/img/cars/atra-benz-black.png" alt="Hyundai Altra Benz C-Class">
-                                    <div class="card-actions">
-                                        <button class="wishlist-btn"><i class="far fa-heart"></i></button>
-                                        <button class="compare-btn"><i class="fas fa-exchange-alt"></i></button>
-                                    </div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="car-brand">Hyundai</div>
-                                    <h3 class="car-name">2007 Altra Benz C-Class</h3>
-                                    <div class="car-price">$3,000.00</div>
-                                    <div class="card-footer">
-                                        <span class="listing-author">Listed by: John Doe</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="car-mini-card">
-                                <div class="card-image">
-                                    <span class="tag">Used</span>
-                                    <!-- Mini Car Image: 150x100px -->
-                                    <img src="asset/img/cars/corvette-z51.png" alt="Honda Shevrolet Corvette Z51">
-                                    <div class="card-actions">
-                                        <button class="wishlist-btn"><i class="far fa-heart"></i></button>
-                                        <button class="compare-btn"><i class="fas fa-exchange-alt"></i></button>
-                                    </div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="car-brand">Honda</div>
-                                    <h3 class="car-name">2023 Shevrolet Corvette Z51</h3>
-                                    <div class="car-price">$800.00</div>
-                                    <div class="card-footer">
-                                        <span class="listing-author">Listed by: John Doe</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="car-mini-card">
-                                <div class="card-image">
-                                    <span class="tag">Used</span>
-                                    <!-- Mini Car Image: 150x100px -->
-                                    <img src="asset/img/cars/camford-mustang.png" alt="Chevrolet CamFord Mustang">
-                                    <div class="card-actions">
-                                        <button class="wishlist-btn"><i class="far fa-heart"></i></button>
-                                        <button class="compare-btn"><i class="fas fa-exchange-alt"></i></button>
-                                    </div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="car-brand">Chevrolet</div>
-                                    <h3 class="car-name">2017 CamFord Mustang</h3>
-                                    <div class="car-price">$800.00</div>
-                                    <div class="card-footer">
-                                        <span class="listing-author">Listed by: John Doe</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <h3 class="service-title">Personalized Consultation</h3>
+                        <p class="service-desc">Tailored advice and guidance to help you find the perfect vehicle that matches your preferences and lifestyle.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-
-        <!-- Blog Section -->
-        <section class="blog-section">
+        <!-- Testimonials - Clean & Simple -->
+        <section class="testimonials">
             <div class="container">
                 <div class="section-header">
-                    <h4 class="section-label">Recent News</h4>
-                    <h2 class="section-title">Read Our Latest Blogs</h2>
+                    <h2 class="section-title">Client Experiences</h2>
+                    <p class="section-subtitle">What our valued clients say about their journey with us</p>
                 </div>
-                <div class="blog-cards">
-                    <div class="blog-card">
-                        <div class="blog-image">
-                            <!-- Blog Image: 300x200px -->
-                            <img src="asset/img/blogs/blog1.png" alt="Car on highway">
-                        </div>
-                        <div class="blog-content">
-                            <div class="blog-meta">
-                                <span class="author"><i class="fas fa-user"></i> By John Doe</span>
-                                <span class="comments"><i class="fas fa-comment"></i> 2 Comments</span>
-                            </div>
-                            <h3 class="blog-title">Car on highway directional road signs</h3>
-                            <a href="#" class="learn-more">Learn More <i class="fas fa-arrow-right"></i></a>
-                        </div>
-                    </div>
-                    <div class="blog-card">
-                        <div class="blog-image">
-                            <!-- Blog Image: 300x200px -->
-                            <img src="asset/img/blogs/blog2.png" alt="Professional man">
-                        </div>
-                        <div class="blog-content">
-                            <div class="blog-meta">
-                                <span class="author"><i class="fas fa-user"></i> By John Doe</span>
-                                <span class="comments"><i class="fas fa-comment"></i> 2 Comments</span>
-                            </div>
-                            <h3 class="blog-title">Professional man working on car full shot</h3>
-                            <a href="#" class="learn-more">Learn More <i class="fas fa-arrow-right"></i></a>
-                        </div>
-                    </div>
-                    <div class="blog-card">
-                        <div class="blog-image">
-                            <!-- Blog Image: 300x200px -->
-                            <img src="asset/img/blogs/blog3.png" alt="Stylish man">
-                        </div>
-                        <div class="blog-content">
-                            <div class="blog-meta">
-                                <span class="author"><i class="fas fa-user"></i> By John Doe</span>
-                                <span class="comments"><i class="fas fa-comment"></i> 0 Comments</span>
-                            </div>
-                            <h3 class="blog-title">Stylish and elegant old man in a car salon</h3>
-                            <a href="#" class="learn-more">Learn More <i class="fas fa-arrow-right"></i></a>
-                        </div>
-                    </div>
-                    <div class="blog-card">
-                        <div class="blog-image">
-                            <!-- Blog Image: 300x200px -->
-                            <img src="asset/img/blogs/blog4.png" alt="Mini coupe">
-                        </div>
-                        <div class="blog-content">
-                            <div class="blog-meta">
-                                <span class="author"><i class="fas fa-user"></i> By John Doe</span>
-                                <span class="comments"><i class="fas fa-comment"></i> 0 Comments</span>
-                            </div>
-                            <h3 class="blog-title">Mini coupe parking on the highway bridge</h3>
-                            <a href="#" class="learn-more">Learn More <i class="fas fa-arrow-right"></i></a>
-                        </div>
-                    </div>
+                
+                <div class="testimonial-content">
+                    <p class="testimonial-quote">"The attention to detail and personalized service at DriverXO exceeded all my expectations. Their team guided me through every step of finding my dream car, making the entire process seamless and enjoyable."</p>
+                    <h4 class="testimonial-author">Alexander Mitchell</h4>
+                    <p class="testimonial-role">Business Executive</p>
                 </div>
             </div>
         </section>
 
-        <!-- Newsletter Section -->
-        <section class="newsletter-section">
+        <!-- Contact CTA - Minimal -->
+        <section class="contact-cta">
             <div class="container">
-                <div class="newsletter-content">
-                    <div class="newsletter-text">
-                        <h2 class="section-title">Join Our <span>Newsletter</span> <br>& Get updated.</h2>
-                    </div>
-                    <div class="newsletter-form">
-                        <form>
-                            <input type="email" placeholder="Email Address">
-                            <button type="submit" class="subscribe-btn">Subscribe</button>
-                        </form>
-                        <p>We only send interesting and relevant emails.</p>
-                    </div>
-                </div>
+                <h2 class="cta-title">Ready to Find Your Perfect Vehicle?</h2>
+                <p class="cta-text">Connect with our automotive specialists to begin your journey towards owning a luxury vehicle that reflects your unique style and preferences.</p>
+                <a href="#" class="cta-btn">Contact Us</a>
             </div>
         </section>
 
         <!-- Footer -->
-        <footer class="footer black-footer">
-            <div class="container">
-                <div class="footer-content">
-                    <div class="footer-col">
-                        <div class="footer-logo">
-                            <!-- Footer Logo: 120x40px -->
-                            <img src="asset/img/driverxo-logo-white.png" alt="DriverXO">
-                            <span>DriverXO</span>
-                        </div>
-                        <p>At DriverXO, we offer a premium selection of high-performance and luxury vehicles tailored to your lifestyle. Whether you're looking for speed, comfort, or style, we bring you the finest cars with exceptional service and trusted quality.</p>
-                        <div class="social-links">
-                            <h4>Follow Us:</h4>
-                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                            <a href="#"><i class="fab fa-twitter"></i></a>
-                            <a href="#"><i class="fab fa-instagram"></i></a>
-                            <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        </div>
-                    </div>
-                    <div class="footer-col">
-                        <h3>Popular links</h3>
-                        <ul>
-                            <li><a href="#"><i class="fas fa-chevron-right"></i> About Us</a></li>
-                            <li><a href="#"><i class="fas fa-chevron-right"></i> Contact Us</a></li>
-
-                        </ul>
-                    </div>
-                    <div class="footer-col">
-                        <h3>My Profile</h3>
-                        <ul>
-                            <li><a href="#"><i class="fas fa-chevron-right"></i> Dashboard</a></li>
-                            <li><a href="#"><i class="fas fa-chevron-right"></i> Manage Car</a></li>
-                        </ul>
-                    </div>
-                    <div class="footer-col">
-                        <h3>Contact Us</h3>
-                        <ul class="contact-info">
-                            <li><i class="fas fa-phone"></i> 0915456680</li>
-                            <li><i class="fas fa-envelope"></i> fpt@gmail.com</li>
-                            <li><i class="fas fa-map-marker-alt"></i> Vo Gia Huy, <br>Ca Mau City</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <div class="container">
-                    <div class="copyright">
-                        <p>Copyright 2025 Group3 - SE1816 - All Rights Reserved</p>
-                    </div>
-                    <div class="footer-links">
-                        <a href="#">Privacy Policy</a>
-                        <a href="#">Terms & Conditions</a>
-                    </div>
-                </div>
-            </div>
-        </footer>
-
-        <!-- Cookie Consent -->
-        <div class="cookie-consent">
-            <div class="cookie-text">
-                <h3>Cookies</h3>
-                <p>Group3 SWP.</p>
-            </div>
-            <button class="accept-btn">Accept</button>
-            <button class="close-btn"><i class="fas fa-times"></i></button>
-        </div>
-
-
+        <jsp:include page="components/footer.jsp" />
 
         <!-- JavaScript -->
-        <script src="asset/js/main.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Cookie consent functionality
+                const cookieConsent = document.querySelector('.cookie-consent');
+                const acceptBtn = document.querySelector('.accept-btn');
+                const closeBtn = document.querySelector('.close-btn');
+                
+                if (cookieConsent && acceptBtn && closeBtn) {
+                    acceptBtn.addEventListener('click', function() {
+                        cookieConsent.style.display = 'none';
+                        localStorage.setItem('cookieAccepted', 'true');
+                    });
+                    
+                    closeBtn.addEventListener('click', function() {
+                        cookieConsent.style.display = 'none';
+                    });
+                    
+                    if (localStorage.getItem('cookieAccepted') === 'true') {
+                        cookieConsent.style.display = 'none';
+                    }
+                }
+            });
+        </script>
     </body>
-    <script src="${pageContext.servletContext.contextPath}/assets/js/cart_addToCart.js?v=<%= System.currentTimeMillis()%>"></script>
 </html>
