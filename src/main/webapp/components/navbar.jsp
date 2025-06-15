@@ -20,14 +20,14 @@
     }
     
     .compact-header .main-header {
-        padding: 20px 0;
+        padding: 12px 0;
         display: flex;
         align-items: center;
         justify-content: space-between;
     }
     
     .compact-header .logo a {
-        font-size: 22px;
+        font-size: 18px;
         font-weight: 400;
         letter-spacing: 1px;
         color: #fff;
@@ -41,8 +41,8 @@
     }
     
     .compact-header .logo img {
-        height: 28px;
-        margin-right: 10px;
+        height: 22px;
+        margin-right: 8px;
     }
     
     /* Contact Icons */
@@ -87,7 +87,7 @@
     
     .main-nav ul {
         display: flex;
-        gap: 40px;
+        gap: 30px;
         padding: 0;
         margin: 0;
     }
@@ -99,12 +99,12 @@
     
     .main-nav a {
         color: #fff;
-        font-size: 14px;
+        font-size: 13px;
         font-weight: 400;
         text-decoration: none;
-        letter-spacing: 1px;
+        letter-spacing: 0.5px;
         transition: all 0.3s ease;
-        padding: 5px 0;
+        padding: 3px 0;
         position: relative;
     }
     
@@ -150,17 +150,17 @@
         position: absolute;
         top: 100%;
         left: -300px;
-        width: 1000px;
+        width: 900px;
         background-color: #fff;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         opacity: 0;
         visibility: hidden;
         transform: translateY(10px);
         transition: all 0.3s ease;
         z-index: 1000;
         display: flex;
-        margin-top: 20px;
-        max-height: 80vh;
+        margin-top: 12px;
+        max-height: 70vh;
         overflow-y: auto;
     }
     
@@ -176,7 +176,7 @@
     
     /* Sidebar Categories - Minimal Style */
     .mega-menu-sidebar {
-        width: 250px;
+        width: 220px;
         background-color: #f9f9f9;
         border-right: 1px solid #f0f0f0;
     }
@@ -194,9 +194,9 @@
     }
     
     .mega-menu-sidebar ul li a {
-        padding: 15px 20px;
+        padding: 12px 16px;
         color: #333;
-        font-size: 14px;
+        font-size: 13px;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -220,14 +220,14 @@
     /* Cars Grid - Minimal Style */
     .mega-menu-content {
         flex: 1;
-        padding: 30px;
+        padding: 20px;
         background-color: #fff;
     }
     
     .cars-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        gap: 25px;
+        gap: 20px;
     }
     
     .car-preview {
@@ -235,7 +235,7 @@
         flex-direction: column;
         align-items: center;
         text-align: center;
-        padding: 10px;
+        padding: 8px;
         transition: all 0.3s ease;
     }
     
@@ -253,8 +253,8 @@
     .car-model {
         font-weight: 500;
         color: #000;
-        margin-bottom: 5px;
-        font-size: 14px;
+        margin-bottom: 4px;
+        font-size: 13px;
     }
     
     .car-model-badge {
@@ -264,8 +264,8 @@
     
     .car-price {
         color: #666;
-        font-size: 13px;
-        margin-bottom: 8px;
+        font-size: 12px;
+        margin-bottom: 6px;
     }
     
     .car-price sup {
@@ -291,9 +291,9 @@
     /* See All Link */
     .see-all-link {
         display: inline-block;
-        margin-top: 25px;
+        margin-top: 20px;
         color: #000;
-        font-size: 14px;
+        font-size: 13px;
         font-weight: 500;
         text-decoration: none;
         transition: all 0.3s ease;
@@ -311,13 +311,13 @@
     
     /* Login Button */
     .login-btn {
-        padding: 8px 20px;
+        padding: 6px 16px;
         background-color: transparent;
         border: 1px solid #fff;
         color: #fff;
-        font-size: 13px;
+        font-size: 12px;
         text-decoration: none;
-        letter-spacing: 1px;
+        letter-spacing: 0.5px;
         transition: all 0.3s ease;
     }
     
@@ -340,13 +340,14 @@
     .header-actions {
         display: flex;
         align-items: center;
-        gap: 20px;
+        gap: 15px;
     }
     
     .header-actions a {
         color: #fff;
-        font-size: 16px;
+        font-size: 14px;
         transition: all 0.3s ease;
+        position: relative;
     }
     
     .header.scrolled .header-actions a {
@@ -355,6 +356,23 @@
     
     .header-actions a:hover {
         opacity: 0.8;
+    }
+    
+    /* Badge for cart items */
+    .cart-badge {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background-color: #ff3a3a;
+        color: white;
+        font-size: 10px;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 500;
     }
     
     /* Responsive Styles */
@@ -441,7 +459,7 @@
                                     <c:forEach var="car" items="${latestCars}" varStatus="loop">
                                         <c:if test="${loop.index < 8}">
                                             <div class="car-preview">
-                                                <img src="asset/img/cars/${car.carBrand.toLowerCase()}-${car.model.toLowerCase().replace(' ', '-')}.png" alt="${car.carBrand} ${car.carName}">
+                                                <img src="asset/img/cars/${car.carImg}" alt="${car.carBrand} ${car.carName}">
                                                 <div class="car-model">
                                                     ${car.carName} <span class="car-model-badge">®</span>
                                                 </div>
@@ -509,9 +527,7 @@
                                     </c:if>
                                 </div>
                                 
-                                <a href="${pageContext.request.contextPath}/car/list" class="see-all-link">
-                                    See the DriveXO Family of Luxury Cars <i class="fas fa-chevron-right"></i>
-                                </a>
+                               
                             </div>
                         </div>
                     </li>
@@ -525,8 +541,16 @@
             <div class="right-section">
                 <c:if test="${sessionScope.account != null}">
                     <div class="header-actions">
-                        <a href="cart.jsp" class="cart-icon"><i class="fas fa-shopping-cart"></i></a>
-                        <a href="#" class="compare-icon"><i class="fas fa-exchange-alt"></i></a>
+                        <a href="cart.jsp" class="cart-icon" title="Shopping Cart">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="cart-badge">3</span>
+                        </a>
+                        <a href="bookings.jsp" class="booking-icon" title="My Bookings">
+                            <i class="fas fa-calendar-alt"></i>
+                        </a>
+                        <a href="profile.jsp" class="profile-icon" title="My Profile">
+                            <i class="fas fa-user-circle"></i>
+                        </a>
                     </div>
                 </c:if>
                 <a href="auth/login.jsp" class="login-btn">
