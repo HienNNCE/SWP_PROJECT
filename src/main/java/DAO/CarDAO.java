@@ -12,6 +12,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import Model.Car;
 import DB.DBContext;
+import java.math.BigDecimal;
+import java.sql.Date;
 
 /**
  *
@@ -85,14 +87,130 @@ public class CarDAO extends DBContext {
     }
 
     public byte[] getCarImageById(int carId) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        // Phương thức này sẽ được triển khai sau khi có cấu trúc lưu trữ hình ảnh
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public Car getCarById(int carId) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String query = "SELECT * FROM Car WHERE car_id = ?";
+        try {
+            PreparedStatement ps = this.getConnection().prepareStatement(query);
+            ps.setInt(1, carId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return new Car(
+                    rs.getInt("car_id"),
+                    rs.getString("car_name"),
+                    rs.getString("car_brand"),
+                    rs.getString("model"),
+                    rs.getBigDecimal("car_price"),
+                    rs.getDate("car_year"),
+                    rs.getString("car_img"),
+                    rs.getInt("car_stock"),
+                    rs.getBigDecimal("car_odo"),
+                    rs.getString("fuel_type"),
+                    rs.getBigDecimal("displacement"),
+                    rs.getInt("category_id")
+                );
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CarDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     public int getTotalCarCount() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String query = "SELECT COUNT(*) FROM Car";
+        try {
+            PreparedStatement ps = this.getConnection().prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CarDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
+    
+    public boolean addCar(Car car) {
+        String query = "INSERT INTO Car (car_name, car_brand, model, car_price, car_year, car_img, car_stock, car_odo, fuel_type, displacement, category_id) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement ps = this.getConnection().prepareStatement(query);
+            ps.setString(1, car.getCarName());
+            ps.setString(2, car.getCarBrand());
+            ps.setString(3, car.getModel());
+            ps.setBigDecimal(4, car.getCarPrice());
+            ps.setDate(5, car.getCarYear());
+            ps.setString(6, car.getCarImg());
+            ps.setInt(7, car.getCarStock());
+            ps.setBigDecimal(8, car.getCarOdo());
+            ps.setString(9, car.getFuelType());
+            ps.setBigDecimal(10, car.getDisplacement());
+            ps.setInt(11, car.getCategoryId());
+            
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(CarDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
+    
+    public boolean updateCar(Car car) {
+        String query = "UPDATE Car SET car_name = ?, car_brand = ?, model = ?, car_price = ?, car_year = ?, "
+                + "car_img = ?, car_stock = ?, car_odo = ?, fuel_type = ?, displacement = ?, category_id = ? "
+                + "WHERE car_id = ?";
+        try {
+            PreparedStatement ps = this.getConnection().prepareStatement(query);
+            ps.setString(1, car.getCarName());
+            ps.setString(2, car.getCarBrand());
+            ps.setString(3, car.getModel());
+            ps.setBigDecimal(4, car.getCarPrice());
+            ps.setDate(5, car.getCarYear());
+            ps.setString(6, car.getCarImg());
+            ps.setInt(7, car.getCarStock());
+            ps.setBigDecimal(8, car.getCarOdo());
+            ps.setString(9, car.getFuelType());
+            ps.setBigDecimal(10, car.getDisplacement());
+            ps.setInt(11, car.getCategoryId());
+            ps.setInt(12, car.getCarId());
+            
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(CarDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
+    
+    public boolean deleteCar(int carId) {
+        String query = "DELETE FROM Car WHERE car_id = ?";
+        try {
+            PreparedStatement ps = this.getConnection().prepareStatement(query);
+            ps.setInt(1, carId);
+            
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(CarDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
+    
+    public ArrayList<String> getAllBrands() {
+        ArrayList<String> brands = new ArrayList<>();
+        String query = "SELECT DISTINCT car_brand FROM Car ORDER BY car_brand";
+        try {
+            PreparedStatement ps = this.getConnection().prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                brands.add(rs.getString("car_brand"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CarDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return brands;
     }
 }
