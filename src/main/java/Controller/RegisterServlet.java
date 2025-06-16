@@ -91,7 +91,7 @@ public class RegisterServlet extends HttpServlet {
                 request.getRequestDispatcher("register.jsp").forward(request, response);
             }else{
                 userDao.RegisterUser(username, email, password);
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+                request.getRequestDispatcher("login.jsp").forward(request, response);
             }
 
             

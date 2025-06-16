@@ -3,6 +3,7 @@ C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\DA
 C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\DAO\OrderDAO.java
 C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\DB\TestDBConnect.java
 C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\Model\Comment.java
+C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\Controller\OTPServlet.java
 C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\Model\Payment.java
 C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\Model\User.java
 C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\Model\CarAppointment.java
@@ -38,5 +39,6 @@ C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\Em
 C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\Controller\LoginServlet.java
 C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\Model\Role.java
 C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\Controller\PartServlet.java
+C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\Controller\ResetPasswordServlet.java
 C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\Controller\StaffPartServlet.java
 C:\Users\ASUS_FX507Z\Downloads\SWP\SWP_Project Gr 3\SWP_PROJECT\src\main\java\DAO\UserDAO.java

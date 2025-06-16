@@ -53,7 +53,7 @@
                         <input type="email" id="email" name="email" placeholder="Enter your email" required>
                     </div>
                 </div>
-                <button type="submit" class="auth-btn" >Send Reset Link</button>
+                <button type="submit" class="auth-btn" >Send OTP</button>
                 <a href="login.jsp" class="auth-link">Back to Login</a>
                 <div class="auth-link">${err}</div>
             </div>
