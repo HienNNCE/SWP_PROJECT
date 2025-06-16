@@ -13,11 +13,18 @@ public class DBContext {
     // Declare the connection variable
     private Connection conn;
 
-    // Database connection details
-    private static final String DB_URL = "jdbc:sqlserver://localhost:1433;databaseName=DriveXO;encrypt=false;";
+    // Database connection details (Root) do not edit
+    // Just comment when connect db local
+    private static final String DB_URL = "jdbc:sqlserver://LAPTOP-FT0Q1NI1\\SQLEXPRESS;databaseName=DriveXO;encrypt=true;";
     private static final String DB_USER = "sa";
-    private static final String DB_PWD = "05102004@aZ09";
+    private static final String DB_PWD = "123456";
 
+//    // Use this to connect database, not change string above
+//     // after done, comment again
+//    private static final String DB_URL = "jdbc:sqlserver://LAPTOP-FT0Q1NI1\\SQLEXPRESS;databaseName=DriveXO;encrypt=true;";
+//    private static final String DB_USER = "sa";
+//    private static final String DB_PWD = "123456";
+    
     // Constructor to initialize the connection
     public DBContext() {
         try {
