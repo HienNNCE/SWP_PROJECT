@@ -1,6 +1,6 @@
 package Model;
 
-public class User {
+public class Users {
 
     private int userId;
     private String userName;
@@ -12,11 +12,11 @@ public class User {
     private String userStatus;
 
     // Default constructor
-    public User() {
+    public Users() {
     }
 
     // Constructor with parameters
-    public User(int userId, String userName, String email, String phone, String address, Integer roleId, String userStatus) {
+    public Users(int userId, String userName, String email, String phone, String address, Integer roleId, String userStatus) {
         this.userId = userId;
         this.userName = userName;
         this.email = email;

@@ -5,7 +5,7 @@
 package Controller;
 
 import DAO.UserDAO;
-import Model.User;
+import Model.Users;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -96,7 +96,7 @@ public class LoginServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         // Attempt to retrieve a user from the database using the provided credentials.
-        User user = userDao.getUserById(username, password);
+        Users user = userDao.getUserById(username, password);
         // If a user object is returned, authentication was successful.
         if (user != null) {
             session.setAttribute("user", user);

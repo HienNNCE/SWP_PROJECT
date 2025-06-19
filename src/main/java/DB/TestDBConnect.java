@@ -11,7 +11,7 @@ public class TestDBConnect {
         Connection conn = db.getConnection();
 
         if (conn != null) {
-            System.out.println("Test Passed: Connection is not null.");
+            System.out.println("Test Passed: Connection successfully.");
         } else {
             System.out.println("Test Failed: Connection is null.");
         }

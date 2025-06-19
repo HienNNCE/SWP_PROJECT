@@ -436,7 +436,7 @@
             <nav class="main-nav">
                 <ul>
                     <li class="dropdown-container">
-                        <a href="${pageContext.request.contextPath}/car.jsp" class="dropdown-toggle ${pageContext.request.servletPath eq '/car-list.jsp' ? 'active' : ''}">
+                        <a href="${pageContext.request.contextPath}/car-list.jsp" class="dropdown-toggle ${pageContext.request.servletPath eq '/car-list.jsp' ? 'active' : ''}">
                             Cars <i class="fas fa-chevron-down"></i>
                         </a>
                         <div class="mega-dropdown">
@@ -553,16 +553,13 @@
                         </a>
                     </div>
                 </c:if>
-                <a href="auth/login.jsp" class="login-btn">
-                    <c:choose>
-                        <c:when test="${sessionScope.account != null}">
-                            My Account
-                        </c:when>
-                        <c:otherwise>
-                            Login
-                        </c:otherwise>
-                    </c:choose>
-                </a>
+                <c:if test="${user==null}">
+                    <a href="${pageContext.request.contextPath}/auth/login.jsp" class="login-btn">Login</a>
+                </c:if>
+                <c:if test="${user!=null}">
+                    <a style="margin-right: 5px; color: blue;" href="#">Hello ${user.getUserName()} </a>
+                    <a href="auth/LoginServlet?action=logout" class="login-btn">Logout</a>
+                </c:if>
             </div>
         </div>
     </div>

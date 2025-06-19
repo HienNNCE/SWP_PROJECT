@@ -46,7 +46,7 @@
     </head>
     <body>
 
-        <jsp:include page="../components/navbar.jsp" />
+        <jsp:include page="./components/navbar.jsp" />
 
         <div class="container">
             <!-- Breadcrumb -->
