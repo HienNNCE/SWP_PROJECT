@@ -642,7 +642,7 @@
         <!-- Hero Banner - Minimal & Modern -->
         <section class="hero-banner">
             <video autoplay muted loop playsinline>
-                <source src="asset/img/vidbanner.mp4" type="video/mp4">
+                <source src="asset/img/banner.png" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
             <div class="hero-content">
