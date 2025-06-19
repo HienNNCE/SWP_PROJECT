@@ -215,12 +215,12 @@
 </head>
 <body class="admin-panel">
     <!-- Import Sidebar -->
-    <jsp:include page="../components/adminSidebar.jsp" />
+    <jsp:include page="../../components/adminSidebar.jsp" />
 
     <!-- Main Content -->
     <div class="main-content">
         <!-- Import Header -->
-        <jsp:include page="../components/dashboardHeader.jsp" />
+        <jsp:include page="../../components/dashboardHeader.jsp" />
 
         <!-- Content -->
         <div class="content">
@@ -379,7 +379,7 @@
         </div>
 
         <!-- Import Footer -->
-        <jsp:include page="../components/dashboardFooter.jsp" />
+        <jsp:include page="../../components/dashboardFooter.jsp" />
     </div>
 
     <!-- JavaScript -->

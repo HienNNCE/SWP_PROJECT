@@ -55,7 +55,7 @@ public class PartServlet extends HttpServlet {
 
         request.setAttribute("parts", parts);
         request.setAttribute("brands", brands);
-        request.getRequestDispatcher("/part/parts-list.jsp").forward(request, response);
+        request.getRequestDispatcher("parts-list.jsp").forward(request, response);
     }
 
     // === SEARCH ===
@@ -68,7 +68,7 @@ public class PartServlet extends HttpServlet {
 
         request.setAttribute("parts", parts);
         request.setAttribute("brands", brands);
-        request.getRequestDispatcher("/part/parts-list.jsp").forward(request, response);
+        request.getRequestDispatcher("parts-list.jsp").forward(request, response);
     }
 
     // === FILTER ===
@@ -95,7 +95,7 @@ public class PartServlet extends HttpServlet {
 
         request.setAttribute("parts", parts);
         request.setAttribute("brands", brands);
-        request.getRequestDispatcher("/part/parts-list.jsp").forward(request, response);
+        request.getRequestDispatcher("parts-list.jsp").forward(request, response);
     }
 
     // === DETAIL ===
@@ -109,7 +109,7 @@ public class PartServlet extends HttpServlet {
         }
 
         request.setAttribute("part", part);
-        request.getRequestDispatcher("/part/part-detail.jsp").forward(request, response);
+        request.getRequestDispatcher("part-detail.jsp").forward(request, response);
     }
 
     // === UTIL ===
