@@ -35,11 +35,11 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>RegisterServlet</servlet-name>
-        <servlet-class>Controller.LoginServlet</servlet-class>
+        <servlet-class>Controller.RegisterServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
-        <url-pattern>/auth/LoginServlet</url-pattern>
+        <url-pattern>/auth/RegisterServlet</url-pattern>
     </servlet-mapping>
     
     <servlet-mapping>
