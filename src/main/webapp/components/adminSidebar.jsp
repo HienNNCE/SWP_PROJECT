@@ -1,7 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <div class="sidebar">
     <div class="sidebar-header">
-        <a href="../home.jsp" class="logo-link">
+        <a href=".../home.jsp" class="logo-link">
             <img src="../asset/img/driverxo-logo-white.png" alt="DriverXO" class="logo-icon">
             <span>DriverXO</span>
         </a>
@@ -36,7 +36,7 @@
             </li>
             
             <li class="nav-item">
-                <a href="car.jsp" class="nav-link">
+                <a href="../admin/car/car.jsp" class="nav-link">
                     <i class="fas fa-car"></i>
                     <span>Cars</span>
                     <span class="badge badge-warning">8</span>
@@ -44,7 +44,7 @@
             </li>
             
             <li class="nav-item">
-                <a href="user.jsp" class="nav-link">
+                <a href="../admin/user/user.jsp" class="nav-link">
                     <i class="fas fa-users"></i>
                     <span>Users</span>
                     <span class="badge badge-info">24</span>
@@ -52,14 +52,14 @@
             </li>
             
             <li class="nav-item">
-                <a href="parts.jsp" class="nav-link">
+                <a href="../admin/part/parts-list.jsp" class="nav-link">
                     <i class="fas fa-cogs"></i>
                     <span>Parts</span>
                 </a>
             </li>
             
             <li class="nav-item">
-                <a href="services.jsp" class="nav-link">
+                <a href="..admin/service/services.jsp" class="nav-link">
                     <i class="fas fa-wrench"></i>
                     <span>Services</span>
                 </a>

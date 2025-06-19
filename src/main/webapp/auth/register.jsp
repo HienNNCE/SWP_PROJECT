@@ -212,7 +212,7 @@
                 
                 <h1 class="auth-heading">Create your account</h1>
                 
-                <form action="../home" method="get">
+                <form action="RegisterServlet" method="post">
                     <div class="form-group">
                         <label class="form-label" for="fullname">Full Name</label>
                         <input type="text" class="form-control" id="fullname" name="fullname" required>

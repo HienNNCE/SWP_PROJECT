@@ -450,8 +450,7 @@
                             <img src="${pageContext.request.contextPath}/car/image?id=${car.carId}" alt="${car.carBrand} ${car.carName}" id="main-car-image">
                         </div>
                         <div class="thumbnail-images">
-                            <%-- You might need a dynamic way to load thumbnails based on the car object --%>
-                            <%-- Example for a single thumbnail, you'll need logic to get multiple images if available --%>
+                           
                             <c:if test="${car.carImg != null}">
                                 <div class="thumbnail active" onclick="changeImage('${pageContext.request.contextPath}/car/image?id=${car.carId}')">
                                     <img src="${pageContext.request.contextPath}/car/image?id=${car.carId}" alt="${car.carName} - Image">

@@ -1,4 +1,5 @@
 DAO\CartDAO.class
+Controller\RegisterServlet.class
 Model\CarAppointment.class
 DAO\CarAppointmentDAO.class
 Model\Category.class
@@ -9,6 +10,7 @@ DAO\PartDAO.class
 com\mycompany\drivexo_management_project\JakartaRestConfiguration.class
 Controller\AddToCartServlet.class
 DAO\OrderDetailDAO.class
+Controller\ForgotServler.class
 Model\Service.class
 Model\Order.class
 Model\Payment.class
@@ -21,16 +23,20 @@ Model\User.class
 Controller\PartServlet.class
 Model\Role.class
 Controller\HomeServlet.class
+Controller\LoginServlet.class
 Model\Part.class
 Controller\AdminDashboardServlet.class
 DAO\CarDAO.class
 Model\Car.class
+Controller\OTPServlet.class
 Model\Cart.class
 DAO\ServiceScheduleDAO.class
 Model\Comment.class
 DAO\RoleDAO.class
 Controller\CarListServlet.class
 Controller\AdminCarServlet.class
+Controller\ResetPasswordServlet.class
+DAO\UserDAO$1.class
 Controller\CartServlet.class
 Controller\StaffPartServlet.class
 DAO\UserDAO.class

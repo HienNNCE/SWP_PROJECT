@@ -102,13 +102,13 @@ public class AdminCarServlet extends HttpServlet {
         
         request.setAttribute("carList", carList);
         request.setAttribute("brandList", brandList);
-        request.getRequestDispatcher("/admin/car.jsp").forward(request, response);
+        request.getRequestDispatcher("/admin/car/car.jsp").forward(request, response);
     }
 
     private void showAddForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ArrayList<String> brandList = carDAO.getAllBrands();
         request.setAttribute("brandList", brandList);
-        request.getRequestDispatcher("/admin/car-form.jsp").forward(request, response);
+        request.getRequestDispatcher("/admin/car/car-form.jsp").forward(request, response);
     }
 
     private void addCar(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
@@ -292,7 +292,7 @@ public class AdminCarServlet extends HttpServlet {
         
         request.setAttribute("car", existingCar);
         request.setAttribute("brandList", brandList);
-        request.getRequestDispatcher("/admin/car-form.jsp").forward(request, response);
+        request.getRequestDispatcher("/admin/car/car-form.jsp").forward(request, response);
     }
 
     private void updateCar(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
@@ -531,7 +531,7 @@ public class AdminCarServlet extends HttpServlet {
         }
         
         request.setAttribute("car", car);
-        request.getRequestDispatcher("/admin/car-detail.jsp").forward(request, response);
+        request.getRequestDispatcher("/admin/car/car-detail.jsp").forward(request, response);
     }
     
     private String getFileName(Part part) {
