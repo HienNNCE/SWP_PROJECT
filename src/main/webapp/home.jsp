@@ -638,7 +638,8 @@
     <body>
         <!-- Include Navbar -->
         <jsp:include page="components/navbar.jsp" />
-
+        
+        
         <!-- Hero Banner - Minimal & Modern -->
         <section class="hero-banner">
             <video autoplay muted loop playsinline>

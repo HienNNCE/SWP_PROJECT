@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "CarListServlet", urlPatterns = {"/car/list"})
+@WebServlet(name = "CarListServlet", urlPatterns = {"/carlist"})
 public class CarListServlet extends HttpServlet {
 
     private CarDAO carDAO;

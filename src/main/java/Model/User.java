@@ -6,7 +6,7 @@ public class User {
     private String userName;
     private String email;
     private String password;
-    private long phone;
+    private String phone;
     private String address;
     private Integer roleId;
     private String userStatus;
@@ -16,7 +16,7 @@ public class User {
     }
 
     // Constructor with parameters
-    public User(int userId, String userName, String email, String password, long phone, String address, Integer roleId, String userStatus) {
+    public User(int userId, String userName, String email, String password, String phone, String address, Integer roleId, String userStatus) {
         this.userId = userId;
         this.userName = userName;
         this.email = email;
@@ -60,11 +60,11 @@ public class User {
         this.password = password;
     }
 
-    public long getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(long phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 

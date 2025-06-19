@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 
-@WebServlet(name = "CarImageServlet", urlPatterns = {"/car/image"})
+@WebServlet(name = "CarImageServlet", urlPatterns = {"/car"})
 public class CarImageServlet extends HttpServlet {
 
     private CarDAO carDAO;
