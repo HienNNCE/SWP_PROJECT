@@ -20,14 +20,632 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        <style>
+            /* Hero Banner Styles - Modern & Minimal */
+            .hero-banner {
+                position: relative;
+                height: 100vh;
+                width: 100%;
+                overflow: hidden;
+                background-color: #000;
+            }
+            
+            .hero-banner video {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                opacity: 0.7;
+            }
+            
+            .hero-banner::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.7));
+                z-index: 1;
+            }
+            
+            .hero-content {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                text-align: center;
+                color: #fff;
+                width: 80%;
+                max-width: 800px;
+                z-index: 2;
+            }
+            
+            .hero-title {
+                font-size: 72px;
+                font-weight: 700;
+                letter-spacing: 2px;
+                margin-bottom: 20px;
+                line-height: 1.1;
+                text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            }
+            
+            .animate-text {
+                display: inline-block;
+                opacity: 0;
+                transform: translateY(30px);
+                animation: fadeInUp 1s forwards 0.5s;
+            }
+            
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            
+            .hero-subtitle {
+                font-size: 24px;
+                font-weight: 300;
+                margin-bottom: 40px;
+                line-height: 1.4;
+                text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+                opacity: 0;
+                transform: translateY(30px);
+                animation: fadeInUp 1s forwards 0.8s;
+            }
+            
+            .hero-btn {
+                display: inline-block;
+                padding: 15px 40px;
+                background-color: transparent;
+                border: 1px solid #fff;
+                color: #fff;
+                font-size: 16px;
+                font-weight: 500;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                transition: all 0.3s ease;
+                position: relative;
+                z-index: 2;
+                opacity: 0;
+                transform: translateY(30px);
+                animation: fadeInUp 1s forwards 1.1s;
+            }
+            
+            .hero-btn:hover {
+                background-color: #fff;
+                color: #000;
+            }
+            
+            /* Luxury Brands Section - Premium Redesign */
+            .luxury-brands {
+                padding: 120px 0;
+                background-color: #f8f8f8;
+                position: relative;
+            }
+            
+            .luxury-brands::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: url('asset/img/subtle-pattern.png');
+                opacity: 0.03;
+                pointer-events: none;
+            }
+            
+            .section-header {
+                text-align: center;
+                margin-bottom: 80px;
+            }
+            
+            .section-title {
+                font-size: 42px;
+                font-weight: 300;
+                margin-bottom: 15px;
+                color: #000;
+                letter-spacing: 1px;
+            }
+            
+            .section-subtitle {
+                font-size: 16px;
+                color: #555;
+                max-width: 600px;
+                margin: 0 auto;
+                font-weight: 300;
+                line-height: 1.6;
+            }
+            
+            .brands-showcase {
+                display: flex;
+                flex-direction: column;
+                gap: 80px;
+            }
+            
+            .brand-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                opacity: 0;
+                transform: translateY(50px);
+                transition: opacity 0.8s ease, transform 0.8s ease;
+            }
+            
+            .brand-row.animate {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            
+            .brand-row:nth-child(even) {
+                flex-direction: row-reverse;
+            }
+            
+            .brand-video-container {
+                flex: 1;
+                position: relative;
+                height: 400px;
+                overflow: hidden;
+                transform: scale(0.95);
+                transition: transform 1s ease;
+            }
+            
+            .brand-row.animate .brand-video-container {
+                transform: scale(1);
+            }
+            
+            .brand-video {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+            
+            .video-overlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(to right, rgba(0,0,0,0.3), rgba(0,0,0,0));
+                pointer-events: none;
+            }
+            
+            .brand-row:nth-child(even) .video-overlay {
+                background: linear-gradient(to left, rgba(0,0,0,0.3), rgba(0,0,0,0));
+            }
+            
+            .brand-content {
+                flex: 1;
+                padding: 0 60px;
+                opacity: 0;
+                transform: translateX(-30px);
+                transition: opacity 0.8s ease 0.3s, transform 0.8s ease 0.3s;
+            }
+            
+            .brand-row:nth-child(even) .brand-content {
+                transform: translateX(30px);
+            }
+            
+            .brand-row.animate .brand-content {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            
+            .brand-logo {
+                height: 60px;
+                margin-bottom: 30px;
+                display: flex;
+                align-items: center;
+            }
+            
+            .brand-logo img {
+                max-height: 100%;
+                max-width: 140px;
+            }
+            
+            .brand-name {
+                font-size: 32px;
+                font-weight: 300;
+                margin-bottom: 15px;
+                color: #000;
+                letter-spacing: 1px;
+            }
+            
+            .brand-desc {
+                font-size: 16px;
+                line-height: 1.8;
+                color: #555;
+                margin-bottom: 25px;
+                font-weight: 300;
+            }
+            
+            .brand-stats {
+                display: flex;
+                gap: 40px;
+                margin-bottom: 30px;
+            }
+            
+            .stat-item {
+                display: flex;
+                flex-direction: column;
+            }
+            
+            .stat-value {
+                font-size: 28px;
+                font-weight: 600;
+                color: #000;
+                margin-bottom: 5px;
+            }
+            
+            .stat-label {
+                font-size: 12px;
+                color: #777;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+            
+            .brand-link {
+                display: inline-block;
+                font-size: 14px;
+                font-weight: 500;
+                color: #000;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                position: relative;
+                padding-bottom: 5px;
+                transition: all 0.3s ease;
+            }
+            
+            .brand-link::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 1px;
+                background-color: #000;
+                transform: scaleX(0.3);
+                transform-origin: left;
+                transition: transform 0.3s ease;
+            }
+            
+            .brand-link:hover::after {
+                transform: scaleX(1);
+            }
+            
+            .brands-grid {
+                display: grid;
+                grid-template-columns: repeat(6, 1fr);
+                margin-top: 80px;
+                border-top: 1px solid #eee;
+                padding-top: 60px;
+                opacity: 0;
+                transform: translateY(30px);
+                transition: opacity 0.8s ease, transform 0.8s ease;
+            }
+            
+            .brands-grid.animate {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            
+            .brand-mini {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 20px;
+                opacity: 0.5;
+                transition: all 0.3s ease;
+            }
+            
+            .brand-mini:hover {
+                opacity: 1;
+            }
+            
+            .brand-mini img {
+                max-width: 80px;
+                max-height: 40px;
+                filter: grayscale(100%);
+                transition: all 0.3s ease;
+            }
+            
+            .brand-mini:hover img {
+                filter: grayscale(0%);
+                transform: scale(1.1);
+            }
+            
+            @media (max-width: 992px) {
+                .brand-row {
+                    flex-direction: column;
+                    gap: 40px;
+                }
+                
+                .brand-row:nth-child(even) {
+                    flex-direction: column;
+                }
+                
+                .brand-content {
+                    padding: 0;
+                }
+                
+                .brands-grid {
+                    grid-template-columns: repeat(3, 1fr);
+                }
+            }
+            
+            @media (max-width: 576px) {
+                .brands-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+            }
+            
+            /* Featured Cars Section - Ultra Minimalist Design */
+            .featured-cars {
+                padding: 80px 0;
+                background-color: #fff;
+            }
+            
+            .section-header {
+                text-align: center;
+                margin-bottom: 50px;
+            }
+            
+            .section-title {
+                font-size: 32px;
+                font-weight: 300;
+                color: #000;
+                letter-spacing: 1px;
+            }
+            
+            .cars-grid {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 30px;
+            }
+            
+            .car-card {
+                background-color: #fff;
+                overflow: hidden;
+                transition: transform 0.3s ease;
+            }
+            
+            .car-card:hover {
+                transform: translateY(-5px);
+            }
+            
+            .car-image {
+                height: 180px;
+                overflow: hidden;
+                position: relative;
+            }
+            
+            .car-image img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                transition: transform 0.5s ease;
+            }
+            
+            .car-card:hover .car-image img {
+                transform: scale(1.05);
+            }
+            
+            .car-details {
+                padding: 20px 0;
+                text-align: center;
+            }
+            
+            .car-brand {
+                font-size: 12px;
+                color: #777;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                margin-bottom: 5px;
+            }
+            
+            .car-name {
+                font-size: 18px;
+                font-weight: 500;
+                margin-bottom: 5px;
+                color: #000;
+            }
+            
+            .car-specs {
+                font-size: 14px;
+                color: #555;
+                margin-bottom: 10px;
+            }
+            
+            .car-specs span {
+                margin: 0 3px;
+            }
+            
+            .car-price {
+                font-size: 16px;
+                font-weight: 600;
+                color: #000;
+                margin-bottom: 15px;
+            }
+            
+            .car-btn {
+                display: inline-block;
+                padding: 8px 30px;
+                background-color: transparent;
+                border: 1px solid #000;
+                color: #000;
+                font-size: 12px;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                transition: all 0.3s ease;
+            }
+            
+            .car-btn:hover {
+                background-color: #000;
+                color: #fff;
+            }
+            
+            .view-all {
+                text-align: center;
+                margin-top: 50px;
+            }
+            
+            .view-all-btn {
+                display: inline-block;
+                padding: 10px 40px;
+                background-color: transparent;
+                border: 1px solid #000;
+                color: #000;
+                font-size: 14px;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                transition: all 0.3s ease;
+            }
+            
+            .view-all-btn:hover {
+                background-color: #000;
+                color: #fff;
+            }
+            
+            @media (max-width: 1200px) {
+                .cars-grid {
+                    grid-template-columns: repeat(3, 1fr);
+                }
+            }
+            
+            @media (max-width: 992px) {
+                .cars-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+            }
+            
+            @media (max-width: 576px) {
+                .cars-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+            
+            /* Services Section - Minimal */
+            .services {
+                padding: 120px 0;
+                background-color: #fff;
+            }
+            
+            .services-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 40px;
+            }
+            
+            .service-item {
+                text-align: center;
+                padding: 40px 30px;
+            }
+            
+            .service-icon {
+                font-size: 48px;
+                margin-bottom: 25px;
+                color: #000;
+            }
+            
+            .service-title {
+                font-size: 24px;
+                font-weight: 500;
+                margin-bottom: 15px;
+                color: #000;
+            }
+            
+            .service-desc {
+                font-size: 16px;
+                color: #555;
+                line-height: 1.6;
+            }
+            
+            /* Testimonials - Clean & Simple */
+            .testimonials {
+                padding: 120px 0;
+                background-color: #f8f8f8;
+                text-align: center;
+            }
+            
+            .testimonial-quote {
+                font-size: 24px;
+                line-height: 1.6;
+                max-width: 800px;
+                margin: 0 auto 30px;
+                color: #000;
+                font-weight: 300;
+                font-style: italic;
+            }
+            
+            .testimonial-author {
+                font-size: 18px;
+                font-weight: 500;
+                color: #000;
+            }
+            
+            .testimonial-role {
+                font-size: 14px;
+                color: #555;
+            }
+            
+            /* Contact CTA - Minimal */
+            .contact-cta {
+                padding: 100px 0;
+                background-color: #000;
+                color: #fff;
+                text-align: center;
+            }
+            
+            .cta-title {
+                font-size: 42px;
+                font-weight: 600;
+                margin-bottom: 20px;
+            }
+            
+            .cta-text {
+                font-size: 18px;
+                margin-bottom: 40px;
+                max-width: 600px;
+                margin-left: auto;
+                margin-right: auto;
+                font-weight: 300;
+            }
+            
+            .cta-btn {
+                display: inline-block;
+                padding: 15px 40px;
+                background-color: transparent;
+                border: 1px solid #fff;
+                color: #fff;
+                font-size: 16px;
+                font-weight: 500;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                transition: all 0.3s ease;
+            }
+            
+            .cta-btn:hover {
+                background-color: #fff;
+                color: #000;
+            }
+        </style>
     </head>
     <body>
         <!-- Include Navbar -->
         <jsp:include page="components/navbar.jsp" />
-
+        
+        
         <!-- Hero Banner - Minimal & Modern -->
         <section class="hero-banner">
-            <img src="asset/img/banner.jpg" alt="DriverXO Banner">
+            <video autoplay muted loop playsinline>
+                <source src="asset/img/banner.png" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
             <div class="hero-content">
                 <h1 class="hero-title"><span class="animate-text">DriverXO</span></h1>
                 <p class="hero-subtitle">Your trusted destination for quality vehicles at competitive prices. We make car buying simple.</p>
@@ -47,9 +665,12 @@
                     <!-- Mercedes-Benz -->
                     <div class="brand-row">
                         <div class="brand-video-container">
-                            <img src="asset/img/cars/mercedes_s-class.jpg" alt="Mercedes-Benz" class="brand-img" style="width:100%;height:100%;object-fit:cover;opacity:0.85;">
+                            <video class="brand-video" autoplay muted loop playsinline>
+                                <source src="asset/img/mecbrand.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
                             <div class="video-overlay"></div>
-                        </div>
+                                </div>
                         <div class="brand-content">
                             <div class="brand-logo">
                                 <img src="asset/img/brands/mercedes.png" alt="Mercedes-Benz">
@@ -67,13 +688,16 @@
                                 </div>
                             </div>
                             <a href="#" class="brand-link">Explore Mercedes-Benz Collection</a>
+                            </div>
                         </div>
-                    </div>
-                    
+                        
                     <!-- BMW -->
                     <div class="brand-row">
                         <div class="brand-video-container">
-                            <img src="asset/img/cars/bmw_m4.jpg" alt="BMW" class="brand-img" style="width:100%;height:100%;object-fit:cover;opacity:0.85;">
+                            <video class="brand-video" autoplay muted loop playsinline>
+                                <source src="asset/img/bmwbrand.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
                             <div class="video-overlay"></div>
                         </div>
                         <div class="brand-content">
@@ -93,26 +717,26 @@
                                 </div>
                             </div>
                             <a href="#" class="brand-link">Explore BMW Collection</a>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                
+                        
                 <div class="brands-grid">
                     <div class="brand-mini">
                         <img src="asset/img/brands/chevrolet.png" alt="Chevrolet">
-                    </div>
+                                </div>
                     <div class="brand-mini">
                         <img src="asset/img/brands/honda.png" alt="Honda">
-                    </div>
+                                    </div>
                     <div class="brand-mini">
                         <img src="asset/img/brands/hyundai.png" alt="Hyundai">
-                    </div>
+                                </div>
                     <div class="brand-mini">
                         <img src="asset/img/brands/nissan.png" alt="Nissan">
-                    </div>
+                            </div>
                     <div class="brand-mini">
                         <img src="asset/img/brands/mercedes.png" alt="Mercedes-Benz">
-                    </div>
+                        </div>
                     <div class="brand-mini">
                         <img src="asset/img/brands/bmw.png" alt="BMW">
                     </div>
@@ -125,70 +749,31 @@
             <div class="container">
                 <div class="section-header">
                     <h2 class="section-title">Featured Vehicles</h2>
-                    <p class="section-subtitle">Discover our premium selection of luxury vehicles</p>
                 </div>
                 
-                <div class="featured-cars-slider-container">
-                    <div class="featured-nav featured-prev">
-                        <i class="fas fa-chevron-left"></i>
-                    </div>
-                    
-                    <div class="featured-cars-slider">
-                        <c:forEach var="car" items="${latestCars}">
-                            <div class="featured-car-item">
-                                <div class="featured-car-image">
-                                    <span class="featured-car-tag">New</span>
-                                    <img src="asset/img/cars/${not empty car.carImg ? car.carImg : car.carBrand.toLowerCase().replaceAll(' ', '_').concat('_').concat(car.carName.toLowerCase().replaceAll(' ', '_')).concat('.webp')}" 
-                                         onerror="this.src='asset/img/cars/default-car.png'" 
-                                         alt="${car.carBrand} ${car.carName}">
-                                    <div class="featured-car-actions">
-                                        <button class="featured-car-action" title="Favorite">
-                                            <i class="far fa-heart"></i>
-                                        </button>
-                                        <button class="featured-car-action" title="Compare">
-                                            <i class="fas fa-exchange-alt"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="featured-car-content">
-                                    <div class="featured-car-brand">${car.carBrand}</div>
-                                    <h3 class="featured-car-name">${car.carName} (${car.carYear.getYear() + 1900})</h3>
-                                    <div class="featured-car-price">
-                                        $<fmt:formatNumber value="${car.carPrice}" type="number" pattern="#,###,###" />
-                                    </div>
-                                    <div class="featured-car-specs">
-                                        <div class="featured-car-spec">
-                                            <i class="fas fa-tachometer-alt spec-icon"></i>
-                                            <span class="spec-value">
-                                                <fmt:formatNumber value="${car.carOdo}" type="number" pattern="#,###" /> mi
-                                            </span>
-                                        </div>
-                                        <div class="featured-car-spec">
-                                            <i class="fas fa-gas-pump spec-icon"></i>
-                                            <span class="spec-value">${car.fuelType}</span>
-                                        </div>
-                                        <div class="featured-car-spec">
-                                            <i class="fas fa-cog spec-icon"></i>
-                                            <span class="spec-value">${not empty car.displacement ? car.displacement : '2.0'} L</span>
-                                        </div>
-                                    </div>
-                                    <div class="featured-car-footer">
-                                        <a href="car/detail?id=${car.carId}" class="featured-car-more">
-                                            Details
-                                        </a>
-                                    </div>
-                                </div>
+                <div class="cars-grid">
+                    <c:forEach var="car" items="${latestCars}">
+                        <div class="car-card">
+                            <div class="car-image">
+                                <img src="asset/img/cars/${car.carImg}" alt="${car.carBrand} ${car.carName}">
                             </div>
-                        </c:forEach>
-                    </div>
-                    
-                    <div class="featured-nav featured-next">
-                        <i class="fas fa-chevron-right"></i>
-                    </div>
+                            <div class="car-details">
+                                <div class="car-brand">${car.carBrand}</div>
+                                <h3 class="car-name">${car.carName}</h3>
+                                <div class="car-specs">
+                                    <span>${car.carYear.getYear() + 1900}</span>
+                                    <span>&bull;</span>
+                                    <span>${car.fuelType}</span>
+                                </div>
+                                <div class="car-price">$<fmt:formatNumber value="${car.carPrice}" type="number" pattern="#,###" /></div>
+                                <a href="car-detail.jsp?id=${car.carId}" class="car-btn">Explore</a>
+                            </div>
+                        </div>
+                    </c:forEach>
                 </div>
-
+                
                 <div class="view-all">
-                    <a href="${pageContext.request.contextPath}/car/list" class="view-all-btn">View All Vehicles</a>
+                    <a href="${pageContext.request.contextPath}/car/list" class="view-all-btn">View All</a>
                 </div>
             </div>
         </section>
@@ -312,330 +897,7 @@
                 if (brandsGrid) {
                     observer.observe(brandsGrid);
                 }
-                
-                // Featured cars slider
-                const featuredSlider = document.querySelector('.featured-cars-slider');
-                const featuredPrev = document.querySelector('.featured-prev');
-                const featuredNext = document.querySelector('.featured-next');
-                
-                if (featuredSlider && featuredPrev && featuredNext) {
-                    // Scroll amount for arrow buttons
-                    const scrollAmount = 310; // Slightly wider than car width
-                    
-                    // Scroll left button
-                    featuredPrev.addEventListener('click', () => {
-                        featuredSlider.scrollBy({
-                            left: -scrollAmount,
-                            behavior: 'smooth'
-                        });
-                    });
-                    
-                    // Scroll right button
-                    featuredNext.addEventListener('click', () => {
-                        featuredSlider.scrollBy({
-                            left: scrollAmount,
-                            behavior: 'smooth'
-                        });
-                    });
-                    
-                    // Kiểm tra xem có nên hiển thị nút mũi tên không
-                    const checkArrowVisibility = () => {
-                        if (featuredSlider.scrollWidth <= featuredSlider.clientWidth) {
-                            // Nếu không có cuộn ngang, ẩn cả hai nút
-                            featuredPrev.style.display = 'none';
-                            featuredNext.style.display = 'none';
-                        } else {
-                            // Hiển thị nút nếu cần cuộn
-                            featuredPrev.style.display = 'flex';
-                            featuredNext.style.display = 'flex';
-                            
-                            // Kiểm tra vị trí cuộn để làm mờ nút khi cần
-                            if (featuredSlider.scrollLeft <= 10) {
-                                featuredPrev.style.opacity = '0.5';
-                                featuredPrev.style.pointerEvents = 'none';
-                            } else {
-                                featuredPrev.style.opacity = '1';
-                                featuredPrev.style.pointerEvents = 'auto';
-                            }
-                            
-                            if (featuredSlider.scrollLeft + featuredSlider.clientWidth >= featuredSlider.scrollWidth - 10) {
-                                featuredNext.style.opacity = '0.5';
-                                featuredNext.style.pointerEvents = 'none';
-                            } else {
-                                featuredNext.style.opacity = '1';
-                                featuredNext.style.pointerEvents = 'auto';
-                            }
-                        }
-                    };
-                    
-                    // Update arrow visibility on scroll
-                    featuredSlider.addEventListener('scroll', checkArrowVisibility);
-                    
-                    // Initial check
-                    checkArrowVisibility();
-                    
-                    // Check on window resize
-                    window.addEventListener('resize', checkArrowVisibility);
-                    
-                    // Prevent horizontal scroll wheel event on featured slider
-                    featuredSlider.addEventListener('wheel', (e) => {
-                        if (e.deltaY !== 0) {
-                            e.preventDefault();
-                            featuredSlider.scrollLeft += e.deltaY;
-                        }
-                    });
-                }
             });
         </script>
-
-        <style>
-            /* Featured Cars Section - Single Row Slider Design */
-            .featured-cars {
-                padding: 80px 0;
-                background-color: #f9f9f9;
-            }
-            
-            /* Container cho slider */
-            .featured-cars-slider-container {
-                position: relative;
-                margin: 40px auto 0;
-                max-width: 95%;
-            }
-            
-            /* Slider chính */
-            .featured-cars-slider {
-                display: flex;
-                overflow-x: auto;
-                scroll-snap-type: x mandatory;
-                scroll-behavior: smooth;
-                -webkit-overflow-scrolling: touch;
-                scrollbar-width: none; /* Firefox */
-                -ms-overflow-style: none; /* IE and Edge */
-                gap: 20px;
-                padding: 10px 5px;
-            }
-            
-            .featured-cars-slider::-webkit-scrollbar {
-                display: none; /* Chrome, Safari, Opera */
-            }
-            
-            /* Nút điều hướng slider */
-            .featured-nav {
-                position: absolute;
-                top: 50%;
-                transform: translateY(-50%);
-                width: 36px;
-                height: 36px;
-                background: #fff;
-                border: 1px solid #eee;
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                cursor: pointer;
-                color: #777;
-                font-size: 12px;
-                box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-                z-index: 3;
-                transition: all 0.2s;
-            }
-            
-            .featured-nav:hover {
-                background: #f9f9f9;
-                color: #333;
-            }
-            
-            .featured-prev {
-                left: -18px;
-            }
-            
-            .featured-next {
-                right: -18px;
-            }
-            
-            /* Card xe */
-            .featured-car-item {
-                flex: 0 0 300px;
-                scroll-snap-align: start;
-                border: none;
-                transition: all 0.2s;
-                box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-                border-radius: 2px;
-                background: #fff;
-                min-width: 300px;
-                max-width: 300px;
-            }
-            
-            .featured-car-item:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 4px 8px rgba(0,0,0,0.08);
-            }
-            
-            .featured-car-image {
-                position: relative;
-                overflow: hidden;
-                height: 180px;
-            }
-            
-            .featured-car-image img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                transition: transform 0.3s;
-            }
-            
-            .featured-car-item:hover .featured-car-image img {
-                transform: scale(1.05);
-            }
-            
-            .featured-car-tag {
-                position: absolute;
-                top: 10px;
-                left: 10px;
-                background: #000;
-                color: #fff;
-                font-size: 10px;
-                padding: 2px 6px;
-                text-transform: uppercase;
-                letter-spacing: 1px;
-            }
-            
-            .featured-car-actions {
-                position: absolute;
-                top: 10px;
-                right: 10px;
-                display: flex;
-                gap: 5px;
-                opacity: 0;
-                transition: opacity 0.2s;
-            }
-            
-            .featured-car-item:hover .featured-car-actions {
-                opacity: 1;
-            }
-            
-            .featured-car-action {
-                background: rgba(255,255,255,0.9);
-                border: none;
-                width: 26px;
-                height: 26px;
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                cursor: pointer;
-                color: #333;
-                font-size: 11px;
-            }
-            
-            .featured-car-content {
-                padding: 15px;
-            }
-            
-            .featured-car-brand {
-                font-size: 11px;
-                color: #555;
-                text-transform: uppercase;
-                letter-spacing: 1px;
-                margin-bottom: 4px;
-                font-weight: 500;
-            }
-            
-            .featured-car-name {
-                font-size: 15px;
-                font-weight: 500;
-                margin-bottom: 8px;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
-            
-            .featured-car-price {
-                font-size: 16px;
-                margin-bottom: 12px;
-                font-weight: 600;
-            }
-            
-            .featured-car-specs {
-                display: flex;
-                justify-content: space-between;
-                margin-bottom: 10px;
-                border-top: 1px solid #f0f0f0;
-                padding-top: 8px;
-                font-size: 11px;
-            }
-            
-            .featured-car-spec {
-                display: flex;
-                align-items: center;
-                gap: 4px;
-                font-size: 11px;
-                color: #666;
-            }
-            
-            .featured-car-footer {
-                display: flex;
-                justify-content: flex-end;
-                align-items: center;
-                margin-top: 10px;
-                padding-top: 10px;
-                border-top: 1px solid #f0f0f0;
-            }
-            
-            .featured-car-more {
-                font-size: 11px;
-                text-decoration: none;
-                color: #000;
-                font-weight: 500;
-                text-transform: uppercase;
-                letter-spacing: 0.5px;
-            }
-            
-            .view-all {
-                text-align: center;
-                margin-top: 40px;
-            }
-            
-            .view-all-btn {
-                display: inline-block;
-                padding: 10px 25px;
-                background: #000;
-                color: #fff;
-                font-size: 14px;
-                font-weight: 500;
-                letter-spacing: 0.5px;
-                text-transform: uppercase;
-                transition: all 0.3s ease;
-                border: 1px solid #000;
-            }
-            
-            .view-all-btn:hover {
-                background: transparent;
-                color: #000;
-            }
-            
-            /* Responsive design */
-            @media (max-width: 768px) {
-                .featured-car-item {
-                    flex: 0 0 260px;
-                    min-width: 260px;
-                }
-                
-                .featured-cars-slider-container {
-                    max-width: 90%;
-                }
-            }
-            
-            @media (max-width: 576px) {
-                .featured-car-item {
-                    flex: 0 0 240px;
-                    min-width: 240px;
-                }
-                
-                .featured-cars-slider-container {
-                    max-width: 85%;
-                }
-            }
-        </style>
     </body>
 </html>

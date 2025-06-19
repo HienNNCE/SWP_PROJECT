@@ -1,10 +1,13 @@
 C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\DAO\OrderDetailDAO.java
 C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\Model\Payment.java
+C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\Controller\ResetPasswordServlet.java
 C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\Model\Comment.java
+C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\Controller\ForgotServler.java
 C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\Controller\CartServlet.java
 C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\DAO\OrderDAO.java
 C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\Controller\PartServlet.java
 C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\DAO\ServiceDAO.java
+C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\Controller\OTPServlet.java
 C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\Model\User.java
 C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\Controller\AdminCarServlet.java
 C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\Controller\HomeServlet.java
@@ -15,6 +18,7 @@ C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\Co
 C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\Controller\StaffPartServlet.java
 C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\Controller\AdminDashboardServlet.java
 C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\Controller\CarListServlet.java
+C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\Controller\LoginServlet.java
 C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\DB\DBContext.java
 C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\Controller\AdminPartServlet.java
 C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\DAO\PartDAO.java
@@ -23,6 +27,7 @@ C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\DA
 C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\Model\Car.java
 C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\Model\Role.java
 C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\com\mycompany\drivexo_management_project\resources\JakartaEE10Resource.java
+C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\Controller\RegisterServlet.java
 C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\Controller\AddToCartServlet.java
 C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\Controller\CarDetailServlet.java
 C:\Users\acer\Desktop\SWP_Management\DriveXO_Management_Project\src\main\java\DAO\CarAppointmentDAO.java
