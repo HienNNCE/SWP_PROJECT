@@ -7,7 +7,7 @@
         <meta charset="UTF-8">
         <title>Parts Listing - DriverXO</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="./asset/css/style.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/asset/css/style.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
         <style>
             .page-title-section {
@@ -45,71 +45,53 @@
         </style>
     </head>
     <body>
-
         <jsp:include page="./components/navbar.jsp" />
 
-        <div class="container">
-            <!-- Breadcrumb -->
-            <section class="page-title-section">
-                <div class="container">
-                    <div class="breadcrumb">
-                        <a href="${pageContext.request.contextPath}/home">Home</a>
-                        <span><i class="fas fa-angle-right"></i></span>
-                        <a href="parts-list.jsp">Parts</a>
-                    </div>
-                </div>
-            </section>
+        <div class="container" style="padding-top: 100px">
 
             <!-- Search and Filter -->
             <div class="filter-section">
                 <form class="row g-3" action="${pageContext.request.contextPath}/parts/filter" method="get">
-                    <!-- Search -->
-                    <div class="col-md-4">
-                        <label class="form-label fw-bold">Search by Name</label>
-                        <input type="text" name="keyword" value="${param.keyword}" class="form-control" placeholder="e.g., Brake Pad">
-                    </div>
-
-                    <!-- Brand -->
-                    <div class="col-md-2">
-                        <label class="form-label fw-bold">Brand</label>
-                        <select name="brand" class="form-select">
-                            <option value="">All Brands</option>
-                            <c:forEach var="b" items="${brands}">
-                                <option value="${b}" ${param.brand == b ? 'selected' : ''}>${b}</option>
-                            </c:forEach>
-                        </select>
-                    </div>
-
-                    <!-- Car Model -->
-                    <div class="col-md-2">
-                        <label class="form-label fw-bold">Car Model</label>
-                        <input type="text" name="carModel" class="form-control" placeholder="e.g., Civic" value="${param.carModel}">
-                    </div>
-
-                    <!-- Sort by Price -->
-                    <div class="col-md-2">
-                        <label class="form-label fw-bold">Sort by Price</label>
-                        <select name="sort" class="form-select">
-                            <option value="">No Sort</option>
-                            <option value="asc" ${param.sort == 'asc' ? 'selected' : ''}>Low to High</option>
-                            <option value="desc" ${param.sort == 'desc' ? 'selected' : ''}>High to Low</option>
-                        </select>
-                    </div>
-
-
-                    <!-- Stock -->
-                    <div class="col-md-2">
-                        <label class="form-label fw-bold">Stock Range</label>
-                        <div class="d-flex">
-                            <input type="number" name="stockFrom" class="form-control me-1" placeholder="From" value="${param.stockFrom}">
-                            <input type="number" name="stockTo" class="form-control" placeholder="To" value="${param.stockTo}">
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <label class="form-label fw-bold">Search by Name</label>
+                            <input type="text" name="keyword" value="${param.keyword}" class="form-control" placeholder="e.g., Brake Pad">
                         </div>
-                    </div>
 
-                    <!-- Buttons -->
-                    <div class="col-md-12 d-flex justify-content-end gap-2 mt-2">
-                        <button type="submit" class="btn btn-primary"><i class="fas fa-filter"></i> Apply Filter</button>
-                        <a href="${pageContext.request.contextPath}/parts" class="btn btn-secondary">Reset</a>
+                        <div class="col-md-2">
+                            <label class="form-label fw-bold">Brand</label>
+                            <select name="brand" class="form-select">
+                                <option value="">All Brands</option>
+                                <c:forEach var="b" items="${brands}">
+                                    <option value="${b}" ${param.brand == b ? 'selected' : ''}>${b}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label class="form-label fw-bold">Car Model</label>
+                            <input type="text" name="carModel" class="form-control" placeholder="e.g., Civic" value="${param.carModel}">
+                        </div>
+
+                        <div class="col-md-2">
+                            <label class="form-label fw-bold">Sort by Price</label>
+                            <select name="sort" class="form-select">
+                                <option value="">No Sort</option>
+                                <option value="asc" ${param.sort == 'asc' ? 'selected' : ''}>Low to High</option>
+                                <option value="desc" ${param.sort == 'desc' ? 'selected' : ''}>High to Low</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-3 align-self-end">
+                            <div class="d-flex gap-2">
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="fas fa-filter"></i> Apply
+                                </button>
+                                <a href="${pageContext.request.contextPath}/parts" class="btn btn-secondary w-100">
+                                    <i class="fas fa-undo"></i> Reset
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -148,8 +130,29 @@
             </div>
         </div>
 
-        <jsp:include page="../components/footer.jsp" />
+        <jsp:include page="./components/footer.jsp" />
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+                                    window.addEventListener('scroll', function () {
+                                        const header = document.querySelector('.header');
+                                        const logoWhite = document.querySelector('.logo-white');
+                                        const logoDark = document.querySelector('.logo-dark');
+
+                                        if (window.scrollY > 50) {
+                                            header.classList.add('scrolled');
+                                            if (logoWhite)
+                                                logoWhite.style.display = 'none';
+                                            if (logoDark)
+                                                logoDark.style.display = 'block';
+                                        } else {
+                                            header.classList.remove('scrolled');
+                                            if (logoWhite)
+                                                logoWhite.style.display = 'block';
+                                            if (logoDark)
+                                                logoDark.style.display = 'none';
+                                        }
+                                    });
+        </script>
         <script>
             function addToCartInline(partId, partName, partPriceStr) {
                 const partPrice = parseFloat(partPriceStr);

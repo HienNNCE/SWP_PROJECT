@@ -1,15 +1,17 @@
+<%-- 
+    Document   : car-list-ajax
+    Created on : Jun 20, 2023, 10:00:00 AM
+    Author     : giahuy
+--%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<!-- Phần nội dung xe - chỉ cho AJAX response -->
-<div class="cars-toolbar">
-    <div class="cars-count"><strong>${totalCars}</strong> vehicles</div>
-</div>
-
+<!-- Cars Grid/List View - AJAX Response -->
 <c:choose>
     <c:when test="${not empty carList}">
-        <div class="cars-grid" id="carsGrid">
+        <div id="carsGrid" class="cars-grid">
             <c:forEach var="car" items="${carList}">
                 <div class="car-item">
                     <div class="car-image">
@@ -90,14 +92,17 @@
         <!-- No Cars Found -->
         <div class="no-cars-found">
             <i class="fas fa-car-alt no-cars-icon"></i>
-            <h3 class="no-cars-title">No Vehicles Found</h3>
+            <h3 class="no-cars-title">Không tìm thấy xe nào</h3>
             <p class="no-cars-text">
-                We couldn't find any vehicles matching your search criteria. 
-                Please try with different parameters or browse our complete collection.
+                Không tìm thấy xe nào phù hợp với tiêu chí tìm kiếm của bạn.
+                Vui lòng thử lại với các tiêu chí khác hoặc xem toàn bộ danh sách xe.
             </p>
             <a href="${pageContext.request.contextPath}/car/list" class="browse-all-btn">
-                View All Vehicles
+                Xem tất cả xe
             </a>
         </div>
     </c:otherwise>
-</c:choose> 
+</c:choose>
+
+<!-- Cars Count for AJAX response -->
+<div class="cars-count" style="display:none;"><strong>${totalCars}</strong> vehicles</div> 

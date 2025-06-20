@@ -220,7 +220,7 @@
                 
                 <h1 class="auth-heading">Sign in to your account</h1>
                 
-                <form action="LoginServlet" method="post">
+                <form action="../home" method="get">
                     <div class="form-group">
                         <label class="form-label" for="username">Username or Email</label>
                         <input type="text" class="form-control" id="username" name="username" required>
