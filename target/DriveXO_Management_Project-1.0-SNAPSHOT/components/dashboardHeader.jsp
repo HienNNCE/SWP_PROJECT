@@ -37,7 +37,7 @@
             <!-- User Account -->
             <li class="nav-item dropdown user-menu">
                 <a class="nav-link user-profile" data-toggle="dropdown" href="#">
-                    <img src="../asset/img/avt/adminavt.png" alt="Admin Avatar" class="user-image">
+                    <img src="${pageContext.request.contextPath}/asset/img/avt/adminavt.png" alt="Admin Avatar" class="user-image">
                     <div class="user-info">
                         <span class="user-name">Admin User</span>
                         <span class="user-role">Administrator</span>
@@ -45,7 +45,7 @@
                 </a>
                 <div class="dropdown-menu">
                     <div class="dropdown-header-img">
-                        <img src="../asset/img/avt/adminavt.png" alt="Admin Avatar">
+                        <img src="${pageContext.request.contextPath}/asset/img/avt/adminavt.png" alt="Admin Avatar">
                         <p>Admin User</p>
                         <small>Member since Nov. 2025</small>
                     </div>

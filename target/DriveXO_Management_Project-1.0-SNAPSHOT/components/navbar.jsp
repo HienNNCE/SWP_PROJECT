@@ -119,7 +119,7 @@
         left: 0;
         width: 0;
         height: 1px;
-        background-color: #fff;
+        background-color: transparent;
         transition: width 0.3s ease;
     }
     
@@ -127,7 +127,7 @@
         background-color: #000;
     }
     
-    .main-nav a:hover:after,
+/*    .main-nav a:hover:after,*/
     .main-nav a.active:after {
         width: 100%;
     }
@@ -501,8 +501,8 @@
             <div class="left-section">
                 <div class="logo">
                     <a href="home.jsp">
-                        <img src="asset/img/driverxo-logo-white.png" alt="DriverXO" class="logo-white">
-                        <img src="asset/img/driverxo-logo.png" alt="DriverXO" class="logo-dark" style="display: none;">
+                        <img src="${pageContext.request.contextPath}/asset/img/driverxo-logo-white.png" alt="DriverXO" class="logo-white">
+                        <img src="${pageContext.request.contextPath}/asset/img/driverxo-logo.png" alt="DriverXO" class="logo-dark" style="display: none;">
                         DriverXO
                     </a>
                 </div>
@@ -515,7 +515,7 @@
             <nav class="main-nav">
                 <ul>
                     <li class="dropdown-container">
-                        <a href="${pageContext.request.contextPath}/car/list" class="dropdown-toggle ${pageContext.request.servletPath eq '/car/car-list.jsp' ? 'active' : ''}">
+                        <a href="${pageContext.request.contextPath}/car/list" class="${pageContext.request.servletPath eq '/car/car-list.jsp' ? 'active' : ''}">
                             Cars <i class="fas fa-chevron-down"></i>
                         </a>
                         <div class="mega-dropdown">
@@ -538,7 +538,7 @@
                                     <c:forEach var="car" items="${latestCars}" varStatus="loop">
                                         <c:if test="${loop.index < 8}">
                                             <div class="car-preview">
-                                                <img src="asset/img/cars/${car.carImg}" alt="${car.carBrand} ${car.carName}">
+                                                <img src="${pageContext.request.contextPath}/asset/img/cars/${car.carImg}" alt="${car.carBrand} ${car.carName}">
                                                 <div class="car-model">
                                                     ${car.carName} <span class="car-model-badge">®</span>
                                                 </div>
@@ -562,7 +562,7 @@
                                     <!-- Fallback if no cars in database -->
                                     <c:if test="${empty latestCars}">
                                         <div class="car-preview">
-                                            <img src="asset/img/cars/mercedes-s-class.png" alt="Mercedes S-Class">
+                                            <img src="${pageContext.request.contextPath}/asset/img/cars/mercedes-s-class.png" alt="Mercedes S-Class">
                                             <div class="car-model">
                                                 S-Class <span class="car-model-badge">®</span>
                                             </div>
@@ -571,7 +571,7 @@
                                             </div>
                                         </div>
                                         <div class="car-preview">
-                                            <img src="asset/img/cars/bmw-7-series.png" alt="BMW 7 Series">
+                                            <img src="${pageContext.request.contextPath}/asset/img/cars/bmw-7-series.png" alt="BMW 7 Series">
                                             <div class="car-model">
                                                 7 Series <span class="car-model-badge">®</span>
                                             </div>
@@ -583,7 +583,7 @@
                                             </div>
                                         </div>
                                         <div class="car-preview">
-                                            <img src="asset/img/cars/audi-a8.png" alt="Audi A8">
+                                            <img src="${pageContext.request.contextPath}/asset/img/cars/audi-a8.png" alt="Audi A8">
                                             <div class="car-model">
                                                 A8 <span class="car-model-badge">®</span>
                                             </div>
@@ -592,7 +592,7 @@
                                             </div>
                                         </div>
                                         <div class="car-preview">
-                                            <img src="asset/img/cars/lexus-ls.png" alt="Lexus LS">
+                                            <img src="${pageContext.request.contextPath}/asset/img/cars/lexus-ls.png" alt="Lexus LS">
                                             <div class="car-model">
                                                 LS <span class="car-model-badge">®</span>
                                             </div>
@@ -609,7 +609,8 @@
                               </div>
                           </div>
                     </li>
-                    <li><a href="${pageContext.request.contextPath}/parts-list.jsp" class="${pageContext.request.servletPath eq '/part-list.jsp' ? 'active' : ''}">Parts</a></li>
+                    <li><a href="${pageContext.request.contextPath}/parts"
+                           class="${activePage eq 'parts' ? 'active' : ''}">Parts</a></li>
                     <li><a href="#" class="${pageContext.request.servletPath eq '/services.jsp' ? 'active' : ''}">Services</a></li>
                     <li><a href="#" class="${pageContext.request.servletPath eq '/about.jsp' ? 'active' : ''}">About</a></li>
                     <li><a href="#" class="${pageContext.request.servletPath eq '/contact.jsp' ? 'active' : ''}">Contact</a></li>
@@ -651,20 +652,34 @@
 </header>
 
 <script>
-    // Header scroll effect
-    window.addEventListener('scroll', function() {
-        const header = document.querySelector('.header');
-        const logoWhite = document.querySelector('.logo-white');
-        const logoDark = document.querySelector('.logo-dark');
-        
-        if (window.scrollY > 50) {
+document.addEventListener('DOMContentLoaded', function () {
+    const header = document.querySelector('.header');
+    const logoWhite = document.querySelector('.logo-white');
+    const logoDark = document.querySelector('.logo-dark');
+
+    const forceDark = ${forceDarkNavbar == true ? 'true' : 'false'};
+    const hasBanner = document.querySelector('.hero-banner') !== null;
+
+    function updateNavbar() {
+        if (forceDark === true) {
+            header.classList.remove('scrolled');
+            if (logoWhite) logoWhite.style.display = 'block';
+            if (logoDark) logoDark.style.display = 'none';
+            return;
+        }
+
+        if (window.scrollY > 50 || !hasBanner) {
             header.classList.add('scrolled');
-            logoWhite.style.display = 'none';
-            logoDark.style.display = 'block';
+            if (logoWhite) logoWhite.style.display = 'none';
+            if (logoDark) logoDark.style.display = 'block';
         } else {
             header.classList.remove('scrolled');
-            logoWhite.style.display = 'block';
-            logoDark.style.display = 'none';
+            if (logoWhite) logoWhite.style.display = 'block';
+            if (logoDark) logoDark.style.display = 'none';
         }
-    });
+    }
+
+    updateNavbar();
+    window.addEventListener('scroll', updateNavbar);
+});
 </script>

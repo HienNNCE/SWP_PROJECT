@@ -2,7 +2,7 @@
 <div class="sidebar">
     <div class="sidebar-header">
         <a href="../home.jsp" class="logo-link">
-            <img src="../asset/img/driverxo-logo-white.png" alt="DriverXO" class="logo-icon">
+            <img src="${pageContext.request.contextPath}/asset/img/driverxo-logo-white.png" alt="DriverXO" class="logo-icon">
             <span>DriverXO</span>
         </a>
     </div>
@@ -10,7 +10,7 @@
     <div class="sidebar-body">
         <div class="user-panel">
             <div class="user-image">
-                <img src="../asset/img/avt/adminavt.png" alt="Admin Avatar">
+                <img src="${pageContext.request.contextPath}/asset/img/avt/adminavt.png" alt="Admin Avatar">
             </div>
             <div class="user-info">
                 <h6>Welcome back,</h6>
@@ -32,7 +32,7 @@
             </li>
             
             <li class="nav-item">
-                <a href="../admin/part/parts-list.jsp" class="nav-link">
+                <a href="${pageContext.request.contextPath}/staff/part" class="nav-link">
                     <i class="fas fa-cogs"></i>
                     <span>Parts</span>
                 </a>
