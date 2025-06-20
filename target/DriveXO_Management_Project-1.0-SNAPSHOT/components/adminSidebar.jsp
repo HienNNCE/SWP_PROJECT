@@ -36,7 +36,7 @@
             </li>
             
             <li class="nav-item">
-                <a href="../admin/car/car.jsp" class="nav-link">
+                <a href="../admin/car" class="nav-link">
                     <i class="fas fa-car"></i>
                     <span>Cars</span>
                     <span class="badge badge-warning">8</span>
@@ -44,7 +44,7 @@
             </li>
             
             <li class="nav-item">
-                <a href="../admin/user/user.jsp" class="nav-link">
+                <a href="../admin/user/account-list.jsp" class="nav-link">
                     <i class="fas fa-users"></i>
                     <span>Users</span>
                     <span class="badge badge-info">24</span>
@@ -59,42 +59,42 @@
             </li>
             
             <li class="nav-item">
-                <a href="..admin/service/services.jsp" class="nav-link">
+                <a href="#" class="nav-link">
                     <i class="fas fa-wrench"></i>
                     <span>Services</span>
                 </a>
             </li>
             
             <li class="nav-item">
-                <a href="appointment.jsp" class="nav-link">
+                <a href="#" class="nav-link">
                     <i class="fas fa-calendar-alt"></i>
                     <span>Appointments</span>
                 </a>
             </li>
             
             <li class="nav-item">
-                <a href="payment.jsp" class="nav-link">
+                <a href="#" class="nav-link">
                     <i class="fas fa-credit-card"></i>
                     <span>Payments</span>
                 </a>
             </li>
             
             <li class="nav-item">
-                <a href="blog.jsp" class="nav-link">
+                <a href="#" class="nav-link">
                     <i class="fas fa-newspaper"></i>
                     <span>Blog/Posts</span>
                 </a>
             </li>
             
             <li class="nav-item">
-                <a href="transaction.jsp" class="nav-link">
+                <a href="#" class="nav-link">
                     <i class="fas fa-exchange-alt"></i>
                     <span>Transactions</span>
                 </a>
             </li>
             
             <li class="nav-item">
-                <a href="order.jsp" class="nav-link">
+                <a href="#" class="nav-link">
                     <i class="fas fa-shopping-cart"></i>
                     <span>Orders</span>
                     <span class="badge badge-danger">3</span>
@@ -106,7 +106,7 @@
             </li>
             
             <li class="nav-item">
-                <a href="reports.jsp" class="nav-link">
+                <a href="#" class="nav-link">
                     <i class="fas fa-chart-bar"></i>
                     <span>Feedback</span>
                 </a>
@@ -114,7 +114,7 @@
             
             
             <li class="nav-item">
-                <a href="settings.jsp" class="nav-link">
+                <a href="#" class="nav-link">
                     <i class="fas fa-cog"></i>
                     <span>Settings</span>
                 </a>

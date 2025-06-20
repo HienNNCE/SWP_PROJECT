@@ -5,7 +5,7 @@
     <head>
         <meta charset="UTF-8">
         <title>DriverXO - Part Detail</title>
-        <link rel="stylesheet" href="./asset/css/style.css">
+        <link rel="stylesheet" href="../asset/css/style.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
         <style>
             .page-title-section {
@@ -106,19 +106,6 @@
 
     <body>
         <jsp:include page="../components/navbar.jsp" />
-
-        <!-- Breadcrumb -->
-        <section class="page-title-section">
-            <div class="container">
-                <div class="breadcrumb">
-                    <a href="${pageContext.request.contextPath}/home">Home</a>
-                    <span><i class="fas fa-angle-right"></i></span>
-                    <a href="part-list.jsp">Part</a>
-                    <span><i class="fas fa-angle-right"></i></span>
-                    <span>${part.partName}</span>
-                </div>
-            </div>
-        </section>
 
         <!-- Main Content -->
         <section class="car-detail-hero">

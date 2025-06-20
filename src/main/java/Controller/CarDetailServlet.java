@@ -29,7 +29,7 @@ public class CarDetailServlet extends HttpServlet {
 
             if (car != null) {
                 request.setAttribute("car", car);
-                request.getRequestDispatcher("/car/car-detail.jsp").forward(request, response);
+                request.getRequestDispatcher("/car-detail.jsp").forward(request, response);
             } else {
                 // Handle car not found, maybe redirect to an error page or car list
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Car not found");

@@ -88,7 +88,7 @@ public class CarDAO extends DBContext {
 
     public byte[] getCarImageById(int carId) {
         // Phương thức này sẽ được triển khai sau khi có cấu trúc lưu trữ hình ảnh
-        throw new UnsupportedOperationException("Not supported yet.");
+        return null; // Trả về null thay vì throw exception để tránh lỗi
     }
 
     public Car getCarById(int carId) {
@@ -432,5 +432,74 @@ public class CarDAO extends DBContext {
             Logger.getLogger(CarDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return cars;
+    }
+
+    /**
+     * Tìm kiếm xe theo từ khóa
+     * @param keyword Từ khóa tìm kiếm
+     * @return Danh sách xe phù hợp với từ khóa
+     */
+    public ArrayList<Car> searchCars(String keyword) {
+        ArrayList<Car> cars = new ArrayList<>();
+        String query = "SELECT * FROM Car WHERE car_name LIKE ? OR car_brand LIKE ? OR model LIKE ?";
+        
+        try {
+            PreparedStatement ps = this.getConnection().prepareStatement(query);
+            String searchPattern = "%" + keyword + "%";
+            ps.setString(1, searchPattern);
+            ps.setString(2, searchPattern);
+            ps.setString(3, searchPattern);
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                cars.add(new Car(
+                    rs.getInt("car_id"),
+                    rs.getString("car_name"),
+                    rs.getString("car_brand"),
+                    rs.getString("model"),
+                    rs.getBigDecimal("car_price"),
+                    rs.getDate("car_year"),
+                    rs.getString("car_img"),
+                    rs.getInt("car_stock"),
+                    rs.getBigDecimal("car_odo"),
+                    rs.getString("fuel_type"),
+                    rs.getBigDecimal("displacement"),
+                    rs.getInt("category_id")
+                ));
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(CarDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return cars;
+    }
+    
+    /**
+     * Kiểm tra xem một xe có thuộc category không
+     * @param carId ID của xe
+     * @param categoryName Tên category
+     * @return true nếu xe thuộc category, false nếu không
+     */
+    public boolean isCarInCategory(int carId, String categoryName) {
+        String query = "SELECT COUNT(*) FROM Car c JOIN Category cat ON c.category_id = cat.category_id " +
+                      "WHERE c.car_id = ? AND cat.category_name = ?";
+        try {
+            PreparedStatement ps = this.getConnection().prepareStatement(query);
+            ps.setInt(1, carId);
+            ps.setString(2, categoryName);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                rs.close();
+                ps.close();
+                return count > 0;
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(CarDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 }

@@ -409,6 +409,85 @@
             display: none;
         }
     }
+    
+    /* Dropdown profile menu */
+    .profile-dropdown {
+        position: relative;
+    }
+    
+    .profile-menu {
+        position: absolute;
+        top: 40px;
+        right: 0;
+        width: 200px;
+        background-color: #fff;
+        border-radius: 4px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        padding: 10px 0;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(10px);
+        transition: all 0.3s ease;
+        z-index: 1100;
+    }
+    
+    .profile-dropdown:hover .profile-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+    
+    .profile-menu ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .profile-menu ul li {
+        padding: 0;
+        margin: 0;
+    }
+    
+    .profile-menu ul li a {
+        display: flex;
+        align-items: center;
+        padding: 10px 20px;
+        color: #333;
+        font-size: 13px;
+        text-decoration: none;
+        transition: all 0.2s ease;
+    }
+    
+    .profile-menu ul li a:hover {
+        background-color: #f5f5f5;
+    }
+    
+    .profile-menu ul li a i {
+        width: 20px;
+        margin-right: 10px;
+        text-align: center;
+    }
+    
+    .profile-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        object-fit: cover;
+        cursor: pointer;
+        border: 2px solid #fff;
+        transition: all 0.3s ease;
+    }
+    
+    .header.scrolled .profile-avatar {
+        border-color: #eee;
+    }
+    
+    /* Divider in dropdown menu */
+    .menu-divider {
+        height: 1px;
+        background-color: #f0f0f0;
+        margin: 5px 0;
+    }
 </style>
 
 <!-- Fetch all car data from the backend -->
@@ -436,7 +515,7 @@
             <nav class="main-nav">
                 <ul>
                     <li class="dropdown-container">
-                        <a href="${pageContext.request.contextPath}/car-list.jsp" class="dropdown-toggle ${pageContext.request.servletPath eq '/car-list.jsp' ? 'active' : ''}">
+                        <a href="${pageContext.request.contextPath}/car/list" class="dropdown-toggle ${pageContext.request.servletPath eq '/car/car-list.jsp' ? 'active' : ''}">
                             Cars <i class="fas fa-chevron-down"></i>
                         </a>
                         <div class="mega-dropdown">
@@ -530,7 +609,7 @@
                               </div>
                           </div>
                     </li>
-                    <li><a href="${pageContext.request.contextPath}/parts" class="${pageContext.request.servletPath eq '/parts-list.jsp' ? 'active' : ''}">Parts</a></li>
+                    <li><a href="${pageContext.request.contextPath}/parts-list.jsp" class="${pageContext.request.servletPath eq '/part-list.jsp' ? 'active' : ''}">Parts</a></li>
                     <li><a href="#" class="${pageContext.request.servletPath eq '/services.jsp' ? 'active' : ''}">Services</a></li>
                     <li><a href="#" class="${pageContext.request.servletPath eq '/about.jsp' ? 'active' : ''}">About</a></li>
                     <li><a href="#" class="${pageContext.request.servletPath eq '/contact.jsp' ? 'active' : ''}">Contact</a></li>
@@ -545,20 +624,26 @@
                             <i class="fas fa-shopping-cart"></i>
                             <span class="cart-badge">3</span>
                         </a>
-                        <a href="bookings.jsp" class="booking-icon" title="My Bookings">
-                            <i class="fas fa-calendar-alt"></i>
-                        </a>
-                        <a href="profile.jsp" class="profile-icon" title="My Profile">
-                            <i class="fas fa-user-circle"></i>
-                        </a>
+                        
+                        <!-- Profile dropdown -->
+                        <div class="profile-dropdown">
+                            <img src="asset/img/avt/default-avatar.jpg" alt="Profile" class="profile-avatar" />
+                            <div class="profile-menu">
+                                <ul>
+                                    <li><a href="profile.jsp"><i class="fas fa-user"></i> Profile</a></li>
+                                    <li><a href="orders.jsp"><i class="fas fa-shopping-bag"></i> Orders</a></li>
+                                    <li><a href="appointments.jsp"><i class="fas fa-calendar-check"></i> Appoint</a></li>
+                                    <li><a href="service-bookings.jsp"><i class="fas fa-tools"></i> Service Booking</a></li>
+                                    <li class="menu-divider"></li>
+                                    <li><a href="logout"><i class="fas fa-sign-out-alt"></i> Log out</a></li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </c:if>
-                <c:if test="${user==null}">
-                    <a href="${pageContext.request.contextPath}/auth/login.jsp" class="login-btn">Login</a>
-                </c:if>
-                <c:if test="${user!=null}">
-                    <a style="margin-right: 5px; color: blue;" href="#">Hello ${user.getUserName()} </a>
-                    <a href="auth/LoginServlet?action=logout" class="login-btn">Logout</a>
+                
+                <c:if test="${sessionScope.account == null}">
+                    <a href="auth/login.jsp" class="login-btn">Login</a>
                 </c:if>
             </div>
         </div>

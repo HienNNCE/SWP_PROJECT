@@ -6,295 +6,393 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>DriverXO - All Cars Collection</title>
-        <link rel="stylesheet" href="./asset/css/style.css">
+        <title>DriverXO - Car Collection</title>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/asset/css/style.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/asset/css/carlist.css">
         <!-- Font Awesome -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        <!-- Google Fonts - Montserrat -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
     </head>
     <body>
-        <!-- Header -->
-        <jsp:include page="/components/navbar.jsp" />
-
-        <!-- Page Title Section -->
-        <section class="page-title-section">
+        <!-- Ultra Modern Minimalist Car Listing Page -->
+        <div class="car-listing-page">
+            <!-- Nút back về trang home -->
+            <a href="${pageContext.request.contextPath}/home" class="back-to-home">
+                <i class="fas fa-home"></i>
+            </a>
+            
             <div class="container">
-                <h1>All Cars</h1>
-                <div class="breadcrumb">
-                    <a href="../home">Home</a>
-                    <span><i class="fas fa-angle-right"></i></span>
-                    <span>Cars</span>
+                <!-- Header Section -->
+                <div class="car-listing-header-container">
+                    <!-- Minimal Header - Centered -->
+                    <header class="car-listing-header">
+                        <h1 class="car-listing-title">The Collection</h1>
+                        <p class="car-listing-subtitle">Curated selection of premium vehicles for the modern connoisseur</p>
+                    </header>
                 </div>
-            </div>
-        </section>
-
-        <!-- Filter Section -->
-        <section class="filter-section">
-            <div class="container">
-                <div class="filter-wrapper">
-                    <div class="filter-form">
-                        <div class="filter-grid">
-                            <div class="filter-item">
-                                <label>Brand</label>
-                                <select>
-                                    <option value="">All Brands</option>
-                                    <option value="chevrolet">Chevrolet</option>
-                                    <option value="honda">Honda</option>
-                                    <option value="bmw">BMW</option>
-                                    <option value="hyundai">Hyundai</option>
-                                    <option value="mercedes">Mercedes</option>
-                                    <option value="nissan">Nissan</option>
-                                </select>
-                            </div>
-                            <div class="filter-item">
-                                <label>Model</label>
-                                <select>
-                                    <option value="">All Models</option>
-                                </select>
-                            </div>
-                            <div class="filter-item">
-                                <label>Year</label>
-                                <select>
-                                    <option value="">Any Year</option>
-                                    <option value="2023">2023</option>
-                                    <option value="2022">2022</option>
-                                    <option value="2021">2021</option>
-                                    <option value="2020">2020</option>
-                                    <option value="2019">2019</option>
-                                </select>
-                            </div>
-                            <div class="filter-item">
-                                <label>Price Range</label>
-                                <select>
-                                    <option value="">Any Price</option>
-                                    <option value="0-1000">$0 - $1,000</option>
-                                    <option value="1000-5000">$1,000 - $5,000</option>
-                                    <option value="5000-10000">$5,000 - $10,000</option>
-                                    <option value="10000-20000">$10,000 - $20,000</option>
-                                    <option value="20000+">$20,000+</option>
-                                </select>
-                            </div>
-                            <div class="filter-item">
-                                <label>Fuel Type</label>
-                                <select>
-                                    <option value="">Any Type</option>
-                                    <option value="gasoline">Gasoline</option>
-                                    <option value="diesel">Diesel</option>
-                                    <option value="electric">Electric</option>
-                                    <option value="hybrid">Hybrid</option>
-                                </select>
-                            </div>
-                            <div class="filter-item">
-                                <label>Transmission</label>
-                                <select>
-                                    <option value="">Any</option>
-                                    <option value="automatic">Automatic</option>
-                                    <option value="manual">Manual</option>
-                                </select>
+                    
+                <!-- Filter Section - Optimized -->
+                    <section class="car-filter-section">
+                        <!-- Main Categories -->
+                        <div class="filter-categories">
+                            <div class="filter-tabs-container">
+                            <div class="filter-tabs">
+                                    <!-- Hiển thị nửa đầu tiên của danh sách category -->
+                                    <c:set var="middleIndex" value="${categoryList.size() / 2}" />
+                                    <c:forEach items="${categoryList}" var="cat" varStatus="status">
+                                        <c:if test="${status.index < middleIndex}">
+                                    <div class="filter-tab ${cat eq selectedCategory ? 'active' : ''}" data-category="${cat}" id="filter-tab-${status.index}">${cat}</div>
+                                        </c:if>
+                                </c:forEach>
+                                    
+                                    <!-- Hiển thị All ở giữa -->
+                                <div class="filter-tab ${empty selectedCategory ? 'active' : ''}" data-category="all" id="filter-tab-all">
+                                    <img src="${pageContext.request.contextPath}/asset/img/pngtree-car-steering-wheel-png-image_9996073.png" alt="All Categories" class="steering-wheel-icon">
+                                </div>
+                                    
+                                    <!-- Hiển thị nửa còn lại của danh sách category -->
+                                    <c:forEach items="${categoryList}" var="cat" varStatus="status">
+                                        <c:if test="${status.index >= middleIndex}">
+                                    <div class="filter-tab ${cat eq selectedCategory ? 'active' : ''}" data-category="${cat}" id="filter-tab-${status.index + middleIndex}">${cat}</div>
+                                        </c:if>
+                                </c:forEach>
+                                </div>
                             </div>
                         </div>
-                        <div class="filter-actions">
-                            <button class="reset-btn">Reset</button>
-                            <button class="apply-btn">Apply Filters</button>
+                        
+                    <!-- Advanced Filter Section - Compact Design -->
+                        <div class="filter-section">
+                        <div class="filter-section-title">
+                            <span>Refine Selection</span>
                         </div>
-                    </div>
+                        
+                        <!-- Brand Carousel -->
+                        <div class="brand-carousel-container">
+                            <div class="brand-nav prev" id="brandPrev">
+                                <i class="fas fa-chevron-left"></i>
+                            </div>
+                            
+                            <div class="brand-carousel" id="brandCarousel">
+                                <div class="brand-list">
+                                    <div class="brand-item ${empty selectedBrand ? 'selected' : ''}" data-brand="all">All Brands</div>
+                                        <c:choose>
+                                            <c:when test="${not empty brandList}">
+                                                <c:forEach items="${brandList}" var="b">
+                                                <div class="brand-item ${b eq selectedBrand ? 'selected' : ''}" data-brand="${b}">${b}</div>
+                                                </c:forEach>
+                                            </c:when>
+                                            <c:otherwise>
+                                            <div class="brand-item" data-brand="Toyota">Toyota</div>
+                                            <div class="brand-item" data-brand="Honda">Honda</div>
+                                            <div class="brand-item" data-brand="BMW">BMW</div>
+                                            <div class="brand-item" data-brand="Mercedes-Benz">Mercedes</div>
+                                            <div class="brand-item" data-brand="Audi">Audi</div>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </div>
+                                </div>
+                                
+                            <div class="brand-nav next" id="brandNext">
+                                <i class="fas fa-chevron-right"></i>
+                                    </div>
+                                </div>
+                                
+                        <div class="filter-groups" id="filterGroups">
+                            <!-- Filter Sliders Container -->
+                            <div class="filter-sliders-container">
+                                <!-- Year Picker -->
+                                <div class="year-filter">
+                                    <div class="year-picker-header">
+                                        <span class="year-picker-title">Model Year</span>
+                                        <span class="year-picker-selected" id="yearDisplayValue">${not empty selectedYear ? selectedYear : 'All'}</span>
+                                    </div>
+                                    <div class="year-picker">
+                                        <div class="year-input" id="yearInput">${not empty selectedYear ? selectedYear : 'Select Year'}</div>
+                                        <div class="year-dropdown" id="yearDropdown">
+                                            <div class="year-option ${empty selectedYear ? 'selected' : ''}" data-year="all">All Years</div>
+                                            <div class="year-option ${selectedYear == '2023' ? 'selected' : ''}" data-year="2023">2023</div>
+                                            <div class="year-option ${selectedYear == '2022' ? 'selected' : ''}" data-year="2022">2022</div>
+                                            <div class="year-option ${selectedYear == '2021' ? 'selected' : ''}" data-year="2021">2021</div>
+                                            <div class="year-option ${selectedYear == '2020' ? 'selected' : ''}" data-year="2020">2020</div>
+                                            <div class="year-option ${selectedYear == '2019' ? 'selected' : ''}" data-year="2019">2019</div>
+                                            <div class="year-option ${selectedYear == '2018' ? 'selected' : ''}" data-year="2018">2018</div>
+                                    </div>
+                                </div>
+                                
+                                    <!-- Search Box -->
+                                    <div class="search-filter">
+                                      
+                                        <div class="search-input-container">
+                                            <i class="fas fa-search search-icon"></i>
+                                            <input type="text" class="search-input" id="carSearchInput" placeholder="e.g. Camry, X5, A4..." value="${param.search}">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Fuel Type Filter -->
+                                <div class="fuel-filter">
+                                    <div class="fuel-filter-header">
+                                        <span class="fuel-filter-title">Fuel Type</span>
+                                    </div>
+                                    <div class="fuel-options">
+                                        <div class="fuel-option ${selectedFuelType == 'Gasoline' ? 'selected' : ''}" data-fuel="Gasoline">
+                                            <i class="fas fa-gas-pump"></i>Gasoline
+                                        </div>
+                                        <div class="fuel-option ${selectedFuelType == 'Diesel' ? 'selected' : ''}" data-fuel="Diesel">
+                                            <i class="fas fa-oil-can"></i>Diesel
+                                        </div>
+                                        <div class="fuel-option ${selectedFuelType == 'Electric' ? 'selected' : ''}" data-fuel="Electric">
+                                            <i class="fas fa-bolt"></i>Electric
+                                        </div>
+                                        <div class="fuel-option ${selectedFuelType == 'Hybrid' ? 'selected' : ''}" data-fuel="Hybrid">
+                                            <i class="fas fa-leaf"></i>Hybrid
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Price Range Slider -->
+                                <div class="range-sliders-row">
+                                <div class="price-filter">
+                                        <div class="filter-slider-header">
+                                            <span class="filter-slider-title">Price Range</span>
+                                            <span class="filter-slider-value" id="priceValue">$${not empty param.price ? param.price.split('-')[1] : '125,000'}</span>
+                                        </div>
+                                    <div class="price-range">
+                                        <input type="range" class="price-range-slider" id="priceRange" min="25000" max="125000" step="5000" value="${not empty param.price ? param.price.split('-')[1] : 125000}">
+                                        <div class="price-labels">
+                                                <span>$25k</span>
+                                                <span>$125k</span>
+                                        </div>
+                                        <input type="hidden" id="minPrice" name="min_price" value="${not empty param.price ? param.price.split('-')[0] : 25000}">
+                                        <input type="hidden" id="maxPrice" name="max_price" value="${not empty param.price ? param.price.split('-')[1] : 125000}">
+                                    </div>
+                                </div>
+                                
+                                    <!-- ODO Range Slider -->
+                                    <div class="odo-filter">
+                                        <div class="filter-slider-header">
+                                            <span class="filter-slider-title">Mileage (mi)</span>
+                                            <span class="filter-slider-value" id="odoValue">${not empty param.odo ? param.odo.split('-')[1] : '100,000'}</span>
+                                </div>
+                                        <div class="odo-range">
+                                            <input type="range" class="odo-range-slider" id="odoRange" min="0" max="100000" step="1000" value="${not empty param.odo ? param.odo.split('-')[1] : 100000}">
+                                            <div class="odo-labels">
+                                                <span>0</span>
+                                                <span>100k</span>
+                            </div>
+                                            <input type="hidden" id="minOdo" name="min_odo" value="${not empty param.odo ? param.odo.split('-')[0] : 0}">
+                                            <input type="hidden" id="maxOdo" name="max_odo" value="${not empty param.odo ? param.odo.split('-')[1] : 100000}">
+                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                 </div>
-            </div>
-        </section>
-
-        <!-- Car Listings Grid -->
-        <section class="car-listings-grid">
-            <div class="container">
-                <div class="listings-header">
-                    <div class="results-count">
-                        <p>Showing <strong>1-12</strong> of <strong>50</strong> results</p>
+                        
+                        <!-- Đã di chuyển nút filter lên toolbar -->
                     </div>
-                    <div class="sort-filter">
-                        <label>Sort by:</label>
-                        <select>
-                            <option value="newest">Newest First</option>
-                            <option value="oldest">Oldest First</option>
-                            <option value="price-low">Price: Low to High</option>
-                            <option value="price-high">Price: High to Low</option>
-                            <option value="popularity">Popularity</option>
-                        </select>
-                    </div>
-                    <div class="view-switch">
-                        <button class="grid-view active"><i class="fas fa-th-large"></i></button>
-                        <button class="list-view"><i class="fas fa-list"></i></button>
-                    </div>
-                </div>
+                </section>
                 
-                <div class="car-grid">
-                    <!-- Car 1 -->
-                    <c:forEach var="car" items="${carList}">
-                        <div class="car-card" data-id="car${car.carId}">
-                            <div class="card-image">
-                                <span class="tag">New</span>
-                                <!-- Car Image: 300x200px -->
-                                <img src="${pageContext.request.contextPath}/car/image?id=${car.carId}" alt="${car.carName}">
-                                <div class="card-actions">
-                                    <button class="wishlist-btn"><i class="far fa-heart"></i></button>
-                                    <button class="compare-btn"><i class="fas fa-exchange-alt"></i></button>
-                                </div>
+                <!-- Car List Section -->
+                <section class="cars-container">
+                    <div class="cars-toolbar">
+                        <div class="cars-count"><strong>${totalCars}</strong> vehicles</div>
+                        <div class="cars-view-options">
+                            <!-- Filter Actions -->
+                            <div class="filter-actions" id="filterActions_toolbar">
+                                <button type="button" class="filter-button" id="resetFilters_toolbar">Reset</button>
+                                <button type="button" class="filter-button primary" id="applyFilters_toolbar">Apply Filters</button>
                             </div>
-                            <div class="card-content">
-                                <div class="car-brand">${car.carBrand}</div>
-                                <h3 class="car-name">${car.year} ${car.carName}</h3>
-                                <div class="car-price">$<c:out value="${car.carPrice}" /></div>
-                                <div class="car-specs">
-                                    <div class="spec">
-                                        <i class="fas fa-tachometer-alt"></i>
-                                        <span>${car.carOdo}(mi)</span>
+                            
+                            <select class="sort-select" id="sortCars">
+                                <option value="newest">Newest First</option>
+                                <option value="oldest">Oldest First</option>
+                                <option value="price-low">Price: Low to High</option>
+                                <option value="price-high">Price: High to Low</option>
+                            </select>
+                            <button class="view-button active" id="gridView">
+                                <i class="fas fa-th-large"></i>
+                            </button>
+                            <button class="view-button" id="listView">
+                                <i class="fas fa-list"></i>
+                            </button>
+                          
+                           
+                        </div>
+                    </div>
+                    
+                    <!-- Car Grid/List View -->
+                    <c:choose>
+                        <c:when test="${not empty carList}">
+                            <div class="cars-grid" id="carsGrid">
+                                <c:forEach var="car" items="${carList}">
+                                    <div class="car-item">
+                                        <div class="car-image">
+                                            <span class="car-tag">New</span>
+                                            <img src="${pageContext.request.contextPath}/asset/img/cars/${not empty car.carImg ? car.carImg : car.carBrand.toLowerCase().replaceAll(' ', '_').concat('_').concat(car.carName.toLowerCase().replaceAll(' ', '_')).concat('.webp')}" 
+                                                 onerror="this.src='${pageContext.request.contextPath}/asset/img/cars/default-car.png'" 
+                                                 alt="${car.carName}">
+                                            <div class="car-actions">
+                                                <button class="car-action" title="Favorite">
+                                                    <i class="far fa-heart"></i>
+                                                </button>
+                                                <button class="car-action" title="Compare">
+                                                    <i class="fas fa-exchange-alt"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="car-content">
+                                            <div class="car-brand">${not empty car.carBrand ? car.carBrand : 'Brand not specified'}</div>
+                                            <h3 class="car-name">${car.carYear.getYear() + 1900} ${car.carName}</h3>
+                                            <div class="car-price">
+                                                $<fmt:formatNumber value="${car.carPrice}" type="number" pattern="#,###,###" />
+                                            </div>
+                                            <div class="car-specs">
+                                                <div class="car-spec">
+                                                    <i class="fas fa-tachometer-alt spec-icon"></i>
+                                                    <span class="spec-value">
+                                                        <fmt:formatNumber value="${car.carOdo}" type="number" pattern="#,###" /> mi
+                                                    </span>
+                                                </div>
+                                                <div class="car-spec">
+                                                    <i class="fas fa-gas-pump spec-icon"></i>
+                                                    <span class="spec-value">${car.fuelType}</span>
+                                                </div>
+                                                <div class="car-spec">
+                                                    <i class="fas fa-cog spec-icon"></i>
+                                                    <span class="spec-value">${car.displacement} L</span>
+                                                </div>
+                                            </div>
+                                            <div class="car-footer">
+                                                <a href="${pageContext.request.contextPath}/car/detail?id=${car.carId}" class="car-more">
+                                                    Details
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="spec">
-                                        <i class="fas fa-gas-pump"></i>
-                                        <%-- Assuming fuel is stored as a number, you might need to map it to a type string --%>
-                                        <span>Gasoline</span>
-                                    </div>
-                                    <div class="spec">
-                                        <i class="fas fa-cog"></i>
-                                        <span>${car.displacement} (cc)</span>
-                                    </div>
-                                </div>
-                                <div class="card-footer">
-                                    <span class="listing-author">Listed by: John Doe</span>
-                                    <a href="${pageContext.request.contextPath}/car/detail?id=${car.carId}" class="view-details">View Details</a>
-                                </div>
+                                </c:forEach>
                             </div>
-                        </div>
-                    </c:forEach>
-
-                    <!-- Car 2 -->
-                    <%-- Removed static car cards --%>
-
-                    <!-- Car 3 -->
-                    <%-- Removed static car cards --%>
-
-                    <!-- Car 4 -->
-                    <%-- Removed static car cards --%>
-
-                    <!-- Car 5 -->
-                    <%-- Removed static car cards --%>
-
-                    <!-- Car 6 -->
-                    <%-- Removed static car cards --%>
-
-                    <!-- Car 7 -->
-                    <%-- Removed static car cards --%>
-
-                    <!-- Car 8 -->
-                    <%-- Removed static car cards --%>
-
-                    <!-- Car 9 -->
-                    <%-- Removed static car cards --%>
-                </div>
-                
-                <!-- Pagination -->
-                <div class="pagination">
-                    <a href="#" class="active">1</a>
-                    <a href="#">2</a>
-                    <a href="#">3</a>
-                    <a href="#">4</a>
-                    <a href="#">5</a>
-                    <a href="#" class="next"><i class="fas fa-angle-right"></i></a>
-                </div>
+                            
+                            <!-- Pagination -->
+                            <c:if test="${totalPages > 1}">
+                                <div class="pagination">
+                                    <div class="page-item">
+                                        <a class="page-link ${currentPage == 1 ? 'disabled' : ''}" 
+                                           href="${pageContext.request.contextPath}/car/list?page=${currentPage - 1}${not empty selectedCategory ? '&category='.concat(selectedCategory) : ''}${not empty selectedBrand ? '&brand='.concat(selectedBrand) : ''}${not empty selectedFuelType ? '&fuel='.concat(selectedFuelType) : ''}">
+                                            <i class="fas fa-angle-left"></i>
+                                        </a>
+                                    </div>
+                                    
+                                    <c:forEach begin="1" end="${totalPages}" var="i">
+                                        <div class="page-item">
+                                            <a class="page-link ${i == currentPage ? 'active' : ''}" 
+                                               href="${pageContext.request.contextPath}/car/list?page=${i}${not empty selectedCategory ? '&category='.concat(selectedCategory) : ''}${not empty selectedBrand ? '&brand='.concat(selectedBrand) : ''}${not empty selectedFuelType ? '&fuel='.concat(selectedFuelType) : ''}">
+                                                ${i}
+                                            </a>
+                                        </div>
+                                    </c:forEach>
+                                    
+                                    <div class="page-item">
+                                        <a class="page-link ${currentPage == totalPages ? 'disabled' : ''}" 
+                                           href="${pageContext.request.contextPath}/car/list?page=${currentPage + 1}${not empty selectedCategory ? '&category='.concat(selectedCategory) : ''}${not empty selectedBrand ? '&brand='.concat(selectedBrand) : ''}${not empty selectedFuelType ? '&fuel='.concat(selectedFuelType) : ''}">
+                                            <i class="fas fa-angle-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </c:if>
+                        </c:when>
+                        <c:otherwise>
+                            <!-- No Cars Found -->
+                            <div class="no-cars-found">
+                                <i class="fas fa-car-alt no-cars-icon"></i>
+                                <h3 class="no-cars-title">No Vehicles Found</h3>
+                                <p class="no-cars-text">
+                                    We couldn't find any vehicles matching your search criteria. 
+                                    Please try with different parameters or browse our complete collection.
+                                </p>
+                                <a href="${pageContext.request.contextPath}/car/list" class="browse-all-btn">
+                                    View All Vehicles
+                                </a>
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
+                </section>
             </div>
-        </section>
-
-        <!-- Newsletter Section -->
-        <section class="newsletter-section">
-            <div class="container">
-                <div class="newsletter-content">
-                    <div class="newsletter-text">
-                        <h2 class="section-title">Join Our <span>Newsletter</span> <br>& Get updated.</h2>
-                    </div>
-                    <div class="newsletter-form">
-                        <form>
-                            <input type="email" placeholder="Email Address">
-                            <button type="submit" class="subscribe-btn">Subscribe</button>
-                        </form>
-                        <p>We only send interesting and relevant emails.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Footer -->
-        <footer class="footer black-footer">
-            <div class="container">
-                <div class="footer-content">
-                    <div class="footer-col">
-                        <div class="footer-logo">
-                            <!-- Footer Logo: 120x40px -->
-                            <img src="../asset/img/driverxo-logo-white.png" alt="DriverXO">
-                            <span>DriverXO</span>
-                        </div>
-                        <p>There are many variations of passages of Lorem Ipsum a majority have suffered alteration in some form, by injected humour or randomised words which.</p>
-                        <div class="social-links">
-                            <h4>Follow Us:</h4>
-                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                            <a href="#"><i class="fab fa-twitter"></i></a>
-                            <a href="#"><i class="fab fa-instagram"></i></a>
-                            <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        </div>
-                    </div>
-                    <div class="footer-col">
-                        <h3>Popular links</h3>
-                        <ul>
-                            <li><a href="#"><i class="fas fa-chevron-right"></i> About Us</a></li>
-                            <li><a href="#"><i class="fas fa-chevron-right"></i> Contact Us</a></li>
-                            <li><a href="#"><i class="fas fa-chevron-right"></i> Our Blogs</a></li>
-                            <li><a href="#"><i class="fas fa-chevron-right"></i> Join as Dealer</a></li>
-                        </ul>
-                    </div>
-                    <div class="footer-col">
-                        <h3>My Profile</h3>
-                        <ul>
-                            <li><a href="#"><i class="fas fa-chevron-right"></i> Dashboard</a></li>
-                            <li><a href="#"><i class="fas fa-chevron-right"></i> Manage Car</a></li>
-                            <li><a href="#"><i class="fas fa-chevron-right"></i> Edit Profile</a></li>
-                            <li><a href="#"><i class="fas fa-chevron-right"></i> Review List</a></li>
-                        </ul>
-                    </div>
-                    <div class="footer-col">
-                        <h3>Contact Us</h3>
-                        <ul class="contact-info">
-                            <li><i class="fas fa-phone"></i> 0915456680</li>
-                            <li><i class="fas fa-envelope"></i> fpt@gmail.com</li>
-                            <li><i class="fas fa-map-marker-alt"></i> Vo Gia Huy, <br>Ca Mau City</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <div class="container">
-                    <div class="copyright">
-                        <p>Copyright 2024 DuomodeSoft. All Rights Reserved</p>
-                    </div>
-                    <div class="footer-links">
-                        <a href="#">Privacy Policy</a>
-                        <a href="#">Terms & Conditions</a>
-                    </div>
-                </div>
-            </div>
-        </footer>
-
-        <!-- Cookie Consent -->
-        <div class="cookie-consent">
-            <div class="cookie-text">
-                <h3>Cookies</h3>
-                <p>Group3 SWP.</p>
-            </div>
-            <button class="accept-btn">Accept</button>
-            <button class="close-btn"><i class="fas fa-times"></i></button>
         </div>
 
+        <!-- Thêm khoảng cách trước footer -->
+        <div style="margin-bottom: 120px;"></div>
+        
+        <!-- Footer -->
+        <jsp:include page="components/footer.jsp" />
+
         <!-- JavaScript -->
-        <script src="../asset/js/main.js"></script>
+        <script>
+            // Định nghĩa context path để main.js sử dụng
+            window.contextPath = "${pageContext.request.contextPath}";
+            
+            // Định nghĩa hàm khởi tạo để kiểm tra nếu main.js không tải được
+            window.initCarListFunctions = function() {
+                console.log("main.js đã được tải thành công");
+            };
+            
+            // Thêm JavaScript trực tiếp để kiểm tra các phần tử
+            document.addEventListener('DOMContentLoaded', function() {
+                console.log("DOM đã được tải xong trong trang car-list.jsp");
+                
+                // Kiểm tra các phần tử filter-tab
+                const filterTabs = document.querySelectorAll('.filter-tab');
+                console.log("Số lượng filter-tab:", filterTabs.length);
+                
+                // Thêm sự kiện click trực tiếp vào các phần tử filter-tab
+                filterTabs.forEach(function(tab) {
+                    tab.addEventListener('click', function(e) {
+                        console.log("Filter tab được click:", this.getAttribute('data-category'));
+                        e.preventDefault();
+                        
+                        // Remove active class from all tabs
+                        filterTabs.forEach(t => t.classList.remove('active'));
+                        
+                        // Add active class to clicked tab
+                        this.classList.add('active');
+                        
+                        // Get category from clicked tab
+                        const category = this.getAttribute('data-category');
+                        // Thực hiện các hành động khác khi chọn category
+                    });
+                });
+                
+                // Kiểm tra các phần tử brand-item
+                const brandItems = document.querySelectorAll('.brand-item');
+                console.log("Số lượng brand-item:", brandItems.length);
+                
+                // Thêm sự kiện click trực tiếp vào các phần tử brand-item
+                brandItems.forEach(function(item) {
+                    item.addEventListener('click', function() {
+                        console.log("Brand item được click:", this.getAttribute('data-brand'));
+                        
+                        // Remove selected class from all items
+                        brandItems.forEach(brand => brand.classList.remove('selected'));
+                        
+                        // Add selected class to clicked item
+                        this.classList.add('selected');
+                        
+                        // Get brand from clicked item
+                        const brand = this.getAttribute('data-brand');
+                        // Thực hiện các hành động khác khi chọn brand
+                    });
+                });
+            });
+        </script>
+        <script src="${pageContext.request.contextPath}/asset/js/main.js"></script>
     </body>
 </html> 

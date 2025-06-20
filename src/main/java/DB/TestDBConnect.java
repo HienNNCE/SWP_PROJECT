@@ -4,9 +4,10 @@
  */
 package DB;
 import java.sql.Connection;
+import java.sql.SQLException;
 
 public class TestDBConnect {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         DBContext db = new DBContext();
         Connection conn = db.getConnection();
 
