@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -101,15 +102,25 @@
                 width: 100%;
                 font-weight: 600;
             }
+            @media (max-width: 768px) {
+                .related-grid {
+                    grid-template-columns: repeat(2, 1fr) !important;
+                }
+            }
+            @media (max-width: 480px) {
+                .related-grid {
+                    grid-template-columns: 1fr !important;
+                }
+            }
         </style>
     </head>
 
     <body>
-        <jsp:include page="../components/navbar.jsp" />
+        <jsp:include page="/components/navbar.jsp" />
 
         <!-- Main Content -->
         <section class="car-detail-hero">
-            <div class="container">
+            <div class="container" style="padding-top: 60px">
                 <div class="car-detail-wrapper">
 
                     <!-- Image Gallery -->
@@ -153,6 +164,11 @@
                         </button>
                         <!--                        <button class="btn-phone"><i class="fas fa-phone"></i> 0915456680</button>
                                                 <button class="btn-message"><i class="fas fa-comment"></i> Text to seller</button>-->
+                        <div>
+                            <a href="${pageContext.request.contextPath}/parts" class="btn-message" style="text-align: center; display: inline-block;">
+                                <i class="fas fa-arrow-left"></i> Back to List
+                            </a>
+                        </div>
                     </div>
                 </div>
 
@@ -161,45 +177,95 @@
                     <h3>Description</h3>
                     <p>${part.description}</p>
                 </div>
+
+                <!-- Related Parts Section -->
+                <c:if test="${not empty relatedParts}">
+                    <div class="container" style="margin-top: 60px;">
+                        <h3 style="margin-bottom: 20px;">
+                            You may also like (${fn:length(relatedParts)} related part${fn:length(relatedParts) > 1 ? 's' : ''})
+                        </h3>
+                        <div class="related-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; justify-items: start;">
+                            <c:forEach var="rel" items="${relatedParts}">
+                                <div style="background-color: #fff; border-radius: 10px; padding: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); text-align: center;">
+                                    <img src="${pageContext.request.contextPath}/asset/img/parts/${rel.partImg}" alt="${rel.partName}" style="width:100%; height:180px; object-fit:contain; margin-bottom:10px; border-radius: 8px;">
+                                    <h5 style="font-size: 15px; margin: 10px 0; color: #333;">${rel.partName}</h5>
+                                    <p style="color: #777; font-size: 14px;">$<c:out value="${rel.partPrice}" /></p>
+                                    <a href="${pageContext.request.contextPath}/part/detail?id=${rel.partId}" class="btn-message" style="padding: 8px 16px; font-size: 13px; text-decoration: none;">
+                                        <i class="fas fa-eye"></i> View Detail
+                                    </a>
+                                </div>
+                            </c:forEach>
+                        </div>
+                    </div>
+                </c:if>
             </div>
         </section>
 
-        <jsp:include page="../components/footer.jsp" />
+        <jsp:include page="/components/footer.jsp" />
         <script src="../asset/js/main.js"></script>
+        <script>
+                            document.addEventListener('DOMContentLoaded', function () {
+                                const header = document.querySelector('.header');
+                                const logoWhite = document.querySelector('.logo-white');
+                                const logoDark = document.querySelector('.logo-dark');
+
+                                const hasBanner = document.querySelector('.hero-banner') !== null;
+
+                                function updateNavbar() {
+                                    // Nếu không có banner thì luôn scrolled
+                                    if (!hasBanner || window.scrollY > 50) {
+                                        header.classList.add('scrolled');
+                                        if (logoWhite)
+                                            logoWhite.style.display = 'none';
+                                        if (logoDark)
+                                            logoDark.style.display = 'block';
+                                    } else {
+                                        header.classList.remove('scrolled');
+                                        if (logoWhite)
+                                            logoWhite.style.display = 'block';
+                                        if (logoDark)
+                                            logoDark.style.display = 'none';
+                                    }
+                                }
+
+                                updateNavbar();
+                                window.addEventListener('scroll', updateNavbar);
+                            });
+        </script>
+        <script>
+            function addToCart(partId, partName, partPriceStr) {
+                const partPrice = parseFloat(partPriceStr);
+
+                // Tăng số lượng icon
+                const countEl = document.querySelector('.cart-btn .item-count');
+                let currentCount = parseInt(countEl.innerText);
+                if (isNaN(currentCount))
+                    currentCount = 0;
+                countEl.innerText = currentCount + 1;
+
+                // Hiển thị alert
+                alert(partName + " added to cart!");
+
+                // Xóa empty nếu có
+                const cartItemsContainer = document.querySelector(".cart-items");
+                const emptyMsg = document.querySelector(".empty-cart");
+                if (emptyMsg)
+                    emptyMsg.remove();
+
+                // Thêm sản phẩm vào giỏ
+                const itemHtml = `<div class="cart-item">
+                <p><strong>${partName}</strong> - $${partPrice.toFixed(2)}</p>
+                </div>`;
+                cartItemsContainer.insertAdjacentHTML('beforeend', itemHtml);
+
+                // Cập nhật tổng tiền
+                const totalAmountEl = document.querySelector(".total-amount");
+                let currentTotal = parseFloat(totalAmountEl.innerText.replace('$', ''));
+                if (isNaN(currentTotal))
+                    currentTotal = 0;
+                const newTotal = currentTotal + partPrice;
+                totalAmountEl.innerText = `$${newTotal.toFixed(2)}`;
+            }
+        </script>
     </body>
-    <script>
-        function addToCart(partId, partName, partPriceStr) {
-            const partPrice = parseFloat(partPriceStr);
-
-            // Tăng số lượng icon
-            const countEl = document.querySelector('.cart-btn .item-count');
-            let currentCount = parseInt(countEl.innerText);
-            if (isNaN(currentCount))
-                currentCount = 0;
-            countEl.innerText = currentCount + 1;
-
-            // Hiển thị alert
-            alert(partName + " added to cart!");
-
-            // Xóa empty nếu có
-            const cartItemsContainer = document.querySelector(".cart-items");
-            const emptyMsg = document.querySelector(".empty-cart");
-            if (emptyMsg)
-                emptyMsg.remove();
-
-            // Thêm sản phẩm vào giỏ
-            const itemHtml = `<div class="cart-item">
-            <p><strong>${partName}</strong> - $${partPrice.toFixed(2)}</p>
-            </div>`;
-            cartItemsContainer.insertAdjacentHTML('beforeend', itemHtml);
-
-            // Cập nhật tổng tiền
-            const totalAmountEl = document.querySelector(".total-amount");
-            let currentTotal = parseFloat(totalAmountEl.innerText.replace('$', ''));
-            if (isNaN(currentTotal))
-                currentTotal = 0;
-            const newTotal = currentTotal + partPrice;
-            totalAmountEl.innerText = `$${newTotal.toFixed(2)}`;
-        }
-    </script>
 </html>

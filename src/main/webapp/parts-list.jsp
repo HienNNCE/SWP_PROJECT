@@ -45,7 +45,7 @@
         </style>
     </head>
     <body>
-        <jsp:include page="./components/navbar.jsp" />
+        <jsp:include page="/components/navbar.jsp" />
 
         <div class="container" style="padding-top: 100px">
 
@@ -62,7 +62,7 @@
                             <label class="form-label fw-bold">Brand</label>
                             <select name="brand" class="form-select">
                                 <option value="">All Brands</option>
-                                <c:forEach var="b" items="${brands}">
+                                <c:forEach var="b" items="${partBrands}">
                                     <option value="${b}" ${param.brand == b ? 'selected' : ''}>${b}</option>
                                 </c:forEach>
                             </select>
@@ -130,7 +130,7 @@
             </div>
         </div>
 
-        <jsp:include page="./components/footer.jsp" />
+        <jsp:include page="/components/footer.jsp" />
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
         <script>
                                     window.addEventListener('scroll', function () {

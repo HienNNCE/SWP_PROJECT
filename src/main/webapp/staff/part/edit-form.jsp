@@ -82,7 +82,7 @@
 
         <jsp:include page="/components/staffSidebar.jsp" />
         <div class="main-content">
-            <jsp:include page="/components/staffDashboardHeader.jsp" />
+            <jsp:include page="/components/dashboardHeader.jsp" />
 
             <div class="card">
                 <h1>Edit Part</h1>

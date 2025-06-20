@@ -6,7 +6,7 @@
     <div class="container">
         <div class="footer-top">
             <div class="footer-logo">
-                <img src="asset/img/driverxo-logo-white.png" alt="DriverXO">
+                <img src="${pageContext.request.contextPath}/asset/img/driverxo-logo-white.png" alt="DriverXO">
                 <span>DriverXO</span>
             </div>
             
