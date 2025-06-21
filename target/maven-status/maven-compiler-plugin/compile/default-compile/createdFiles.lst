@@ -18,8 +18,11 @@ Controller\OTPServlet.class
 DAO\ServiceScheduleDAO.class
 Model\Comment.class
 Controller\AdminCarServlet.class
+Controller\ResetPasswordServlet.class
 Controller\CartServlet.class
+DAO\AuthenticationDAO$1.class
 util\ValidationUtil.class
+DAO\AuthenticationDAO.class
 Controller\AdminAccountServlet.class
 DAO\CartDAO.class
 Model\Category.class
@@ -38,7 +41,6 @@ Model\Car.class
 Model\Cart.class
 DAO\RoleDAO.class
 Controller\CarListServlet.class
-DAO\UserDAO$1.class
 Controller\StaffPartServlet.class
 DAO\UserDAO.class
 Controller\CarDetailServlet.class

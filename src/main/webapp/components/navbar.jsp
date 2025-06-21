@@ -643,8 +643,12 @@
                     </div>
                 </c:if>
                 
-                <c:if test="${sessionScope.account == null}">
-                    <a href="auth/login.jsp" class="login-btn">Login</a>
+                <c:if test="${user==null}">
+                    <a href="${pageContext.request.contextPath}/auth/login.jsp" class="login-btn">Login</a>
+                </c:if>
+                <c:if test="${user!=null}">
+                    <a style="margin-right: 5px; color: yellow;" href="#">Hello ${user.getUserName()} </a>
+                    <a href="auth/LoginServlet?action=logout" class="login-btn">Logout</a>
                 </c:if>
             </div>
         </div>

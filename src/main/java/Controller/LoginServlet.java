@@ -4,16 +4,15 @@
  */
 package Controller;
 
-import DAO.UserDAO;
+import DAO.AuthenticationDAO;
 import Model.Users;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.io.PrintWriter;
 
 /**
  * LoginServlet handles user login and logout functionalities. It processes HTTP
@@ -22,9 +21,34 @@ import jakarta.servlet.http.HttpSession;
  *
  * @author
  */
-@WebServlet("/login")
 
 public class LoginServlet extends HttpServlet {
+    
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet LoginServlet</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet LoginServlet at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
+    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -40,7 +64,6 @@ public class LoginServlet extends HttpServlet {
             // Redirect the user to the home page after logout.
             response.sendRedirect("../home");
         }
-        request.getRequestDispatcher("/login.jsp").forward(request, response);
     }
 
     /**
@@ -58,27 +81,22 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         //processRequest(request, response);
         // Instantiate the UserDAO to interact with the database.
-        UserDAO userDao = new UserDAO();
+        AuthenticationDAO authenDao = new AuthenticationDAO();
         // Get the current HttpSession.
         HttpSession session = request.getSession();
         // Retrieve the username (or email) and password from the login form.
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         // Attempt to retrieve a user from the database using the provided credentials.
-        Users user = userDao.getUserById(username, password);
+        Users user = authenDao.getUserById(username, password);
         // If a user object is returned, authentication was successful.
         if (user != null) {
-            session.setAttribute("account", user);
-            // response.sendRedirect("/home");
-            session.setAttribute("userId", user.getUserId());
-            session.setAttribute("userName", user.getUserName());
-            response.sendRedirect(request.getContextPath() + "/home");
-
+            session.setAttribute("user", user);
+            response.sendRedirect("../home");
             // If no user is found with the given credentials, authentication failed.
         } else {
             request.setAttribute("err", "Incorrect email, username or password");
-
-            request.getRequestDispatcher("/login.jsp").forward(request, response);
+            request.getRequestDispatcher("login.jsp").forward(request, response);
         }
     }
 

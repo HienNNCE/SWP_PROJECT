@@ -1,13 +1,21 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+
+    Boolean isOtpVerified = (Boolean) session.getAttribute("otp_verified");
+    if (isOtpVerified == null || !isOtpVerified) {
+        response.sendRedirect("login.jsp");
+        return;
+    }
+%>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - DriverXO</title>
+    <title>Reset Password - DriverXO</title>
     <link rel="stylesheet" href="../asset/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <style>
+     <style>
         .auth-container {
             display: flex;
             min-height: 100vh;
@@ -51,7 +59,6 @@
             align-items: center;
             justify-content: center;
             padding: 2rem;
-            overflow-y: auto;
         }
         
         .auth-form {
@@ -79,8 +86,14 @@
         .auth-heading {
             font-size: 1.5rem;
             font-weight: 500;
-            margin-bottom: 1.5rem;
+            margin-bottom: 0.5rem;
             color: #111;
+        }
+        
+        .auth-subheading {
+            font-size: 0.875rem;
+            color: #555;
+            margin-bottom: 1.5rem;
         }
         
         .form-group {
@@ -108,21 +121,6 @@
             border-color: #111;
             outline: none;
             box-shadow: 0 0 0 2px rgba(0,0,0,0.05);
-        }
-        
-        .form-row {
-            display: flex;
-            gap: 1rem;
-        }
-        
-        .form-row .form-group {
-            flex: 1;
-        }
-        
-        .form-text {
-            font-size: 0.75rem;
-            color: #777;
-            margin-top: 0.25rem;
         }
         
         .btn-auth {
@@ -175,6 +173,37 @@
             opacity: 0.8;
         }
         
+        /* Verification code inputs */
+        .verification-code {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            justify-content: center;
+        }
+        
+        .code-input {
+            width: 3rem;
+            height: 3rem;
+            text-align: center;
+            font-size: 1.25rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        
+        .code-input:focus {
+            border-color: #111;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(0,0,0,0.05);
+        }
+        
+        .code-label {
+            text-align: center;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+            color: #555;
+        }
+        
         @media (max-width: 992px) {
             .auth-image {
                 display: none;
@@ -183,23 +212,15 @@
             .auth-form-container {
                 flex: 1;
             }
-            
-            .form-row {
-                flex-direction: column;
-                gap: 0;
-            }
         }
     </style>
 </head>
 <body>
     <div class="auth-container">
         <div class="auth-image">
-            <a href="../home" class="home-link">
-                <i class="fas fa-arrow-left"></i>
-            </a>
             <div class="auth-image-content">
-                <h2>Join DriverXO</h2>
-                <p>Create an account to explore our premium collection of vehicles and enjoy exclusive benefits.</p>
+                <h2>Create New Password</h2>
+                <p>Your new password must be strong and different from previous passwords.</p>
             </div>
         </div>
         
@@ -210,7 +231,10 @@
                     <span>DriverXO</span>
                 </div>
                 
-                <h1 class="auth-heading">Create your account</h1>
+                <h1 class="auth-heading">Set a new password</h1>
+                <p class="auth-subheading">Please create a new password that you don't use on any other site.</p>
+                
+              
                 <%
                     String error = (String) request.getAttribute("err");
                     if (error != null && !error.isEmpty()) {
@@ -221,42 +245,25 @@
                 <%
                     }
                 %>
-                <form action="RegisterServlet" method="post">
+                
+                <form action="ResetPasswordServlet" method="post">
                     <div class="form-group">
-                        <label class="form-label" for="fullname">Full Name</label>
-                        <input type="text" class="form-control" id="fullname" name="fullname" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label" for="email">Email Address</label>
-                        <input type="email" class="form-control" id="email" name="email" required>
-                        <div class="form-text">We'll never share your email with anyone else.</div>
+                        <label class="form-label" for="newPassword">New Password</label>
+                        
+                        <input type="password" class="form-control" id="newPassword" name="newPassword" required>
+                        <div class="form-text">Use 8+ characters with a mix of letters, numbers & symbols.</div>
                     </div>
                     
                     <div class="form-group">
-                        <label class="form-label" for="username">Username</label>
-                        <input type="text" class="form-control" id="username" name="username" required>
+                        <label class="form-label" for="confirmPassword">Confirm New Password</label>
+                         
+                        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
                     </div>
                     
-                    <div class="form-group">
-                        <label class="form-label" for="password">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
-                        <div class="form-text">Use 8+ characters with a mix of letters, numbers & symbols</div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label" for="confirm">Confirm Password</label>
-                        <input type="password" class="form-control" id="confirm" name="confirm" required>
-                    </div>
-                    
-                    <button type="submit" class="btn-auth">Create Account</button>
-                    
-                    <div class="auth-footer">
-                        Already have an account? <a href="login.jsp" class="auth-link">Sign in</a>
-                    </div>
+                    <button type="submit" class="btn-auth">Reset Password</button>
                 </form>
             </div>
         </div>
     </div>
 </body>
-</html> 
+</html>

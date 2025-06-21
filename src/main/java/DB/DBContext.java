@@ -84,7 +84,7 @@ public class DBContext {
     // Database config (modify if needed)
     private static final String DB_URL = "jdbc:sqlserver://localhost:1433;databaseName=DriveXO;encrypt=true;trustServerCertificate=true";
     private static final String DB_USER = "sa";
-    private static final String DB_PWD = "Admin@123";
+    private static final String DB_PWD = "1006";
 
     // Get a new connection each time
     public Connection getConnection() throws SQLException {

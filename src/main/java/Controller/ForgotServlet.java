@@ -4,7 +4,7 @@
  */
 package Controller;
 
-import DAO.UserDAO;
+import DAO.AuthenticationDAO;
 import jakarta.mail.MessagingException;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -76,25 +76,25 @@ public class ForgotServlet extends HttpServlet {
             throws ServletException, IOException {
         // Get the current session, or create one if it doesn't exist.
         HttpSession session = request.getSession();
-        UserDAO uDao = new UserDAO();
+        AuthenticationDAO authenDao = new AuthenticationDAO();
         // Retrieve the email submitted from the forgot password form.
         String email = request.getParameter("email");
         // Check if the provided email is registered in the system.
-        boolean checkEmail = uDao.checkEmailUser(email);
+        boolean checkEmail = authenDao.checkEmailUser(email);
         // If the email does not exist in the database
         if (!checkEmail) {
             request.setAttribute("err", "Email is not registered in the system");
             request.getRequestDispatcher("forgot.jsp").forward(request, response);
         } else {
             // If the email exists, generate a five-digit OTP string.
-            String otp = UserDAO.generateFiveRandomNumbersString();
+            String otp = AuthenticationDAO.generateFiveRandomNumbersString();
             // Store the generated OTP and the email in the session.
             session.setAttribute("otp", otp);
             session.setAttribute("femail", email);
             
             try {
                 // Send the OTP to the user's email address for verification.
-                UserDAO.sendEmail(email, "Your OTP", otp);
+                AuthenticationDAO.sendEmail(email, "Your OTP", otp);
             } catch (MessagingException ex) {
                 Logger.getLogger(ForgotServlet.class.getName()).log(Level.SEVERE, null, ex);
             }

@@ -4,7 +4,6 @@
  */
 package Controller;
 
-import DAO.UserDAO;
 import jakarta.mail.MessagingException;
 import java.io.IOException;
 import java.io.PrintWriter;
