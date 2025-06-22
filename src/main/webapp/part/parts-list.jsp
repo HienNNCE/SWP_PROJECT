@@ -47,7 +47,6 @@
     <body>
 
         <jsp:include page="../components/navbar.jsp" />
-
         <div class="container">
             <!-- Breadcrumb -->
             <section class="page-title-section">
@@ -130,13 +129,7 @@
                                 <a href="${pageContext.request.contextPath}/part/detail?id=${part.partId}" class="btn btn-outline-secondary w-100">
                                     <i class="fas fa-info-circle"></i> View Details
                                 </a>
-
-                                <button class="btn btn-primary w-100" onclick="addToCartInline(
-                                                '${part.partId}',
-                                                '${fn:escapeXml(part.partName)}',
-                                                '${part.partPrice}')">
-                                    <i class="fas fa-cart-plus"></i> Add to Cart
-                                </button>
+                                <button class="btn btn-primary w-100 add_to_cart" part-Id ='${part.partId}' type = "button"> Add to Cart</button>
                             </div>
                         </div>
                     </div>
@@ -150,37 +143,6 @@
 
         <jsp:include page="../components/footer.jsp" />
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-        <script>
-            function addToCartInline(partId, partName, partPriceStr) {
-                const partPrice = parseFloat(partPriceStr);
-                if (!partName || isNaN(partPrice)) {
-                    alert("Error: Invalid part info.");
-                    return;
-                }
-
-                const countEl = document.querySelector('.cart-btn .item-count');
-                let currentCount = parseInt(countEl.innerText);
-                if (isNaN(currentCount))
-                    currentCount = 0;
-                countEl.innerText = currentCount + 1;
-
-                const cartItemsContainer = document.querySelector(".cart-items");
-                const emptyMsg = document.querySelector(".empty-cart");
-                if (emptyMsg)
-                    emptyMsg.remove();
-
-                const itemHtml = `<div class="cart-item">
-                <p><strong>${partName}</strong> - $${partPrice.toFixed(2)}</p>
-                </div>`;
-                cartItemsContainer.insertAdjacentHTML('beforeend', itemHtml);
-
-                const totalAmountEl = document.querySelector(".total-amount");
-                let currentTotal = parseFloat(totalAmountEl.innerText.replace('$', ''));
-                if (isNaN(currentTotal))
-                    currentTotal = 0;
-                const newTotal = currentTotal + partPrice;
-                totalAmountEl.innerText = `$${newTotal.toFixed(2)}`;
-            }
-        </script>
+        <script src="${pageContext.request.contextPath}/asset/js/cart_AddToCart.js?v=<%= System.currentTimeMillis()%>"></script>
     </body>
 </html>

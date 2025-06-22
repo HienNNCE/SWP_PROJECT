@@ -15,9 +15,9 @@ public class DBContext {
 
     // Database connection details (Root) do not edit
     // Just comment when connect db local
-    private static final String DB_URL = "jdbc:sqlserver://LAPTOP-FT0Q1NI1\\SQLEXPRESS;databaseName=DriveXO;encrypt=true;trustServerCertificate=true";
+    private static final String DB_URL = "jdbc:sqlserver://localhost:1433;databaseName=DriveXO;trustServerCertificate=true;";
     private static final String DB_USER = "sa";
-    private static final String DB_PWD = "123456";
+    private static final String DB_PWD = "1234";
 
 //    // Use this to connect database, not change string above
 //     // after done, comment again
