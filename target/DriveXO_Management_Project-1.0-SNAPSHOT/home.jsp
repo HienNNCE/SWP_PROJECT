@@ -649,7 +649,7 @@
             <div class="hero-content">
                 <h1 class="hero-title"><span class="animate-text">DriverXO</span></h1>
                 <p class="hero-subtitle">Your trusted destination for quality vehicles at competitive prices. We make car buying simple.</p>
-                <a href="car/list" class="hero-btn">View Our Collection</a>
+                <a href="car/list" class="hero-btn">View Our Collection.</a>
             </div>
         </section>
 
