@@ -472,14 +472,19 @@
         width: 32px;
         height: 32px;
         border-radius: 50%;
-        object-fit: cover;
         cursor: pointer;
         border: 2px solid #fff;
         transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        color: #fff;
     }
     
     .header.scrolled .profile-avatar {
         border-color: #eee;
+        color: #000;
     }
     
     /* Divider in dropdown menu */
@@ -522,12 +527,24 @@
                             <!-- Sidebar Categories -->
                             <div class="mega-menu-sidebar">
                                 <ul>
-                                    <li><a href="${pageContext.request.contextPath}/car/list?category=suv">SUVs & Cars <i class="fas fa-chevron-right"></i></a></li>
-                                    <li><a href="${pageContext.request.contextPath}/car/list?category=truck">Trucks & Vans <i class="fas fa-chevron-right"></i></a></li>
-                                    <li><a href="${pageContext.request.contextPath}/car/list?category=electric">Electric & Hybrid <i class="fas fa-chevron-right"></i></a></li>
-                                    <li><a href="${pageContext.request.contextPath}/car/list?category=performance">Performance Vehicles <i class="fas fa-chevron-right"></i></a></li>
-                                    <li><a href="${pageContext.request.contextPath}/car/list?category=commercial">Commercial Vehicles <i class="fas fa-chevron-right"></i></a></li>
-                                    <li><a href="${pageContext.request.contextPath}/car/list?category=future">Future Vehicles <i class="fas fa-chevron-right"></i></a></li>
+                                    <!-- Loại xe theo phân khúc -->
+                                    <li><a href="${pageContext.request.contextPath}/car/list?category=luxury">Luxury Cars <i class="fas fa-chevron-right"></i></a></li>
+                                    <li><a href="${pageContext.request.contextPath}/car/list?category=suv">SUVs & Crossovers <i class="fas fa-chevron-right"></i></a></li>
+                                    <li><a href="${pageContext.request.contextPath}/car/list?category=sedan">Sedans <i class="fas fa-chevron-right"></i></a></li>
+                                    <li><a href="${pageContext.request.contextPath}/car/list?category=sports">Sports Cars <i class="fas fa-chevron-right"></i></a></li>
+                                    
+                                    <!-- Phân loại theo nhiên liệu -->
+                                    <li><a href="${pageContext.request.contextPath}/car/list?fuel=Electric">Electric Vehicles <i class="fas fa-chevron-right"></i></a></li>
+                                    <li><a href="${pageContext.request.contextPath}/car/list?fuel=Hybrid">Hybrid Vehicles <i class="fas fa-chevron-right"></i></a></li>
+                                    <li><a href="${pageContext.request.contextPath}/car/list?fuel=Gasoline">Gasoline Vehicles <i class="fas fa-chevron-right"></i></a></li>
+                                    <li><a href="${pageContext.request.contextPath}/car/list?fuel=Diesel">Diesel Vehicles <i class="fas fa-chevron-right"></i></a></li>
+                                    
+                                    <!-- Phân loại theo giá -->
+                                    <li><a href="${pageContext.request.contextPath}/car/list?price=25000-50000">Affordable Cars <i class="fas fa-chevron-right"></i></a></li>
+                                    <li><a href="${pageContext.request.contextPath}/car/list?price=50000-80000">Premium Cars <i class="fas fa-chevron-right"></i></a></li>
+                                    <li><a href="${pageContext.request.contextPath}/car/list?price=80000-125000">High-End Luxury <i class="fas fa-chevron-right"></i></a></li>
+                                    
+                                    <!-- Tất cả xe -->
                                     <li><a href="${pageContext.request.contextPath}/car/list">All Vehicles <i class="fas fa-chevron-right"></i></a></li>
                                 </ul>
                             </div>
@@ -619,36 +636,30 @@
             </nav>
             
             <div class="right-section">
-                <c:if test="${sessionScope.account != null}">
+                <c:if test="${sessionScope.account != null || user != null}">
                     <div class="header-actions">
                         <a href="cart.jsp" class="cart-icon" title="Shopping Cart">
                             <i class="fas fa-shopping-cart"></i>
                             <span class="cart-badge">3</span>
                         </a>
-                        
-                        <!-- Profile dropdown -->
                         <div class="profile-dropdown">
-                            <img src="asset/img/avt/default-avatar.jpg" alt="Profile" class="profile-avatar" />
+                            <i class="fas fa-user profile-avatar"></i>
                             <div class="profile-menu">
                                 <ul>
                                     <li><a href="profile.jsp"><i class="fas fa-user"></i> Profile</a></li>
                                     <li><a href="orders.jsp"><i class="fas fa-shopping-bag"></i> Orders</a></li>
-                                    <li><a href="appointments.jsp"><i class="fas fa-calendar-check"></i> Appoint</a></li>
+                                    <li><a href="appointments.jsp"><i class="fas fa-calendar-check"></i> Appointment
+</a></li>
                                     <li><a href="service-bookings.jsp"><i class="fas fa-tools"></i> Service Booking</a></li>
                                     <li class="menu-divider"></li>
-                                    <li><a href="logout"><i class="fas fa-sign-out-alt"></i> Log out</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/auth/LoginServlet?action=logout"><i class="fas fa-sign-out-alt"></i> Log out</a></li>
                                 </ul>
                             </div>
                         </div>
                     </div>
                 </c:if>
-                
-                <c:if test="${user==null}">
+                <c:if test="${sessionScope.account == null && user == null}">
                     <a href="${pageContext.request.contextPath}/auth/login.jsp" class="login-btn">Login</a>
-                </c:if>
-                <c:if test="${user!=null}">
-                    <a style="margin-right: 5px; color: yellow;" href="#">Hello ${user.getUserName()} </a>
-                    <a href="auth/LoginServlet?action=logout" class="login-btn">Logout</a>
                 </c:if>
             </div>
         </div>
@@ -661,7 +672,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const logoWhite = document.querySelector('.logo-white');
     const logoDark = document.querySelector('.logo-dark');
 
-    const forceDark = ${forceDarkNavbar == true ? 'true' : 'false'};
+    const forceDark = '${forceDarkNavbar}' === 'true';
     const hasBanner = document.querySelector('.hero-banner') !== null;
 
     function updateNavbar() {
