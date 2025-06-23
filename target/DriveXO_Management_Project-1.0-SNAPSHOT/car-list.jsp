@@ -31,10 +31,35 @@
     <body>
         <!-- Ultra Modern Minimalist Car Listing Page -->
         <div class="car-listing-page">
-            <!-- Nút back về trang home -->
+            <!-- Icon Home bên trái -->
             <a href="${pageContext.request.contextPath}/home" class="back-to-home">
                 <i class="fas fa-home"></i>
             </a>
+            <!-- Header actions bên phải -->
+            <div class="carlist-header-actions">
+                <c:if test="${sessionScope.account != null || user != null}">
+                    <a href="cart.jsp" class="cart-icon" title="Shopping Cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-badge">3</span>
+                    </a>
+                    <div class="profile-dropdown">
+                        <i class="fas fa-user profile-avatar"></i>
+                        <div class="profile-menu">
+                            <ul>
+                                <li><a href="profile.jsp"><i class="fas fa-user"></i> Profile</a></li>
+                                <li><a href="orders.jsp"><i class="fas fa-shopping-bag"></i> Orders</a></li>
+                                <li><a href="appointments.jsp"><i class="fas fa-calendar-check"></i> Appointment</a></li>
+                                <li><a href="service-bookings.jsp"><i class="fas fa-tools"></i> Service Booking</a></li>
+                                <li class="menu-divider"></li>
+                                <li><a href="${pageContext.request.contextPath}/auth/LoginServlet?action=logout"><i class="fas fa-sign-out-alt"></i> Log out</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </c:if>
+                <c:if test="${sessionScope.account == null && user == null}">
+                    <a href="${pageContext.request.contextPath}/auth/login.jsp" class="login-btn">Login</a>
+                </c:if>
+            </div>
             
             <div class="container">
                 <!-- Header Section -->
@@ -77,101 +102,49 @@
                         
                     <!-- Advanced Filter Section - Compact Design -->
                         <div class="filter-section">
-                        <div class="filter-section-title">
-                            <span>Refine Selection</span>
-                        </div>
-                        
-                        <!-- Brand Carousel -->
-                        <div class="brand-carousel-container">
-                            <div class="brand-nav prev" id="brandPrev">
-                                <i class="fas fa-chevron-left"></i>
+                            <div class="brand-refine-divider"></div>
+                            <div class="filter-section-title">
+                                <span>Refine Selection</span>
                             </div>
+                        
+                            <!-- Brand Carousel -->
+                            <div class="brand-carousel-container">
+                                <div class="brand-nav prev" id="brandPrev">
+                                    <i class="fas fa-chevron-left"></i>
+                                </div>
                             
-                            <div class="brand-carousel" id="brandCarousel">
-                                <div class="brand-list">
-                                    <div class="brand-item ${empty selectedBrand ? 'selected' : ''}" data-brand="all">All Brands</div>
-                                        <c:choose>
-                                            <c:when test="${not empty brandList}">
-                                                <c:forEach items="${brandList}" var="b">
-                                                <div class="brand-item ${b eq selectedBrand ? 'selected' : ''}" data-brand="${b}">${b}</div>
-                                                </c:forEach>
-                                            </c:when>
-                                            <c:otherwise>
-                                            <div class="brand-item" data-brand="Toyota">Toyota</div>
-                                            <div class="brand-item" data-brand="Honda">Honda</div>
-                                            <div class="brand-item" data-brand="BMW">BMW</div>
-                                            <div class="brand-item" data-brand="Mercedes-Benz">Mercedes</div>
-                                            <div class="brand-item" data-brand="Audi">Audi</div>
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </div>
-                                </div>
-                                
-                            <div class="brand-nav next" id="brandNext">
-                                <i class="fas fa-chevron-right"></i>
-                                    </div>
-                                </div>
-                                
-                        <div class="filter-groups" id="filterGroups">
-                            <!-- Filter Sliders Container -->
-                            <div class="filter-sliders-container">
-                                <!-- Year Picker -->
-                                <div class="year-filter">
-                                    <div class="year-picker-header">
-                                        <span class="year-picker-title">Model Year</span>
-                                        <span class="year-picker-selected" id="yearDisplayValue">${not empty selectedYear ? selectedYear : 'All'}</span>
-                                    </div>
-                                    <div class="year-picker">
-                                        <div class="year-input" id="yearInput">${not empty selectedYear ? selectedYear : 'Select Year'}</div>
-                                        <div class="year-dropdown" id="yearDropdown">
-                                            <div class="year-option ${empty selectedYear ? 'selected' : ''}" data-year="all">All Years</div>
-                                            <div class="year-option ${selectedYear == '2023' ? 'selected' : ''}" data-year="2023">2023</div>
-                                            <div class="year-option ${selectedYear == '2022' ? 'selected' : ''}" data-year="2022">2022</div>
-                                            <div class="year-option ${selectedYear == '2021' ? 'selected' : ''}" data-year="2021">2021</div>
-                                            <div class="year-option ${selectedYear == '2020' ? 'selected' : ''}" data-year="2020">2020</div>
-                                            <div class="year-option ${selectedYear == '2019' ? 'selected' : ''}" data-year="2019">2019</div>
-                                            <div class="year-option ${selectedYear == '2018' ? 'selected' : ''}" data-year="2018">2018</div>
-                                    </div>
-                                </div>
-                                
-                                    <!-- Search Box -->
-                                    <div class="search-filter">
-                                      
-                                        <div class="search-input-container">
-                                            <i class="fas fa-search search-icon"></i>
-                                            <input type="text" class="search-input" id="carSearchInput" placeholder="e.g. Camry, X5, A4..." value="${param.search}">
+                                <div class="brand-carousel" id="brandCarousel">
+                                    <div class="brand-list">
+                                        <div class="brand-item ${empty selectedBrand ? 'selected' : ''}" data-brand="all">All Brands</div>
+                                            <c:choose>
+                                                <c:when test="${not empty brandList}">
+                                                    <c:forEach items="${brandList}" var="b">
+                                                    <div class="brand-item ${b eq selectedBrand ? 'selected' : ''}" data-brand="${b}">${b}</div>
+                                                    </c:forEach>
+                                                </c:when>
+                                                <c:otherwise>
+                                                <div class="brand-item" data-brand="Toyota">Toyota</div>
+                                                <div class="brand-item" data-brand="Honda">Honda</div>
+                                                <div class="brand-item" data-brand="BMW">BMW</div>
+                                                <div class="brand-item" data-brand="Mercedes-Benz">Mercedes</div>
+                                                <div class="brand-item" data-brand="Audi">Audi</div>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </div>
                                     </div>
-                                </div>
                                 
-                                <!-- Fuel Type Filter -->
-                                <div class="fuel-filter">
-                                    <div class="fuel-filter-header">
-                                        <span class="fuel-filter-title">Fuel Type</span>
-                                    </div>
-                                    <div class="fuel-options">
-                                        <div class="fuel-option ${selectedFuelType == 'Gasoline' ? 'selected' : ''}" data-fuel="Gasoline">
-                                            <i class="fas fa-gas-pump"></i>Gasoline
-                                        </div>
-                                        <div class="fuel-option ${selectedFuelType == 'Diesel' ? 'selected' : ''}" data-fuel="Diesel">
-                                            <i class="fas fa-oil-can"></i>Diesel
-                                        </div>
-                                        <div class="fuel-option ${selectedFuelType == 'Electric' ? 'selected' : ''}" data-fuel="Electric">
-                                            <i class="fas fa-bolt"></i>Electric
-                                        </div>
-                                        <div class="fuel-option ${selectedFuelType == 'Hybrid' ? 'selected' : ''}" data-fuel="Hybrid">
-                                            <i class="fas fa-leaf"></i>Hybrid
+                                <div class="brand-nav next" id="brandNext">
+                                    <i class="fas fa-chevron-right"></i>
                                         </div>
                                     </div>
-                                </div>
                                 
+                            <div class="advanced-filter-grid">
                                 <!-- Price Range Slider -->
-                                <div class="range-sliders-row">
                                 <div class="price-filter">
-                                        <div class="filter-slider-header">
-                                            <span class="filter-slider-title">Price Range</span>
-                                            <span class="filter-slider-value" id="priceValue">$${not empty param.price ? param.price.split('-')[1] : '125,000'}</span>
-                                        </div>
+                                    <div class="filter-slider-header">
+                                        <span class="filter-slider-title">Price Range</span>
+                                        <span class="filter-slider-value" id="priceValue">$${not empty param.price ? param.price.split('-')[1] : '125,000'}</span>
+                                    </div>
                                     <div class="price-range">
                                         <input type="range" class="price-range-slider" id="priceRange" min="25000" max="125000" step="5000" value="${not empty param.price ? param.price.split('-')[1] : 125000}">
                                         <div class="price-labels">
@@ -182,27 +155,63 @@
                                         <input type="hidden" id="maxPrice" name="max_price" value="${not empty param.price ? param.price.split('-')[1] : 125000}">
                                     </div>
                                 </div>
-                                
-                                    <!-- ODO Range Slider -->
-                                    <div class="odo-filter">
-                                        <div class="filter-slider-header">
-                                            <span class="filter-slider-title">Mileage (mi)</span>
-                                            <span class="filter-slider-value" id="odoValue">${not empty param.odo ? param.odo.split('-')[1] : '100,000'}</span>
+
+                                <!-- ODO Range Slider -->
+                                <div class="odo-filter">
+                                    <div class="filter-slider-header">
+                                        <span class="filter-slider-title">Mileage (mi)</span>
+                                        <span class="filter-slider-value" id="odoValue">${not empty param.odo ? param.odo.split('-')[1] : '100,000'}</span>
+                                    </div>
+                                    <div class="odo-range">
+                                        <input type="range" class="odo-range-slider" id="odoRange" min="0" max="100000" step="1000" value="${not empty param.odo ? param.odo.split('-')[1] : 100000}">
+                                        <div class="odo-labels">
+                                            <span>0</span>
+                                            <span>100k</span>
+                                        </div>
+                                        <input type="hidden" id="minOdo" name="min_odo" value="${not empty param.odo ? param.odo.split('-')[0] : 0}">
+                                        <input type="hidden" id="maxOdo" name="max_odo" value="${not empty param.odo ? param.odo.split('-')[1] : 100000}">
+                                    </div>
                                 </div>
-                                        <div class="odo-range">
-                                            <input type="range" class="odo-range-slider" id="odoRange" min="0" max="100000" step="1000" value="${not empty param.odo ? param.odo.split('-')[1] : 100000}">
-                                            <div class="odo-labels">
-                                                <span>0</span>
-                                                <span>100k</span>
-                            </div>
-                                            <input type="hidden" id="minOdo" name="min_odo" value="${not empty param.odo ? param.odo.split('-')[0] : 0}">
-                                            <input type="hidden" id="maxOdo" name="max_odo" value="${not empty param.odo ? param.odo.split('-')[1] : 100000}">
-                        </div>
+
+                                <!-- Year Picker -->
+                                <div class="year-filter">
+                                    <div class="year-picker-header">
+                                        <span class="year-picker-title">Model Year</span>
+                                    </div>
+                                    <div class="year-picker">
+                                        <div class="year-input" id="yearInput">${not empty selectedYear ? selectedYear : 'All Years'}</div>
+                                        <div class="year-dropdown" id="yearDropdown">
+                                            <div class="year-option ${empty selectedYear ? 'selected' : ''}" data-year="all">All Years</div>
+                                            <div class="year-option ${selectedYear == '2023' ? 'selected' : ''}" data-year="2023">2023</div>
+                                            <div class="year-option ${selectedYear == '2022' ? 'selected' : ''}" data-year="2022">2022</div>
+                                            <div class="year-option ${selectedYear == '2021' ? 'selected' : ''}" data-year="2021">2021</div>
+                                            <div class="year-option ${selectedYear == '2020' ? 'selected' : ''}" data-year="2020">2020</div>
+                                            <div class="year-option ${selectedYear == '2019' ? 'selected' : ''}" data-year="2019">2019</div>
+                                            <div class="year-option ${selectedYear == '2018' ? 'selected' : ''}" data-year="2018">2018</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Search Box -->
+                                <div class="search-filter">
+                                    <div class="search-input-container">
+                                        <i class="fas fa-search search-icon"></i>
+                                        <input type="text" class="search-input" id="carSearchInput" placeholder="e.g. Camry, X5..." value="${param.search}">
+                                    </div>
+                                </div>
+
+                                <!-- Fuel Type Filter -->
+                                <div class="fuel-filter">
+                                    <div class="fuel-segment-bar">
+                                        <div class="fuel-segment-option ${empty selectedFuelType ? 'active' : ''}" data-fuel="all"><i class="fas fa-car"></i> All</div>
+                                        <div class="fuel-segment-option ${selectedFuelType == 'Gasoline' ? 'active' : ''}" data-fuel="Gasoline"><i class="fas fa-gas-pump"></i> Gasoline</div>
+                                        <div class="fuel-segment-option ${selectedFuelType == 'Diesel' ? 'active' : ''}" data-fuel="Diesel"><i class="fas fa-oil-can"></i> Diesel</div>
+                                        <div class="fuel-segment-option ${selectedFuelType == 'Electric' ? 'active' : ''}" data-fuel="Electric"><i class="fas fa-bolt"></i> Electric</div>
+                                        <div class="fuel-segment-option ${selectedFuelType == 'Hybrid' ? 'active' : ''}" data-fuel="Hybrid"><i class="fas fa-leaf"></i> Hybrid</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                </div>
                         
                         <!-- Đã di chuyển nút filter lên toolbar -->
                     </div>
@@ -390,6 +399,24 @@
                         // Get brand from clicked item
                         const brand = this.getAttribute('data-brand');
                         // Thực hiện các hành động khác khi chọn brand
+                    });
+                });
+
+                // Fuel segment tab click
+                document.querySelectorAll('.fuel-segment-option').forEach(function(tab) {
+                    tab.addEventListener('click', function() {
+                        document.querySelectorAll('.fuel-segment-option').forEach(t => t.classList.remove('active'));
+                        this.classList.add('active');
+                        // Nếu muốn filter ngay lập tức:
+                        const fuel = this.getAttribute('data-fuel');
+                        const url = new URL(window.location.href);
+                        if (fuel === 'all') {
+                            url.searchParams.delete('fuel');
+                        } else {
+                            url.searchParams.set('fuel', fuel);
+                        }
+                        url.searchParams.set('page', 1);
+                        window.location.href = url.toString();
                     });
                 });
             });

@@ -13,6 +13,7 @@ DAO/AuthenticationDAO$1.class
 Controller/CarDetailServlet.class
 Controller/StaffPartServlet.class
 com/mycompany/drivexo_management_project/resources/JakartaEE10Resource.class
+Model/CartItem.class
 DAO/UserDAO.class
 DAO/OrderDetailDAO.class
 DAO/RoleDAO.class
