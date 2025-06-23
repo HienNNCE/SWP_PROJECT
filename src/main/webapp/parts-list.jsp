@@ -2,6 +2,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
+<% if (request.getAttribute("parts") == null) {
+        response.sendRedirect(request.getContextPath() + "/parts");
+        return;
+    }%>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
@@ -112,13 +116,7 @@
                                 <a href="${pageContext.request.contextPath}/part/detail?id=${part.partId}" class="btn btn-outline-secondary w-100">
                                     <i class="fas fa-info-circle"></i> View Details
                                 </a>
-
-                                <button class="btn btn-primary w-100" onclick="addToCartInline(
-                                                '${part.partId}',
-                                                '${fn:escapeXml(part.partName)}',
-                                                '${part.partPrice}')">
-                                    <i class="fas fa-cart-plus"></i> Add to Cart
-                                </button>
+                                <button class="btn btn-primary w-100 add_to_cart" part-Id ='${part.partId}' type = "button"> Add to Cart</button>
                             </div>
                         </div>
                     </div>
@@ -133,57 +131,25 @@
         <jsp:include page="/components/footer.jsp" />
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
         <script>
-                                    window.addEventListener('scroll', function () {
-                                        const header = document.querySelector('.header');
-                                        const logoWhite = document.querySelector('.logo-white');
-                                        const logoDark = document.querySelector('.logo-dark');
+            window.addEventListener('scroll', function () {
+                const header = document.querySelector('.header');
+                const logoWhite = document.querySelector('.logo-white');
+                const logoDark = document.querySelector('.logo-dark');
 
-                                        if (window.scrollY > 50) {
-                                            header.classList.add('scrolled');
-                                            if (logoWhite)
-                                                logoWhite.style.display = 'none';
-                                            if (logoDark)
-                                                logoDark.style.display = 'block';
-                                        } else {
-                                            header.classList.remove('scrolled');
-                                            if (logoWhite)
-                                                logoWhite.style.display = 'block';
-                                            if (logoDark)
-                                                logoDark.style.display = 'none';
-                                        }
-                                    });
-        </script>
-        <script>
-            function addToCartInline(partId, partName, partPriceStr) {
-                const partPrice = parseFloat(partPriceStr);
-                if (!partName || isNaN(partPrice)) {
-                    alert("Error: Invalid part info.");
-                    return;
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                    if (logoWhite)
+                        logoWhite.style.display = 'none';
+                    if (logoDark)
+                        logoDark.style.display = 'block';
+                } else {
+                    header.classList.remove('scrolled');
+                    if (logoWhite)
+                        logoWhite.style.display = 'block';
+                    if (logoDark)
+                        logoDark.style.display = 'none';
                 }
-
-                const countEl = document.querySelector('.cart-btn .item-count');
-                let currentCount = parseInt(countEl.innerText);
-                if (isNaN(currentCount))
-                    currentCount = 0;
-                countEl.innerText = currentCount + 1;
-
-                const cartItemsContainer = document.querySelector(".cart-items");
-                const emptyMsg = document.querySelector(".empty-cart");
-                if (emptyMsg)
-                    emptyMsg.remove();
-
-                const itemHtml = `<div class="cart-item">
-                <p><strong>${partName}</strong> - $${partPrice.toFixed(2)}</p>
-                </div>`;
-                cartItemsContainer.insertAdjacentHTML('beforeend', itemHtml);
-
-                const totalAmountEl = document.querySelector(".total-amount");
-                let currentTotal = parseFloat(totalAmountEl.innerText.replace('$', ''));
-                if (isNaN(currentTotal))
-                    currentTotal = 0;
-                const newTotal = currentTotal + partPrice;
-                totalAmountEl.innerText = `$${newTotal.toFixed(2)}`;
-            }
+            });
         </script>
     </body>
 </html>

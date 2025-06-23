@@ -21,9 +21,8 @@ import java.io.PrintWriter;
  *
  * @author
  */
-
 public class LoginServlet extends HttpServlet {
-    
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -33,22 +32,6 @@ public class LoginServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet LoginServlet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet LoginServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -58,11 +41,11 @@ public class LoginServlet extends HttpServlet {
         // Retrieve the "action" parameter from the request.
         String action = request.getParameter("action");
         // Check if the action is "logout".
-        if (action.equalsIgnoreCase("logout")) {
+        if (action != null && action.equalsIgnoreCase("logout")) {
             // Invalidate or remove the user attribute from the session.
             session.setAttribute("user", null);
             // Redirect the user to the home page after logout.
-            response.sendRedirect("../home");
+            response.sendRedirect(request.getContextPath() + "/home");
         }
     }
 
@@ -79,7 +62,6 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //processRequest(request, response);
         // Instantiate the UserDAO to interact with the database.
         AuthenticationDAO authenDao = new AuthenticationDAO();
         // Get the current HttpSession.
@@ -91,10 +73,30 @@ public class LoginServlet extends HttpServlet {
         Users user = authenDao.getUserById(username, password);
         // If a user object is returned, authentication was successful.
         if (user != null) {
+
             session.setAttribute("user", user);
-            response.sendRedirect("../home");
-            // If no user is found with the given credentials, authentication failed.
+
+            int roleId = user.getRoleId(); 
+            session.setAttribute("userId", user.getUserId());
+            // Check the role and redirect accordingly
+            switch (roleId) {
+                case 1:
+                    // If roleId is 1, redirect to admin dashboard page
+                    response.sendRedirect(request.getContextPath() + "/admin/dashboard.jsp");
+                    break;
+                case 4:
+                    // If roleId is 4, redirect to staff dashboard page
+                    response.sendRedirect(request.getContextPath() + "/staff/dashboard.jsp");
+                    break;
+                default:
+                    // For other roles, redirect to home page
+                    response.sendRedirect(request.getContextPath() + "/home");
+                    break;
+            }
+      
+
         } else {
+            // If user not found, throw error and return to login page
             request.setAttribute("err", "Incorrect email, username or password");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
@@ -108,6 +110,6 @@ public class LoginServlet extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }
 
 }
