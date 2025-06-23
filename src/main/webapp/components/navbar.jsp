@@ -442,7 +442,7 @@
         <div class="main-header">
             <div class="left-section">
                 <div class="logo">
-                    <a href="home.jsp">
+                    <a href="home">
                         <img src="asset/img/driverxo-logo-white.png" alt="DriverXO" class="logo-white">
                         <img src="asset/img/driverxo-logo.png" alt="DriverXO" class="logo-dark" style="display: none;">
                         DriverXO
