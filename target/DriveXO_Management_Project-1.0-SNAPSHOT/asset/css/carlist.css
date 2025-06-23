@@ -1,0 +1,1458 @@
+/* Tối ưu container - tăng chiều ngang */
+.container {
+    max-width: 1440px;
+    width: 100%;
+    padding: 0 20px;
+    margin: 0 auto;
+}
+
+.cars-container {
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+/* Header tối giản hơn */
+.car-listing-header-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 20px;
+    padding-top: 30px;
+}
+
+.car-listing-header {
+    text-align: center;
+    padding: 0;
+    position: relative;
+    margin-bottom: 0;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.car-listing-header::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 1px;
+    background-color: #000;
+}
+
+.car-listing-title {
+    font-size: 32px;
+    font-weight: 300;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.car-listing-subtitle {
+    font-size: 13px;
+    color: #777;
+    margin: 0 auto;
+    font-weight: 300;
+    line-height: 1.6;
+    max-width: 500px;
+}
+
+/* Tối ưu phần Filter */
+.car-filter-section {
+    margin: 0 auto;
+    padding: 0;
+    width: 100%;
+}
+
+/* Phần filter categories hiển thị dạng ngang */
+.filter-categories {
+    margin: 30px auto;
+    padding: 20px 0;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    max-width: 1200px;
+}
+
+.filter-categories::before,
+.filter-categories::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 80px;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.filter-categories::before {
+    left: 0;
+    background: linear-gradient(to right, rgba(255,255,255,1), rgba(255,255,255,0));
+}
+
+.filter-categories::after {
+    right: 0;
+    background: linear-gradient(to left, rgba(255,255,255,1), rgba(255,255,255,0));
+}
+
+.filter-categories-title {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 16px;
+    font-weight: 300;
+    color: #333;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* Tabs trượt ngang */
+.filter-tabs-container {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    padding: 10px 0;
+}
+
+.filter-tabs-container::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+.filter-tabs {
+    display: flex;
+    gap: 30px;
+    min-width: max-content;
+    justify-content: center;
+    padding: 0 20px;
+    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.filter-tabs.transitioning .filter-tab {
+    transition: font-size 0.3s ease, transform 0.3s ease, color 0.3s ease;
+}
+
+.filter-tabs.transitioning .filter-tab:not(.active) {
+    font-size: 13px;
+    opacity: 0.8;
+}
+
+.filter-tab {
+    padding: 6px 5px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #999;
+    position: relative;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+    white-space: nowrap;
+}
+
+.filter-tab::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    background: #000;
+    transition: width 0.3s ease;
+}
+
+.filter-tab:hover {
+    color: #000;
+    transform: translateY(-2px) rotateX(5deg);
+}
+
+.filter-tab:hover::after {
+    width: 0;
+}
+
+.filter-tab.active {
+    color: #000;
+    font-weight: 500;
+}
+
+.filter-tab.active::after {
+    width: 0;
+}
+
+/* Steering wheel icon */
+.steering-wheel-icon {
+    width: 75px;
+    height: 75px;
+    vertical-align: middle;
+    margin-top: -2px;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+/* Tab chứa vô lăng */
+.filter-tab[data-category="all"] {
+    padding: 2px 10px;
+    transform: scale(1.2);
+    margin: 0 10px;
+}
+
+.filter-tab[data-category="all"].active {
+    transform: scale(1.3) translateY(-2px);
+}
+
+.filter-tab[data-category="all"]:hover {
+    transform: scale(1.3) translateY(-2px);
+}
+
+.filter-tab[data-category="all"]:hover .steering-wheel-icon {
+    transform: scale(1.05);
+}
+
+/* Hiệu ứng khi tab active */
+.filter-tab.active {
+    transform: translateY(-2px);
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    font-size: 17px;
+    font-weight: 500;
+    color: #000;
+    transition: font-size 0.3s ease;
+}
+
+/* Hiệu ứng chuyển đổi kích thước cho tất cả tab */
+.filter-tabs.transitioning .filter-tab {
+    transition: font-size 0.3s ease, transform 0.3s ease, color 0.3s ease;
+}
+
+/* Tab không active sẽ thu nhỏ */
+.filter-tabs.transitioning .filter-tab:not(.active) {
+    font-size: 13px;
+    opacity: 0.8;
+}
+
+/* Phần filter chính gọn gàng hơn */
+.filter-section {
+    margin: 15px 0 30px;
+    position: relative;
+    border-bottom: 1px solid #f5f5f5;
+    padding-bottom: 20px;
+}
+
+.filter-section-title {
+    margin-bottom: 20px;
+    font-size: 13px;
+    font-weight: 400;
+    color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* Brand Carousel */
+.brand-carousel-container {
+    position: relative;
+    margin: 0 auto 25px;
+    max-width: 94%;
+}
+
+/* Line phân cách giữa brand và refine section */
+.brand-refine-divider {
+    width: 100%;
+    height: 1px;
+    background: #eee;
+    margin: 18px 0 18px 0;
+    border: none;
+}
+
+.brand-carousel {
+    display: flex;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    padding: 5px 0;
+}
+
+.brand-carousel::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+.brand-list {
+    display: flex;
+    gap: 12px;
+    min-width: max-content;
+    padding: 0 10px;
+}
+
+.brand-item {
+    padding: 6px 15px;
+    border: 1px solid #eee;
+    border-radius: 30px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #666;
+    white-space: nowrap;
+}
+
+.brand-item:hover {
+    border-color: #ddd;
+    background: #f9f9f9;
+    color: #333;
+}
+
+.brand-item.selected {
+    background: #000;
+    color: #fff;
+    border-color: #000;
+}
+
+.brand-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 28px;
+    height: 28px;
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #777;
+    font-size: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    z-index: 3;
+    transition: all 0.2s;
+}
+
+.brand-nav:hover {
+    background: #f9f9f9;
+    color: #333;
+}
+
+.brand-nav.prev {
+    left: -40px;
+}
+
+.brand-nav.next {
+    right: -40px;
+}
+
+/* Thêm hiệu ứng cho filter */
+.filter-groups {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px 20px;
+    align-items: flex-start;
+    max-height: 500px;
+    padding-top: 0;
+}
+
+.filter-actions {
+    display: flex;
+    gap: 10px;
+    max-height: 50px;
+    margin-top: 20px;
+    margin-left: auto;
+}
+
+.filter-button {
+    padding: 8px 16px;
+    font-size: 12px;
+    border: 1px solid #ddd;
+    background: #fff;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 500;
+}
+
+.filter-button.primary {
+    background: #000;
+    color: #fff;
+    border-color: #000;
+}
+
+.filter-button:hover {
+    opacity: 0.8;
+}
+
+/* Filter Sliders Container */
+.filter-sliders-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    width: 100%;
+    margin-top: 0;
+}
+
+@media (max-width: 992px) {
+    .filter-sliders-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Range Sliders Row */
+.range-sliders-row {
+    grid-column: span 2;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+@media (max-width: 768px) {
+    .range-sliders-row {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .price-filter, .odo-filter {
+        width: 100%;
+    }
+}
+
+/* Year Picker */
+.year-filter {
+    position: relative;
+}
+
+.year-picker-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.year-picker-title {
+    font-size: 12px;
+    font-weight: 500;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.year-picker-selected {
+    font-size: 12px;
+    font-weight: 500;
+    color: #333;
+}
+
+.year-picker {
+    position: relative;
+}
+
+.year-input {
+    width: 100%;
+    padding: 8px 12px;
+    font-size: 13px;
+    border: 1px solid #eee;
+    border-radius: 3px;
+    background: #fff;
+    cursor: pointer;
+    text-align: left;
+    user-select: none;
+    transition: all 0.2s;
+    position: relative;
+}
+
+.year-input:hover {
+    border-color: #ddd;
+}
+
+.year-input:after {
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 10px;
+    color: #999;
+    pointer-events: none;
+}
+
+.year-dropdown {
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 3px;
+    z-index: 5;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    display: none;
+}
+
+.year-dropdown.show {
+    display: block;
+}
+
+.year-option {
+    padding: 6px 12px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+}
+
+.year-option:hover {
+    background: #f9f9f9;
+}
+
+.year-option.selected {
+    background: #f0f0f0;
+    color: #000;
+    font-weight: 500;
+}
+
+/* Fuel Type stylish buttons */
+.fuel-filter {
+    position: relative;
+}
+
+.fuel-filter-header {
+    margin-bottom: 8px;
+}
+
+.fuel-filter-title {
+    font-size: 12px;
+    font-weight: 500;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.fuel-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+}
+
+.fuel-option {
+    padding: 7px 0;
+    border: 1px solid #eee;
+    border-radius: 3px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.fuel-option i {
+    font-size: 10px;
+}
+
+.fuel-option:hover {
+    border-color: #ddd;
+    background: #f9f9f9;
+}
+
+.fuel-option.selected {
+    background: #000;
+    color: #fff;
+    border-color: #000;
+}
+
+/* Price và ODO range sliders */
+.price-filter, .odo-filter {
+    position: relative;
+    flex: 1;
+    width: 50%;
+}
+
+.price-range, .odo-range {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.filter-slider-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.filter-slider-title {
+    font-size: 11px;
+    font-weight: 500;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.filter-slider-value {
+    font-size: 11px;
+    font-weight: 500;
+    color: #333;
+}
+
+.price-range-slider, .odo-range-slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 3px;
+    border-radius: 2px;
+    background: #f0f0f0;
+    outline: none;
+    margin: 8px 0;
+}
+
+.price-range-slider::-webkit-slider-thumb, .odo-range-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #000;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.price-range-slider::-moz-range-thumb, .odo-range-slider::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #000;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+}
+
+.price-range-slider::-webkit-slider-thumb:hover, .odo-range-slider::-webkit-slider-thumb:hover,
+.price-range-slider::-moz-range-thumb:hover, .odo-range-slider::-moz-range-thumb:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 2px rgba(0,0,0,0.1);
+}
+
+.price-labels, .odo-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 9px;
+    color: #999;
+    padding: 0 2px;
+}
+
+/* Cars grid - hiển thị 4 xe mỗi hàng */
+.cars-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+    margin-top: 30px;
+}
+
+/* Cải thiện car item */
+.car-item {
+    border: 1px solid #eee;
+    transition: all 0.2s;
+    border-radius: 2px;
+}
+
+.car-item:hover {
+    border-color: #ddd;
+}
+
+.car-image {
+    position: relative;
+    overflow: hidden;
+    height: 150px;
+}
+
+.car-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s;
+}
+
+.car-item:hover .car-image img {
+    transform: scale(1.05);
+}
+
+.car-tag {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: #000;
+    color: #fff;
+    font-size: 10px;
+    padding: 2px 6px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.car-actions {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 5px;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.car-item:hover .car-actions {
+    opacity: 1;
+}
+
+.car-action {
+    background: rgba(255,255,255,0.9);
+    border: none;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #333;
+    font-size: 11px;
+}
+
+/* Content tối giản */
+.car-content {
+    padding: 12px;
+}
+
+.car-brand {
+    font-size: 10px;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+    font-weight: 500;
+}
+
+.car-name {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.car-price {
+    font-size: 15px;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.car-specs {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    border-top: 1px solid #f0f0f0;
+    padding-top: 8px;
+    font-size: 11px;
+}
+
+.car-spec {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    color: #666;
+}
+
+.spec-icon {
+    font-size: 10px;
+}
+
+.car-footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.car-more {
+    font-size: 11px;
+    text-decoration: none;
+    color: #000;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Toolbar tối ưu */
+.cars-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    margin-top: 20px;
+}
+
+.cars-count {
+    font-size: 14px;
+    color: #555;
+}
+
+.cars-view-options {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Filter Actions trong toolbar */
+.filter-actions#filterActions_toolbar {
+    display: flex;
+    gap: 8px;
+    margin-right: 15px;
+}
+
+.filter-actions#filterActions_toolbar .filter-button {
+    padding: 5px 12px;
+    font-size: 11px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.filter-actions#filterActions_toolbar .filter-button:hover {
+    opacity: 0.9;
+}
+
+.filter-actions#filterActions_toolbar .filter-button.primary {
+    background: #000;
+    color: #fff;
+    border-color: #000;
+}
+
+.sort-select {
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    font-size: 13px;
+    background: #fff;
+}
+
+.view-button {
+    width: 32px;
+    height: 32px;
+    border: 1px solid #ddd;
+    background: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+}
+
+.view-button.active {
+    background: #000;
+    color: #fff;
+    border-color: #000;
+}
+
+/* Chế độ xem dạng list */
+.cars-grid.list-view {
+    grid-template-columns: 1fr;
+}
+
+.cars-grid.list-view .car-item {
+    display: flex;
+}
+
+.cars-grid.list-view .car-image {
+    width: 240px;
+    height: 180px;
+    flex-shrink: 0;
+}
+
+.cars-grid.list-view .car-content {
+    flex: 1;
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    margin: 40px 0 20px;
+}
+
+.page-item {
+    display: flex;
+}
+
+.page-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid #eee;
+    text-decoration: none;
+    color: #555;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.page-link.active {
+    background: #000;
+    color: #fff;
+    border-color: #000;
+}
+
+.page-link.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* No cars found */
+.no-cars-found {
+    text-align: center;
+    padding: 50px 20px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.no-cars-icon {
+    font-size: 48px;
+    color: #ddd;
+    margin-bottom: 20px;
+}
+
+.no-cars-title {
+    font-size: 24px;
+    font-weight: 300;
+    margin-bottom: 15px;
+}
+
+.no-cars-text {
+    color: #777;
+    margin-bottom: 25px;
+    line-height: 1.6;
+}
+
+.browse-all-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #000;
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    border-radius: 3px;
+}
+
+/* Loading indicator */
+.loading-indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    color: #777;
+    font-size: 14px;
+    gap: 15px;
+}
+
+.loading-indicator i {
+    font-size: 30px;
+    color: #000;
+    animation: spin 1.5s linear infinite;
+}
+
+.loading-indicator span {
+    font-weight: 300;
+    letter-spacing: 1px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Error message */
+.error-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    color: #d9534f;
+    font-size: 14px;
+    gap: 15px;
+}
+
+.error-message i {
+    font-size: 30px;
+}
+
+/* Responsive styles */
+@media (max-width: 1200px) {
+    .filter-sliders-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .brand-carousel-container {
+        max-width: 90%;
+    }
+    
+    .brand-nav.prev {
+        left: -30px;
+    }
+    
+    .brand-nav.next {
+        right: -30px;
+    }
+}
+
+@media (max-width: 992px) {
+    .filter-sliders-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+    
+    .brand-item {
+        padding: 5px 12px;
+        font-size: 11px;
+    }
+    
+    .filter-actions#filterActions_toolbar {
+        margin-right: 10px;
+    }
+    
+    .cars-view-options {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+}
+
+@media (max-width: 768px) {
+    .filter-sliders-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .brand-carousel-container {
+        max-width: 85%;
+    }
+    
+    .brand-nav.prev {
+        left: -25px;
+    }
+    
+    .brand-nav.next {
+        right: -25px;
+    }
+    
+    .brand-nav {
+        width: 24px;
+        height: 24px;
+    }
+    
+    .cars-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 576px) {
+    .filter-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .filter-button {
+        flex: 1;
+    }
+    
+    .brand-carousel-container {
+        max-width: 80%;
+    }
+    
+    .cars-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Search Box */
+.search-filter {
+    position: relative;
+    margin-top: 15px;
+}
+
+.search-filter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.search-filter-title {
+    font-size: 12px;
+    font-weight: 500;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.search-input-container {
+    position: relative;
+}
+
+.search-input {
+    width: 100%;
+    padding: 8px 12px;
+    padding-left: 32px;
+    font-size: 13px;
+    border: 1px solid #eee;
+    border-radius: 3px;
+    background: #fff;
+    transition: all 0.2s;
+}
+
+.search-input:hover {
+    border-color: #ddd;
+}
+
+.search-input:focus {
+    border-color: #ccc;
+    outline: none;
+}
+
+.search-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    font-size: 12px;
+}
+
+/* Back to home button */
+.back-to-home {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.7);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    box-shadow: none;
+    z-index: 100;
+    transition: all 0.2s ease;
+}
+
+.back-to-home:hover {
+    transform: none;
+    box-shadow: none;
+    background: #000;
+}
+
+.back-to-home i {
+    font-size: 16px;
+}
+
+/* Advanced Filter Grid - Tinh gọn, vuông vắn */
+.advanced-filter-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 18px;
+    align-items: end;
+    margin-top: 10px;
+    padding: 20px 40px;
+    background: #fcfcfc;
+    border: 1px solid #f0f0f0;
+    border-radius: 4px;
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.price-filter, .odo-filter, .year-filter, .search-filter {
+    margin: 0;
+}
+
+.filter-slider-header, .year-picker-header {
+    margin-bottom: 4px;
+    font-size: 12px;
+}
+
+.year-input, .search-input {
+    padding: 6px 10px;
+    font-size: 13px;
+    height: 32px;
+}
+
+.price-range-slider, .odo-range-slider {
+    height: 2px;
+    margin: 6px 0;
+}
+
+.price-labels, .odo-labels {
+    font-size: 10px;
+    padding: 0 1px;
+}
+
+.fuel-filter {
+    grid-column: 1 / 3;
+    margin: 0;
+    padding: 0;
+}
+
+.fuel-options {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.fuel-option {
+    padding: 6px 14px;
+    font-size: 12px;
+    border-radius: 3px;
+    border: 1px solid #eee;
+    background: #fff;
+    transition: all 0.2s;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    min-width: 70px;
+    justify-content: center;
+}
+
+.fuel-option.selected {
+    background: #000;
+    color: #fff;
+    border-color: #000;
+}
+
+.fuel-option:hover {
+    border-color: #ccc;
+}
+
+@media (max-width: 900px) {
+    .advanced-filter-grid {
+        grid-template-columns: 1fr;
+        max-width: 100%;
+    }
+    .fuel-filter {
+        grid-column: 1 / 2;
+    }
+}
+
+.fuel-segment-bar {
+    display: flex;
+    width: 100%;
+    background: transparent;
+    border-radius: 6px;
+    overflow: hidden;
+    border: none;
+    margin-top: 2px;
+}
+
+.fuel-segment-option {
+    flex: 1 1 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #222;
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    padding: 7px 0 6px 0;
+    cursor: pointer;
+    transition: background 0.25s, color 0.25s;
+    font-weight: 500;
+    min-width: 0;
+    outline: none;
+    position: relative;
+}
+
+.fuel-segment-option:not(:last-child) {
+    border-right: 1px solid #eee;
+}
+
+.fuel-segment-option.active {
+    color: #000;
+    background: #f3f3f3;
+    transition: background 0.25s, color 0.25s;
+    box-shadow: none;
+}
+
+.fuel-segment-option.active i {
+    color: #000;
+}
+
+.fuel-segment-option:hover:not(.active) {
+    color: #111;
+    background: #f7f7f7;
+}
+
+.fuel-segment-option i {
+    font-size: 11px;
+    color: #888;
+    transition: color 0.2s;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+@media (max-width: 900px) {
+    .fuel-segment-bar {
+        flex-direction: column;
+        border-radius: 6px;
+    }
+    .fuel-segment-option {
+        border-right: none;
+        border-bottom: 1px solid #eee;
+        border-radius: 0;
+        padding: 8px 0;
+    }
+    .fuel-segment-option:last-child {
+        border-bottom: none;
+    }
+}
+
+.carlist-header-actions {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    z-index: 101;
+}
+
+.carlist-header-actions .cart-icon {
+    color: #222;
+    font-size: 18px;
+    position: relative;
+    transition: color 0.2s;
+}
+
+.carlist-header-actions .cart-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #ff3a3a;
+    color: white;
+    font-size: 10px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+}
+
+.carlist-header-actions .profile-dropdown {
+    position: relative;
+}
+
+.carlist-header-actions .profile-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #eee;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: #222;
+    background: #fff;
+}
+
+.carlist-header-actions .profile-dropdown:hover .profile-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.carlist-header-actions .profile-menu {
+    position: absolute;
+    top: 40px;
+    right: 0;
+    width: 200px;
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    padding: 10px 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+    z-index: 1100;
+}
+
+.carlist-header-actions .profile-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.carlist-header-actions .profile-menu ul li {
+    padding: 0;
+    margin: 0;
+}
+
+.carlist-header-actions .profile-menu ul li a {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    color: #333;
+    font-size: 13px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.carlist-header-actions .profile-menu ul li a:hover {
+    background-color: #f5f5f5;
+}
+
+.carlist-header-actions .profile-menu ul li a i {
+    width: 20px;
+    margin-right: 10px;
+    text-align: center;
+}
+
+.carlist-header-actions .menu-divider {
+    height: 1px;
+    background-color: #f0f0f0;
+    margin: 5px 0;
+}
+
+.carlist-header-actions .login-btn {
+    padding: 6px 16px;
+    background-color: transparent;
+    border: 1px solid #222;
+    color: #222;
+    font-size: 12px;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+}
+
+.carlist-header-actions .login-btn:hover {
+    background-color: #222;
+    color: #fff;
+}
