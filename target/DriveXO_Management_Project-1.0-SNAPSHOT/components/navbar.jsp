@@ -245,9 +245,13 @@
     
     .car-preview img {
         width: 100%;
-        height: auto;
+        aspect-ratio: 16/9;
+        object-fit: cover;
+        border-radius: 4px;
+        background: #f5f5f5;
         margin-bottom: 15px;
         transition: all 0.3s ease;
+        display: block;
     }
     
     .car-model {
@@ -555,7 +559,9 @@
                                     <c:forEach var="car" items="${latestCars}" varStatus="loop">
                                         <c:if test="${loop.index < 8}">
                                             <div class="car-preview">
-                                                <img src="${pageContext.request.contextPath}/asset/img/cars/${car.carImg}" alt="${car.carBrand} ${car.carName}">
+                                                <a href="${pageContext.request.contextPath}/car/detail?id=${car.carId}">
+                                                    <img src="${pageContext.request.contextPath}/asset/img/cars/${car.carImg}" alt="${car.carBrand} ${car.carName}" />
+                                                </a>
                                                 <div class="car-model">
                                                     ${car.carName} <span class="car-model-badge">®</span>
                                                 </div>
@@ -575,52 +581,6 @@
                                             </div>
                                         </c:if>
                                     </c:forEach>
-                                    
-                                    <!-- Fallback if no cars in database -->
-                                    <c:if test="${empty latestCars}">
-                                        <div class="car-preview">
-                                            <img src="${pageContext.request.contextPath}/asset/img/cars/mercedes-s-class.png" alt="Mercedes S-Class">
-                                            <div class="car-model">
-                                                S-Class <span class="car-model-badge">®</span>
-                                            </div>
-                                            <div class="car-price">
-                                                Starting at $110,000<sup>1</sup>
-                                            </div>
-                                        </div>
-                                        <div class="car-preview">
-                                            <img src="${pageContext.request.contextPath}/asset/img/cars/bmw-7-series.png" alt="BMW 7 Series">
-                                            <div class="car-model">
-                                                7 Series <span class="car-model-badge">®</span>
-                                            </div>
-                                            <div class="car-price">
-                                                Starting at $93,300<sup>1</sup>
-                                            </div>
-                                            <div class="car-badge electric">
-                                                <i class="fas fa-bolt"></i> All Electric
-                                            </div>
-                                        </div>
-                                        <div class="car-preview">
-                                            <img src="${pageContext.request.contextPath}/asset/img/cars/audi-a8.png" alt="Audi A8">
-                                            <div class="car-model">
-                                                A8 <span class="car-model-badge">®</span>
-                                            </div>
-                                            <div class="car-price">
-                                                Starting at $86,500<sup>1</sup>
-                                            </div>
-                                        </div>
-                                        <div class="car-preview">
-                                            <img src="${pageContext.request.contextPath}/asset/img/cars/lexus-ls.png" alt="Lexus LS">
-                                            <div class="car-model">
-                                                LS <span class="car-model-badge">®</span>
-                                            </div>
-                                            <div class="car-price">
-                                                Starting at $77,250<sup>1</sup>
-                                            </div>
-                                            <div class="car-badge">
-                                                <i class="fas fa-leaf"></i> Hybrid Available
-                                            </div>
-                                        </div>
-                                    </c:if>
                                 </div>
                                 
                               </div>
@@ -648,8 +608,7 @@
                                 <ul>
                                     <li><a href="profile.jsp"><i class="fas fa-user"></i> Profile</a></li>
                                     <li><a href="orders.jsp"><i class="fas fa-shopping-bag"></i> Orders</a></li>
-                                    <li><a href="appointments.jsp"><i class="fas fa-calendar-check"></i> Appointment
-</a></li>
+                                    <li><a href="appointments.jsp"><i class="fas fa-calendar-check"></i> Appointment</a></li>
                                     <li><a href="service-bookings.jsp"><i class="fas fa-tools"></i> Service Booking</a></li>
                                     <li class="menu-divider"></li>
                                     <li><a href="${pageContext.request.contextPath}/auth/LoginServlet?action=logout"><i class="fas fa-sign-out-alt"></i> Log out</a></li>
