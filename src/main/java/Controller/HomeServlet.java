@@ -2,6 +2,7 @@ package Controller;
 
 import DAO.CarDAO;
 import Model.Car;
+import util.MenuDataHelper;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -26,11 +27,7 @@ public class HomeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            // Lấy 8 xe ngẫu nhiên cho phần Featured Vehicles
-            List<Car> featuredCars = carDAO.getRandomCars(8);
-            request.setAttribute("latestCars", featuredCars);
-
-            // Lấy thông tin giỏ hàng nếu đã đăng nhập
+            
             jakarta.servlet.http.HttpSession session = request.getSession(false);
             Integer userId = (session != null) ? (Integer) session.getAttribute("userId") : null;
             if (userId != null) {
@@ -45,6 +42,7 @@ public class HomeServlet extends HttpServlet {
                 request.setAttribute("totalPrice", java.math.BigDecimal.ZERO);
             }
 
+            MenuDataHelper.preloadCarList(request);     
             request.getRequestDispatcher("/home.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();

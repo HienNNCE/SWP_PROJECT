@@ -10,12 +10,13 @@ import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
+import util.MenuDataHelper;
 
 @WebServlet(name = "PartServlet", urlPatterns = {
-    "/parts",             // list
-    "/parts/search",      // search
-    "/parts/filter",      // filter
-    "/part/detail"        // detail
+    "/parts", // list
+    "/parts/search", // search
+    "/parts/filter", // filter
+    "/part/detail" // detail
 })
 public class PartServlet extends HttpServlet {
 
@@ -29,6 +30,7 @@ public class PartServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        MenuDataHelper.preloadCarList(request);
         String action = request.getServletPath();
 
         switch (action) {
@@ -69,12 +71,13 @@ public class PartServlet extends HttpServlet {
     private void listParts(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         List<Part> parts = partDAO.getAllParts();
-        List<String> brands = partDAO.getAllBrands();
+        List<String> partBrands = partDAO.getAllBrands();
 
         request.setAttribute("parts", parts);
-        request.setAttribute("brands", brands);
-        setCartInfo(request);
-        request.getRequestDispatcher("/part/parts-list.jsp").forward(request, response);
+        request.setAttribute("partBrands", partBrands);
+        request.setAttribute("activePage", "parts");
+
+        request.getRequestDispatcher("/parts-list.jsp").forward(request, response);
     }
 
     // === SEARCH ===
@@ -83,12 +86,11 @@ public class PartServlet extends HttpServlet {
         String keyword = request.getParameter("keyword");
 
         List<Part> parts = partDAO.searchPartsByName(keyword);
-        List<String> brands = partDAO.getAllBrands();
+        List<String> partBrands = partDAO.getAllBrands();
 
         request.setAttribute("parts", parts);
-        request.setAttribute("brands", brands);
-        setCartInfo(request);
-        request.getRequestDispatcher("/part/parts-list.jsp").forward(request, response);
+        request.setAttribute("partBrands", partBrands);
+        request.getRequestDispatcher("/parts-list.jsp").forward(request, response);
     }
 
     // === FILTER ===
@@ -111,26 +113,29 @@ public class PartServlet extends HttpServlet {
                     .collect(Collectors.toList());
         }
 
-        List<String> brands = partDAO.getAllBrands();
+        List<String> partBrands = partDAO.getAllBrands();
 
         request.setAttribute("parts", parts);
-        request.setAttribute("brands", brands);
-        setCartInfo(request);
-        request.getRequestDispatcher("/part/parts-list.jsp").forward(request, response);
+        request.setAttribute("partBrands", partBrands);
+        request.getRequestDispatcher("/parts-list.jsp").forward(request, response);
     }
 
     // === DETAIL ===
     private void showDetail(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        MenuDataHelper.preloadCarList(request);
         int id = parseInt(request.getParameter("id"));
         Part part = partDAO.getPartById(id);
         if (part == null) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
-
+        List<Part> relatedParts = partDAO.getRelatedParts(part.getPartBrand(), part.getPartId());
+        
+        request.setAttribute("relatedParts", relatedParts);
+        request.setAttribute("activePage", "parts");
         request.setAttribute("part", part);
-        request.getRequestDispatcher("/part/part-detail.jsp").forward(request, response);
+        request.getRequestDispatcher("/part-detail.jsp").forward(request, response);
     }
 
     // === UTIL ===

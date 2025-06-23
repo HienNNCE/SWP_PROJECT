@@ -4,12 +4,11 @@
  */
 package Controller;
 
-import DAO.UserDAO;
-import Model.User;
+import DAO.AuthenticationDAO;
+import Model.Users;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,8 +21,6 @@ import jakarta.servlet.http.HttpSession;
  *
  * @author
  */
-@WebServlet("/register")
-
 public class RegisterServlet extends HttpServlet {
 
     /**
@@ -81,7 +78,7 @@ public class RegisterServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //processRequest(request, response);
-        UserDAO userDao = new UserDAO();
+        AuthenticationDAO authenDao = new AuthenticationDAO();
         HttpSession session = request.getSession();
         // Retrieve parameters from the registration form.
         String username = request.getParameter("username");
@@ -103,12 +100,12 @@ public class RegisterServlet extends HttpServlet {
             return;
         }
 
-        boolean emailExists = userDao.checkEmailUser(email);
+        boolean emailExists = authenDao.checkEmailUser(email);
         if (emailExists) {
             request.setAttribute("err", "This email has already been registered.");
             request.getRequestDispatcher("register.jsp").forward(request, response);
         } else {
-            userDao.registerUser(username, email, password);
+            authenDao.registerUser(username, email, password);
             request.setAttribute("success_msg", "Registration successful! Please log in.");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }

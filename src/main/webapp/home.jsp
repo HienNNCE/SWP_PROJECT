@@ -643,13 +643,13 @@
         <!-- Hero Banner - Minimal & Modern -->
         <section class="hero-banner">
             <video autoplay muted loop playsinline>
-                <source src="asset/img/banner.png" type="video/mp4">
+                <source src="asset/img/vidbanner.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
             <div class="hero-content">
                 <h1 class="hero-title"><span class="animate-text">DriverXO</span></h1>
                 <p class="hero-subtitle">Your trusted destination for quality vehicles at competitive prices. We make car buying simple.</p>
-                <a href="car/list" class="hero-btn">View Our Collection</a>
+                <a href="car/list" class="hero-btn">View Our Collection...</a>
             </div>
         </section>
 

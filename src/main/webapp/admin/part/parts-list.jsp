@@ -22,7 +22,6 @@
                 box-shadow: 0 0 15px rgba(0,0,0,0.1);
             }
             .card-header {
-                background: #007bff;
                 color: white;
                 border-radius: 10px 10px 0 0;
                 padding: 20px;
@@ -31,9 +30,10 @@
                 margin: 0;
                 font-size: 20px;
                 font-weight: bold;
+                color: black;
             }
             .btn-primary {
-                background: #28a745;
+                background: black;
                 border: none;
             }
             .admin-table {
@@ -42,7 +42,7 @@
                 text-align: center;
             }
             .admin-table thead {
-                background: #f8f9fa;
+                background: white;
                 font-weight: bold;
                 font-size: 16px;
             }

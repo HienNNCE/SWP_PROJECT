@@ -149,9 +149,8 @@ public class PartDAO extends DBContext {
 
     public List<String> getAllBrands() {
         List<String> brands = new ArrayList<>();
-        String sql = "SELECT DISTINCT part_brand FROM Part";
-        Connection conn = this.getConnection();
-        try (PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+        String sql = "SELECT DISTINCT part_brand FROM Part WHERE part_brand IS NOT NULL AND part_brand <> ''";
+        try (Connection conn = getConnection(); PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 brands.add(rs.getString("part_brand"));
             }
@@ -182,5 +181,23 @@ public class PartDAO extends DBContext {
         stmt.setString(5, part.getPartImg());
         stmt.setInt(6, part.getPartStock());
         stmt.setBigDecimal(7, part.getPartPrice());
+    }
+
+    public List<Part> getRelatedParts(String brand, int excludePartId) {
+        List<Part> parts = new ArrayList<>();
+        String sql = "SELECT * FROM Part WHERE part_brand = ? AND part_id != ?";
+
+        try (Connection conn = getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, brand);
+            stmt.setInt(2, excludePartId);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                parts.add(mapRowToPart(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return parts;
     }
 }

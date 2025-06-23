@@ -1,8 +1,7 @@
 package Controller;
 
-import DAO.UserDAO;
+import DAO.AuthenticationDAO;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,7 +12,6 @@ import java.io.IOException;
  * Handles the logic for resetting a user's password after OTP verification.
  * It ensures that the user has gone through the OTP verification step before allowing a password change.
  */
-@WebServlet("/resetpassword")
 
 public class ResetPasswordServlet extends HttpServlet {
 
@@ -48,25 +46,31 @@ public class ResetPasswordServlet extends HttpServlet {
         String newPassword = request.getParameter("newPassword");
         String confirmPassword = request.getParameter("confirmPassword");
 
-        // Check if the new password is null, empty, or if it doesn't match the confirmation.
-        if (newPassword == null || newPassword.trim().isEmpty() || !newPassword.equals(confirmPassword)) {
-            request.setAttribute("err", "Password does not match or is invalid. Please re-enter.");
+        String passwordPattern = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$";
+
+        if (newPassword == null || !newPassword.equals(confirmPassword)) {
+            request.setAttribute("err", "Passwords do not match. Please re-enter.");
             request.getRequestDispatcher("resetPassword.jsp").forward(request, response);
             return;
         }
 
-        // Update Password
-        UserDAO uDao = new UserDAO();
-        uDao.setUserPasswordByEmail(femail, newPassword);
+        if (!newPassword.matches(passwordPattern)) {
+            request.setAttribute("err", "Password must be at least 8 characters long and contain a mix of letters, numbers, and symbols.");
+            request.getRequestDispatcher("resetPassword.jsp").forward(request, response);
+            return;
+        }
 
-        // Remove sensitive or temporary attributes from the session after successful password reset.
+        AuthenticationDAO authenDao = new AuthenticationDAO();
+        authenDao.setUserPasswordByEmail(femail, newPassword);
+
         session.removeAttribute("femail");
         session.removeAttribute("otp_verified");
 
-        // Redirect to login
-        request.setAttribute("success_msg", "Password change successfull!");
+        request.setAttribute("success_msg", "Password has been reset successfully!");
         request.getRequestDispatcher("login.jsp").forward(request, response);
     }
+
+    
 
     @Override
     public String getServletInfo() {

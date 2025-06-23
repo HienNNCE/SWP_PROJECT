@@ -4,12 +4,11 @@
  */
 package Controller;
 
-import DAO.UserDAO;
+import DAO.AuthenticationDAO;
 import jakarta.mail.MessagingException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,33 +20,71 @@ import java.util.logging.Logger;
  *
  * @author ASUS_FX507Z
  */
-@WebServlet("/forgot")
-
 public class ForgotServlet extends HttpServlet {
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request  servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException      if an I/O error occurs
+     */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+
+    }
+
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the
+    // + sign on the left to edit the code.">
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request  servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException      if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request  servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException      if an I/O error occurs
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // Get the current session, or create one if it doesn't exist.
         HttpSession session = request.getSession();
-        UserDAO uDao = new UserDAO();
+        AuthenticationDAO authenDao = new AuthenticationDAO();
         // Retrieve the email submitted from the forgot password form.
         String email = request.getParameter("email");
         // Check if the provided email is registered in the system.
-        boolean checkEmail = uDao.checkEmailUser(email);
+        boolean checkEmail = authenDao.checkEmailUser(email);
         // If the email does not exist in the database
         if (!checkEmail) {
-            request.setAttribute("err", "Email not registered");
+            request.setAttribute("err", "Email is not registered in the system");
             request.getRequestDispatcher("forgot.jsp").forward(request, response);
         } else {
             // If the email exists, generate a five-digit OTP string.
-            String otp = UserDAO.generateFiveRandomNumbersString();
+            String otp = AuthenticationDAO.generateFiveRandomNumbersString();
             // Store the generated OTP and the email in the session.
             session.setAttribute("otp", otp);
             session.setAttribute("femail", email);
-            
+
             try {
                 // Send the OTP to the user's email address for verification.
-                UserDAO.sendEmail(email, "Your OTP", otp);
+                AuthenticationDAO.sendEmail(email, "Your OTP", otp);
             } catch (MessagingException ex) {
                 Logger.getLogger(ForgotServlet.class.getName()).log(Level.SEVERE, null, ex);
             }

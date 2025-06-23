@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
     <servlet>
-        <servlet-name>AddToCartServet</servlet-name>
-        <servlet-class>Controller.AddToCartServet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>Controller.LoginServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RegisterServlet</servlet-name>
+        <servlet-class>Controller.RegisterServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ForgotServlet</servlet-name>
@@ -16,21 +16,29 @@
         <servlet-name>OTPServlet</servlet-name>
         <servlet-class>Controller.OTPServlet</servlet-class>
     </servlet>
-    <servlet>
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/auth/LoginServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
-        <servlet-class>Controller.RegisterServlet</servlet-class>
-    </servlet>
+        <url-pattern>/auth/RegisterServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ForgotServlet</servlet-name>
+        <url-pattern>/auth/ForgotServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OTPServlet</servlet-name>
+        <url-pattern>/auth/OTPServlet</url-pattern>
+    </servlet-mapping>
     <servlet>
         <servlet-name>ResetPasswordServlet</servlet-name>
         <servlet-class>Controller.ResetPasswordServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>CartServlet</servlet-name>
-        <url-pattern>/cart</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>AddToCartServet</servlet-name>
-        <url-pattern>/AddToCartServet</url-pattern>
+        <servlet-name>ResetPasswordServlet</servlet-name>
+        <url-pattern>/auth/ResetPasswordServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
@@ -53,10 +61,6 @@
             <file-size-threshold>1048576</file-size-threshold>
             <!-- 1MB -->
         </multipart-config>
-    </servlet>
-    <servlet>
-        <servlet-name>CartServlet</servlet-name>
-        <servlet-class>Controller.CartServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>AdminCarServlet</servlet-name>

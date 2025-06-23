@@ -21,14 +21,13 @@ import java.sql.Date;
  */
 public class CarDAO extends DBContext {
 
-    // comment main method
-//    public static void main(String[] a) {
-//        CarDAO cDAO = new CarDAO();
-//        ArrayList<Car> cars = cDAO.getAllCars();
-//        for (Car car : cars) {
-//            System.out.println(car.getCarId() + car.getCarName() + car.getCarBrand());
-//        }
-//    }
+    public static void main(String[] a) {
+        CarDAO cDAO = new CarDAO();
+        ArrayList<Car> cars = cDAO.getAllCars();
+        for (Car car : cars) {
+            System.out.println(car.getCarId() + car.getCarName() + car.getCarBrand());
+        }
+    }
 
     public ArrayList<Car> getAllCars() {
         ArrayList<Car> cars = new ArrayList<>();
@@ -89,7 +88,7 @@ public class CarDAO extends DBContext {
 
     public byte[] getCarImageById(int carId) {
         // Phương thức này sẽ được triển khai sau khi có cấu trúc lưu trữ hình ảnh
-        throw new UnsupportedOperationException("Not supported yet.");
+        return null; // Trả về null thay vì throw exception để tránh lỗi
     }
 
     public Car getCarById(int carId) {
@@ -209,9 +208,298 @@ public class CarDAO extends DBContext {
             while (rs.next()) {
                 brands.add(rs.getString("car_brand"));
             }
+            
+            if (brands.isEmpty()) {
+                brands.add("Toyota");
+                brands.add("Honda");
+                brands.add("BMW");
+                brands.add("Mercedes-Benz");
+                brands.add("Audi");
+                brands.add("Ford");
+                brands.add("Hyundai");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CarDAO.class.getName()).log(Level.SEVERE, null, ex);
+            brands.add("Toyota");
+            brands.add("Honda");
+            brands.add("BMW");
+            brands.add("Mercedes-Benz");
+            brands.add("Audi");
+        }
+        return brands;
+    }
+
+    public ArrayList<Car> getCarsByCategory(String category) {
+        ArrayList<Car> cars = new ArrayList<>();
+        String query = "SELECT * FROM Car WHERE category_id = (SELECT category_id FROM Category WHERE category_name = ?)";
+        try {
+            PreparedStatement ps = this.getConnection().prepareStatement(query);
+            ps.setString(1, category);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                cars.add(new Car(
+                        rs.getInt("car_id"),
+                        rs.getString("car_name"),
+                        rs.getString("car_brand"),
+                        rs.getString("model"),
+                        rs.getBigDecimal("car_price"),
+                        rs.getDate("car_year"),
+                        rs.getString("car_img"),
+                        rs.getInt("car_stock"),
+                        rs.getBigDecimal("car_odo"),
+                        rs.getString("fuel_type"),
+                        rs.getBigDecimal("displacement"),
+                        rs.getInt("category_id")
+                ));
+            }
         } catch (SQLException ex) {
             Logger.getLogger(CarDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return brands;
+        return cars;
+    }
+    
+    public ArrayList<Car> getCarsByBrand(String brand) {
+        ArrayList<Car> cars = new ArrayList<>();
+        String query = "SELECT * FROM Car WHERE car_brand = ?";
+        try {
+            PreparedStatement ps = this.getConnection().prepareStatement(query);
+            ps.setString(1, brand);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                cars.add(new Car(
+                        rs.getInt("car_id"),
+                        rs.getString("car_name"),
+                        rs.getString("car_brand"),
+                        rs.getString("model"),
+                        rs.getBigDecimal("car_price"),
+                        rs.getDate("car_year"),
+                        rs.getString("car_img"),
+                        rs.getInt("car_stock"),
+                        rs.getBigDecimal("car_odo"),
+                        rs.getString("fuel_type"),
+                        rs.getBigDecimal("displacement"),
+                        rs.getInt("category_id")
+                ));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CarDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return cars;
+    }
+    
+    public ArrayList<Car> getCarsByFuelType(String fuelType) {
+        ArrayList<Car> cars = new ArrayList<>();
+        String query = "SELECT * FROM Car WHERE fuel_type = ?";
+        try {
+            PreparedStatement ps = this.getConnection().prepareStatement(query);
+            ps.setString(1, fuelType);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                cars.add(new Car(
+                        rs.getInt("car_id"),
+                        rs.getString("car_name"),
+                        rs.getString("car_brand"),
+                        rs.getString("model"),
+                        rs.getBigDecimal("car_price"),
+                        rs.getDate("car_year"),
+                        rs.getString("car_img"),
+                        rs.getInt("car_stock"),
+                        rs.getBigDecimal("car_odo"),
+                        rs.getString("fuel_type"),
+                        rs.getBigDecimal("displacement"),
+                        rs.getInt("category_id")
+                ));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CarDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return cars;
+    }
+    
+    public ArrayList<String> getAllCategories() {
+        ArrayList<String> categories = new ArrayList<>();
+        String query = "SELECT category_name FROM Category ORDER BY category_name";
+        try {
+            PreparedStatement ps = this.getConnection().prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                categories.add(rs.getString("category_name"));
+            }
+            
+            if (categories.isEmpty()) {
+                categories.add("Sedan");
+                categories.add("SUV");
+                categories.add("Hatchback");
+                categories.add("Truck");
+                categories.add("Luxury");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CarDAO.class.getName()).log(Level.SEVERE, null, ex);
+            categories.add("Sedan");
+            categories.add("SUV");
+            categories.add("Hatchback");
+            categories.add("Sports Car");
+        }
+        return categories;
+    }
+
+    public ArrayList<Car> getPaginatedCars(int page, int itemsPerPage) {
+        ArrayList<Car> cars = new ArrayList<>();
+        int offset = (page - 1) * itemsPerPage;
+        String query = "SELECT * FROM Car ORDER BY car_id OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        try {
+            PreparedStatement ps = this.getConnection().prepareStatement(query);
+            ps.setInt(1, offset);
+            ps.setInt(2, itemsPerPage);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                cars.add(new Car(
+                        rs.getInt("car_id"),
+                        rs.getString("car_name"),
+                        rs.getString("car_brand"),
+                        rs.getString("model"),
+                        rs.getBigDecimal("car_price"),
+                        rs.getDate("car_year"),
+                        rs.getString("car_img"),
+                        rs.getInt("car_stock"),
+                        rs.getBigDecimal("car_odo"),
+                        rs.getString("fuel_type"),
+                        rs.getBigDecimal("displacement"),
+                        rs.getInt("category_id")
+                ));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CarDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return cars;
+    }
+
+    public ArrayList<Car> getCarsByYearRange(int startYear, int endYear) {
+        ArrayList<Car> cars = new ArrayList<>();
+        String query = "SELECT * FROM Car WHERE YEAR(car_year) BETWEEN ? AND ?";
+        try {
+            PreparedStatement ps = this.getConnection().prepareStatement(query);
+            ps.setInt(1, startYear);
+            ps.setInt(2, endYear);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                cars.add(new Car(
+                        rs.getInt("car_id"),
+                        rs.getString("car_name"),
+                        rs.getString("car_brand"),
+                        rs.getString("model"),
+                        rs.getBigDecimal("car_price"),
+                        rs.getDate("car_year"),
+                        rs.getString("car_img"),
+                        rs.getInt("car_stock"),
+                        rs.getBigDecimal("car_odo"),
+                        rs.getString("fuel_type"),
+                        rs.getBigDecimal("displacement"),
+                        rs.getInt("category_id")
+                ));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CarDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return cars;
+    }
+
+    public ArrayList<Car> getCarsByPriceRange(double minPrice, double maxPrice) {
+        ArrayList<Car> cars = new ArrayList<>();
+        String query = "SELECT * FROM Car WHERE car_price BETWEEN ? AND ?";
+        try {
+            PreparedStatement ps = this.getConnection().prepareStatement(query);
+            ps.setDouble(1, minPrice);
+            ps.setDouble(2, maxPrice);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                cars.add(new Car(
+                        rs.getInt("car_id"),
+                        rs.getString("car_name"),
+                        rs.getString("car_brand"),
+                        rs.getString("model"),
+                        rs.getBigDecimal("car_price"),
+                        rs.getDate("car_year"),
+                        rs.getString("car_img"),
+                        rs.getInt("car_stock"),
+                        rs.getBigDecimal("car_odo"),
+                        rs.getString("fuel_type"),
+                        rs.getBigDecimal("displacement"),
+                        rs.getInt("category_id")
+                ));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CarDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return cars;
+    }
+
+    /**
+     * Tìm kiếm xe theo từ khóa
+     * @param keyword Từ khóa tìm kiếm
+     * @return Danh sách xe phù hợp với từ khóa
+     */
+    public ArrayList<Car> searchCars(String keyword) {
+        ArrayList<Car> cars = new ArrayList<>();
+        String query = "SELECT * FROM Car WHERE car_name LIKE ? OR car_brand LIKE ? OR model LIKE ?";
+        
+        try {
+            PreparedStatement ps = this.getConnection().prepareStatement(query);
+            String searchPattern = "%" + keyword + "%";
+            ps.setString(1, searchPattern);
+            ps.setString(2, searchPattern);
+            ps.setString(3, searchPattern);
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                cars.add(new Car(
+                    rs.getInt("car_id"),
+                    rs.getString("car_name"),
+                    rs.getString("car_brand"),
+                    rs.getString("model"),
+                    rs.getBigDecimal("car_price"),
+                    rs.getDate("car_year"),
+                    rs.getString("car_img"),
+                    rs.getInt("car_stock"),
+                    rs.getBigDecimal("car_odo"),
+                    rs.getString("fuel_type"),
+                    rs.getBigDecimal("displacement"),
+                    rs.getInt("category_id")
+                ));
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(CarDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return cars;
+    }
+    
+    /**
+     * Kiểm tra xem một xe có thuộc category không
+     * @param carId ID của xe
+     * @param categoryName Tên category
+     * @return true nếu xe thuộc category, false nếu không
+     */
+    public boolean isCarInCategory(int carId, String categoryName) {
+        String query = "SELECT COUNT(*) FROM Car c JOIN Category cat ON c.category_id = cat.category_id " +
+                      "WHERE c.car_id = ? AND cat.category_name = ?";
+        try {
+            PreparedStatement ps = this.getConnection().prepareStatement(query);
+            ps.setInt(1, carId);
+            ps.setString(2, categoryName);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                rs.close();
+                ps.close();
+                return count > 0;
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(CarDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 }
