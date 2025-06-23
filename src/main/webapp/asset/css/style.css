@@ -31,7 +31,11 @@
     --danger-color: #f44336;
     --transition: all 0.3s ease;
 }
-
+.cart-total {
+    font-size: 12px;
+    margin-left: 6px; /* Tăng thêm 2px so với margin-left: 4px */
+    color: inherit;
+}
 body {
     font-family: 'Montserrat', sans-serif;
     font-size: 16px;
