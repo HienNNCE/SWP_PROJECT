@@ -5,9 +5,14 @@
     Redesigned on : June 19, 2025
 --%>
 
+<%@page import="Model.Cart"%>
+<%@page import="java.util.List"%>
+<%@page import="DAO.CartDAO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -459,21 +464,99 @@
                     <p class="cart-subtitle">Review your selected vehicles</p>
                 </div>
 
-                <c:if test="${not empty cartItems}">
+
+                <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+                <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+                <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
+                <c:if test="${not empty partList}">
                     <div class="cart-wrapper">
                         <!-- Danh sách sản phẩm trong giỏ -->
                         <div class="cart-items-container">
-                            <!-- cart-items-header, cart-items, forEach: bạn đã viết đầy đủ và chuẩn -->
+                            <div class="cart-items-header">
+                                <span class="cart-items-title">Items in Cart</span>
+                                <span class="items-count">${cart.countItem}</span>
+                                <button class="clear-cart-btn">Clear Cart</button>
+                            </div>
+
+                            <c:forEach var="item" items="${partList}">
+                                <div class="cart-item">
+                                    <!-- Hình ảnh -->
+                                    <div class="item-image">
+                                        <img src="${item.partImg}" alt="Image" />
+                                        <%-- Nếu là base64: <img src="data:image/jpeg;base64,${item.base64Image}" /> --%>
+                                    </div>
+
+                                    <!-- Thông tin chi tiết -->
+                                    <div class="item-details">
+                                        <a class="item-name" href="${pageContext.request.contextPath}/part/detail?id=${item.partId}">
+                                            ${item.partName}
+                                        </a>
+                                        <div class="item-price">
+                                            <fmt:formatNumber value="${item.partPrice}" type="currency" currencySymbol="$"/>
+                                        </div>
+                                    </div>
+
+                                    <!-- Control: số lượng, xóa -->
+                                    <div class="item-controls">
+                                        <div class="quantity-control">
+
+                                            <!-- Giảm số lượng -->
+                                            <form method="post" action="cart" style="display: inline;">
+                                                <input type="hidden" name="partId" value="${item.partId}">
+                                                <input type="hidden" name="action" value="decrease">
+                                                <button type="submit" class="quantity-btn">-</button>
+                                            </form>
+
+                                            <input type="text" class="quantity-input" value="${item.quantityInCart}" readonly>
+
+                                            <!-- Tăng số lượng -->
+                                            <form method="post" action="cart" style="display: inline;">
+                                                <input type="hidden" name="partId" value="${item.partId}">
+                                                <input type="hidden" name="action" value="increase">
+                                                <button type="submit" class="quantity-btn">+</button>
+                                            </form>
+                                        </div>
+
+                                        <!-- Xóa sản phẩm -->
+                                        <form method="post" action="cart" style="display: inline;">
+                                            <input type="hidden" name="partId" value="${item.partId}">
+                                            <input type="hidden" name="action" value="remove">
+                                            <button type="submit" class="remove-item">Remove</button>
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </c:forEach>
                         </div>
 
-                        <!-- Phần tổng kết đơn hàng -->
+                        <!-- Tổng kết đơn hàng -->
                         <div class="cart-summary">
-                            <!-- summary-row, coupon, checkout-btn, continue-shopping: bạn đã có -->
+                            <div class="summary-title">Order Summary</div>
+                            <div class="summary-row">
+                                <span>Subtotal</span>
+                                <span>
+                                    <fmt:formatNumber value="${totalPrice}" type="currency" currencySymbol="$"/>
+                                </span>
+                            </div>
+                            <div class="summary-row total">
+                                <span>Total</span>
+                                <span>
+                                    <fmt:formatNumber value="${totalPrice}" type="currency" currencySymbol="$"/>
+                                </span>
+                            </div>
+                            <div class="coupon-form">
+                                <input type="text" class="coupon-input" placeholder="Enter coupon code">
+                                <button class="apply-coupon">Apply</button>
+                            </div>
+                            <button class="checkout-btn">Proceed to Checkout</button>
+                            <a href="${pageContext.request.contextPath}/car/list" class="continue-shopping">Continue Shopping</a>
                         </div>
                     </div>
                 </c:if>
 
-                <c:if test="${empty cartItems}">
+                <!-- Nếu giỏ hàng rỗng -->
+                <c:if test="${empty partList}">
                     <div class="cart-empty">
                         <i class="fas fa-shopping-cart empty-icon"></i>
                         <h3 class="empty-message">Your Cart is Empty</h3>
@@ -482,86 +565,133 @@
                     </div>
                 </c:if>
 
+
             </div>
         </section>
 
-        <!-- JavaScript -->
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                // Quantity control
-                document.querySelectorAll('.decrease-qty').forEach(btn => {
-                    btn.addEventListener('click', function () {
-                        const input = this.nextElementSibling;
-                        const carId = this.dataset.id;
-                        let value = parseInt(input.value);
-                        if (value > 1) {
-                            input.value = value - 1;
-                            updateCart(carId, value - 1);
-                        }
+            document.addEventListener("DOMContentLoaded", function () {
+                // Tăng số lượng
+                document.querySelectorAll(".increase-qty").forEach(btn => {
+                    btn.addEventListener("click", function () {
+                        const partId = this.getAttribute("data-id");
+                        sendCartUpdate("increase", partId);
                     });
                 });
 
-                document.querySelectorAll('.increase-qty').forEach(btn => {
-                    btn.addEventListener('click', function () {
-                        const input = this.previousElementSibling;
-                        const carId = this.dataset.id;
-                        let value = parseInt(input.value);
-                        input.value = value + 1;
-                        updateCart(carId, value + 1);
+                // Giảm số lượng
+                document.querySelectorAll(".decrease-qty").forEach(btn => {
+                    btn.addEventListener("click", function () {
+                        const partId = this.getAttribute("data-id");
+                        sendCartUpdate("decrease", partId);
                     });
                 });
 
-                // Remove item
-                document.querySelectorAll('.remove-item').forEach(btn => {
-                    btn.addEventListener('click', function () {
-                        if (confirm('Remove this item from your cart?')) {
-                            const carId = this.dataset.id;
-                            fetch(`${pageContext.request.contextPath}/cart/remove?id=${carId}`, {method: 'POST'})
-                                                        .then(() => window.location.reload());
-                                            }
-                                        });
-                                    });
+                // Xóa sản phẩm
+                document.querySelectorAll(".remove-item").forEach(btn => {
+                    btn.addEventListener("click", function () {
+                        const partId = this.getAttribute("data-id");
+                        sendCartUpdate("remove", partId);
+                    });
+                });
 
-                                    // Clear cart
-                                    const clearCartBtn = document.querySelector('.clear-cart-btn');
-                                    if (clearCartBtn) {
-                                        clearCartBtn.addEventListener('click', function () {
-                                            if (confirm('Clear your entire cart?')) {
-                                                fetch(`${pageContext.request.contextPath}/cart/clear`, {method: 'POST'})
-                                                        .then(() => window.location.reload());
-                                            }
-                                        });
-                                    }
-
-                                    // Apply coupon
-                                    const applyCouponBtn = document.querySelector('.apply-coupon');
-                                    if (applyCouponBtn) {
-                                        applyCouponBtn.addEventListener('click', function () {
-                                            const couponInput = document.querySelector('.coupon-input');
-                                            const couponCode = couponInput.value.trim();
-                                            if (!couponCode) {
-                                                alert('Please enter a coupon code');
-                                                return;
-                                            }
-                                            // Simulate coupon application
-                                            if (couponCode.toUpperCase() === 'NEWUSER10') {
-                                                alert('Coupon applied: 10% off');
-                                                // Update total would go here
-                                            } else {
-                                                alert('Invalid coupon code');
-                                            }
-                                        });
-                                    }
-
-                                    // Update cart
-                                    function updateCart(carId, quantity) {
-                                        fetch(`${pageContext.request.contextPath}/cart/update`, {
-                                            method: 'POST',
-                                            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                                            body: `id=${carId}&quantity=${quantity}`
-                                        }).then(() => window.location.reload());
-                                    }
-                                });
+                function sendCartUpdate(action, partId) {
+                    fetch("cart", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        },
+                        body: `action=${action}&partId=${partId}`
+                    })
+                            .then(response => {
+                                if (response.redirected) {
+                                    window.location.href = response.url; // reload cart.jsp
+                                } else {
+                                    location.reload(); // fallback reload
+                                }
+                            });
+                }
+            });
         </script>
+
+
+        <!-- JavaScript -->
+        <!--        <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        // Quantity control
+                        document.querySelectorAll('.decrease-qty').forEach(btn => {
+                            btn.addEventListener('click', function () {
+                                const input = this.nextElementSibling;
+                                const carId = this.dataset.id;
+                                let value = parseInt(input.value);
+                                if (value > 1) {
+                                    input.value = value - 1;
+                                    updateCart(carId, value - 1);
+                                }
+                            });
+                        });
+        
+                        document.querySelectorAll('.increase-qty').forEach(btn => {
+                            btn.addEventListener('click', function () {
+                                const input = this.previousElementSibling;
+                                const carId = this.dataset.id;
+                                let value = parseInt(input.value);
+                                input.value = value + 1;
+                                updateCart(carId, value + 1);
+                            });
+                        });
+        
+                        // Remove item
+                        document.querySelectorAll('.remove-item').forEach(btn => {
+                            btn.addEventListener('click', function () {
+                                if (confirm('Remove this item from your cart?')) {
+                                    const carId = this.dataset.id;
+                                    fetch(`${pageContext.request.contextPath}/cart/remove?id=${carId}`, {method: 'POST'})
+                                                                .then(() => window.location.reload());
+                                                    }
+                                                });
+                                            });
+        
+                                            // Clear cart
+                                            const clearCartBtn = document.querySelector('.clear-cart-btn');
+                                            if (clearCartBtn) {
+                                                clearCartBtn.addEventListener('click', function () {
+                                                    if (confirm('Clear your entire cart?')) {
+                                                        fetch(`${pageContext.request.contextPath}/cart/clear`, {method: 'POST'})
+                                                                .then(() => window.location.reload());
+                                                    }
+                                                });
+                                            }
+        
+                                            // Apply coupon
+                                            const applyCouponBtn = document.querySelector('.apply-coupon');
+                                            if (applyCouponBtn) {
+                                                applyCouponBtn.addEventListener('click', function () {
+                                                    const couponInput = document.querySelector('.coupon-input');
+                                                    const couponCode = couponInput.value.trim();
+                                                    if (!couponCode) {
+                                                        alert('Please enter a coupon code');
+                                                        return;
+                                                    }
+                                                    // Simulate coupon application
+                                                    if (couponCode.toUpperCase() === 'NEWUSER10') {
+                                                        alert('Coupon applied: 10% off');
+                                                        // Update total would go here
+                                                    } else {
+                                                        alert('Invalid coupon code');
+                                                    }
+                                                });
+                                            }
+        
+                                            // Update cart
+                                            function updateCart(carId, quantity) {
+                                                fetch(`${pageContext.request.contextPath}/cart/update`, {
+                                                    method: 'POST',
+                                                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                                                    body: `id=${carId}&quantity=${quantity}`
+                                                }).then(() => window.location.reload());
+                                            }
+                                        });
+                </script>-->
     </body>
 </html>

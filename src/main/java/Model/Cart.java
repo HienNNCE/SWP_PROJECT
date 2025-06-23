@@ -1,25 +1,30 @@
 package Model;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class Cart {
     private int cartId;
     private int userId;
     private int countItem;
     private BigDecimal cartPrice;
+    private int partId;
 
-    // Bổ sung nếu muốn hiển thị chi tiết part trong cart
-    private Integer partId; // Optional, nếu cần trong DAO (không nên nằm trong bản chất Cart, nhưng OK nếu tiện xử lý dữ liệu)
+    // Danh sách sản phẩm trong giỏ hàng
+    private List<Part> partList;
 
     // Constructors
     public Cart() {}
 
-    public Cart(int cartId, int userId, int countItem, BigDecimal cartPrice) {
+    public Cart(int cartId, int userId, int countItem, BigDecimal cartPrice, List<Part> partList) {
         this.cartId = cartId;
         this.userId = userId;
         this.countItem = countItem;
         this.cartPrice = cartPrice;
+        this.partList = partList;
     }
+
+    
 
     public Cart(int cartId, int userId, int countItem, BigDecimal cartPrice, int partId) {
         this.cartId = cartId;
@@ -27,6 +32,13 @@ public class Cart {
         this.countItem = countItem;
         this.cartPrice = cartPrice;
         this.partId = partId;
+    }
+
+    public Cart(int cartId, int userId, int countItem, BigDecimal cartPrice) {
+        this.cartId = cartId;
+        this.userId = userId;
+        this.countItem = countItem;
+        this.cartPrice = cartPrice;
     }
 
     // Getters and Setters
@@ -62,12 +74,12 @@ public class Cart {
         this.cartPrice = cartPrice;
     }
 
-    public Integer getPartId() {
-        return partId;
+    public List<Part> getPartList() {
+        return partList;
     }
 
-    public void setPartId(Integer partId) {
-        this.partId = partId;
+    public void setPartList(List<Part> partList) {
+        this.partList = partList;
     }
 
     @Override
@@ -77,7 +89,7 @@ public class Cart {
                 ", userId=" + userId +
                 ", countItem=" + countItem +
                 ", cartPrice=" + cartPrice +
-                ", partId=" + partId +
+                ", partList=" + partList +
                 '}';
     }
 }

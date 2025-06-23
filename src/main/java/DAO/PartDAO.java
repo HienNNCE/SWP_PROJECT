@@ -12,8 +12,8 @@ public class PartDAO extends DBContext {
     public List<Part> getAllParts() {
         List<Part> parts = new ArrayList<>();
         String sql = "SELECT * FROM Part";
-
-        try (Connection conn = getConnection(); PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+        Connection conn = this.getConnection();
+        try (PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 parts.add(mapRowToPart(rs));
             }
@@ -94,9 +94,9 @@ public class PartDAO extends DBContext {
     }
 
     public List<Part> filterParts(String brand, String carModel,
-                                   Double priceFrom, Double priceTo,
-                                   Integer stockFrom, Integer stockTo,
-                                   String sort) {
+            Double priceFrom, Double priceTo,
+            Integer stockFrom, Integer stockTo,
+            String sort) {
         List<Part> parts = new ArrayList<>();
         StringBuilder sql = new StringBuilder("SELECT * FROM Part WHERE 1=1");
         List<Object> params = new ArrayList<>();
@@ -150,7 +150,8 @@ public class PartDAO extends DBContext {
     public List<String> getAllBrands() {
         List<String> brands = new ArrayList<>();
         String sql = "SELECT DISTINCT part_brand FROM Part";
-        try (Connection conn = getConnection(); PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+        Connection conn = this.getConnection();
+        try (PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 brands.add(rs.getString("part_brand"));
             }

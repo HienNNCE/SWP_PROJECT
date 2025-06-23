@@ -12,7 +12,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -26,38 +25,254 @@ public class CartDAO extends DBContext {
 
     public static void main(String[] a) {
         CartDAO cDAO = new CartDAO();
-        boolean sucess = cDAO.addToCart(1, 1);
-        List<Cart> carts = cDAO.getCartByUserId(1);
-        for (Cart c : carts) {
-            System.out.println("Cart ID: " + c.getCartId() + ", User ID: " + c.getUserId() + ", Count Item: "
-                    + c.getCountItem() + ", Cart Price: " + c.getCartPrice() + ", Part ID: " + c.getPartId());
-        }
-        // if (sucess) {
-        //     System.out.println("Sucess");
-        // } else {
-        //     System.out.println("Fail");
-        // }
-        // double total = cDAO.getTotalCartPrice(3);
-        // System.out.println(total);
-        // cDAO.addToCart(3, 6);
-        // List<Part> gameInCarts = cDAO.getGamesInCartByUserId(1);
-        // for (Part g : gameInCarts) {
-        // //System.out.println(g.getTitle());
-        // }
+        Cart cart = cDAO.getCartDetailByUserId(1);
+        System.out.println("Expected cart: " + cart.getCountItem());
     }
 
-    public boolean clearCart(int userId) {
-        String query = "DELETE FROM Cart WHERE user_id = ?";
-        try (Connection connection = getConnection(); PreparedStatement stmt = connection.prepareStatement(query)) {
-
-            stmt.setInt(1, userId);
-            return stmt.executeUpdate() > 0; // Trả về true nếu có ít nhất một hàng bị xóa
-
-        } catch (SQLException ex) {
-            Logger.getLogger(CartDAO.class.getName()).log(Level.SEVERE, "Error clearing cart", ex);
-            return false;
+    public void increaseQuantity(int userId, int partId) {
+        String updateDetailSql = "UPDATE CartDetail SET pt_order_quantity = pt_order_quantity + 1 "
+                + "WHERE cart_id = (SELECT cart_id FROM Cart WHERE user_id = ?) AND part_id = ?";
+        String updateCartSql = "UPDATE Cart SET count_item = count_item + 1, cart_price = cart_price + ? WHERE cart_id = (SELECT cart_id FROM Cart WHERE user_id = ?)";
+        String getPartPriceSql = "SELECT part_price FROM Part WHERE part_id = ?";
+        try (Connection conn = this.getConnection()) {
+            conn.setAutoCommit(false);
+            int cartId = -1;
+            java.math.BigDecimal partPrice = java.math.BigDecimal.ZERO;
+            // Lấy giá part
+            try (PreparedStatement ps = conn.prepareStatement(getPartPriceSql)) {
+                ps.setInt(1, partId);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        partPrice = rs.getBigDecimal("part_price");
+                    }
+                }
+            }
+            // Update CartDetail
+            try (PreparedStatement ps = conn.prepareStatement(updateDetailSql)) {
+                ps.setInt(1, userId);
+                ps.setInt(2, partId);
+                ps.executeUpdate();
+            }
+            // Update Cart
+            try (PreparedStatement ps = conn.prepareStatement(updateCartSql)) {
+                ps.setBigDecimal(1, partPrice);
+                ps.setInt(2, userId);
+                ps.executeUpdate();
+            }
+            conn.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
+
+    public void decreaseQuantity(int userId, int partId) {
+        String getCartIdSql = "SELECT cart_id FROM Cart WHERE user_id = ?";
+        String getQuantitySql = "SELECT pt_order_quantity FROM CartDetail WHERE cart_id = ? AND part_id = ?";
+        String deleteDetailSql = "DELETE FROM CartDetail WHERE cart_id = ? AND part_id = ?";
+        String updateDetailSql = "UPDATE CartDetail SET pt_order_quantity = pt_order_quantity - 1 WHERE cart_id = ? AND part_id = ?";
+        String updateCartSql = "UPDATE Cart SET count_item = count_item - 1, cart_price = cart_price - ? WHERE cart_id = ?";
+        String getPartPriceSql = "SELECT part_price FROM Part WHERE part_id = ?";
+
+        try (Connection conn = this.getConnection()) {
+            conn.setAutoCommit(false);
+
+            int cartId = -1;
+            int quantity = 0;
+            java.math.BigDecimal partPrice = java.math.BigDecimal.ZERO;
+
+            // Lấy cart_id
+            try (PreparedStatement ps = conn.prepareStatement(getCartIdSql)) {
+                ps.setInt(1, userId);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        cartId = rs.getInt("cart_id");
+                    } else {
+                        conn.rollback();
+                        return;
+                    }
+                }
+            }
+
+            // Lấy số lượng hiện tại
+            try (PreparedStatement ps = conn.prepareStatement(getQuantitySql)) {
+                ps.setInt(1, cartId);
+                ps.setInt(2, partId);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        quantity = rs.getInt("pt_order_quantity");
+                    } else {
+                        conn.rollback();
+                        return;
+                    }
+                }
+            }
+
+            // Lấy giá part
+            try (PreparedStatement ps = conn.prepareStatement(getPartPriceSql)) {
+                ps.setInt(1, partId);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        partPrice = rs.getBigDecimal("part_price");
+                    }
+                }
+            }
+
+            if (quantity <= 1) {
+                // Xóa CartDetail
+                try (PreparedStatement ps = conn.prepareStatement(deleteDetailSql)) {
+                    ps.setInt(1, cartId);
+                    ps.setInt(2, partId);
+                    ps.executeUpdate();
+                }
+                // Update Cart
+                try (PreparedStatement ps = conn.prepareStatement(updateCartSql)) {
+                    ps.setBigDecimal(1, partPrice);
+                    ps.setInt(2, cartId);
+                    ps.executeUpdate();
+                }
+            } else {
+                // Giảm số lượng
+                try (PreparedStatement ps = conn.prepareStatement(updateDetailSql)) {
+                    ps.setInt(1, cartId);
+                    ps.setInt(2, partId);
+                    ps.executeUpdate();
+                }
+                // Update Cart
+                try (PreparedStatement ps = conn.prepareStatement(updateCartSql)) {
+                    ps.setBigDecimal(1, partPrice);
+                    ps.setInt(2, cartId);
+                    ps.executeUpdate();
+                }
+            }
+
+            conn.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void removePartFromCart(int userId, int partId) {
+        String getCartIdSql = "SELECT cart_id FROM Cart WHERE user_id = ?";
+        String getPartQuantityAndPriceSql = "SELECT pt_order_quantity, p.part_price FROM CartDetail cd JOIN Part p ON cd.part_id = p.part_id WHERE cd.cart_id = ? AND cd.part_id = ?";
+        String deletePartSql = "DELETE FROM CartDetail WHERE cart_id = ? AND part_id = ?";
+        String updateCartSql = "UPDATE Cart SET count_item = count_item - ?, cart_price = cart_price - ? WHERE cart_id = ?";
+
+        try (Connection conn = this.getConnection()) {
+            conn.setAutoCommit(false);
+
+            int cartId = -1;
+            int quantity = 0;
+            java.math.BigDecimal partPrice = java.math.BigDecimal.ZERO;
+
+            // Lấy cart_id
+            try (PreparedStatement ps = conn.prepareStatement(getCartIdSql)) {
+                ps.setInt(1, userId);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        cartId = rs.getInt("cart_id");
+                    } else {
+                        conn.rollback();
+                        return;
+                    }
+                }
+            }
+
+            // Lấy số lượng và giá part
+            try (PreparedStatement ps = conn.prepareStatement(getPartQuantityAndPriceSql)) {
+                ps.setInt(1, cartId);
+                ps.setInt(2, partId);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        quantity = rs.getInt("pt_order_quantity");
+                        partPrice = rs.getBigDecimal("part_price");
+                    } else {
+                        conn.rollback();
+                        return;
+                    }
+                }
+            }
+
+            // Xóa part khỏi CartDetail
+            try (PreparedStatement ps = conn.prepareStatement(deletePartSql)) {
+                ps.setInt(1, cartId);
+                ps.setInt(2, partId);
+                ps.executeUpdate();
+            }
+
+            // Cập nhật lại Cart
+            java.math.BigDecimal totalRemove = partPrice.multiply(new java.math.BigDecimal(quantity));
+            try (PreparedStatement ps = conn.prepareStatement(updateCartSql)) {
+                ps.setInt(1, quantity);
+                ps.setBigDecimal(2, totalRemove);
+                ps.setInt(3, cartId);
+                ps.executeUpdate();
+            }
+
+            conn.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Cart getCartDetailByUserId(int userId) {
+        Cart cart = null;
+        String sql = " SELECT \n"
+                + "            c.cart_id,\n"
+                + "            c.user_id,\n"
+                + "            c.count_item,\n"
+                + "            c.cart_price,\n"
+                + "            cd.part_id,\n"
+                + "            p.part_name,\n"
+                + "            p.part_brand,\n"
+                + "            p.part_price,\n"
+                + "            p.part_img,\n"
+                + "            cd.pt_order_quantity,\n"
+                + "            (cd.pt_order_quantity * p.part_price) AS total_price\n"
+                + "        FROM Cart c\n"
+                + "        JOIN CartDetail cd ON c.cart_id = cd.cart_id\n"
+                + "        JOIN Part p ON cd.part_id = p.part_id\n"
+                + "        WHERE c.user_id = ?";
+        Connection conn = this.getConnection();
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, userId);
+            try (ResultSet rs = ps.executeQuery()) {
+                List<Part> parts = new ArrayList<>();
+
+                while (rs.next()) {
+                    if (cart == null) {
+                        cart = new Cart();
+                        cart.setCartId(rs.getInt("cart_id"));
+                        cart.setUserId(rs.getInt("user_id"));
+                        cart.setCountItem(rs.getInt("count_item"));
+                        cart.setCartPrice(rs.getBigDecimal("cart_price"));
+                    }
+
+                    Part part = new Part();
+                    part.setPartId(rs.getInt("part_id"));
+                    part.setPartName(rs.getString("part_name"));
+                    part.setPartBrand(rs.getString("part_brand"));
+                    part.setPartPrice(rs.getBigDecimal("part_price"));
+                    part.setPartImg(rs.getString("part_img"));
+
+                    part.setQuantityInCart(rs.getInt("pt_order_quantity"));
+                    part.setTotalPrice(rs.getBigDecimal("total_price"));
+
+                    parts.add(part);
+                }
+
+                if (cart != null) {
+                    cart.setPartList(parts);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return cart;
+    }
+
+
 
     public double getPartPrice(int partId) {
         String sql = "SELECT part_price FROM Part WHERE part_id = ?";
@@ -73,30 +288,17 @@ public class CartDAO extends DBContext {
         }
         return 0;
     }
-    //
-    // public double getAllTotalCartPrice() {
-    // double totalPrice = 0.0;
-    // String sql = "SELECT SUM(g.price) AS total FROM Cart c JOIN Games g ON
-    // c.game_id = g.game_id";
-    // try {
-    // PreparedStatement ps = this.getConnection().prepareStatement(sql);
-    // ResultSet rs = ps.executeQuery();
-    // if (rs.next()) {
-    // totalPrice = rs.getDouble("total");
-    // }
-    // } catch (Exception e) {
-    // e.printStackTrace();
-    // }
-    // return totalPrice;
-    // }
-    //
 
     public double getTotalCartPrice(int userId) {
         double totalPrice = 0;
-        String sql = " SELECT SUM(p.part_price * cd.pt_order_quantity) AS total\r\n" + //
-                "                    FROM Cart c\r\n" + //
-                "                    JOIN CartDetail cd ON c.cart_id = cd.cart_id\r\n" + //
-                "                    JOIN Part p ON cd.part_id = p.part_id\r\n" + //
+        String sql = " SELECT SUM(p.part_price * cd.pt_order_quantity) AS total\r\n"
+                + //
+                "                    FROM Cart c\r\n"
+                + //
+                "                    JOIN CartDetail cd ON c.cart_id = cd.cart_id\r\n"
+                + //
+                "                    JOIN Part p ON cd.part_id = p.part_id\r\n"
+                + //
                 "                    WHERE c.user_id = ?";
 
         try (PreparedStatement ps = this.getConnection().prepareStatement(sql)) {
@@ -191,9 +393,12 @@ public class CartDAO extends DBContext {
     // // Lấy giỏ hàng theo user_id
     public List<Cart> getCartByUserId(int userId) {
         List<Cart> cartList = new ArrayList<>();
-        String sql = "SELECT c.cart_id, c.user_id, c.count_item, c.cart_price, cd.part_id\r\n" + //
-                "                    FROM Cart c\r\n" + //
-                "                    JOIN CartDetail cd ON c.cart_id = cd.cart_id\r\n" + //
+        String sql = "SELECT c.cart_id, c.user_id, c.count_item, c.cart_price, cd.part_id\r\n"
+                + //
+                "                    FROM Cart c\r\n"
+                + //
+                "                    JOIN CartDetail cd ON c.cart_id = cd.cart_id\r\n"
+                + //
                 "                    WHERE c.user_id = ?";
 
         try (PreparedStatement ps = this.getConnection().prepareStatement(sql)) {
@@ -232,9 +437,9 @@ public class CartDAO extends DBContext {
         }
         return false;
     }
+
     //
     // // Thêm sản phẩm vào giỏ hàng
-
     public boolean addToCart(int userId, int partId) {
         String getCartSql = "SELECT cart_id, count_item, cart_price FROM Cart WHERE user_id = ?";
         String getMaxCartIdSql = "SELECT ISNULL(MAX(cart_id), 0) + 1 AS new_cart_id FROM Cart";

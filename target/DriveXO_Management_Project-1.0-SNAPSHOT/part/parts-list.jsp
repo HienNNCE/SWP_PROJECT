@@ -2,6 +2,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
+<% if (request.getAttribute("parts") == null) {
+    response.sendRedirect(request.getContextPath() + "/parts");
+    return;
+} %>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
@@ -94,7 +98,6 @@
                             <option value="desc" ${param.sort == 'desc' ? 'selected' : ''}>High to Low</option>
                         </select>
                     </div>
-
 
                     <!-- Stock -->
                     <div class="col-md-2">

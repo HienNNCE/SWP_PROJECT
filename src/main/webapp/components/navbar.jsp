@@ -551,7 +551,13 @@
                             </div>
                         </div>
                     </li>
-                    <li><a href="${pageContext.request.contextPath}/parts" class="${pageContext.request.servletPath eq '/part-list.jsp' ? 'active' : ''}">Parts</a></li>
+                  
+                    <li>
+                        <a href="${pageContext.request.contextPath}/parts"
+                           class="${pageContext.request.servletPath eq '/parts' ? 'active' : ''}">
+                            Parts
+                        </a>
+                    </li>
                     <li><a href="#" class="${pageContext.request.servletPath eq '/services.jsp' ? 'active' : ''}">Services</a></li>
                     <li><a href="#" class="${pageContext.request.servletPath eq '/about.jsp' ? 'active' : ''}">About</a></li>
                     <li><a href="#" class="${pageContext.request.servletPath eq '/contact.jsp' ? 'active' : ''}">Contact</a></li>
@@ -640,3 +646,5 @@
         }
     });
 </script>
+
+

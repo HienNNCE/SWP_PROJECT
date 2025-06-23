@@ -2,6 +2,7 @@ package Controller;
 
 import DAO.PartDAO;
 import Model.Part;
+import Model.Cart;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
@@ -47,6 +48,23 @@ public class PartServlet extends HttpServlet {
         }
     }
 
+    private void setCartInfo(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        Integer userId = (session != null) ? (Integer) session.getAttribute("userId") : null;
+        int cartCount = 0;
+        java.math.BigDecimal totalPrice = java.math.BigDecimal.ZERO;
+        if (userId != null) {
+            DAO.CartDAO cartDAO = new DAO.CartDAO();
+            Cart cart = cartDAO.getCartDetailByUserId(userId);
+            if (cart != null) {
+                cartCount = cart.getCountItem();
+                totalPrice = cart.getCartPrice();
+            }
+        }
+        request.setAttribute("cartCount", cartCount);
+        request.setAttribute("totalPrice", totalPrice);
+    }
+
     // === LIST ===
     private void listParts(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -55,6 +73,7 @@ public class PartServlet extends HttpServlet {
 
         request.setAttribute("parts", parts);
         request.setAttribute("brands", brands);
+        setCartInfo(request);
         request.getRequestDispatcher("/part/parts-list.jsp").forward(request, response);
     }
 
@@ -68,6 +87,7 @@ public class PartServlet extends HttpServlet {
 
         request.setAttribute("parts", parts);
         request.setAttribute("brands", brands);
+        setCartInfo(request);
         request.getRequestDispatcher("/part/parts-list.jsp").forward(request, response);
     }
 
@@ -95,6 +115,7 @@ public class PartServlet extends HttpServlet {
 
         request.setAttribute("parts", parts);
         request.setAttribute("brands", brands);
+        setCartInfo(request);
         request.getRequestDispatcher("/part/parts-list.jsp").forward(request, response);
     }
 

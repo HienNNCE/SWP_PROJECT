@@ -29,11 +29,25 @@ public class HomeServlet extends HttpServlet {
             // Lấy 8 xe ngẫu nhiên cho phần Featured Vehicles
             List<Car> featuredCars = carDAO.getRandomCars(8);
             request.setAttribute("latestCars", featuredCars);
-            
+
+            // Lấy thông tin giỏ hàng nếu đã đăng nhập
+            jakarta.servlet.http.HttpSession session = request.getSession(false);
+            Integer userId = (session != null) ? (Integer) session.getAttribute("userId") : null;
+            if (userId != null) {
+                DAO.CartDAO cartDAO = new DAO.CartDAO();
+                Model.Cart cart = cartDAO.getCartDetailByUserId(userId);
+                int cartCount = (cart != null) ? cart.getCountItem() : 0;
+                java.math.BigDecimal totalPrice = (cart != null && cart.getCartPrice() != null) ? cart.getCartPrice() : java.math.BigDecimal.ZERO;
+                request.setAttribute("cartCount", cartCount);
+                request.setAttribute("totalPrice", totalPrice);
+            } else {
+                request.setAttribute("cartCount", 0);
+                request.setAttribute("totalPrice", java.math.BigDecimal.ZERO);
+            }
+
             request.getRequestDispatcher("/home.jsp").forward(request, response);
         } catch (Exception e) {
-            e.printStackTrace(); // Log the exception
-            // Handle the error, maybe forward to an error page
+            e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error loading cars");
         }
     }
@@ -42,4 +56,4 @@ public class HomeServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
     }
-} 
+}
