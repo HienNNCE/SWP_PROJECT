@@ -127,8 +127,8 @@
     .header.scrolled .main-nav a:after {
         background-color: #000;
     }
-    
-/*    .main-nav a:hover:after,*/
+
+    /*    .main-nav a:hover:after,*/
     .main-nav a.active:after {
         width: 100%;
     }
@@ -430,12 +430,12 @@
             display: none;
         }
     }
-    
+
     /* Dropdown profile menu */
     .profile-dropdown {
         position: relative;
     }
-    
+
     .profile-menu {
         position: absolute;
         top: 40px;
@@ -451,24 +451,24 @@
         transition: all 0.3s ease;
         z-index: 1100;
     }
-    
+
     .profile-dropdown:hover .profile-menu {
         opacity: 1;
         visibility: visible;
         transform: translateY(0);
     }
-    
+
     .profile-menu ul {
         list-style: none;
         padding: 0;
         margin: 0;
     }
-    
+
     .profile-menu ul li {
         padding: 0;
         margin: 0;
     }
-    
+
     .profile-menu ul li a {
         display: flex;
         align-items: center;
@@ -478,17 +478,17 @@
         text-decoration: none;
         transition: all 0.2s ease;
     }
-    
+
     .profile-menu ul li a:hover {
         background-color: #f5f5f5;
     }
-    
+
     .profile-menu ul li a i {
         width: 20px;
         margin-right: 10px;
         text-align: center;
     }
-    
+
     .profile-avatar {
         width: 32px;
         height: 32px;
@@ -502,12 +502,12 @@
         font-size: 16px;
         color: #fff;
     }
-    
+
     .header.scrolled .profile-avatar {
         border-color: #eee;
         color: #000;
     }
-    
+
     /* Divider in dropdown menu */
     .menu-divider {
         height: 1px;
@@ -526,7 +526,7 @@
         <div class="main-header">
             <div class="left-section">
                 <div class="logo">
-                    <a href="home.jsp">
+                    <a href="home">
                         <img src="${pageContext.request.contextPath}/asset/img/driverxo-logo-white.png" alt="DriverXO" class="logo-white">
                         <img src="${pageContext.request.contextPath}/asset/img/driverxo-logo.png" alt="DriverXO" class="logo-dark" style="display: none;">
                         DriverXO
@@ -553,18 +553,18 @@
                                     <li><a href="${pageContext.request.contextPath}/car/list?category=suv">SUVs & Crossovers <i class="fas fa-chevron-right"></i></a></li>
                                     <li><a href="${pageContext.request.contextPath}/car/list?category=sedan">Sedans <i class="fas fa-chevron-right"></i></a></li>
                                     <li><a href="${pageContext.request.contextPath}/car/list?category=sports">Sports Cars <i class="fas fa-chevron-right"></i></a></li>
-                                    
+
                                     <!-- Phân loại theo nhiên liệu -->
                                     <li><a href="${pageContext.request.contextPath}/car/list?fuel=Electric">Electric Vehicles <i class="fas fa-chevron-right"></i></a></li>
                                     <li><a href="${pageContext.request.contextPath}/car/list?fuel=Hybrid">Hybrid Vehicles <i class="fas fa-chevron-right"></i></a></li>
                                     <li><a href="${pageContext.request.contextPath}/car/list?fuel=Gasoline">Gasoline Vehicles <i class="fas fa-chevron-right"></i></a></li>
                                     <li><a href="${pageContext.request.contextPath}/car/list?fuel=Diesel">Diesel Vehicles <i class="fas fa-chevron-right"></i></a></li>
-                                    
+
                                     <!-- Phân loại theo giá -->
                                     <li><a href="${pageContext.request.contextPath}/car/list?price=25000-50000">Affordable Cars <i class="fas fa-chevron-right"></i></a></li>
                                     <li><a href="${pageContext.request.contextPath}/car/list?price=50000-80000">Premium Cars <i class="fas fa-chevron-right"></i></a></li>
                                     <li><a href="${pageContext.request.contextPath}/car/list?price=80000-125000">High-End Luxury <i class="fas fa-chevron-right"></i></a></li>
-                                    
+
                                     <!-- Tất cả xe -->
                                     <li><a href="${pageContext.request.contextPath}/car/list">All Vehicles <i class="fas fa-chevron-right"></i></a></li>
                                 </ul>
@@ -658,9 +658,9 @@
             <div class="right-section">
                 <c:if test="${sessionScope.account != null || user != null}">
                     <div class="header-actions">
-                        <a href="cart.jsp" class="cart-icon" title="Shopping Cart">
+                        <a href="cart" class="cart-icon" title="Shopping Cart">
                             <i class="fas fa-shopping-cart"></i>
-                            <span class="cart-badge">3</span>
+                            <span class="cart-badge" id = "cart-count">${cartCount}</span>
                         </a>
                         <div class="profile-dropdown">
                             <i class="fas fa-user profile-avatar"></i>
@@ -669,7 +669,7 @@
                                     <li><a href="profile.jsp"><i class="fas fa-user"></i> Profile</a></li>
                                     <li><a href="orders.jsp"><i class="fas fa-shopping-bag"></i> Orders</a></li>
                                     <li><a href="appointments.jsp"><i class="fas fa-calendar-check"></i> Appointment
-</a></li>
+                                        </a></li>
                                     <li><a href="service-bookings.jsp"><i class="fas fa-tools"></i> Service Booking</a></li>
                                     <li class="menu-divider"></li>
                                     <li><a href="${pageContext.request.contextPath}/auth/LoginServlet?action=logout"><i class="fas fa-sign-out-alt"></i> Log out</a></li>
@@ -706,36 +706,42 @@
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const header = document.querySelector('.header');
-    const logoWhite = document.querySelector('.logo-white');
-    const logoDark = document.querySelector('.logo-dark');
+    document.addEventListener('DOMContentLoaded', function () {
+        const header = document.querySelector('.header');
+        const logoWhite = document.querySelector('.logo-white');
+        const logoDark = document.querySelector('.logo-dark');
 
-    const forceDark = '${forceDarkNavbar}' === 'true';
-    const hasBanner = document.querySelector('.hero-banner') !== null;
+        const forceDark = '${forceDarkNavbar}' === 'true';
+        const hasBanner = document.querySelector('.hero-banner') !== null;
 
-    function updateNavbar() {
-        if (forceDark === true) {
-            header.classList.remove('scrolled');
-            if (logoWhite) logoWhite.style.display = 'block';
-            if (logoDark) logoDark.style.display = 'none';
-            return;
+        function updateNavbar() {
+            if (forceDark === true) {
+                header.classList.remove('scrolled');
+                if (logoWhite)
+                    logoWhite.style.display = 'block';
+                if (logoDark)
+                    logoDark.style.display = 'none';
+                return;
+            }
+
+            if (window.scrollY > 50 || !hasBanner) {
+                header.classList.add('scrolled');
+                if (logoWhite)
+                    logoWhite.style.display = 'none';
+                if (logoDark)
+                    logoDark.style.display = 'block';
+            } else {
+                header.classList.remove('scrolled');
+                if (logoWhite)
+                    logoWhite.style.display = 'block';
+                if (logoDark)
+                    logoDark.style.display = 'none';
+            }
         }
 
-        if (window.scrollY > 50 || !hasBanner) {
-            header.classList.add('scrolled');
-            if (logoWhite) logoWhite.style.display = 'none';
-            if (logoDark) logoDark.style.display = 'block';
-        } else {
-            header.classList.remove('scrolled');
-            if (logoWhite) logoWhite.style.display = 'block';
-            if (logoDark) logoDark.style.display = 'none';
-        }
-    }
-
-    updateNavbar();
-    window.addEventListener('scroll', updateNavbar);
-});
+        updateNavbar();
+        window.addEventListener('scroll', updateNavbar);
+    });
 </script>
-
+<script src="${pageContext.request.contextPath}/asset/js/cart_AddToCart.js?v=<%= System.currentTimeMillis()%>"></script>
 

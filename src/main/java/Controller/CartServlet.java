@@ -3,11 +3,13 @@ package Controller;
 import DAO.CartDAO;
 import Model.Car;
 import Model.Cart;
+import jakarta.jws.WebService;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.util.List;
-
+@WebServlet(name = "CartServlet", urlPatterns = {"/cart"})
 public class CartServlet extends HttpServlet {
 
     @Override
@@ -50,8 +52,11 @@ public class CartServlet extends HttpServlet {
         String action = request.getParameter("action");
 
         String partIdRaw = request.getParameter("partId");
-
-        
+        if (partIdRaw == null || partIdRaw.trim().isEmpty()) {
+            // Xử lý lỗi hoặc chuyển hướng về trang giỏ hàng với thông báo
+            response.sendRedirect("cart?error=missingPartId");
+            return;
+        }
         try {
             int partId = Integer.parseInt(partIdRaw);
             CartDAO cDAO = new CartDAO();
@@ -69,6 +74,10 @@ public class CartServlet extends HttpServlet {
             }
             response.sendRedirect("cart"); // load lại trang giỏ hàng
 
+        } catch (NumberFormatException e) {
+            // Xử lý lỗi khi partId không hợp lệ
+            response.sendRedirect("cart?error=invalidPartId");
+            return;
         } catch (Exception e) {
             e.printStackTrace();
             response.sendRedirect("error.jsp");

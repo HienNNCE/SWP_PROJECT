@@ -483,7 +483,8 @@
                                 <div class="cart-item">
                                     <!-- Hình ảnh -->
                                     <div class="item-image">
-                                        <img src="${item.partImg}" alt="Image" />
+                                        <img src="${pageContext.request.contextPath}/asset/img/parts/${item.partImg}" class="part-img" alt="${part.partName}">
+
                                         <%-- Nếu là base64: <img src="data:image/jpeg;base64,${item.base64Image}" /> --%>
                                     </div>
 
@@ -568,130 +569,5 @@
 
             </div>
         </section>
-
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                // Tăng số lượng
-                document.querySelectorAll(".increase-qty").forEach(btn => {
-                    btn.addEventListener("click", function () {
-                        const partId = this.getAttribute("data-id");
-                        sendCartUpdate("increase", partId);
-                    });
-                });
-
-                // Giảm số lượng
-                document.querySelectorAll(".decrease-qty").forEach(btn => {
-                    btn.addEventListener("click", function () {
-                        const partId = this.getAttribute("data-id");
-                        sendCartUpdate("decrease", partId);
-                    });
-                });
-
-                // Xóa sản phẩm
-                document.querySelectorAll(".remove-item").forEach(btn => {
-                    btn.addEventListener("click", function () {
-                        const partId = this.getAttribute("data-id");
-                        sendCartUpdate("remove", partId);
-                    });
-                });
-
-                function sendCartUpdate(action, partId) {
-                    fetch("cart", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/x-www-form-urlencoded"
-                        },
-                        body: `action=${action}&partId=${partId}`
-                    })
-                            .then(response => {
-                                if (response.redirected) {
-                                    window.location.href = response.url; // reload cart.jsp
-                                } else {
-                                    location.reload(); // fallback reload
-                                }
-                            });
-                }
-            });
-        </script>
-
-
-        <!-- JavaScript -->
-        <!--        <script>
-                    document.addEventListener('DOMContentLoaded', function () {
-                        // Quantity control
-                        document.querySelectorAll('.decrease-qty').forEach(btn => {
-                            btn.addEventListener('click', function () {
-                                const input = this.nextElementSibling;
-                                const carId = this.dataset.id;
-                                let value = parseInt(input.value);
-                                if (value > 1) {
-                                    input.value = value - 1;
-                                    updateCart(carId, value - 1);
-                                }
-                            });
-                        });
-        
-                        document.querySelectorAll('.increase-qty').forEach(btn => {
-                            btn.addEventListener('click', function () {
-                                const input = this.previousElementSibling;
-                                const carId = this.dataset.id;
-                                let value = parseInt(input.value);
-                                input.value = value + 1;
-                                updateCart(carId, value + 1);
-                            });
-                        });
-        
-                        // Remove item
-                        document.querySelectorAll('.remove-item').forEach(btn => {
-                            btn.addEventListener('click', function () {
-                                if (confirm('Remove this item from your cart?')) {
-                                    const carId = this.dataset.id;
-                                    fetch(`${pageContext.request.contextPath}/cart/remove?id=${carId}`, {method: 'POST'})
-                                                                .then(() => window.location.reload());
-                                                    }
-                                                });
-                                            });
-        
-                                            // Clear cart
-                                            const clearCartBtn = document.querySelector('.clear-cart-btn');
-                                            if (clearCartBtn) {
-                                                clearCartBtn.addEventListener('click', function () {
-                                                    if (confirm('Clear your entire cart?')) {
-                                                        fetch(`${pageContext.request.contextPath}/cart/clear`, {method: 'POST'})
-                                                                .then(() => window.location.reload());
-                                                    }
-                                                });
-                                            }
-        
-                                            // Apply coupon
-                                            const applyCouponBtn = document.querySelector('.apply-coupon');
-                                            if (applyCouponBtn) {
-                                                applyCouponBtn.addEventListener('click', function () {
-                                                    const couponInput = document.querySelector('.coupon-input');
-                                                    const couponCode = couponInput.value.trim();
-                                                    if (!couponCode) {
-                                                        alert('Please enter a coupon code');
-                                                        return;
-                                                    }
-                                                    // Simulate coupon application
-                                                    if (couponCode.toUpperCase() === 'NEWUSER10') {
-                                                        alert('Coupon applied: 10% off');
-                                                        // Update total would go here
-                                                    } else {
-                                                        alert('Invalid coupon code');
-                                                    }
-                                                });
-                                            }
-        
-                                            // Update cart
-                                            function updateCart(carId, quantity) {
-                                                fetch(`${pageContext.request.contextPath}/cart/update`, {
-                                                    method: 'POST',
-                                                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                                                    body: `id=${carId}&quantity=${quantity}`
-                                                }).then(() => window.location.reload());
-                                            }
-                                        });
-                </script>-->
     </body>
 </html>

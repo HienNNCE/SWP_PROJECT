@@ -35,8 +35,12 @@ public class HomeServlet extends HttpServlet {
                 Model.Cart cart = cartDAO.getCartDetailByUserId(userId);
                 int cartCount = (cart != null) ? cart.getCountItem() : 0;
                 java.math.BigDecimal totalPrice = (cart != null && cart.getCartPrice() != null) ? cart.getCartPrice() : java.math.BigDecimal.ZERO;
-                request.setAttribute("cartCount", cartCount);
-                request.setAttribute("totalPrice", totalPrice);
+                session.setAttribute("cartCount", cartCount);
+                session.setAttribute("totalPrice", totalPrice);
+                
+                //Test cart count and total price
+                System.out.println("Cart count: " + cartCount);
+                System.out.println("Total price: " + totalPrice);
             } else {
                 request.setAttribute("cartCount", 0);
                 request.setAttribute("totalPrice", java.math.BigDecimal.ZERO);

@@ -65,7 +65,7 @@ public class AddToCartServlet extends HttpServlet {
             CartDAO cDAO = new CartDAO();
             int cartCount = 0;
             BigDecimal totalPrice = null;
-            List<Cart> carts = cDAO.getCartByUserId(1);
+            List<Cart> carts = cDAO.getCartByUserId(userId);
             for (Cart c : carts) {
               cartCount = c.getCountItem();
               totalPrice = c.getCartPrice();

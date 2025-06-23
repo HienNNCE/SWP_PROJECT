@@ -25,8 +25,14 @@ public class CartDAO extends DBContext {
 
     public static void main(String[] a) {
         CartDAO cDAO = new CartDAO();
-        Cart cart = cDAO.getCartDetailByUserId(1);
+        Cart cart = cDAO.getCartDetailByUserId(2);
         System.out.println("Expected cart: " + cart.getCountItem());
+        List<Part> partList = cart.getPartList();
+        for (Part part : partList) {
+            System.out.println("Part ID: " + part.getPartId() + ", Name: " + part.getPartName()
+                    + ", Quantity: " + part.getQuantityInCart() + ", Total Price: " + part.getTotalPrice());
+        }
+
     }
 
     public void increaseQuantity(int userId, int partId) {
@@ -155,7 +161,7 @@ public class CartDAO extends DBContext {
         String getCartIdSql = "SELECT cart_id FROM Cart WHERE user_id = ?";
         String getPartQuantityAndPriceSql = "SELECT pt_order_quantity, p.part_price FROM CartDetail cd JOIN Part p ON cd.part_id = p.part_id WHERE cd.cart_id = ? AND cd.part_id = ?";
         String deletePartSql = "DELETE FROM CartDetail WHERE cart_id = ? AND part_id = ?";
-        String updateCartSql = "UPDATE Cart SET count_item = count_item - ?, cart_price = cart_price - ? WHERE cart_id = ?";
+        String updateCartSql = "UPDATE Cart SET count_item = CASE WHEN count_item - ? < 0 THEN 0 ELSE count_item - ? END, cart_price = CASE WHEN cart_price - ? < 0 THEN 0 ELSE cart_price - ? END WHERE cart_id = ?";
 
         try (Connection conn = this.getConnection()) {
             conn.setAutoCommit(false);
@@ -199,12 +205,14 @@ public class CartDAO extends DBContext {
                 ps.executeUpdate();
             }
 
-            // Cập nhật lại Cart
+            // Cập nhật lại Cart (không để âm)
             java.math.BigDecimal totalRemove = partPrice.multiply(new java.math.BigDecimal(quantity));
             try (PreparedStatement ps = conn.prepareStatement(updateCartSql)) {
                 ps.setInt(1, quantity);
-                ps.setBigDecimal(2, totalRemove);
-                ps.setInt(3, cartId);
+                ps.setInt(2, quantity);
+                ps.setBigDecimal(3, totalRemove);
+                ps.setBigDecimal(4, totalRemove);
+                ps.setInt(5, cartId);
                 ps.executeUpdate();
             }
 

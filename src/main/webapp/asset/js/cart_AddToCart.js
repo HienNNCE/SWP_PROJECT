@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         if (data.status === "success") {
                             console.log("Thêm vào giỏ hàng thành công!");
                             document.getElementById("cart-count").innerText = data.cartCount || 0;
-                            document.getElementById("cart-total-price").innerText = "$" + data.totalPrice.toFixed(2);
+                            //document.getElementById("cart-total-price").innerText = "$" + data.totalPrice.toFixed(2);
                             showCartNotification("Product has been added to cart!", "green");
                         } else {
                             showCartNotification("Unknown error!", "red");

@@ -25,7 +25,8 @@ public class PartDAO extends DBContext {
 
     public Part getPartById(int id) {
         String sql = "SELECT * FROM Part WHERE part_id = ?";
-        try (Connection conn = getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+        Connection conn = this.getConnection();
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
@@ -131,8 +132,8 @@ public class PartDAO extends DBContext {
         } else if ("desc".equalsIgnoreCase(sort)) {
             sql.append(" ORDER BY part_price DESC");
         }
-
-        try (Connection conn = getConnection(); PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
+        Connection conn = this.getConnection();
+        try (PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
             for (int i = 0; i < params.size(); i++) {
                 stmt.setObject(i + 1, params.get(i));
             }
@@ -150,7 +151,10 @@ public class PartDAO extends DBContext {
     public List<String> getAllBrands() {
         List<String> brands = new ArrayList<>();
         String sql = "SELECT DISTINCT part_brand FROM Part WHERE part_brand IS NOT NULL AND part_brand <> ''";
-        try (Connection conn = getConnection(); PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+        Connection conn = this.getConnection();
+        try (
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 brands.add(rs.getString("part_brand"));
             }
@@ -186,8 +190,8 @@ public class PartDAO extends DBContext {
     public List<Part> getRelatedParts(String brand, int excludePartId) {
         List<Part> parts = new ArrayList<>();
         String sql = "SELECT * FROM Part WHERE part_brand = ? AND part_id != ?";
-
-        try (Connection conn = getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+        Connection conn = this.getConnection();
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, brand);
             stmt.setInt(2, excludePartId);
             ResultSet rs = stmt.executeQuery();
