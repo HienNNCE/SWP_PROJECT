@@ -23,17 +23,17 @@ import java.util.logging.Logger;
  */
 public class CartDAO extends DBContext {
 
-    public static void main(String[] a) {
-        CartDAO cDAO = new CartDAO();
-        Cart cart = cDAO.getCartDetailByUserId(2);
-        System.out.println("Expected cart: " + cart.getCountItem());
-        List<Part> partList = cart.getPartList();
-        for (Part part : partList) {
-            System.out.println("Part ID: " + part.getPartId() + ", Name: " + part.getPartName()
-                    + ", Quantity: " + part.getQuantityInCart() + ", Total Price: " + part.getTotalPrice());
-        }
-
-    }
+//    public static void main(String[] a) {
+//        CartDAO cDAO = new CartDAO();
+//        Cart cart = cDAO.getCartDetailByUserId(2);
+//        System.out.println("Expected cart: " + cart.getCountItem());
+//        List<Part> partList = cart.getPartList();
+//        for (Part part : partList) {
+//            System.out.println("Part ID: " + part.getPartId() + ", Name: " + part.getPartName()
+//                    + ", Quantity: " + part.getQuantityInCart() + ", Total Price: " + part.getTotalPrice());
+//        }
+//
+//    }
 
     public void increaseQuantity(int userId, int partId) {
         String updateDetailSql = "UPDATE CartDetail SET pt_order_quantity = pt_order_quantity + 1 "
