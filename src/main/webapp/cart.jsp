@@ -5,14 +5,9 @@
     Redesigned on : June 19, 2025
 --%>
 
-<%@page import="Model.Cart"%>
-<%@page import="java.util.List"%>
-<%@page import="DAO.CartDAO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-
 <!DOCTYPE html>
 <html>
     <head>
@@ -464,110 +459,169 @@
                     <p class="cart-subtitle">Review your selected vehicles</p>
                 </div>
 
-
-                <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-                <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-                <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-
-                <c:if test="${not empty partList}">
-                    <div class="cart-wrapper">
-                        <!-- Danh sách sản phẩm trong giỏ -->
-                        <div class="cart-items-container">
-                            <div class="cart-items-header">
-                                <span class="cart-items-title">Items in Cart</span>
-                                <span class="items-count">${cart.countItem}</span>
-                                <button class="clear-cart-btn">Clear Cart</button>
-                            </div>
-
-                            <c:forEach var="item" items="${partList}">
-                                <div class="cart-item">
-                                    <!-- Hình ảnh -->
-                                    <div class="item-image">
-                                        <img src="${pageContext.request.contextPath}/asset/img/parts/${item.partImg}" class="part-img" alt="${part.partName}">
-
-                                        <%-- Nếu là base64: <img src="data:image/jpeg;base64,${item.base64Image}" /> --%>
-                                    </div>
-
-                                    <!-- Thông tin chi tiết -->
-                                    <div class="item-details">
-                                        <a class="item-name" href="${pageContext.request.contextPath}/part/detail?id=${item.partId}">
-                                            ${item.partName}
-                                        </a>
-                                        <div class="item-price">
-                                            <fmt:formatNumber value="${item.partPrice}" type="currency" currencySymbol="$"/>
-                                        </div>
-                                    </div>
-
-                                    <!-- Control: số lượng, xóa -->
-                                    <div class="item-controls">
-                                        <div class="quantity-control">
-
-                                            <!-- Giảm số lượng -->
-                                            <form method="post" action="cart" style="display: inline;">
-                                                <input type="hidden" name="partId" value="${item.partId}">
-                                                <input type="hidden" name="action" value="decrease">
-                                                <button type="submit" class="quantity-btn">-</button>
-                                            </form>
-
-                                            <input type="text" class="quantity-input" value="${item.quantityInCart}" readonly>
-
-                                            <!-- Tăng số lượng -->
-                                            <form method="post" action="cart" style="display: inline;">
-                                                <input type="hidden" name="partId" value="${item.partId}">
-                                                <input type="hidden" name="action" value="increase">
-                                                <button type="submit" class="quantity-btn">+</button>
-                                            </form>
-                                        </div>
-
-                                        <!-- Xóa sản phẩm -->
-                                        <form method="post" action="cart" style="display: inline;">
-                                            <input type="hidden" name="partId" value="${item.partId}">
-                                            <input type="hidden" name="action" value="remove">
-                                            <button type="submit" class="remove-item">Remove</button>
-                                        </form>
-                                    </div>
-
+                <c:choose>
+                    <c:when test="${empty cartItems}">
+                        <div class="cart-empty">
+                            <i class="fas fa-shopping-cart empty-icon"></i>
+                            <h3 class="empty-message">Your Cart is Empty</h3>
+                            <p class="empty-text">Explore our collection to find your perfect vehicle.</p>
+                            <a href="${pageContext.request.contextPath}/car/list" class="shop-now-btn">Shop Now</a>
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="cart-wrapper">
+                            <!-- Cart Items -->
+                            <div class="cart-items-container">
+                                <div class="cart-items-header">
+                                    <h3 class="cart-items-title">
+                                        Cart Items <span class="items-count">${cartItems.size()}</span>
+                                    </h3>
+                                    <button class="clear-cart-btn">Clear Cart</button>
                                 </div>
-                            </c:forEach>
+
+                                <div class="cart-items">
+                                    <c:forEach var="item" items="${cartItems}">
+                                        <div class="cart-item">
+                                            <div class="item-image">
+                                                <img src="${pageContext.request.contextPath}/asset/img/cars/${not empty item.car.carImg ? item.car.carImg : item.car.carBrand.toLowerCase().replaceAll(' ', '_').concat('_').concat(item.car.carName.toLowerCase().replaceAll(' ', '_')).concat('.webp')}" 
+                                                     onerror="this.src='${pageContext.request.contextPath}/asset/img/cars/default-car.png'" 
+                                                     alt="${item.car.carName}">
+                                            </div>
+                                            <div class="item-details">
+                                                <a href="${pageContext.request.contextPath}/car/detail?id=${item.car.carId}" class="item-name">${item.car.carYear.getYear() + 1900} ${item.car.carName}</a>
+                                                <div class="item-brand">${item.car.carBrand}</div>
+                                                <div class="item-meta">
+                                                    <span class="meta-item">Fuel: <span>${item.car.fuelType}</span></span>
+                                                    <span class="meta-item">Odo: <span><fmt:formatNumber value="${item.car.carOdo}" pattern="#,###"/> mi</span></span>
+                                                </div>
+                                                <div class="item-price">$<fmt:formatNumber value="${item.car.carPrice * item.quantity}" pattern="#,###.00"/></div>
+                                            </div>
+                                            <div class="item-controls">
+                                                <div class="quantity-control">
+                                                    <button class="quantity-btn decrease-qty" data-id="${item.car.carId}"><i class="fas fa-minus"></i></button>
+                                                    <input type="text" value="${item.quantity}" class="quantity-input" readonly>
+                                                    <button class="quantity-btn increase-qty" data-id="${item.car.carId}"><i class="fas fa-plus"></i></button>
+                                                </div>
+                                                <button class="remove-item" data-id="${item.car.carId}">
+                                                    <i class="fas fa-trash-alt"></i> Remove
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </c:forEach>
+                                </div>
+                            </div>
+
+                            <!-- Order Summary -->
+                            <div class="cart-summary">
+                                <h3 class="summary-title">Order Summary</h3>
+                                <div class="summary-row">
+                                    <span class="summary-label">Subtotal (${cartItems.size()} items)</span>
+                                    <span class="summary-value">$<fmt:formatNumber value="${cartItems.stream().sum(car -> car.car.carPrice * car.quantity)}" pattern="#,###.00"/></span>
+                                </div>
+                                <div class="summary-row">
+                                    <span class="summary-label">Shipping</span>
+                                    <span class="summary-value">Free</span>
+                                </div>
+                                <div class="summary-row">
+                                    <span class="summary-label">Estimated Tax</span>
+                                    <span class="summary-value">$<fmt:formatNumber value="${cartItems.stream().sum(car -> car.car.carPrice * car.quantity) * 0.1}" pattern="#,###.00"/></span>
+                                </div>
+                                <div class="summary-row total">
+                                    <span class="summary-label">Total</span>
+                                    <span class="summary-value">$<fmt:formatNumber value="${cartItems.stream().sum(car -> car.car.carPrice * car.quantity) * 1.1}" pattern="#,###.00"/></span>
+                                </div>
+
+                                <div class="coupon-form">
+                                    <input type="text" class="coupon-input" placeholder="Coupon Code">
+                                    <button class="apply-coupon">Apply</button>
+                                </div>
+
+                                <a href="${pageContext.request.contextPath}/checkout" class="checkout-btn">Proceed to Checkout</a>
+                                <a href="${pageContext.request.contextPath}/car/list" class="continue-shopping">Continue Shopping</a>
+                            </div>
                         </div>
-
-                        <!-- Tổng kết đơn hàng -->
-                        <div class="cart-summary">
-                            <div class="summary-title">Order Summary</div>
-                            <div class="summary-row">
-                                <span>Subtotal</span>
-                                <span>
-                                    <fmt:formatNumber value="${totalPrice}" type="currency" currencySymbol="$"/>
-                                </span>
-                            </div>
-                            <div class="summary-row total">
-                                <span>Total</span>
-                                <span>
-                                    <fmt:formatNumber value="${totalPrice}" type="currency" currencySymbol="$"/>
-                                </span>
-                            </div>
-                            <div class="coupon-form">
-                                <input type="text" class="coupon-input" placeholder="Enter coupon code">
-                                <button class="apply-coupon">Apply</button>
-                            </div>
-                            <button class="checkout-btn">Proceed to Checkout</button>
-                            <a href="${pageContext.request.contextPath}/car/list" class="continue-shopping">Continue Shopping</a>
-                        </div>
-                    </div>
-                </c:if>
-
-                <!-- Nếu giỏ hàng rỗng -->
-                <c:if test="${empty partList}">
-                    <div class="cart-empty">
-                        <i class="fas fa-shopping-cart empty-icon"></i>
-                        <h3 class="empty-message">Your Cart is Empty</h3>
-                        <p class="empty-text">Explore our collection to find your perfect vehicle.</p>
-                        <a href="${pageContext.request.contextPath}/car/list" class="shop-now-btn">Shop Now</a>
-                    </div>
-                </c:if>
-
-
+                    </c:otherwise>
+                </c:choose>
             </div>
         </section>
+
+        <!-- JavaScript -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Quantity control
+                document.querySelectorAll('.decrease-qty').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const input = this.nextElementSibling;
+                        const carId = this.dataset.id;
+                        let value = parseInt(input.value);
+                        if (value > 1) {
+                            input.value = value - 1;
+                            updateCart(carId, value - 1);
+                        }
+                    });
+                });
+
+                document.querySelectorAll('.increase-qty').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const input = this.previousElementSibling;
+                        const carId = this.dataset.id;
+                        let value = parseInt(input.value);
+                        input.value = value + 1;
+                        updateCart(carId, value + 1);
+                    });
+                });
+
+                // Remove item
+                document.querySelectorAll('.remove-item').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        if (confirm('Remove this item from your cart?')) {
+                            const carId = this.dataset.id;
+                            fetch(`${pageContext.request.contextPath}/cart/remove?id=${carId}`, { method: 'POST' })
+                                .then(() => window.location.reload());
+                        }
+                    });
+                });
+
+                // Clear cart
+                const clearCartBtn = document.querySelector('.clear-cart-btn');
+                if (clearCartBtn) {
+                    clearCartBtn.addEventListener('click', function() {
+                        if (confirm('Clear your entire cart?')) {
+                            fetch(`${pageContext.request.contextPath}/cart/clear`, { method: 'POST' })
+                                .then(() => window.location.reload());
+                        }
+                    });
+                }
+
+                // Apply coupon
+                const applyCouponBtn = document.querySelector('.apply-coupon');
+                if (applyCouponBtn) {
+                    applyCouponBtn.addEventListener('click', function() {
+                        const couponInput = document.querySelector('.coupon-input');
+                        const couponCode = couponInput.value.trim();
+                        if (!couponCode) {
+                            alert('Please enter a coupon code');
+                            return;
+                        }
+                        // Simulate coupon application
+                        if (couponCode.toUpperCase() === 'NEWUSER10') {
+                            alert('Coupon applied: 10% off');
+                            // Update total would go here
+                        } else {
+                            alert('Invalid coupon code');
+                        }
+                    });
+                }
+
+                // Update cart
+                function updateCart(carId, quantity) {
+                    fetch(`${pageContext.request.contextPath}/cart/update`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: `id=${carId}&quantity=${quantity}`
+                    }).then(() => window.location.reload());
+                }
+            });
+        </script>
     </body>
 </html>

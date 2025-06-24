@@ -1,73 +1,88 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <title>Edit User</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../asset/css/style.css">
+    <link rel="stylesheet" href="../../asset/css/adminstyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .card {
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 30px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+        label {
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: 3px;
+        }
+    </style>
 </head>
-<body>
-    <div class="container mt-4">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Edit User</h3>
-                    </div>
-                    <div class="card-body">
-                        <form action="${pageContext.request.contextPath}/admin/accounts/update" method="POST">
-                            <input type="hidden" name="userId" value="${user.userId}">
-                            
-                            <div class="mb-3">
-                                <label class="form-label">Username</label>
-                                <input type="text" name="userName" class="form-control" value="${user.userName}" required>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label class="form-label">Email</label>
-                                <input type="email" name="email" class="form-control" value="${user.email}" required>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label class="form-label">Phone</label>
-                                <input type="tel" name="phone" class="form-control" value="${user.phone}" required>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label class="form-label">Address</label>
-                                <input type="text" name="address" class="form-control" value="${user.address}">
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label class="form-label">Role</label>
-                                <select name="roleId" class="form-select" required>
-                                    <option value="2" ${user.roleId == 2 ? 'selected' : ''}>Customer</option>
-                                    <option value="4" ${user.roleId == 4 ? 'selected' : ''}>Staff</option>
-                                </select>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label class="form-label">Status</label>
-                                <input type="text" class="form-control" value="${user.userStatus}" readonly>
-                            </div>
-                            
-                            <div class="d-flex justify-content-between">
-                                <a href="${pageContext.request.contextPath}/admin/accounts" class="btn btn-secondary">
-                                    <i class="fas fa-arrow-left"></i> Back to List
-                                </a>
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-save"></i> Save Changes
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+<body class="admin-panel">
+<jsp:include page="/components/adminSidebar.jsp" />
+<div class="main-content">
+    <jsp:include page="/components/dashboardHeader.jsp" />
+
+    <div class="card">
+        <h1>Edit User</h1>
+        <c:if test="${error != null}">
+            <div class="error">${error}</div>
+        </c:if>
+
+        <form action="${pageContext.request.contextPath}/admin/users/edit" method="post">
+            <input type="hidden" name="userId" value="${user.userId}" />
+
+            <label>Username:</label>
+            <input type="text" name="userName" value="${user.userName}" required />
+
+            <label>Email:</label>
+            <input type="email" name="email" value="${user.email}" required />
+
+            <label>Password</label>
+            <input type="password" name="password" value="${user.password}" />
+
+            <label>Phone:</label>
+            <input type="text" name="phone" value="${user.phone}" required />
+
+            <label>Address:</label>
+            <input type="text" name="address" value="${user.address}" required />
+
+            <label>Role:</label>
+            <select name="roleId" required>
+                <option value="">-- Select Role --</option>
+                <option value="1" ${user.roleId == 1 ? 'selected' : ''}>Admin</option>
+                <option value="2" ${user.roleId == 2 ? 'selected' : ''}>Customer</option>
+                
+                <option value="4" ${user.roleId == 4 ? 'selected' : ''}>Staff</option>
+            </select>
+
+            <div style="text-align:center; margin-top:15px;">
+                <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Update</button>
+                <button type="button" class="btn btn-secondary" onclick="location.href='${pageContext.request.contextPath}/admin/users'">Cancel</button>
             </div>
-        </div>
+        </form>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <jsp:include page="/components/dashboardFooter.jsp" />
+</div>
 </body>
-</html> 
+</html>

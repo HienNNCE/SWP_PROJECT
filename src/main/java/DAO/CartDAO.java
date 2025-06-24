@@ -4,19 +4,6 @@
  */
 package DAO;
 
-import DB.DBContext;
-import Model.Cart;
-import Model.Part;
-import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  *
  * @author thien
@@ -583,4 +570,6 @@ public class CartDAO extends DBContext {
     // e.printStackTrace();
     // }
     // }
+    
+
 }

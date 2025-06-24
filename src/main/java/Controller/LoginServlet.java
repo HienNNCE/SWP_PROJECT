@@ -77,7 +77,7 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("user", user);
 
             int roleId = user.getRoleId(); 
-            session.setAttribute("userId", user.getUserId());
+
             // Check the role and redirect accordingly
             switch (roleId) {
                 case 1:

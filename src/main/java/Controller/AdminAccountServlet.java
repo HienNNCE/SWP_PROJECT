@@ -12,29 +12,30 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "AdminAccountServlet", urlPatterns = {"/admin/accounts/*"})
+@WebServlet(name = "AdminAccountServlet", urlPatterns = {"/admin/users", "/admin/users/edit", "/admin/users/search", "/admin/users/create", "/admin/users/toggle-status"})
 public class AdminAccountServlet extends HttpServlet {
 
     private UserDAO userDAO = new UserDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action = request.getPathInfo();
-        if (action == null || action.equals("/") || action.isEmpty()) {
-            action = "/list";
-        }
+        String action = request.getServletPath();
 
         try {
             switch (action) {
-                case "/list":
+                case "/admin/users/create":
+                    showAddForm(request, response);
+                    break;
+                case "/admin/users":
                     listUsers(request, response);
                     break;
-                case "/edit":
+                case "/admin/users/edit":
                     showEditForm(request, response);
                     break;
-                case "/search":
+                case "/admin/users/search":
                     searchUsers(request, response);
                     break;
+
                 default:
                     listUsers(request, response);
                     break;
@@ -42,26 +43,23 @@ public class AdminAccountServlet extends HttpServlet {
         } catch (Exception e) {
             request.getSession().setAttribute("message", "Error: " + e.getMessage());
             request.getSession().setAttribute("messageType", "danger");
-            response.sendRedirect(request.getContextPath() + "/admin/accounts");
+            response.sendRedirect(request.getContextPath() + "/admin/users");
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action = request.getPathInfo();
-        if (action == null) {
-            action = "/list";
-        }
+        String action = request.getServletPath();
 
         try {
             switch (action) {
-                case "/add":
+                case "/admin/users/create":
                     addUser(request, response);
                     break;
-                case "/update":
+                case "/admin/users/edit":
                     updateUser(request, response);
                     break;
-                case "/toggle-status":
+                case "/admin/users/toggle-status":
                     toggleUserStatus(request, response);
                     break;
                 default:
@@ -71,23 +69,36 @@ public class AdminAccountServlet extends HttpServlet {
         } catch (Exception e) {
             request.getSession().setAttribute("message", "Error: " + e.getMessage());
             request.getSession().setAttribute("messageType", "danger");
-            response.sendRedirect(request.getContextPath() + "/admin/accounts");
+            response.sendRedirect(request.getContextPath() + "/admin/users");
         }
     }
 
     private void listUsers(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String keyword = request.getParameter("keyword");
+        String pageParam = request.getParameter("page");
+        String sizeParam = request.getParameter("size");
 
-        List<Users> users;
-        if (keyword != null && !keyword.trim().isEmpty()) {
-            users = userDAO.searchUsers(keyword.trim());
-            request.setAttribute("keyword", keyword);
-        } else {
-            users = userDAO.getAllUsers();
+        int page = 1;
+        int size = 5;
+
+        try {
+            page = pageParam != null ? Integer.parseInt(pageParam) : 1;
+            size = sizeParam != null ? Integer.parseInt(sizeParam) : 6;
+        } catch (NumberFormatException ignored) {
         }
 
+        int offset = (page - 1) * size;
+
+        List<Users> users = userDAO.searchUsersWithPaging(keyword, offset, size);
+        int totalUsers = userDAO.countUsers(keyword);
+        int totalPages = (int) Math.ceil((double) totalUsers / size);
+
         request.setAttribute("users", users);
-        request.getRequestDispatcher("/admin/account-list.jsp").forward(request, response);
+        request.setAttribute("currentPage", page);
+        request.setAttribute("totalPages", totalPages);
+        request.setAttribute("keyword", keyword != null ? keyword : "");
+
+        request.getRequestDispatcher("/admin/user/account-list.jsp").forward(request, response);
     }
 
     private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, Exception {
@@ -98,10 +109,15 @@ public class AdminAccountServlet extends HttpServlet {
                 throw new Exception("User not found");
             }
             request.setAttribute("user", user);
-            request.getRequestDispatcher("/admin/account-edit.jsp").forward(request, response);
+            request.getRequestDispatcher("/admin/user/account-edit.jsp").forward(request, response);
         } catch (NumberFormatException e) {
             throw new Exception("Invalid user ID");
         }
+    }
+
+    private void showAddForm(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.getRequestDispatcher("/admin/user/create-form.jsp").forward(request, response);
     }
 
     private void addUser(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -114,10 +130,18 @@ public class AdminAccountServlet extends HttpServlet {
 
         // Validate data
         String errorMessage = ValidationUtil.validateUserData(username, email, password, phone, address);
+        if (userDAO.getUserByEmail(email) != null) {
+            errorMessage = "Email already exists";
+        }
+        if (userDAO.getUserByUsername(username) != null) {
+            errorMessage = "Username already exists";
+        }
+        if (userDAO.getUserByPhone(phone) != null) {
+            errorMessage = "Phone already exists";
+        }
         if (errorMessage != null) {
-            request.getSession().setAttribute("message", errorMessage);
-            request.getSession().setAttribute("messageType", "danger");
-            response.sendRedirect(request.getContextPath() + "/admin/accounts");
+            request.setAttribute("error", errorMessage);
+            request.getRequestDispatcher("/admin/user/create-form.jsp").forward(request, response);
             return;
         }
 
@@ -131,20 +155,21 @@ public class AdminAccountServlet extends HttpServlet {
             user.setRoleId(Integer.parseInt(roleId));
 
             userDAO.addUser(user);
-            request.getSession().setAttribute("message", "User added successfully!");
-            request.getSession().setAttribute("messageType", "success");
+            request.setAttribute("message", "User added successfully!");
+            request.setAttribute("messageType", "success");
         } catch (NumberFormatException e) {
-            request.getSession().setAttribute("message", "Invalid data format");
-            request.getSession().setAttribute("messageType", "danger");
+            request.setAttribute("message", "Invalid data format");
+            request.setAttribute("messageType", "danger");
         } catch (Exception e) {
-            request.getSession().setAttribute("message", "Error adding user: " + e.getMessage());
-            request.getSession().setAttribute("messageType", "danger");
+            request.setAttribute("message", "Error adding user: " + e.getMessage());
+            request.setAttribute("messageType", "danger");
         }
-        response.sendRedirect(request.getContextPath() + "/admin/accounts");
+        response.sendRedirect(request.getContextPath() + "/admin/users");
     }
 
     private void updateUser(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String userId = request.getParameter("userId");
+        int parsedUserId = Integer.parseInt(userId);
         String username = request.getParameter("userName");
         String email = request.getParameter("email");
         String phone = request.getParameter("phone");
@@ -153,10 +178,30 @@ public class AdminAccountServlet extends HttpServlet {
 
         // Validate data
         String errorMessage = ValidationUtil.validateUserData(username, email, "Password123!", phone, address);
+        // Check duplicate email (excluding current user)
+        Users existingEmailUser = userDAO.getUserByEmail(email);
+        if (existingEmailUser != null && existingEmailUser.getUserId() != parsedUserId) {
+            errorMessage = "Email already exists";
+        }
+
+        // Check duplicate username (excluding current user)
+        Users existingUsernameUser = userDAO.getUserByUsername(username);
+        if (existingUsernameUser != null && existingUsernameUser.getUserId() != parsedUserId) {
+            errorMessage = "Username already exists";
+        }
+
+        // Check duplicate phone (excluding current user)
+        Users existingPhoneUser = userDAO.getUserByPhone(phone);
+        if (existingPhoneUser != null && existingPhoneUser.getUserId() != parsedUserId) {
+            errorMessage = "Phone already exists";
+        }
+
+        // If any validation or duplication error occurs
         if (errorMessage != null) {
-            request.getSession().setAttribute("message", errorMessage);
-            request.getSession().setAttribute("messageType", "danger");
-            response.sendRedirect(request.getContextPath() + "/admin/accounts");
+            Users user = userDAO.getUserById(parsedUserId);
+            request.setAttribute("user", user);
+            request.setAttribute("error", errorMessage);
+            request.getRequestDispatcher("/admin/user/account-edit.jsp").forward(request, response);
             return;
         }
 
@@ -170,32 +215,32 @@ public class AdminAccountServlet extends HttpServlet {
             user.setRoleId(Integer.parseInt(roleId));
 
             userDAO.updateUser(user);
-            request.getSession().setAttribute("message", "User updated successfully!");
-            request.getSession().setAttribute("messageType", "success");
+            request.setAttribute("message", "User updated successfully!");
+            request.setAttribute("messageType", "success");
         } catch (NumberFormatException e) {
-            request.getSession().setAttribute("message", "Invalid data format");
-            request.getSession().setAttribute("messageType", "danger");
+            request.setAttribute("message", "Invalid data format");
+            request.setAttribute("messageType", "danger");
         } catch (Exception e) {
-            request.getSession().setAttribute("message", "Error updating user: " + e.getMessage());
-            request.getSession().setAttribute("messageType", "danger");
+            request.setAttribute("message", "Error updating user: " + e.getMessage());
+            request.setAttribute("messageType", "danger");
         }
-        response.sendRedirect(request.getContextPath() + "/admin/accounts");
+        response.sendRedirect(request.getContextPath() + "/admin/users");
     }
 
     private void toggleUserStatus(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         try {
             int userId = Integer.parseInt(request.getParameter("userId"));
             userDAO.toggleUserStatus(userId);
-            request.getSession().setAttribute("message", "User status updated successfully!");
-            request.getSession().setAttribute("messageType", "success");
+            request.setAttribute("message", "User status updated successfully!");
+            request.setAttribute("messageType", "success");
         } catch (NumberFormatException e) {
-            request.getSession().setAttribute("message", "Invalid user ID");
-            request.getSession().setAttribute("messageType", "danger");
+            request.setAttribute("message", "Invalid user ID");
+            request.setAttribute("messageType", "danger");
         } catch (Exception e) {
-            request.getSession().setAttribute("message", "Error updating user status: " + e.getMessage());
-            request.getSession().setAttribute("messageType", "danger");
+            request.setAttribute("message", "Error updating user status: " + e.getMessage());
+            request.setAttribute("messageType", "danger");
         }
-        response.sendRedirect(request.getContextPath() + "/admin/accounts");
+        response.sendRedirect(request.getContextPath() + "/admin/users");
     }
 
     private void searchUsers(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -203,7 +248,7 @@ public class AdminAccountServlet extends HttpServlet {
 
         if (keyword == null || keyword.trim().isEmpty()) {
             // Nếu từ khóa rỗng → redirect về danh sách gốc
-            response.sendRedirect(request.getContextPath() + "/admin/accounts");
+            response.sendRedirect(request.getContextPath() + "/admin/users");
             return;
         }
 

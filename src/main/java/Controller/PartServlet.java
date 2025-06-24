@@ -2,7 +2,6 @@ package Controller;
 
 import DAO.PartDAO;
 import Model.Part;
-import Model.Cart;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
@@ -48,23 +47,6 @@ public class PartServlet extends HttpServlet {
                 listParts(request, response);
                 break;
         }
-    }
-
-    private void setCartInfo(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        Integer userId = (session != null) ? (Integer) session.getAttribute("userId") : null;
-        int cartCount = 0;
-        java.math.BigDecimal totalPrice = java.math.BigDecimal.ZERO;
-        if (userId != null) {
-            DAO.CartDAO cartDAO = new DAO.CartDAO();
-            Cart cart = cartDAO.getCartDetailByUserId(userId);
-            if (cart != null) {
-                cartCount = cart.getCountItem();
-                totalPrice = cart.getCartPrice();
-            }
-        }
-        request.setAttribute("cartCount", cartCount);
-        request.setAttribute("totalPrice", totalPrice);
     }
 
     // === LIST ===
