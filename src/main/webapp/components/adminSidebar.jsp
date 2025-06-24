@@ -59,7 +59,7 @@
             </li>
             
             <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="${pageContext.request.contextPath}/admin/service" class="nav-link">
                     <i class="fas fa-wrench"></i>
                     <span>Services</span>
                 </a>

@@ -81,15 +81,43 @@ import java.sql.SQLException;
 
 public class DBContext {
 
-    // Database config (modify if needed)
-    private static final String DB_URL = "jdbc:sqlserver://DESKTOP-AM5VNJP\\SQLEXPRESS;databaseName=DriveXO;encrypt=true;trustServerCertificate=true;";
-    private static final String DB_USER = "sa";
-    private static final String DB_PWD = "1";
 
+    private Connection conn;
+
+    // Database config
+    private static final String DB_URL = "jdbc:sqlserver://LAPTOP-FT0Q1NI1\\SQLEXPRESS;databaseName=DriveXO;trustServerCertificate=true;";
+    private static final String DB_USER = "sa";
+    private static final String DB_PWD = "123456";
+//        // Database config (choose one format)
+//    private static final String DB_URL = "jdbc:sqlserver://localhost:1433;databaseName=DriveXO;trustServerCertificate=true;";
+//    private static final String DB_USER = "sa";
+//    private static final String DB_PWD = "1234";
+
+    // Use the above connection format
+
+    public DBContext() {
     // Get a new connection each time
     public Connection getConnection() throws SQLException {
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            // Establish the connection using the single chosen format
+            this.conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PWD);
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return conn;
+      
+    }
+
+
+    // Method to execute INSERT, UPDATE, DELETE queries
+    public int execQuery(String query, Object[] params) throws SQLException {
+        PreparedStatement pStatement = conn.prepareStatement(query);
+        if (params != null) {
+            // Set parameters in the prepared statement
+            for (int i = 0; i < params.length; i++) {
+                pStatement.setObject(i + 1, params[i]);
+            }
         } catch (ClassNotFoundException e) {
             throw new SQLException("JDBC Driver not found", e);
         }

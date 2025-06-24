@@ -628,7 +628,7 @@
                     </li>
                     <li><a href="${pageContext.request.contextPath}/parts"
                            class="${activePage eq 'parts' ? 'active' : ''}">Parts</a></li>
-                    <li><a href="#" class="${pageContext.request.servletPath eq '/services.jsp' ? 'active' : ''}">Services</a></li>
+                    <li><a href="${pageContext.request.contextPath}/services" class="${pageContext.request.servletPath eq 'services' ? 'active' : ''}">Services</a></li>
                     <li><a href="#" class="${pageContext.request.servletPath eq '/about.jsp' ? 'active' : ''}">About</a></li>
                     <li><a href="#" class="${pageContext.request.servletPath eq '/contact.jsp' ? 'active' : ''}">Contact</a></li>
                     <li><a href="feedback.jsp" class="${pageContext.request.servletPath eq '/feedback.jsp' ? 'active' : ''}">Feedback</a></li>
