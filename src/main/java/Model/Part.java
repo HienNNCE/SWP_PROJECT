@@ -14,11 +14,6 @@ public class Part {
     private String partImg;
     private int partStock;
     private BigDecimal partPrice;
-
-    // Thêm cho giỏ hàng
-    private int quantityInCart;
-    private BigDecimal totalPrice;
-
     // Constructors
     public Part() {}
 
@@ -34,28 +29,69 @@ public class Part {
         this.partPrice = partPrice;
     }
 
-    // Getter & Setter cho các trường cũ
-    public int getPartId() { return partId; }
-    public void setPartId(int partId) { this.partId = partId; }
-    public String getPartName() { return partName; }
-    public void setPartName(String partName) { this.partName = partName; }
-    public String getPartBrand() { return partBrand; }
-    public void setPartBrand(String partBrand) { this.partBrand = partBrand; }
-    public String getCarModel() { return carModel; }
-    public void setCarModel(String carModel) { this.carModel = carModel; }
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
-    public String getPartImg() { return partImg; }
-    public void setPartImg(String partImg) { this.partImg = partImg; }
-    public int getPartStock() { return partStock; }
-    public void setPartStock(int partStock) { this.partStock = partStock; }
-    public BigDecimal getPartPrice() { return partPrice; }
-    public void setPartPrice(BigDecimal partPrice) { this.partPrice = partPrice; }
+    public int getPartId() {
+        return partId;
+    }
 
-    // Getter & Setter cho quantityInCart và totalPrice
-    public int getQuantityInCart() { return quantityInCart; }
-    public void setQuantityInCart(int quantityInCart) { this.quantityInCart = quantityInCart; }
-    public BigDecimal getTotalPrice() { return totalPrice; }
-    public void setTotalPrice(BigDecimal totalPrice) { this.totalPrice = totalPrice; }
+    public void setPartId(int partId) {
+        this.partId = partId;
+    }
+
+    public String getPartName() {
+        return partName;
+    }
+
+    public void setPartName(String partName) {
+        this.partName = partName;
+    }
+
+    public String getPartBrand() {
+        return partBrand;
+    }
+
+    public void setPartBrand(String partBrand) {
+        this.partBrand = partBrand;
+    }
+
+    public String getCarModel() {
+        return carModel;
+    }
+
+    public void setCarModel(String carModel) {
+        this.carModel = carModel;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getPartImg() {
+        return partImg;
+    }
+
+    public void setPartImg(String partImg) {
+        this.partImg = partImg;
+    }
+
+    public int getPartStock() {
+        return partStock;
+    }
+
+    public void setPartStock(int partStock) {
+        this.partStock = partStock;
+    }
+
+    public BigDecimal getPartPrice() {
+        return partPrice;
+    }
+
+    public void setPartPrice(BigDecimal partPrice) {
+        this.partPrice = partPrice;
+    }
+    
 }
 
