@@ -44,7 +44,7 @@
             </li>
             
             <li class="nav-item">
-                <a href="../admin/user/account-list.jsp" class="nav-link">
+                <a href="../admin/users" class="nav-link">
                     <i class="fas fa-users"></i>
                     <span>Users</span>
                     <span class="badge badge-info">24</span>
