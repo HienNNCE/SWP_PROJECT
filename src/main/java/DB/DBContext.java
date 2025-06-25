@@ -15,7 +15,7 @@ public class DBContext {
 
     private static final String DB_URL = "jdbc:sqlserver://localhost:1433;databaseName=DriveXO;trustServerCertificate=true;";
     private static final String DB_USER = "sa";
-    private static final String DB_PWD = "1234";
+    private static final String DB_PWD = "1006";
     public DBContext() {
         try {
             // Load the SQLServer driver
