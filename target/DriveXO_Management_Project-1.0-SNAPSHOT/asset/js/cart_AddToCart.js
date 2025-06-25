@@ -1,6 +1,6 @@
 console.log("✅ JS loaded");
 document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll(".add_to_cart").forEach(function (button) {
+    document.querySelectorAll(".card__favorite").forEach(function (button) {
         button.addEventListener("click", function () {
             let partId = this.getAttribute("part-id");
 
@@ -25,8 +25,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         if (data.status === "success") {
                             console.log("Thêm vào giỏ hàng thành công!");
-                            document.getElementById("cart-count").innerText = data.cartCount || 0;
-                            //document.getElementById("cart-total-price").innerText = "$" + data.totalPrice.toFixed(2);
+                            document.getElementById("item-count").innerText = data.cartCount || 0;
+                            document.getElementById("cart-total-price").innerText = "$" + data.totalPrice.toFixed(2);
                             showCartNotification("Product has been added to cart!", "green");
                         } else {
                             showCartNotification("Unknown error!", "red");

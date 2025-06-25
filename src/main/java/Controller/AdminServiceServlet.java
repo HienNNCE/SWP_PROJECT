@@ -24,7 +24,9 @@ public class AdminServiceServlet extends HttpServlet {
     private ServiceDAO serviceDAO;
 
     @Override
-    public void init() {
+
+    public void init() throws ServletException {
+
         serviceDAO = new ServiceDAO();
     }
 

@@ -9,17 +9,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ServiceDAO extends DBContext {
+    // Cache for the list of services
+    private static List<Service> cachedServices = null;
 
     // Get all services
     public List<Service> getAllService() {
+
+        if (cachedServices != null) {
+            return cachedServices;  // Return from cache if available
+        }
+
         List<Service> services = new ArrayList<>();
         String sql = "SELECT * FROM dbo.Service";
-        try (Connection conn = this.getConnection(); 
-             PreparedStatement stmt = conn.prepareStatement(sql); 
+        try (Connection conn = this.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 services.add(mapRowToService(rs));
             }
+
+            cachedServices = services;  // Cache the results after the first load
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -29,8 +40,9 @@ public class ServiceDAO extends DBContext {
     // Get service by ID
     public Service getServiceById(int serviceId) {
         String sql = "SELECT * FROM dbo.Service WHERE service_id = ?";
-        try (Connection conn = this.getConnection(); 
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+        try (Connection conn = this.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setInt(1, serviceId);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
@@ -46,14 +58,20 @@ public class ServiceDAO extends DBContext {
     // Create new service
     public void createService(Service service) {
         String sql = "INSERT INTO dbo.Service(service_name, service_description, service_price, estimate_time, service_img) VALUES (?, ?, ?, ?, ?)";
-        try (Connection conn = this.getConnection(); 
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+        try (Connection conn = this.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setString(1, service.getServiceName());
             stmt.setString(2, service.getServiceDescription());
             stmt.setBigDecimal(3, service.getServicePrice());
             stmt.setTimestamp(4, Timestamp.valueOf(service.getEstimateTime()));
             stmt.setString(5, service.getServiceImg());
             stmt.executeUpdate();
+
+            
+            // Invalidate the cache after creating a new service
+            cachedServices = null;
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -62,8 +80,9 @@ public class ServiceDAO extends DBContext {
     // Update service
     public void updateService(Service service) {
         String sql = "UPDATE dbo.Service SET service_name = ?, service_description = ?, service_price = ?, estimate_time = ?, service_img = ? WHERE service_id = ?";
-        try (Connection conn = this.getConnection(); 
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+        try (Connection conn = this.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setString(1, service.getServiceName());
             stmt.setString(2, service.getServiceDescription());
             stmt.setBigDecimal(3, service.getServicePrice());
@@ -71,6 +90,11 @@ public class ServiceDAO extends DBContext {
             stmt.setString(5, service.getServiceImg());
             stmt.setInt(6, service.getServiceId());
             stmt.executeUpdate();
+
+            
+            // Invalidate the cache after updating the service
+            cachedServices = null;
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -79,10 +103,14 @@ public class ServiceDAO extends DBContext {
     // Delete service
     public void deleteService(int serviceId) {
         String sql = "DELETE FROM dbo.Service WHERE service_id = ?";
-        try (Connection conn = this.getConnection(); 
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+        try (Connection conn = this.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, serviceId);
             stmt.executeUpdate();
+            
+            // Invalidate the cache after deleting the service
+            cachedServices = null;
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -92,8 +120,9 @@ public class ServiceDAO extends DBContext {
     public List<Service> searchServiceByName(String keyword) {
         List<Service> services = new ArrayList<>();
         String sql = "SELECT * FROM dbo.Service WHERE service_name LIKE ?";
-        try (Connection conn = this.getConnection(); 
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+        try (Connection conn = this.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setString(1, "%" + keyword + "%");
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
@@ -124,15 +153,16 @@ public class ServiceDAO extends DBContext {
             sql.append(" AND service_price <= ?");
             params.add(priceTo);
         }
-        
+
         if ("asc".equalsIgnoreCase(sort)) {
             sql.append(" ORDER BY service_price ASC");
         } else if ("desc".equalsIgnoreCase(sort)) {
             sql.append(" ORDER BY service_price DESC");
         }
 
-        try (Connection conn = this.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
+
+        try (Connection conn = this.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
+
             for (int i = 0; i < params.size(); i++) {
                 stmt.setObject(i + 1, params.get(i));
             }

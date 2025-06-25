@@ -1,6 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -92,16 +94,18 @@
                     <input type="hidden" name="id" value="${service.serviceId}"/>
 
                     <label>Name:</label>
-                    <input type="text" name="name" value="${service.serviceName}" />
-                    <c:if test="${errors.name != null}"><div class="error">${errors.name}</div></c:if>
+
+                    <input type="text" name="serviceName" value="${service.serviceName}" />
+                    <c:if test="${errors.serviceName != null}"><div class="error">${errors.serviceName}</div></c:if>
 
                     <label>Description:</label>
-                    <textarea name="description" rows="3">${service.serviceDescription}</textarea>
-                    <c:if test="${errors.description != null}"><div class="error">${errors.description}</div></c:if>
+                    <textarea name="serviceDescription" rows="3">${service.serviceDescription}</textarea>
+                    <c:if test="${errors.serviceDescription != null}"><div class="error">${errors.serviceDescription}</div></c:if>
 
                     <label>Price ($):</label>
-                    <input type="number" name="price" step="0.01" value="${service.servicePrice}" />
-                    <c:if test="${errors.price != null}"><div class="error">${errors.price}</div></c:if>
+                    <input type="number" name="servicePrice" step="0.01" value="${service.servicePrice}" />
+                    <c:if test="${errors.servicePrice != null}"><div class="error">${errors.servicePrice}</div></c:if>
+
 
                     <label>Service Type:</label>
                     <select name="serviceType">
@@ -123,7 +127,9 @@
                     </c:choose>
 
                     <label>Change Image (optional):</label>
-                    <input type="file" name="img" onchange="previewImage(event)"/>
+
+                    <input type="file" name="serviceImg" onchange="previewImage(event)"/>
+
                     <img id="imgPreview" style="display:none; width:200px; border-radius:10px;"/>
 
                     <label>Estimate Time:</label>

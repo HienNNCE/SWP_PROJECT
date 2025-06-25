@@ -4,23 +4,36 @@
  */
 package DAO;
 
+import DB.DBContext;
+import Model.Cart;
+import Model.Part;
+import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author thien
  */
 public class CartDAO extends DBContext {
 
-//    public static void main(String[] a) {
-//        CartDAO cDAO = new CartDAO();
-//        Cart cart = cDAO.getCartDetailByUserId(2);
-//        System.out.println("Expected cart: " + cart.getCountItem());
-//        List<Part> partList = cart.getPartList();
-//        for (Part part : partList) {
-//            System.out.println("Part ID: " + part.getPartId() + ", Name: " + part.getPartName()
-//                    + ", Quantity: " + part.getQuantityInCart() + ", Total Price: " + part.getTotalPrice());
-//        }
-//
-//    }
+    public static void main(String[] a) {
+        CartDAO cDAO = new CartDAO();
+        Cart cart = cDAO.getCartDetailByUserId(2);
+        System.out.println("Expected cart: " + cart.getCountItem());
+        List<Part> partList = cart.getPartList();
+        for (Part part : partList) {
+            System.out.println("Part ID: " + part.getPartId() + ", Name: " + part.getPartName()
+                    + ", Quantity: " + part.getQuantityInCart() + ", Total Price: " + part.getTotalPrice());
+        }
+
+    }
 
     public void increaseQuantity(int userId, int partId) {
         String updateDetailSql = "UPDATE CartDetail SET pt_order_quantity = pt_order_quantity + 1 "
@@ -570,6 +583,4 @@ public class CartDAO extends DBContext {
     // e.printStackTrace();
     // }
     // }
-    
-
 }

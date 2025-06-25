@@ -1,5 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -102,33 +105,31 @@
 
                                 <div class="detail-row">
                                     <strong>Name:</strong>
-                                    <input type="text" name="name" value="${service.serviceName}" required />
+
+
                                 </div>
 
                                 <div class="detail-row">
                                     <strong>Description:</strong>
-                                    <textarea name="description" rows="3">${service.serviceDescription}</textarea>
+
+                                    <textarea name="serviceDescription">${service.serviceDescription}</textarea>
                                 </div>
 
                                 <div class="detail-row">
-                                    <strong>Price:</strong>
-                                    <input type="number" name="price" value="${service.servicePrice}" step="0.01" min="0" />
+                                    <strong>Price ($):</strong>
+                                    <input type="number" name="servicePrice" value="${service.servicePrice}" step="0.01" required />
                                 </div>
 
                                 <div class="detail-row">
-                                    <strong>Service Type:</strong>
-                                    <select name="serviceType">
-                                        <option value="">-- Select Type --</option>
-                                        <c:forEach var="type" items="${serviceTypes}">
-                                            <option value="${type}" ${type == service.serviceType ? 'selected' : ''}>${type}</option>
-                                        </c:forEach>
-                                    </select>
+                                    <strong>Estimate Time:</strong>
+                                    <input type="datetime-local" name="estimateTime" value="${fn:formatDate(service.estimateTime, 'yyyy-MM-dd\'T\'HH:mm')}" />
                                 </div>
 
                                 <div class="detail-row">
-                                    <strong>Change Image (optional):</strong>
-                                    <input type="file" name="img" />
-                                    <small>Leave blank to keep the current image</small>
+                                    <strong>Image:</strong>
+                                    <input type="file" name="serviceImg" />
+                                    <small>Leave blank to keep current image</small>
+
                                 </div>
 
                                 <div class="btn-area">
@@ -145,8 +146,9 @@
                             <h2>Service Detail</h2>
                             <div class="detail-row"><strong>Name:</strong> ${service.serviceName}</div>
                             <div class="detail-row"><strong>Description:</strong> ${service.serviceDescription}</div>
-                            <div class="detail-row"><strong>Price:</strong> $<fmt:formatNumber value="${service.servicePrice}" type="number" maxFractionDigits="2" minFractionDigits="2"/></div>
-                            <div class="detail-row"><strong>Type:</strong> ${service.serviceType}</div>
+
+                            <div class="detail-row"><strong>Price:</strong> $${service.servicePrice}</div>
+                            <div class="detail-row"><strong>Estimate Time:</strong> ${fn:formatDate(service.estimateTime, 'yyyy-MM-dd HH:mm')}</div>
                         </c:otherwise>
                     </c:choose>
                 </div>
@@ -161,6 +163,8 @@
                     <i class="fas fa-edit"></i> Edit Service
                 </a>
             </div>
+
+
 
             <jsp:include page="/components/dashboardFooter.jsp" />
         </div>

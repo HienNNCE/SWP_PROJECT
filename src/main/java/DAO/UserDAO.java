@@ -1,6 +1,7 @@
 package DAO;
 
 import DB.DBContext;
+import Model.Part;
 import Model.Users;
 
 import java.sql.Connection;
@@ -11,8 +12,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDAO extends DBContext {
+        private static List<Users> cachedUsers = null;  // Cache for parts list
 
+
+    
+
+    
     public List<Users> getAllUsers() {
+        if(cachedUsers!=null){
+            return cachedUsers;
+        }
         List<Users> list = new ArrayList<>();
         String query = "SELECT u.*, r.role_name FROM [User] u JOIN Role r ON u.role_id = r.role_id";
 
@@ -26,6 +35,7 @@ public class UserDAO extends DBContext {
         } catch (Exception e) {
             e.printStackTrace();  // hoặc ghi log
         }
+
 
         return list;
     }

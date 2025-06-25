@@ -1,10 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <header class="header">
     <nav class="navbar">
-        <!-- Toggle Sidebar Button -->
-        <button class="sidebar-toggle">
-            <i class="fas fa-bars"></i>
-        </button>
 
         <!-- Right navbar links -->
         <ul class="navbar-nav">
