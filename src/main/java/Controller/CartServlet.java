@@ -9,7 +9,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.util.List;
-@WebServlet(name = "CartServlet", urlPatterns = {"/cart"})
+
+@WebServlet(name = "CartServlet", urlPatterns = { "/cart" })
 public class CartServlet extends HttpServlet {
 
     @Override
@@ -28,12 +29,14 @@ public class CartServlet extends HttpServlet {
         if (cart == null) {
             cart = new Cart();
             cart.setUserId(userId);
-            cart.setPartList(List.of()); 
+            cart.setPartList(List.of());
         }
         request.setAttribute("cart", cart);
         request.setAttribute("partList", cart.getPartList());
         request.setAttribute("totalPrice", cart.getCartPrice());
-
+        for (Model.Part part : cart.getPartList()) {
+            System.out.println("Part Stock: " + part.getPartStock());
+        }
         request.getRequestDispatcher("/cart.jsp").forward(request, response);
     }
 

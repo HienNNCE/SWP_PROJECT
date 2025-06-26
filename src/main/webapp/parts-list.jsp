@@ -110,16 +110,19 @@
                                 <h5 class="card-title">${part.partName}</h5>
                                 <p class="card-text text-muted">${part.partBrand} - ${part.carModel}</p>
                                 <p class="card-text"><strong>$<c:out value="${part.partPrice}" /></strong></p>
-                                <p class="card-text"><i class="fas fa-box"></i> Stock: ${part.partStock}</p>
+                                <p class="card-text stock-text"><i class="fas fa-box"></i> Stock: ${part.partStock}</p>
                             </div>
                             <div class="card-footer bg-transparent border-0 d-flex flex-column gap-2">
                                 <a href="${pageContext.request.contextPath}/part/detail?id=${part.partId}" class="btn btn-outline-secondary w-100">
                                     <i class="fas fa-info-circle"></i> View Details
                                 </a>
-                                <button class="btn btn-primary w-100 add_to_cart" part-Id ='${part.partId}' type = "button"> Add to Cart</button>
+                                <button type="button" part-id='${part.partId}' class="btn btn-primary w-100 add_to_cart"
+                                        <c:if test="${part.partStock <= 0}">disabled</c:if>>
+                                            Add to Cart
+                                        </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
                 </c:forEach>
 
                 <c:if test="${empty parts}">

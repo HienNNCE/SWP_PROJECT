@@ -4,6 +4,7 @@
  */
 package Controller;
 
+import jakarta.mail.Part;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import DAO.CartDAO;
+import DAO.PartDAO;
 import Model.Cart;
 import jakarta.servlet.annotation.WebServlet;
 import java.math.BigDecimal;
@@ -22,9 +24,11 @@ import java.util.List;
  * @author thien
  */
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
-/**
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt
+ * to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to
+ * edit this template
+ * /**
  *
  * @author ALIENWARE
  */
@@ -32,7 +36,8 @@ import java.util.List;
 public class AddToCartServlet extends HttpServlet {
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         System.out.println("Request received!");
 
         HttpSession session = request.getSession();
@@ -63,19 +68,39 @@ public class AddToCartServlet extends HttpServlet {
         boolean success = cartDAO.addToCart(userId, partId);
         if (success) {
             CartDAO cDAO = new CartDAO();
+            PartDAO pDAO = new PartDAO();
             int cartCount = 0;
             BigDecimal totalPrice = null;
-            List<Cart> carts = cDAO.getCartByUserId(userId);
-            for (Cart c : carts) {
-              cartCount = c.getCountItem();
-              totalPrice = c.getCartPrice();
-            }
+            Cart cart = cDAO.getCartDetailByUserId(userId);
+            cartCount = cart.getCountItem();
+            totalPrice = cart.getCartPrice();
+            int partStock = pDAO.getPartById(partId).getPartStock();
             session.setAttribute("totalPrice", totalPrice);
-            System.out.println("Part added successfully. Cart Count: " + cartCount + ", Total Price: " + totalPrice);
-            response.getWriter().print("{\"status\":\"success\", \"cartCount\":" + cartCount + ", \"totalPrice\":" + totalPrice + "}");
+            System.out.println("Part added successfully. Cart Count: " + cartCount + ", Total Price: " + totalPrice + ", Part Stock: " + partStock);
+            response.getWriter().print(
+                    "{\"status\":\"success\", \"cartCount\":" + cartCount + ", \"totalPrice\":" + totalPrice + ", \"partStock\":" + partStock +"}");
         } else {
-            System.out.println("Error: Failed to add part to cart");
-            response.getWriter().print("{\"status\":\"error\"}");
+            // Kiểm tra tồn kho để trả về đúng status
+            int partStock = 0;
+            try (java.sql.Connection conn = cartDAO.getConnection();
+                    java.sql.PreparedStatement ps = conn
+                            .prepareStatement("SELECT part_stock FROM Part WHERE part_id = ?")) {
+                ps.setInt(1, partId);
+                try (java.sql.ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        partStock = rs.getInt("part_stock");
+                    }
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            if (partStock <= 0) {
+                System.out.println("Error: Out of stock");
+                response.getWriter().print("{\"status\":\"out_of_stock\"}");
+            } else {
+                System.out.println("Error: Failed to add part to cart");
+                response.getWriter().print("{\"status\":\"error\"}");
+            }
         }
     }
 }

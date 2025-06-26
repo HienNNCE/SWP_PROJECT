@@ -444,6 +444,11 @@
                     height: 150px;
                 }
             }
+            .quantity-btn:disabled {
+                background: #eee;
+                color: #bbb;
+                cursor: not-allowed;
+            }
         </style>
     </head>
     <body>
@@ -496,6 +501,9 @@
                                         <div class="item-price">
                                             <fmt:formatNumber value="${item.partPrice}" type="currency" currencySymbol="$"/>
                                         </div>
+                                        <div class="item-stock" style="font-size:12px;color:#888;">
+                                            Stock: ${item.partStock}
+                                        </div>
                                     </div>
 
                                     <!-- Control: số lượng, xóa -->
@@ -515,13 +523,15 @@
                                             <form method="post" action="cart" style="display: inline;">
                                                 <input type="hidden" name="partId" value="${item.partId}">
                                                 <input type="hidden" name="action" value="increase">
-                                                <button type="submit" class="quantity-btn">+</button>
-                                            </form>
-                                        </div>
+                                                <button type="submit" class="quantity-btn"
+                                                        <c:if test="${item.partStock <= 0}">disabled</c:if>
+                                                            >+</button>
+                                                </form>
+                                            </div>
 
-                                        <!-- Xóa sản phẩm -->
-                                        <form method="post" action="cart" style="display: inline;">
-                                            <input type="hidden" name="partId" value="${item.partId}">
+                                            <!-- Xóa sản phẩm -->
+                                            <form method="post" action="cart" style="display: inline;">
+                                                <input type="hidden" name="partId" value="${item.partId}">
                                             <input type="hidden" name="action" value="remove">
                                             <button type="submit" class="remove-item">Remove</button>
                                         </form>
