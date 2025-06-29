@@ -1,4 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -219,8 +220,28 @@
                 </div>
                 
                 <h1 class="auth-heading">Sign in to your account</h1>
-                
-                <form action="../home" method="get">
+                <%
+                    String successMsg = (String) request.getAttribute("success_msg");
+                    if (successMsg != null && !successMsg.isEmpty()) {
+                %>
+                    <div style="color: green; margin-bottom: 15px; text-align: center;">
+                        <%= successMsg %>
+                    </div>
+                <%
+                    }
+                %>
+                <%
+                    String error = (String) request.getAttribute("err");
+                    if (error != null && !error.isEmpty()) {
+                %>
+                    <div style="color: red; margin-bottom: 15px; text-align: center;">
+                        <%= error %>
+                    </div>
+                <%
+                    }
+                %>
+                <form action="LoginServlet" method="post">
+                    
                     <div class="form-group">
                         <label class="form-label" for="username">Username or Email</label>
                         <input type="text" class="form-control" id="username" name="username" required>

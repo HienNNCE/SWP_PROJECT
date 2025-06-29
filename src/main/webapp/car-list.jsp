@@ -21,6 +21,12 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+        <style>
+            .cars-container {
+                padding-left: 40px;
+                padding-right: 40px;
+            }
+        </style>
     </head>
     <body>
         <!-- Ultra Modern Minimalist Car Listing Page -->
@@ -213,12 +219,7 @@
                                 <button type="button" class="filter-button primary" id="applyFilters_toolbar">Apply Filters</button>
                             </div>
                             
-                            <select class="sort-select" id="sortCars">
-                                <option value="newest">Newest First</option>
-                                <option value="oldest">Oldest First</option>
-                                <option value="price-low">Price: Low to High</option>
-                                <option value="price-high">Price: High to Low</option>
-                            </select>
+                            
                             <button class="view-button active" id="gridView">
                                 <i class="fas fa-th-large"></i>
                             </button>

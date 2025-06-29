@@ -10,7 +10,11 @@
     </servlet>
     <servlet>
         <servlet-name>ForgotServlet</servlet-name>
-        <servlet-class>Controller.ForgotServler</servlet-class>
+        <servlet-class>Controller.ForgotServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>OTPServlet</servlet-name>
+        <servlet-class>Controller.OTPServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
@@ -23,6 +27,10 @@
     <servlet-mapping>
         <servlet-name>ForgotServlet</servlet-name>
         <url-pattern>/auth/ForgotServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OTPServlet</servlet-name>
+        <url-pattern>/auth/OTPServlet</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>ResetPasswordServlet</servlet-name>

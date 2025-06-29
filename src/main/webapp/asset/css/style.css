@@ -12,7 +12,10 @@
     padding: 0;
     box-sizing: border-box;
 }
-
+.cars-container {
+    padding-left: 40px;
+    padding-right: 40px;
+}
 :root {
     --primary-color: #212121;
     --secondary-color: #333333;

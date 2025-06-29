@@ -211,7 +211,16 @@
                 </div>
                 
                 <h1 class="auth-heading">Create your account</h1>
-                
+                <%
+                    String error = (String) request.getAttribute("err");
+                    if (error != null && !error.isEmpty()) {
+                %>
+                    <div style="color: red; margin-bottom: 15px; text-align: center;">
+                        <%= error %>
+                    </div>
+                <%
+                    }
+                %>
                 <form action="RegisterServlet" method="post">
                     <div class="form-group">
                         <label class="form-label" for="fullname">Full Name</label>

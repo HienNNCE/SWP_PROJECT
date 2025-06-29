@@ -18,8 +18,11 @@ Controller\OTPServlet.class
 DAO\ServiceScheduleDAO.class
 Model\Comment.class
 Controller\AdminCarServlet.class
+Controller\ResetPasswordServlet.class
 Controller\CartServlet.class
+DAO\AuthenticationDAO$1.class
 util\ValidationUtil.class
+DAO\AuthenticationDAO.class
 Controller\AdminAccountServlet.class
 DAO\CartDAO.class
 Model\Category.class
@@ -29,6 +32,7 @@ DAO\BlogDAO.class
 DAO\PartDAO.class
 com\mycompany\drivexo_management_project\JakartaRestConfiguration.class
 Controller\BlogServlet.class
+Controller\AdminServiceServlet.class
 Model\Order.class
 Model\Blog.class
 com\mycompany\drivexo_management_project\resources\JakartaEE10Resource.class
@@ -41,7 +45,7 @@ Model\Car.class
 Model\Cart.class
 DAO\RoleDAO.class
 Controller\CarListServlet.class
-DAO\UserDAO$1.class
+Controller\ServiceServlet.class
 Controller\StaffPartServlet.class
 DAO\UserDAO.class
 Controller\CarDetailServlet.class

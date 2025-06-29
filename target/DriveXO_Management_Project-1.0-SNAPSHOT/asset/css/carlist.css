@@ -1,10 +1,14 @@
-
 /* Tối ưu container - tăng chiều ngang */
 .container {
     max-width: 1440px;
     width: 100%;
     padding: 0 20px;
     margin: 0 auto;
+}
+
+.cars-container {
+    padding-left: 40px;
+    padding-right: 40px;
 }
 
 /* Header tối giản hơn */
@@ -249,6 +253,15 @@
     position: relative;
     margin: 0 auto 25px;
     max-width: 94%;
+}
+
+/* Line phân cách giữa brand và refine section */
+.brand-refine-divider {
+    width: 100%;
+    height: 1px;
+    background: #eee;
+    margin: 18px 0 18px 0;
+    border: none;
 }
 
 .brand-carousel {
@@ -641,16 +654,13 @@
 
 /* Cải thiện car item */
 .car-item {
-    border: none;
+    border: 1px solid #eee;
     transition: all 0.2s;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     border-radius: 2px;
 }
 
 .car-item:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.08);
-    border-color: transparent;
+    border-color: #ddd;
 }
 
 .car-image {
@@ -1155,4 +1165,294 @@
 
 .back-to-home i {
     font-size: 16px;
+}
+
+/* Advanced Filter Grid - Tinh gọn, vuông vắn */
+.advanced-filter-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 18px;
+    align-items: end;
+    margin-top: 10px;
+    padding: 20px 40px;
+    background: #fcfcfc;
+    border: 1px solid #f0f0f0;
+    border-radius: 4px;
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.price-filter, .odo-filter, .year-filter, .search-filter {
+    margin: 0;
+}
+
+.filter-slider-header, .year-picker-header {
+    margin-bottom: 4px;
+    font-size: 12px;
+}
+
+.year-input, .search-input {
+    padding: 6px 10px;
+    font-size: 13px;
+    height: 32px;
+}
+
+.price-range-slider, .odo-range-slider {
+    height: 2px;
+    margin: 6px 0;
+}
+
+.price-labels, .odo-labels {
+    font-size: 10px;
+    padding: 0 1px;
+}
+
+.fuel-filter {
+    grid-column: 1 / 3;
+    margin: 0;
+    padding: 0;
+}
+
+.fuel-options {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.fuel-option {
+    padding: 6px 14px;
+    font-size: 12px;
+    border-radius: 3px;
+    border: 1px solid #eee;
+    background: #fff;
+    transition: all 0.2s;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    min-width: 70px;
+    justify-content: center;
+}
+
+.fuel-option.selected {
+    background: #000;
+    color: #fff;
+    border-color: #000;
+}
+
+.fuel-option:hover {
+    border-color: #ccc;
+}
+
+@media (max-width: 900px) {
+    .advanced-filter-grid {
+        grid-template-columns: 1fr;
+        max-width: 100%;
+    }
+    .fuel-filter {
+        grid-column: 1 / 2;
+    }
+}
+
+.fuel-segment-bar {
+    display: flex;
+    width: 100%;
+    background: transparent;
+    border-radius: 6px;
+    overflow: hidden;
+    border: none;
+    margin-top: 2px;
+}
+
+.fuel-segment-option {
+    flex: 1 1 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #222;
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    padding: 7px 0 6px 0;
+    cursor: pointer;
+    transition: background 0.25s, color 0.25s;
+    font-weight: 500;
+    min-width: 0;
+    outline: none;
+    position: relative;
+}
+
+.fuel-segment-option:not(:last-child) {
+    border-right: 1px solid #eee;
+}
+
+.fuel-segment-option.active {
+    color: #000;
+    background: #f3f3f3;
+    transition: background 0.25s, color 0.25s;
+    box-shadow: none;
+}
+
+.fuel-segment-option.active i {
+    color: #000;
+}
+
+.fuel-segment-option:hover:not(.active) {
+    color: #111;
+    background: #f7f7f7;
+}
+
+.fuel-segment-option i {
+    font-size: 11px;
+    color: #888;
+    transition: color 0.2s;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+@media (max-width: 900px) {
+    .fuel-segment-bar {
+        flex-direction: column;
+        border-radius: 6px;
+    }
+    .fuel-segment-option {
+        border-right: none;
+        border-bottom: 1px solid #eee;
+        border-radius: 0;
+        padding: 8px 0;
+    }
+    .fuel-segment-option:last-child {
+        border-bottom: none;
+    }
+}
+
+.carlist-header-actions {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    z-index: 101;
+}
+
+.carlist-header-actions .cart-icon {
+    color: #222;
+    font-size: 18px;
+    position: relative;
+    transition: color 0.2s;
+}
+
+.carlist-header-actions .cart-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #ff3a3a;
+    color: white;
+    font-size: 10px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+}
+
+.carlist-header-actions .profile-dropdown {
+    position: relative;
+}
+
+.carlist-header-actions .profile-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #eee;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: #222;
+    background: #fff;
+}
+
+.carlist-header-actions .profile-dropdown:hover .profile-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.carlist-header-actions .profile-menu {
+    position: absolute;
+    top: 40px;
+    right: 0;
+    width: 200px;
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    padding: 10px 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+    z-index: 1100;
+}
+
+.carlist-header-actions .profile-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.carlist-header-actions .profile-menu ul li {
+    padding: 0;
+    margin: 0;
+}
+
+.carlist-header-actions .profile-menu ul li a {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    color: #333;
+    font-size: 13px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.carlist-header-actions .profile-menu ul li a:hover {
+    background-color: #f5f5f5;
+}
+
+.carlist-header-actions .profile-menu ul li a i {
+    width: 20px;
+    margin-right: 10px;
+    text-align: center;
+}
+
+.carlist-header-actions .menu-divider {
+    height: 1px;
+    background-color: #f0f0f0;
+    margin: 5px 0;
+}
+
+.carlist-header-actions .login-btn {
+    padding: 6px 16px;
+    background-color: transparent;
+    border: 1px solid #222;
+    color: #222;
+    font-size: 12px;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+}
+
+.carlist-header-actions .login-btn:hover {
+    background-color: #222;
+    color: #fff;
 }
