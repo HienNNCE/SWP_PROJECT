@@ -17,6 +17,7 @@ D:\SWP_PROJECT\src\main\java\Controller\AdminDashboardServlet.java
 D:\SWP_PROJECT\src\main\java\DAO\CarAppointmentDAO.java
 D:\SWP_PROJECT\src\main\java\Model\Car.java
 D:\SWP_PROJECT\src\main\java\Controller\AdminAccountServlet.java
+D:\SWP_PROJECT\src\main\java\Model\Blog.java
 D:\SWP_PROJECT\src\main\java\Model\CarAppointment.java
 D:\SWP_PROJECT\src\main\java\Controller\AdminPartServlet.java
 D:\SWP_PROJECT\src\main\java\Model\Order.java
@@ -24,6 +25,7 @@ D:\SWP_PROJECT\src\main\java\com\mycompany\drivexo_management_project\resources\
 D:\SWP_PROJECT\src\main\java\Controller\PartServlet.java
 D:\SWP_PROJECT\src\main\java\Controller\BookingsServlet.java
 D:\SWP_PROJECT\src\main\java\Model\Comment.java
+D:\SWP_PROJECT\src\main\java\Controller\BlogServlet.java
 D:\SWP_PROJECT\src\main\java\Controller\CarImageServlet.java
 D:\SWP_PROJECT\src\main\java\DAO\CarDAO.java
 D:\SWP_PROJECT\src\main\java\Model\Users.java

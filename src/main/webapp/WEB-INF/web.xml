@@ -32,6 +32,16 @@
         <servlet-name>ResetPasswordServlet</servlet-name>
         <url-pattern>/auth/ResetPasswordServlet</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>BlogServlet</servlet-name>
+        <servlet-class>Controller.BlogServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>BlogServlet</servlet-name>
+        <url-pattern>/blog</url-pattern>
+        <url-pattern>/blog/detail</url-pattern>
+    </servlet-mapping>
+
     <session-config>
         <session-timeout>
             30
