@@ -632,6 +632,8 @@
                     <li><a href="${pageContext.request.contextPath}/service-list.jsp" class="${pageContext.request.servletPath eq 'service' ? 'active' : ''}">Services</a></li>
 
                     <li><a href="#" class="${pageContext.request.servletPath eq '/about.jsp' ? 'active' : ''}">About</a></li>
+                    <li><a href="${pageContext.request.contextPath}/blog"
+                           class="${pageContext.request.servletPath eq '/blog' ? 'active' : ''}">Blog</a></li>
                     <li><a href="#" class="${pageContext.request.servletPath eq '/contact.jsp' ? 'active' : ''}">Contact</a></li>
                     <li><a href="feedback.jsp" class="${pageContext.request.servletPath eq '/feedback.jsp' ? 'active' : ''}">Feedback</a></li>
                 </ul>
@@ -644,6 +646,8 @@
                             <i class="fas fa-shopping-cart"></i>
                             <span class="cart-badge">3</span>
                         </a>
+
+                        <!-- Profile dropdown -->
                         <div class="profile-dropdown">
                             <i class="fas fa-user profile-avatar"></i>
                             <div class="profile-menu">
@@ -660,6 +664,7 @@
                         </div>
                     </div>
                 </c:if>
+
                 <c:if test="${sessionScope.account == null && user == null}">
                     <a href="${pageContext.request.contextPath}/auth/login.jsp" class="login-btn">Login</a>
                 </c:if>
@@ -673,7 +678,6 @@
         const header = document.querySelector('.header');
         const logoWhite = document.querySelector('.logo-white');
         const logoDark = document.querySelector('.logo-dark');
-
         const forceDark = '${forceDarkNavbar}' === 'true';
         const hasBanner = document.querySelector('.hero-banner') !== null;
 

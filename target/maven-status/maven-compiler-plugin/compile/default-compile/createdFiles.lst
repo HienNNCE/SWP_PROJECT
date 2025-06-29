@@ -28,10 +28,13 @@ DAO\CartDAO.class
 Model\Category.class
 Controller\CarImageServlet.class
 DAO\ServiceDAO.class
+DAO\BlogDAO.class
 DAO\PartDAO.class
 com\mycompany\drivexo_management_project\JakartaRestConfiguration.class
+Controller\BlogServlet.class
 Controller\AdminServiceServlet.class
 Model\Order.class
+Model\Blog.class
 com\mycompany\drivexo_management_project\resources\JakartaEE10Resource.class
 Controller\AdminPartServlet.class
 Controller\PartServlet.class
