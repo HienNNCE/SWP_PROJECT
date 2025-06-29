@@ -626,14 +626,16 @@
                             </div>
                         </div>
                     </li>
-                    <li><a href="${pageContext.request.contextPath}/parts"
-                           class="${activePage eq 'parts' ? 'active' : ''}">Parts</a></li>
+                   <a href="${pageContext.request.contextPath}/parts"
+                       class="${pageContext.request.servletPath eq '/parts' ? 'active' : ''}">Parts</a>
 
                     <li><a href="${pageContext.request.contextPath}/service-list.jsp" class="${pageContext.request.servletPath eq 'service' ? 'active' : ''}">Services</a></li>
 
                     <li><a href="#" class="${pageContext.request.servletPath eq '/about.jsp' ? 'active' : ''}">About</a></li>
-                    <li><a href="${pageContext.request.contextPath}/blog"
-                           class="${pageContext.request.servletPath eq '/blog' ? 'active' : ''}">Blog</a></li>
+
+                    <a href="${pageContext.request.contextPath}/blog"
+                       class="${pageContext.request.servletPath eq '/blog' ? 'active' : ''}">Blog</a>
+                    
                     <li><a href="#" class="${pageContext.request.servletPath eq '/contact.jsp' ? 'active' : ''}">Contact</a></li>
                     <li><a href="feedback.jsp" class="${pageContext.request.servletPath eq '/feedback.jsp' ? 'active' : ''}">Feedback</a></li>
                 </ul>
