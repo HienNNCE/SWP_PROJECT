@@ -93,15 +93,6 @@
                     </c:if>
                 </div>
 
-                <!--                <div class="info-box">
-                                                        <h2>Part Detail</h2>
-                                                        <div class="detail-row"><strong>Name:</strong> ${part.partName}</div>
-                                                        <div class="detail-row"><strong>Brand:</strong> ${part.partBrand}</div>
-                                                        <div class="detail-row"><strong>Car Model:</strong> ${part.carModel}</div>
-                                                        <div class="detail-row"><strong>Description:</strong> ${part.description}</div>
-                                                        <div class="detail-row"><strong>Stock:</strong> ${part.partStock}</div>
-                                                        <div class="detail-row"><strong>Price:</strong> $${part.partPrice}</div>
-                                </div>-->
                 <div class="info-box">
                     <c:choose>
                         <c:when test="${isEditMode}">
@@ -145,13 +136,13 @@
                                     <small>Leave blank to keep current image</small>
                                 </div>
 
-                                <div class="btn-area">
-                                    <a href="${pageContext.request.contextPath}/staff/parts" class="btn btn-secondary">
-                                        <i class="fas fa-arrow-left"></i> Back to List
-                                    </a>
-                                    <button type="submit" class="btn btn-warning">
+                                <div class="btn-area" style="justify-content: center; gap: 16px;">
+                                    <button type="submit" class="btn btn-outline-dark">
                                         <i class="fas fa-save"></i> Save Changes
                                     </button>
+                                    <a href="${pageContext.request.contextPath}/staff/part" class="btn btn-outline-dark">
+                                        <i class="fas fa-list"></i> Back to List
+                                    </a>
                                 </div>
                             </form>
                         </c:when>
@@ -168,11 +159,11 @@
                 </div>
 
             </div>
-            <div class="btn-area">
-                <a href="${pageContext.request.contextPath}/staff/part" class="btn btn-secondary">
-                    <i class="fas fa-arrow-left"></i> Back to List
+            <div class="btn-area" style="justify-content: center; gap: 16px;">
+                <a href="${pageContext.request.contextPath}/staff/part" class="btn btn-outline-dark">
+                    <i class="fas fa-list"></i> Back to List
                 </a>
-                <a href="${pageContext.request.contextPath}/staff/part/edit?id=${part.partId}" class="btn btn-warning">
+                <a href="${pageContext.request.contextPath}/staff/part/edit?id=${part.partId}" class="btn btn-outline-dark">
                     <i class="fas fa-edit"></i> Edit Part
                 </a>
             </div>

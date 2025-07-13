@@ -24,6 +24,8 @@ public class BlogServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         MenuDataHelper.preloadCarList(request);
+        MenuDataHelper.preloadPartMenu(request);
+
         String path = request.getServletPath();
 
         if ("/blog/detail".equals(path)) {

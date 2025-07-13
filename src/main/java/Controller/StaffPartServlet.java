@@ -80,6 +80,7 @@ public class StaffPartServlet extends HttpServlet {
     private void showAddForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setAttribute("brands", partDAO.getAllBrands());
+        request.setAttribute("carModels", partDAO.getAllCarModels());
         request.getRequestDispatcher("/staff/part/create-form.jsp").forward(request, response);
     }
 
@@ -114,6 +115,7 @@ public class StaffPartServlet extends HttpServlet {
 
         request.setAttribute("part", part);
         request.setAttribute("brands", partDAO.getAllBrands());
+        request.setAttribute("carModels", partDAO.getAllCarModels());
         request.getRequestDispatcher("/staff/part/edit-form.jsp").forward(request, response);
     }
 
