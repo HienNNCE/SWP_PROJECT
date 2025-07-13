@@ -1,19 +1,19 @@
 package DAO;
 
-import Model.Part;
 import DB.DBContext;
-
+import Model.Part;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PartDAO extends DBContext {
+public class PartDAO {
 
     public List<Part> getAllParts() {
         List<Part> parts = new ArrayList<>();
         String sql = "SELECT * FROM Part";
-
-        try (Connection conn = getConnection(); PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+        try (Connection conn = new DBContext().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 parts.add(mapRowToPart(rs));
             }
@@ -25,7 +25,8 @@ public class PartDAO extends DBContext {
 
     public Part getPartById(int id) {
         String sql = "SELECT * FROM Part WHERE part_id = ?";
-        try (Connection conn = getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = new DBContext().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
@@ -39,18 +40,9 @@ public class PartDAO extends DBContext {
 
     public void createPart(Part part) {
         String sql = "INSERT INTO Part (part_name, part_brand, car_model, description, part_img, part_stock, part_price) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        try (Connection conn = getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, part.getPartName());
-            stmt.setString(2, part.getPartBrand());
-            stmt.setString(3, part.getCarModel());
-            stmt.setString(4, part.getDescription());
-            if (part.getPartImg() != null) {
-                stmt.setString(5, part.getPartImg());
-            } else {
-                stmt.setNull(5, Types.VARCHAR);
-            }
-            stmt.setInt(6, part.getPartStock());
-            stmt.setBigDecimal(7, part.getPartPrice());
+        try (Connection conn = new DBContext().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            setPartParams(stmt, part);
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -59,7 +51,8 @@ public class PartDAO extends DBContext {
 
     public void updatePart(Part part) {
         String sql = "UPDATE Part SET part_name = ?, part_brand = ?, car_model = ?, description = ?, part_img = ?, part_stock = ?, part_price = ? WHERE part_id = ?";
-        try (Connection conn = getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = new DBContext().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
             setPartParams(stmt, part);
             stmt.setInt(8, part.getPartId());
             stmt.executeUpdate();
@@ -70,7 +63,8 @@ public class PartDAO extends DBContext {
 
     public void deletePart(int id) {
         String sql = "DELETE FROM Part WHERE part_id = ?";
-        try (Connection conn = getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = new DBContext().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -81,7 +75,8 @@ public class PartDAO extends DBContext {
     public List<Part> searchPartsByName(String keyword) {
         List<Part> parts = new ArrayList<>();
         String sql = "SELECT * FROM Part WHERE LOWER(part_name) LIKE LOWER(?)";
-        try (Connection conn = getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = new DBContext().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, "%" + keyword + "%");
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
@@ -93,10 +88,7 @@ public class PartDAO extends DBContext {
         return parts;
     }
 
-    public List<Part> filterParts(String brand, String carModel,
-            Double priceFrom, Double priceTo,
-            Integer stockFrom, Integer stockTo,
-            String sort) {
+    public List<Part> filterParts(String brand, String carModel, Double priceFrom, Double priceTo, Integer stockFrom, Integer stockTo, String sort) {
         List<Part> parts = new ArrayList<>();
         StringBuilder sql = new StringBuilder("SELECT * FROM Part WHERE 1=1");
         List<Object> params = new ArrayList<>();
@@ -132,7 +124,8 @@ public class PartDAO extends DBContext {
             sql.append(" ORDER BY part_price DESC");
         }
 
-        try (Connection conn = getConnection(); PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
+        try (Connection conn = new DBContext().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
             for (int i = 0; i < params.size(); i++) {
                 stmt.setObject(i + 1, params.get(i));
             }
@@ -150,7 +143,9 @@ public class PartDAO extends DBContext {
     public List<String> getAllBrands() {
         List<String> brands = new ArrayList<>();
         String sql = "SELECT DISTINCT part_brand FROM Part WHERE part_brand IS NOT NULL AND part_brand <> ''";
-        try (Connection conn = getConnection(); PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+        try (Connection conn = new DBContext().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 brands.add(rs.getString("part_brand"));
             }
@@ -158,6 +153,54 @@ public class PartDAO extends DBContext {
             e.printStackTrace();
         }
         return brands;
+    }
+
+    public List<String> getAllCarModels() {
+        List<String> models = new ArrayList<>();
+        String sql = "SELECT DISTINCT car_model FROM Part WHERE car_model IS NOT NULL AND car_model <> ''";
+        try (Connection conn = new DBContext().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                models.add(rs.getString("car_model"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return models;
+    }
+
+    public List<Part> getPartsByBrand(String brand) {
+        List<Part> parts = new ArrayList<>();
+        String sql = "SELECT * FROM Part WHERE part_brand = ?";
+        try (Connection conn = new DBContext().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, brand);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                parts.add(mapRowToPart(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return parts;
+    }
+
+    public List<Part> getRelatedParts(String brand, int excludePartId) {
+        List<Part> parts = new ArrayList<>();
+        String sql = "SELECT * FROM Part WHERE part_brand = ? AND part_id != ?";
+        try (Connection conn = new DBContext().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, brand);
+            stmt.setInt(2, excludePartId);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                parts.add(mapRowToPart(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return parts;
     }
 
     private Part mapRowToPart(ResultSet rs) throws SQLException {
@@ -181,23 +224,5 @@ public class PartDAO extends DBContext {
         stmt.setString(5, part.getPartImg());
         stmt.setInt(6, part.getPartStock());
         stmt.setBigDecimal(7, part.getPartPrice());
-    }
-
-    public List<Part> getRelatedParts(String brand, int excludePartId) {
-        List<Part> parts = new ArrayList<>();
-        String sql = "SELECT * FROM Part WHERE part_brand = ? AND part_id != ?";
-
-        try (Connection conn = getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, brand);
-            stmt.setInt(2, excludePartId);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                parts.add(mapRowToPart(rs));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return parts;
     }
 }

@@ -60,7 +60,7 @@
             </li>
             
             <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="${pageContext.request.contextPath}/staff/blog" class="nav-link">
                     <i class="fas fa-newspaper"></i>
                     <span>Blog/Posts</span>
                 </a>

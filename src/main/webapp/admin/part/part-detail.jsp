@@ -145,13 +145,13 @@
                                     <small>Leave blank to keep current image</small>
                                 </div>
 
-                                <div class="btn-area">
-                                    <a href="${pageContext.request.contextPath}/admin/parts" class="btn btn-secondary">
-                                        <i class="fas fa-arrow-left"></i> Back to List
-                                    </a>
-                                    <button type="submit" class="btn btn-warning">
+                                <div class="btn-area" style="justify-content: center; gap: 16px;">
+                                    <button type="submit" class="btn btn-outline-dark">
                                         <i class="fas fa-save"></i> Save Changes
                                     </button>
+                                    <a href="${pageContext.request.contextPath}/admin/part" class="btn btn-outline-dark">
+                                        <i class="fas fa-list"></i> Back to List
+                                    </a>
                                 </div>
                             </form>
                         </c:when>
@@ -168,11 +168,11 @@
                 </div>
 
             </div>
-            <div class="btn-area">
-                <a href="${pageContext.request.contextPath}/admin/part" class="btn btn-secondary">
-                    <i class="fas fa-arrow-left"></i> Back to List
+            <div class="btn-area" style="justify-content: center; gap: 16px;">
+                <a href="${pageContext.request.contextPath}/admin/part" class="btn btn-outline-dark">
+                    <i class="fas fa-list"></i> Back to List
                 </a>
-                <a href="${pageContext.request.contextPath}/admin/part/edit?id=${part.partId}" class="btn btn-warning">
+                <a href="${pageContext.request.contextPath}/admin/part/edit?id=${part.partId}" class="btn btn-outline-dark">
                     <i class="fas fa-edit"></i> Edit Part
                 </a>
             </div>

@@ -5,6 +5,7 @@ Controller\ForgotServlet.class
 Controller\BookingsServlet.class
 Controller\AddToCartServlet.class
 DAO\OrderDetailDAO.class
+Controller\StaffBlogServlet.class
 Model\Service.class
 Model\Payment.class
 util\MenuDataHelper.class
@@ -28,6 +29,7 @@ DAO\CartDAO.class
 Model\Category.class
 Controller\CarImageServlet.class
 DAO\ServiceDAO.class
+Controller\AdminBlogServlet.class
 DAO\BlogDAO.class
 DAO\PartDAO.class
 com\mycompany\drivexo_management_project\JakartaRestConfiguration.class

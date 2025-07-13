@@ -1,6 +1,8 @@
 package Controller;
 
 import DAO.CarDAO;
+import DAO.PartDAO;
+
 import Model.Car;
 import util.MenuDataHelper;
 
@@ -17,17 +19,23 @@ import java.util.List;
 public class HomeServlet extends HttpServlet {
 
     private CarDAO carDAO;
+    private PartDAO partDAO;
 
     @Override
     public void init() throws ServletException {
         super.init();
         carDAO = new CarDAO();
+        partDAO = new PartDAO();
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             MenuDataHelper.preloadCarList(request);     
+            MenuDataHelper.preloadPartMenu(request);
+
+            List<String> partBrands = partDAO.getAllBrands();
+            request.setAttribute("partBrands", partBrands);
             request.getRequestDispatcher("/home.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace(); // Log the exception

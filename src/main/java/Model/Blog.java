@@ -1,6 +1,8 @@
 package Model;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 
 public class Blog {
     private int id;
@@ -19,6 +21,7 @@ public class Blog {
         this.publishedAt = publishedAt;
     }
 
+    // Getters
     public int getId() {
         return id;
     }
@@ -41,5 +44,37 @@ public class Blog {
 
     public LocalDateTime getPublishedAt() {
         return publishedAt;
+    }
+
+    // ✅ Convert LocalDateTime to java.util.Date for JSTL fmt:formatDate
+    public Date getPublishedDate() {
+        return publishedAt != null
+            ? Date.from(publishedAt.atZone(ZoneId.systemDefault()).toInstant())
+            : null;
+    }
+
+    // Setters
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public void setPublishedAt(LocalDateTime publishedAt) {
+        this.publishedAt = publishedAt;
     }
 }

@@ -240,9 +240,7 @@ public class CartDAO extends DBContext {
                 + "        JOIN CartDetail cd ON c.cart_id = cd.cart_id\n"
                 + "        JOIN Part p ON cd.part_id = p.part_id\n"
                 + "        WHERE c.user_id = ?";
-        Connection conn = this.getConnection();
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-
+        try (Connection conn = this.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, userId);
             try (ResultSet rs = ps.executeQuery()) {
                 List<Part> parts = new ArrayList<>();
@@ -279,8 +277,6 @@ public class CartDAO extends DBContext {
 
         return cart;
     }
-
-
 
     public double getPartPrice(int partId) {
         String sql = "SELECT part_price FROM Part WHERE part_id = ?";
