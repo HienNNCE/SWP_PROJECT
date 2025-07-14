@@ -1,6 +1,8 @@
 package Controller;
 
 import DAO.CarDAO;
+import DAO.PartDAO;
+
 import Model.Car;
 import util.MenuDataHelper;
 
@@ -17,39 +19,27 @@ import java.util.List;
 public class HomeServlet extends HttpServlet {
 
     private CarDAO carDAO;
+    private PartDAO partDAO;
 
     @Override
     public void init() throws ServletException {
         super.init();
         carDAO = new CarDAO();
+        partDAO = new PartDAO();
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            
-            jakarta.servlet.http.HttpSession session = request.getSession(false);
-            Integer userId = (session != null) ? (Integer) session.getAttribute("userId") : null;
-            if (userId != null) {
-                DAO.CartDAO cartDAO = new DAO.CartDAO();
-                Model.Cart cart = cartDAO.getCartDetailByUserId(userId);
-                int cartCount = (cart != null) ? cart.getCountItem() : 0;
-                java.math.BigDecimal totalPrice = (cart != null && cart.getCartPrice() != null) ? cart.getCartPrice() : java.math.BigDecimal.ZERO;
-                session.setAttribute("cartCount", cartCount);
-                session.setAttribute("totalPrice", totalPrice);
-                
-                //Test cart count and total price
-                System.out.println("Cart count: " + cartCount);
-                System.out.println("Total price: " + totalPrice);
-            } else {
-                request.setAttribute("cartCount", 0);
-                request.setAttribute("totalPrice", java.math.BigDecimal.ZERO);
-            }
-
             MenuDataHelper.preloadCarList(request);     
+            MenuDataHelper.preloadPartMenu(request);
+
+            List<String> partBrands = partDAO.getAllBrands();
+            request.setAttribute("partBrands", partBrands);
             request.getRequestDispatcher("/home.jsp").forward(request, response);
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(); // Log the exception
+            // Handle the error, maybe forward to an error page
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error loading cars");
         }
     }
@@ -58,4 +48,4 @@ public class HomeServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
     }
-}
+} 

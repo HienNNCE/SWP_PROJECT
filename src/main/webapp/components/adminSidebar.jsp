@@ -1,7 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <div class="sidebar">
     <div class="sidebar-header">
-        <a href=".../home.jsp" class="logo-link">
+        <a href="#" class="logo-link">
             <img src="${pageContext.request.contextPath}/asset/img/driverxo-logo-white.png" alt="DriverXO" class="logo-icon">
             <span>DriverXO</span>
         </a>
@@ -22,7 +22,7 @@
             <li class="nav-section">
                 <span class="nav-section-text">MAIN NAVIGATION</span>
             </li>
-            
+
             <li class="nav-item">
                 <a href="dashboard.jsp" class="nav-link active">
                     <i class="fas fa-tachometer-alt"></i>
@@ -34,7 +34,7 @@
             <li class="nav-section">
                 <span class="nav-section-text">MANAGEMENT</span>
             </li>
-            
+
             <li class="nav-item">
                 <a href="../admin/car" class="nav-link">
                     <i class="fas fa-car"></i>
@@ -42,57 +42,58 @@
                     <span class="badge badge-warning">8</span>
                 </a>
             </li>
-            
+
             <li class="nav-item">
-                <a href="../admin/user/account-list.jsp" class="nav-link">
+                <a href="../admin/users" class="nav-link">
                     <i class="fas fa-users"></i>
                     <span>Users</span>
                     <span class="badge badge-info">24</span>
                 </a>
             </li>
-            
+
             <li class="nav-item">
                 <a href="${pageContext.request.contextPath}/admin/part" class="nav-link">
                     <i class="fas fa-cogs"></i>
                     <span>Parts</span>
                 </a>
             </li>
-            
+
             <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="${pageContext.request.contextPath}/admin/service" class="nav-link">
                     <i class="fas fa-wrench"></i>
                     <span>Services</span>
                 </a>
             </li>
-            
+
             <li class="nav-item">
                 <a href="#" class="nav-link">
                     <i class="fas fa-calendar-alt"></i>
                     <span>Appointments</span>
                 </a>
             </li>
-            
+
             <li class="nav-item">
                 <a href="#" class="nav-link">
                     <i class="fas fa-credit-card"></i>
                     <span>Payments</span>
                 </a>
             </li>
-            
+
             <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="${pageContext.request.contextPath}/admin/blog" class="nav-link">
                     <i class="fas fa-newspaper"></i>
                     <span>Blog/Posts</span>
                 </a>
             </li>
-            
+
+
             <li class="nav-item">
                 <a href="#" class="nav-link">
                     <i class="fas fa-exchange-alt"></i>
                     <span>Transactions</span>
                 </a>
             </li>
-            
+
             <li class="nav-item">
                 <a href="${pageContext.request.contextPath}/OrderManagementServlet" class="nav-link">
                     <i class="fas fa-shopping-cart"></i>
@@ -104,15 +105,15 @@
             <li class="nav-section">
                 <span class="nav-section-text">EXTRAS</span>
             </li>
-            
+
             <li class="nav-item">
                 <a href="#" class="nav-link">
                     <i class="fas fa-chart-bar"></i>
                     <span>Feedback</span>
                 </a>
             </li>
-            
-            
+
+
             <li class="nav-item">
                 <a href="#" class="nav-link">
                     <i class="fas fa-cog"></i>
@@ -121,6 +122,6 @@
             </li>
         </ul>
 
-        
+
     </div>
 </div> 

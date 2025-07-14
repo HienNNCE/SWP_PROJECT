@@ -1,7 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <style>
     /* Minimal Modern Navbar Styles */
@@ -360,19 +359,6 @@
     }
 
     /* Badge for cart items */
-    .cart-icon {
-        display: flex;
-        align-items: center;
-        position: relative;
-        gap: 6px;
-    }
-
-    /* Bao icon để định vị badge */
-    .cart-icon-wrapper {
-        position: relative;
-    }
-
-    /* Badge nằm phía trên icon */
     .cart-badge {
         position: absolute;
         top: -8px;
@@ -388,13 +374,6 @@
         justify-content: center;
         font-weight: 500;
     }
-
-    /* Giá tiền */
-    .cart-total {
-        font-size: 12px;
-        color: inherit;
-    }
-
 
     /* Responsive Styles */
     @media (max-width: 1200px) {
@@ -514,6 +493,36 @@
         background-color: #f0f0f0;
         margin: 5px 0;
     }
+
+    /* Dropdown Parts: chỉnh nhỏ, gọn */
+    .parts-dropdown {
+        left: -100px !important;
+        width: 260px !important;
+        max-height: 400px;
+        overflow-y: auto;
+        padding: 10px 0;
+    }
+
+    .parts-dropdown .mega-menu-sidebar {
+        width: 100% !important;
+        background: #fff;
+        border-right: none;
+    }
+
+    .parts-dropdown .mega-menu-sidebar ul li a {
+        padding: 8px 14px;
+        font-size: 13px;
+        color: #333;
+    }
+
+    .parts-dropdown .mega-menu-sidebar ul li a:hover {
+        background-color: #f0f0f0;
+        color: #000;
+    }
+
+    .parts-dropdown .mega-menu-sidebar ul li a i {
+        display: none;
+    }
 </style>
 
 <!-- Fetch all car data from the backend -->
@@ -526,7 +535,7 @@
         <div class="main-header">
             <div class="left-section">
                 <div class="logo">
-                    <a href="home">
+                    <a href="${pageContext.request.contextPath}/home">
                         <img src="${pageContext.request.contextPath}/asset/img/driverxo-logo-white.png" alt="DriverXO" class="logo-white">
                         <img src="${pageContext.request.contextPath}/asset/img/driverxo-logo.png" alt="DriverXO" class="logo-dark" style="display: none;">
                         DriverXO
@@ -647,21 +656,48 @@
                             </div>
                         </div>
                     </li>
-                    <li><a href="${pageContext.request.contextPath}/parts"
-                           class="${activePage eq 'parts' ? 'active' : ''}">Parts</a></li>
-                    <li><a href="#" class="${pageContext.request.servletPath eq '/services.jsp' ? 'active' : ''}">Services</a></li>
+
+                    <li class="dropdown-container">
+                        <a href="${pageContext.request.contextPath}/parts" class="${pageContext.request.servletPath eq '/parts' ? 'active' : ''}">
+                            Parts <i class="fas fa-chevron-down"></i>
+                        </a>
+                        <div class="mega-dropdown parts-dropdown">
+                            <!-- Sidebar for Parts (brand list or category list) -->
+                            <div class="mega-menu-sidebar" style="width: 100%;">
+                                <ul>
+                                    <c:forEach var="brand" items="${partBrands}">
+                                        <li>
+                                            <a href="${pageContext.request.contextPath}/parts?brand=${brand}">
+                                                ${brand}</i>
+                                            </a>
+                                        </li>
+                                    </c:forEach>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li><a href="${pageContext.request.contextPath}/service-list.jsp" class="${pageContext.request.servletPath eq 'service' ? 'active' : ''}">Services</a></li>
+
                     <li><a href="#" class="${pageContext.request.servletPath eq '/about.jsp' ? 'active' : ''}">About</a></li>
+
+                    <a href="${pageContext.request.contextPath}/blog"
+                       class="${pageContext.request.servletPath eq '/blog' ? 'active' : ''}">Blog</a>
+      
                     <li><a href="#" class="${pageContext.request.servletPath eq '/contact.jsp' ? 'active' : ''}">Contact</a></li>
                     <li><a href="feedback.jsp" class="${pageContext.request.servletPath eq '/feedback.jsp' ? 'active' : ''}">Feedback</a></li>
                 </ul>
             </nav>
+
             <div class="right-section">
                 <c:if test="${sessionScope.account != null || user != null}">
                     <div class="header-actions">
-                        <a href="cart" class="cart-icon" title="Shopping Cart">
+                        <a href="cart.jsp" class="cart-icon" title="Shopping Cart">
                             <i class="fas fa-shopping-cart"></i>
-                            <span class="cart-badge" id = "cart-count">${cartCount}</span>
+                            <span class="cart-badge">3</span>
                         </a>
+
+                        <!-- Profile dropdown -->
                         <div class="profile-dropdown">
                             <i class="fas fa-user profile-avatar"></i>
                             <div class="profile-menu">
@@ -678,39 +714,20 @@
                         </div>
                     </div>
                 </c:if>
+
                 <c:if test="${sessionScope.account == null && user == null}">
                     <a href="${pageContext.request.contextPath}/auth/login.jsp" class="login-btn">Login</a>
                 </c:if>
             </div>
-
-
         </div>
     </div>
 </header>
-<div id="cart-notification"
-     style="display: none;
-     position: fixed;
-     top: 80px; /* bên dưới header */
-     left: 50%;
-     transform: translateX(-50%);
-     background: rgba(0, 128, 0, 0.9);
-     color: white;
-     padding: 15px 20px;
-     border-radius: 8px;
-     font-size: 16px;
-     text-align: center;
-     z-index: 1000;
-     min-width: 250px;
-     max-width: 90%;
-     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);">
-</div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const header = document.querySelector('.header');
         const logoWhite = document.querySelector('.logo-white');
         const logoDark = document.querySelector('.logo-dark');
-
         const forceDark = '${forceDarkNavbar}' === 'true';
         const hasBanner = document.querySelector('.hero-banner') !== null;
 
@@ -743,5 +760,3 @@
         window.addEventListener('scroll', updateNavbar);
     });
 </script>
-<script src="${pageContext.request.contextPath}/asset/js/cart_AddToCart.js?v=<%= System.currentTimeMillis()%>"></script>
-

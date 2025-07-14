@@ -2,21 +2,19 @@ package Controller;
 
 import DAO.PartDAO;
 import Model.Part;
-import Model.Cart;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
-
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 import util.MenuDataHelper;
 
 @WebServlet(name = "PartServlet", urlPatterns = {
-    "/parts", // list
-    "/parts/search", // search
-    "/parts/filter", // filter
-    "/part/detail" // detail
+    "/parts",
+    "/parts/search",
+    "/parts/filter",
+    "/part/detail"
 })
 public class PartServlet extends HttpServlet {
 
@@ -31,6 +29,8 @@ public class PartServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         MenuDataHelper.preloadCarList(request);
+        MenuDataHelper.preloadPartMenu(request);
+
         String action = request.getServletPath();
 
         switch (action) {
@@ -50,50 +50,38 @@ public class PartServlet extends HttpServlet {
         }
     }
 
-    private void setCartInfo(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        Integer userId = (session != null) ? (Integer) session.getAttribute("userId") : null;
-        int cartCount = 0;
-        java.math.BigDecimal totalPrice = java.math.BigDecimal.ZERO;
-        if (userId != null) {
-            DAO.CartDAO cartDAO = new DAO.CartDAO();
-            Cart cart = cartDAO.getCartDetailByUserId(userId);
-            if (cart != null) {
-                cartCount = cart.getCountItem();
-                totalPrice = cart.getCartPrice();
-            }
-        }
-        request.setAttribute("cartCount", cartCount);
-        request.setAttribute("totalPrice", totalPrice);
-    }
-
-    // === LIST ===
     private void listParts(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<Part> parts = partDAO.getAllParts();
+        String brand = request.getParameter("brand");
+        String carModel = request.getParameter("carModel");
+        String sort = request.getParameter("sort");
+
+        List<Part> parts = partDAO.filterParts(brand, carModel, null, null, null, null, sort);
         List<String> partBrands = partDAO.getAllBrands();
+        List<String> carModels = partDAO.getAllCarModels();
 
         request.setAttribute("parts", parts);
         request.setAttribute("partBrands", partBrands);
+        request.setAttribute("carModels", carModels);
         request.setAttribute("activePage", "parts");
 
         request.getRequestDispatcher("/parts-list.jsp").forward(request, response);
     }
 
-    // === SEARCH ===
     private void handleSearch(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String keyword = request.getParameter("keyword");
 
         List<Part> parts = partDAO.searchPartsByName(keyword);
         List<String> partBrands = partDAO.getAllBrands();
+        List<String> carModels = partDAO.getAllCarModels();
 
         request.setAttribute("parts", parts);
         request.setAttribute("partBrands", partBrands);
+        request.setAttribute("carModels", carModels);
         request.getRequestDispatcher("/parts-list.jsp").forward(request, response);
     }
 
-    // === FILTER ===
     private void handleFilter(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String keyword = request.getParameter("keyword");
@@ -114,13 +102,14 @@ public class PartServlet extends HttpServlet {
         }
 
         List<String> partBrands = partDAO.getAllBrands();
+        List<String> carModels = partDAO.getAllCarModels();
 
         request.setAttribute("parts", parts);
         request.setAttribute("partBrands", partBrands);
+        request.setAttribute("carModels", carModels);
         request.getRequestDispatcher("/parts-list.jsp").forward(request, response);
     }
 
-    // === DETAIL ===
     private void showDetail(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         MenuDataHelper.preloadCarList(request);
@@ -131,14 +120,13 @@ public class PartServlet extends HttpServlet {
             return;
         }
         List<Part> relatedParts = partDAO.getRelatedParts(part.getPartBrand(), part.getPartId());
-        
+
         request.setAttribute("relatedParts", relatedParts);
         request.setAttribute("activePage", "parts");
         request.setAttribute("part", part);
         request.getRequestDispatcher("/part-detail.jsp").forward(request, response);
     }
 
-    // === UTIL ===
     private Double parseDouble(String value) {
         try {
             return (value != null && !value.trim().isEmpty()) ? Double.parseDouble(value) : null;

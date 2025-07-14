@@ -1,6 +1,6 @@
 console.log("✅ JS loaded");
 document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll(".add_to_cart").forEach(function (button) {
+    document.querySelectorAll(".card__favorite").forEach(function (button) {
         button.addEventListener("click", function () {
             let partId = this.getAttribute("part-id");
 
@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 body: "id=" + encodeURIComponent(partId)
             })
                 .then(response => {
+
 
                     if (response.redirected) {
                         window.location.href = response.url; // Chuyển hướng đến trang đăng nhập nếu chưa đăng nhập
@@ -32,6 +33,27 @@ document.addEventListener("DOMContentLoaded", function () {
                         const stockElem = this.closest('.card').querySelector('.stock-text');
                         if (stockElem && typeof data.partStock !== "undefined") {
                             stockElem.innerHTML = `<i class="fas fa-box"></i> Stock: ${data.partStock}`;
+// =======
+//                         if (response.redirected) {
+//                             window.location.href = response.url; // Chuyển hướng đến trang đăng nhập nếu chưa đăng nhập
+//                             return;
+//                         }
+//                         return response.json();
+//                     })
+//                     .then(data => {
+//                         if (!data)
+//                             return; // Nếu đã bị redirect thì không làm gì nữa
+
+//                         console.log("Server Response:", data);
+
+//                         if (data.status === "success") {
+//                             console.log("Thêm vào giỏ hàng thành công!");
+//                             document.getElementById("item-count").innerText = data.cartCount || 0;
+//                             document.getElementById("cart-total-price").innerText = "$" + data.totalPrice.toFixed(2);
+//                             showCartNotification("Product has been added to cart!", "green");
+//                         } else {
+//                             showCartNotification("Unknown error!", "red");
+// >>>>>>> main
                         }
                         
                     } else if (data.status === "out_of_stock") {
