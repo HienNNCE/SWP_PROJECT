@@ -7,7 +7,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
 <html>
     <head>
         <title>Order Management</title>
@@ -193,18 +192,15 @@
                 <div class="page-title"><i class="fas fa-shopping-cart"></i> Order List</div>
                 <table class="order-table">
                     <tr>
-                        <th>ID</th>
-                        <th>User ID</th>
+                        <th>Order ID</th>
                         <th>Price</th>
                         <th>Status</th>
                         <th>Date</th>
-                        <th>Payment ID</th>
-                        <th>Action</th>
+                                                <th>Action</th>
                     </tr>
                     <c:forEach var="order" items="${orders}">
                         <tr>
                             <td>${order.orderId}</td>
-                            <td>${order.userId}</td>
                             <td>$${order.orderPrice}</td>
                             <td>
                                 <span class="order-status 
@@ -219,69 +215,15 @@
                                 </span>
                             </td>
                             <td>
-                        <fmt:formatDate value="${order.orderDate}" pattern="yyyy-MM-dd HH:mm"/>
+                        <fmt:formatDate value="${order.getOrderDate()}" pattern="yyyy-MM-dd HH:mm"/>
                         </td>
-                        <td>${order.paymentId}</td>
                         <td class="action-links">
-                            <a href="OrderManagementServlet?action=view&id=${order.orderId}"><i class="fas fa-eye"></i> View</a>
-                            <a href="#" class="edit-btn" 
-                               data-id="${order.orderId}" 
-                               data-status="${order.orderStatus}">
-                                <i class="fas fa-edit"></i> Edit
-                            </a>                            
-                            <a href="OrderManagementServlet?action=delete&id=${order.orderId}" onclick="return confirm('Delete?')"><i class="fas fa-trash"></i> Delete</a>
-                        </td>
+                            <a href="order?action=view&id=${order.orderId}"><i class="fas fa-eye"></i> View</a>
                         </tr>
                     </c:forEach>
                     <!-- Edit Status Modal -->
-                    <div id="editModal" class="modal-overlay" style="display: none;">
-                        <div class="modal-content">
-                            <span class="close-btn">&times;</span>
-                            <form action="OrderManagementServlet" method="post">
-                                <input type="hidden" name="action" value="updateStatus">
-                                <input type="hidden" name="orderId" id="modalOrderId">
-                                <label for="statusSelect">Select Order Status:</label>
-                                <select name="status" id="statusSelect" class="custom-select" required>
-                                    <option value="Processing">Processing</option>
-                                    <option value="Shipped">Shipped</option>
-                                    <option value="Delivered">Delivered</option>
-                                    <option value="Cancelled">Cancelled</option>
-                                </select>
-                                <br><br>
-                                <button type="submit" class="btn-save">Update</button>
-                            </form>
-                        </div>
-                    </div>
-
                 </table>
             </div>
         </section>
-
-        <script>
-            document.querySelectorAll('.edit-btn').forEach(btn => {
-                btn.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const orderId = this.dataset.id;
-                    const status = this.dataset.status;
-
-                    document.getElementById('modalOrderId').value = orderId;
-                    document.getElementById('statusSelect').value = status;
-
-                    document.getElementById('editModal').style.display = 'flex';
-                });
-            });
-
-            document.querySelector('.close-btn').addEventListener('click', () => {
-                document.getElementById('editModal').style.display = 'none';
-            });
-
-            window.addEventListener('click', (e) => {
-                const modal = document.getElementById('editModal');
-                if (e.target === modal) {
-                    modal.style.display = 'none';
-                }
-            });
-        </script>
-
     </body>
 </html>

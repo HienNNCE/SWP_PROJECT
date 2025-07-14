@@ -12,8 +12,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.io.PrintWriter;
-
 /**
  * LoginServlet handles user login and logout functionalities. It processes HTTP
  * GET requests for logout and HTTP POST requests for login. It interacts with
@@ -93,7 +91,7 @@ public class LoginServlet extends HttpServlet {
                     response.sendRedirect(request.getContextPath() + "/home");
                     break;
             }
-      
+            
 
         } else {
             // If user not found, throw error and return to login page
