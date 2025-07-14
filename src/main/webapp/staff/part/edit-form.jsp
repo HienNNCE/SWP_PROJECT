@@ -104,7 +104,12 @@
                     <c:if test="${errors.brand != null}"><div class="error">${errors.brand}</div></c:if>
 
                         <label>Car Model:</label>
-                        <input type="text" name="carModel" value="${part.carModel}" />
+                        <select name="carModel">
+                            <option value="">-- Select Car Model --</option>
+                        <c:forEach var="cm" items="${carModels}">
+                            <option value="${cm}" ${cm == part.carModel ? 'selected' : ''}>${cm}</option>
+                        </c:forEach>
+                    </select>
                     <c:if test="${errors.carModel != null}"><div class="error">${errors.carModel}</div></c:if>
 
                         <label>Description:</label>
@@ -132,16 +137,16 @@
                         <input type="number" name="price" step="0.01" value="${part.partPrice}" />
                     <c:if test="${errors.price != null}"><div class="error">${errors.price}</div></c:if>
 
-                        <div class="button-area">
-                            <button type="submit" class="btn btn-primary">
+                        <div class="button-area text-center mt-4" style="display: flex; justify-content: center; gap: 12px;">
+                            <button type="submit" class="btn btn-outline-dark">
                                 <i class="fas fa-save"></i> Save
                             </button>
 
-                            <a href="${pageContext.request.contextPath}/staff/part/detail?id=${part.partId}" class="btn btn-info-custom">
+                            <a href="${pageContext.request.contextPath}/staff/part/detail?id=${part.partId}" class="btn btn-outline-dark">
                             <i class="fas fa-eye"></i> Back to Detail
                         </a>
 
-                        <a href="${pageContext.request.contextPath}/staff/part" class="btn btn-secondary">
+                        <a href="${pageContext.request.contextPath}/staff/part" class="btn btn-outline-dark">
                             <i class="fas fa-list"></i> Back to List
                         </a>
                     </div>

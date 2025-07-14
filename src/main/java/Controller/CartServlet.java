@@ -1,9 +1,7 @@
 package Controller;
 
 import DAO.CartDAO;
-import Model.Car;
 import Model.Cart;
-import jakarta.jws.WebService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;

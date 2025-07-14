@@ -4,7 +4,6 @@
  */
 package Controller;
 
-import jakarta.mail.Part;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,8 +15,6 @@ import DAO.PartDAO;
 import Model.Cart;
 import jakarta.servlet.annotation.WebServlet;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *

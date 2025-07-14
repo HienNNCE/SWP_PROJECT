@@ -12,7 +12,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -469,11 +469,6 @@
                     <p class="cart-subtitle">Review your selected vehicles</p>
                 </div>
 
-
-                <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-                <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-                <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-
                 <c:if test="${not empty partList}">
                     <div class="cart-wrapper">
                         <!-- Danh sách sản phẩm trong giỏ -->
@@ -524,7 +519,7 @@
                                                 <input type="hidden" name="partId" value="${item.partId}">
                                                 <input type="hidden" name="action" value="increase">
                                                 <button type="submit" class="quantity-btn"
-                                                        <c:if test="${item.partStock <= 0}">disabled</c:if>
+                                                        <c:if test="${item.partStock <= 0}">Disabled</c:if>
                                                             >+</button>
                                                 </form>
                                             </div>
@@ -575,8 +570,6 @@
                         <a href="${pageContext.request.contextPath}/parts" class="shop-now-btn">Shop Now</a>
                     </div>
                 </c:if>
-
-
             </div>
         </section>
     </body>
