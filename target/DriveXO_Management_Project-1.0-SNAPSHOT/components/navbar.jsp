@@ -683,7 +683,7 @@
 
                     <a href="${pageContext.request.contextPath}/blog"
                        class="${pageContext.request.servletPath eq '/blog' ? 'active' : ''}">Blog</a>
-
+      
                     <li><a href="#" class="${pageContext.request.servletPath eq '/contact.jsp' ? 'active' : ''}">Contact</a></li>
                     <li><a href="feedback.jsp" class="${pageContext.request.servletPath eq '/feedback.jsp' ? 'active' : ''}">Feedback</a></li>
                 </ul>

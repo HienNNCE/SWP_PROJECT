@@ -24,7 +24,7 @@ public class BlogDAO {
     // 1. Lấy tất cả blogs (mới nhất đầu tiên)
     public List<Blog> getAllBlogs() {
         List<Blog> list = new ArrayList<>();
-        String sql = "SELECT * FROM blogs ORDER BY published_at ASC";
+        String sql = "SELECT * FROM Blogs ORDER BY published_at ASC";
         try (Connection conn = new DBContext().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
