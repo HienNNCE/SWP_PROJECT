@@ -64,35 +64,39 @@
                             <button class="btn btn-dark w-100 rounded-pill mt-3" type="submit">Apply Filters</button>
                         </form>
                     </div>
-                </div>
-                <div class="col-md-9">
-                    <div class="row g-4">
-                        <c:forEach var="part" items="${parts}">
-                            <div class="col-md-4">
-                                <div class="card h-100">
-                                    <img src="${pageContext.request.contextPath}/asset/img/parts/${part.partImg}" class="part-img" alt="${part.partName}">
-                                    <div class="card-body">
-                                        <h6 class="fw-semibold">${part.partName}</h6>
-                                        <p class="text-muted small">${part.partBrand} • ${part.carModel}</p>
-                                        <p class="fw-bold">$<c:out value="${part.partPrice}"/></p>
-                                        <p class="small"><i class="fas fa-box"></i> Stock: ${part.partStock}</p>
-                                    </div>
-                                    <div class="card-footer bg-transparent border-0">
-                                        <a href="${pageContext.request.contextPath}/part/detail?id=${part.partId}" class="btn btn-sm btn-outline-secondary w-100 mb-2">
-                                            <i class="fas fa-info-circle"></i> Detail
-                                        </a>
-                                        <button class="btn btn-sm btn-dark w-100" onclick="addToCartInline('${part.partId}', '${fn:escapeXml(part.partName)}', '${part.partPrice}')">
-                                            <i class="fas fa-cart-plus"></i> Add to Cart
+
+                </form>
+            </div>
+
+            <!-- Parts Grid -->
+            <div class="row g-4">
+                <c:forEach var="part" items="${parts}">
+                    <div class="col-md-4 col-lg-3">
+                        <div class="card h-150">
+                            <img src="${pageContext.request.contextPath}/asset/img/parts/${part.partImg}" class="part-img" alt="${part.partName}">
+                            <div class="card-body">
+                                <h5 class="card-title">${part.partName}</h5>
+                                <p class="card-text text-muted">${part.partBrand} - ${part.carModel}</p>
+                                <p class="card-text"><strong>$<c:out value="${part.partPrice}" /></strong></p>
+                                <p class="card-text stock-text"><i class="fas fa-box"></i> Stock: ${part.partStock}</p>
+                            </div>
+                            <div class="card-footer bg-transparent border-0 d-flex flex-column gap-2">
+                                <a href="${pageContext.request.contextPath}/part/detail?id=${part.partId}" class="btn btn-outline-secondary w-100">
+                                    <i class="fas fa-info-circle"></i> View Details
+                                </a>
+                                <button type="button" part-id='${part.partId}' class="btn btn-primary w-100 add_to_cart"
+                                        <c:if test="${part.partStock <= 0}">disabled</c:if>>
+                                            Add to Cart
                                         </button>
-                                    </div>
                                 </div>
                             </div>
-                        </c:forEach>
-                        <c:if test="${empty parts}">
-                            <div class="alert alert-warning text-center">No parts found.</div>
-                        </c:if>
-                    </div>
-                </div>
+                        </div>
+                </c:forEach>
+
+                <c:if test="${empty parts}">
+                    <div class="alert alert-warning text-center mt-4">No parts found.</div>
+                </c:if>
+
             </div>
         </div>
         <jsp:include page="/components/footer.jsp"/>

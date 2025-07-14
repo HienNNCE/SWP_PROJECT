@@ -11,13 +11,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * Servlet handling shopping cart operations such as viewing the cart, adding items,
  * updating quantities, and removing items.
  */
-@WebServlet(name = "CartServlet", urlPatterns = {"/cart"})
+@WebServlet(name = "CartServlet", urlPatterns = { "/cart" })
+
 public class CartServlet extends HttpServlet {
-    
     /**
      * Handles the HTTP GET request - displays the shopping cart page
      *
@@ -31,17 +32,38 @@ public class CartServlet extends HttpServlet {
             throws ServletException, IOException {
         
         HttpSession session = request.getSession();
+
+        Integer userId = (Integer) session.getAttribute("userId");
+
+        if (userId == null) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
+        CartDAO cDAO = new CartDAO();
+        Cart cart = (Cart) cDAO.getCartDetailByUserId(userId);
+        if (cart == null) {
+            cart = new Cart();
+            cart.setUserId(userId);
+            cart.setPartList(List.of());
+        }
+        request.setAttribute("cart", cart);
+        request.setAttribute("partList", cart.getPartList());
+        request.setAttribute("totalPrice", cart.getCartPrice());
+        for (Model.Part part : cart.getPartList()) {
+            System.out.println("Part Stock: " + part.getPartStock());
+        }
+        request.getRequestDispatcher("/cart.jsp").forward(request, response);
         
         // For demo purposes, we'll check if there are cart items in the session
         // In a real application, you would fetch the cart items from a database
-        List<Object> cartItems = (List<Object>) session.getAttribute("cartItems");
+//         List<Object> cartItems = (List<Object>) session.getAttribute("cartItems");
         
-        // Pass cart items to the JSP
-        request.setAttribute("cartItems", cartItems);
+//         // Pass cart items to the JSP
+//         request.setAttribute("cartItems", cartItems);
         
-        // Forward to cart page
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/cart.jsp");
-        dispatcher.forward(request, response);
+//         // Forward to cart page
+//         RequestDispatcher dispatcher = request.getRequestDispatcher("/cart.jsp");
+//         dispatcher.forward(request, response);
     }
 
     /**

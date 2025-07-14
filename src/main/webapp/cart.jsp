@@ -439,6 +439,11 @@
                     height: 150px;
                 }
             }
+            .quantity-btn:disabled {
+                background: #eee;
+                color: #bbb;
+                cursor: not-allowed;
+            }
         </style>
     </head>
     <body>
@@ -479,7 +484,75 @@
                                     <button class="clear-cart-btn">Clear Cart</button>
                                 </div>
 
-                                <div class="cart-items">
+
+                <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+                <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+                <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
+                <c:if test="${not empty partList}">
+                    <div class="cart-wrapper">
+                        <!-- Danh sách sản phẩm trong giỏ -->
+                        <div class="cart-items-container">
+                            <div class="cart-items-header">
+                                <span class="cart-items-title">Items in Cart</span>
+                                <span class="items-count">${cart.countItem}</span>
+                                <button class="clear-cart-btn">Clear Cart</button>
+                            </div>
+
+                            <c:forEach var="item" items="${partList}">
+                                <div class="cart-item">
+                                    <!-- Hình ảnh -->
+                                    <div class="item-image">
+                                        <img src="${pageContext.request.contextPath}/asset/img/parts/${item.partImg}" class="part-img" alt="${part.partName}">
+
+                                        <%-- Nếu là base64: <img src="data:image/jpeg;base64,${item.base64Image}" /> --%>
+                                    </div>
+
+                                    <!-- Thông tin chi tiết -->
+                                    <div class="item-details">
+                                        <a class="item-name" href="${pageContext.request.contextPath}/part/detail?id=${item.partId}">
+                                            ${item.partName}
+                                        </a>
+                                        <div class="item-price">
+                                            <fmt:formatNumber value="${item.partPrice}" type="currency" currencySymbol="$"/>
+                                        </div>
+                                        <div class="item-stock" style="font-size:12px;color:#888;">
+                                            Stock: ${item.partStock}
+                                        </div>
+                                    </div>
+
+                                    <!-- Control: số lượng, xóa -->
+                                    <div class="item-controls">
+                                        <div class="quantity-control">
+
+                                            <!-- Giảm số lượng -->
+                                            <form method="post" action="cart" style="display: inline;">
+                                                <input type="hidden" name="partId" value="${item.partId}">
+                                                <input type="hidden" name="action" value="decrease">
+                                                <button type="submit" class="quantity-btn">-</button>
+                                            </form>
+
+                                            <input type="text" class="quantity-input" value="${item.quantityInCart}" readonly>
+
+                                            <!-- Tăng số lượng -->
+                                            <form method="post" action="cart" style="display: inline;">
+                                                <input type="hidden" name="partId" value="${item.partId}">
+                                                <input type="hidden" name="action" value="increase">
+                                                <button type="submit" class="quantity-btn"
+                                                        <c:if test="${item.partStock <= 0}">disabled</c:if>
+                                                            >+</button>
+                                                </form>
+                                            </div>
+
+                                            <!-- Xóa sản phẩm -->
+                                            <form method="post" action="cart" style="display: inline;">
+                                                <input type="hidden" name="partId" value="${item.partId}">
+                                            <input type="hidden" name="action" value="remove">
+                                            <button type="submit" class="remove-item">Remove</button>
+                                        </form>
+                                    </div>
+
+<!--                                 <div class="cart-items">
                                     <c:forEach var="item" items="${cartItems}">
                                         <div class="cart-item">
                                             <div class="item-image">
@@ -529,7 +602,8 @@
                                 <div class="summary-row total">
                                     <span class="summary-label">Total</span>
                                     <span class="summary-value">$<fmt:formatNumber value="${cartItems.stream().sum(car -> car.car.carPrice * car.quantity) * 1.1}" pattern="#,###.00"/></span>
-                                </div>
+                                </div> -->
+
 
                                 <div class="coupon-form">
                                     <input type="text" class="coupon-input" placeholder="Coupon Code">
@@ -545,6 +619,15 @@
             </div>
         </section>
 
+                <!-- Nếu giỏ hàng rỗng -->
+                <c:if test="${empty partList}">
+                    <div class="cart-empty">
+                        <i class="fas fa-shopping-cart empty-icon"></i>
+                        <h3 class="empty-message">Your Cart is Empty</h3>
+                        <p class="empty-text">Explore our collection to find your perfect vehicle.</p>
+                        <a href="${pageContext.request.contextPath}/parts" class="shop-now-btn">Shop Now</a>
+                    </div>
+                </c:if>
         <!-- JavaScript -->
         <script>
             document.addEventListener('DOMContentLoaded', function() {
