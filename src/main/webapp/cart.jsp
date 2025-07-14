@@ -572,7 +572,7 @@
                         <i class="fas fa-shopping-cart empty-icon"></i>
                         <h3 class="empty-message">Your Cart is Empty</h3>
                         <p class="empty-text">Explore our collection to find your perfect vehicle.</p>
-                        <a href="${pageContext.request.contextPath}/car/list" class="shop-now-btn">Shop Now</a>
+                        <a href="${pageContext.request.contextPath}/parts" class="shop-now-btn">Shop Now</a>
                     </div>
                 </c:if>
 
