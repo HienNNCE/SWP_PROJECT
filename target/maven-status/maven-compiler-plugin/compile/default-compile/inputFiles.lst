@@ -31,6 +31,7 @@ C:\Users\acer\Desktop\SWP_Management\SWP_PROJECT\src\main\java\Model\Order.java
 C:\Users\acer\Desktop\SWP_Management\SWP_PROJECT\src\main\java\DAO\CarDAO.java
 C:\Users\acer\Desktop\SWP_Management\SWP_PROJECT\src\main\java\Controller\AdminBlogServlet.java
 C:\Users\acer\Desktop\SWP_Management\SWP_PROJECT\src\main\java\DAO\ServiceDAO.java
+C:\Users\acer\Desktop\SWP_Management\SWP_PROJECT\src\main\java\Controller\ProfileServlet.java
 C:\Users\acer\Desktop\SWP_Management\SWP_PROJECT\src\main\java\Controller\CarImageServlet.java
 C:\Users\acer\Desktop\SWP_Management\SWP_PROJECT\src\main\java\Controller\BookingsServlet.java
 C:\Users\acer\Desktop\SWP_Management\SWP_PROJECT\src\main\java\Model\Role.java
@@ -48,6 +49,7 @@ C:\Users\acer\Desktop\SWP_Management\SWP_PROJECT\src\main\java\DAO\BlogDAO.java
 C:\Users\acer\Desktop\SWP_Management\SWP_PROJECT\src\main\java\DAO\CartDAO.java
 C:\Users\acer\Desktop\SWP_Management\SWP_PROJECT\src\main\java\DAO\OrderDAO.java
 C:\Users\acer\Desktop\SWP_Management\SWP_PROJECT\src\main\java\Model\Comment.java
+C:\Users\acer\Desktop\SWP_Management\SWP_PROJECT\src\main\java\Model\Address.java
 C:\Users\acer\Desktop\SWP_Management\SWP_PROJECT\src\main\java\DAO\PartDAO.java
 C:\Users\acer\Desktop\SWP_Management\SWP_PROJECT\src\main\java\com\mycompany\drivexo_management_project\resources\JakartaEE10Resource.java
 C:\Users\acer\Desktop\SWP_Management\SWP_PROJECT\src\main\java\Controller\AddToCartServlet.java

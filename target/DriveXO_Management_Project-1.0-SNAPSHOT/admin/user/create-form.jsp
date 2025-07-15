@@ -45,37 +45,52 @@
 
             <div class="card">
                 <h1>Create New User</h1>
-                    <c:if test="${error != null}"><div class="error">${error}</div></c:if>
+                <c:if test="${error != null}"><div class="error">${error}</div></c:if>
 
-                <form action="${pageContext.request.contextPath}/admin/users/create" method="post">
-
+                    <form action="${pageContext.request.contextPath}/admin/users/create" method="post">
+                    <!-- Thông tin cá nhân -->
+                    <label>Full Name:</label>
+                    <input type="text" name="fullName" required />
+                    <!-- Thông tin tài khoản -->
                     <label>Username:</label>
                     <input type="text" name="userName" required />
 
                     <label>Email:</label>
                     <input type="email" name="email" required />
-
-                    <label>Password:</label>
-                    <input type="password" name="password" required />
-
                     <label>Phone:</label>
                     <input type="text" name="phone" required />
 
+                    <label>Password:</label>
+                    <input type="password" name="password" required />
+                    
+                    <label>Gender:</label>
+                    <select name="gender" required>
+                        <option value="">-- Select Gender --</option>
+                        <option value="MALE">Male</option>
+                        <option value="FEMALE">Female</option>
+                    </select>
+
+                    <label>Date of Birth:</label>
+                    <input type="date" name="dob" required />
                     <label>Address:</label>
                     <input type="text" name="address" required />
 
+                    <label>About Me:</label>
+                    <textarea name="aboutMe" rows="3" required></textarea>
+
+                    <!-- Phân quyền -->
                     <label>Role:</label>
                     <select name="roleId" required>
                         <option value="">-- Select Role --</option>
-                        <option value="1" >Admin</option>
-                        <option value="2" >Customer</option>
-                        
+                        <option value="1">Admin</option>
+                        <option value="2">Customer</option>
                         <option value="4">Staff</option>
                     </select>
 
+                    <!-- Nút thao tác -->
                     <div style="text-align:center; margin-top:15px;">
                         <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Create</button>
-                        <button type="button" class="btn btn-secondary" onclick="location.href='${pageContext.request.contextPath}/admin/users'">Cancel</button>
+                        <button type="button" class="btn btn-secondary" onclick="location.href = '${pageContext.request.contextPath}/admin/users'">Cancel</button>
                     </div>
                 </form>
             </div>
