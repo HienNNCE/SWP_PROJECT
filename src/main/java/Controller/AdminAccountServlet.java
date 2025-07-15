@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 @WebServlet(name = "AdminAccountServlet", urlPatterns = {"/admin/users", "/admin/users/edit", "/admin/users/search", "/admin/users/create", "/admin/users/toggle-status"})
@@ -83,7 +84,7 @@ public class AdminAccountServlet extends HttpServlet {
 
         try {
             page = pageParam != null ? Integer.parseInt(pageParam) : 1;
-            size = sizeParam != null ? Integer.parseInt(sizeParam) : 6;
+            size = sizeParam != null ? Integer.parseInt(sizeParam) : 5;
         } catch (NumberFormatException ignored) {
         }
 
@@ -121,15 +122,19 @@ public class AdminAccountServlet extends HttpServlet {
     }
 
     private void addUser(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        String fullName = request.getParameter("fullName");
         String username = request.getParameter("userName");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String phone = request.getParameter("phone");
+        String genderParam = request.getParameter("gender");
+        String dobParam = request.getParameter("dob");
+        String aboutMe = request.getParameter("aboutMe");
         String address = request.getParameter("address");
         String roleId = request.getParameter("roleId");
 
         // Validate data
-        String errorMessage = ValidationUtil.validateUserData(username, email, password, phone, address);
+        String errorMessage = ValidationUtil.validateUserData(fullName, username, email, password, phone, address, genderParam, dobParam, aboutMe);
         if (userDAO.getUserByEmail(email) != null) {
             errorMessage = "Email already exists";
         }
@@ -147,12 +152,23 @@ public class AdminAccountServlet extends HttpServlet {
 
         try {
             Users user = new Users();
+            user.setFullName(fullName);
             user.setUserName(username);
             user.setEmail(email);
             user.setPassword(password);
             user.setPhone(phone);
             user.setAddress(address);
+            user.setAboutMe(aboutMe);
+
+            boolean gender = "MALE".equalsIgnoreCase(genderParam);
+            user.setGender(gender);
+
+            if (dobParam != null && !dobParam.isEmpty()) {
+                user.setDob(LocalDate.parse(dobParam));
+            }
+
             user.setRoleId(Integer.parseInt(roleId));
+            user.setUserStatus("Active");
 
             userDAO.addUser(user);
             request.setAttribute("message", "User added successfully!");
@@ -168,35 +184,38 @@ public class AdminAccountServlet extends HttpServlet {
     }
 
     private void updateUser(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        String userId = request.getParameter("userId");
-        int parsedUserId = Integer.parseInt(userId);
+        int parsedUserId = Integer.parseInt(request.getParameter("userId"));
+
+        String fullName = request.getParameter("fullName");
+        String genderParam = request.getParameter("gender");
+        String dobParam = request.getParameter("dob");
+        String aboutMe = request.getParameter("aboutMe");
+
         String username = request.getParameter("userName");
         String email = request.getParameter("email");
+        String password = request.getParameter("password");
         String phone = request.getParameter("phone");
         String address = request.getParameter("address");
         String roleId = request.getParameter("roleId");
 
-        // Validate data
-        String errorMessage = ValidationUtil.validateUserData(username, email, "Password123!", phone, address);
-        // Check duplicate email (excluding current user)
+        // Validate (có thể thêm validate cho fullName, dob, gender, aboutMe)
+        String errorMessage = ValidationUtil.validateUserData(fullName, username, email, password, phone, address, genderParam, dobParam, aboutMe);
+
         Users existingEmailUser = userDAO.getUserByEmail(email);
         if (existingEmailUser != null && existingEmailUser.getUserId() != parsedUserId) {
-            errorMessage = "Email already exists";
+            errorMessage = "Email already exists!";
         }
 
-        // Check duplicate username (excluding current user)
         Users existingUsernameUser = userDAO.getUserByUsername(username);
         if (existingUsernameUser != null && existingUsernameUser.getUserId() != parsedUserId) {
             errorMessage = "Username already exists";
         }
 
-        // Check duplicate phone (excluding current user)
         Users existingPhoneUser = userDAO.getUserByPhone(phone);
         if (existingPhoneUser != null && existingPhoneUser.getUserId() != parsedUserId) {
             errorMessage = "Phone already exists";
         }
 
-        // If any validation or duplication error occurs
         if (errorMessage != null) {
             Users user = userDAO.getUserById(parsedUserId);
             request.setAttribute("user", user);
@@ -207,24 +226,27 @@ public class AdminAccountServlet extends HttpServlet {
 
         try {
             Users user = new Users();
-            user.setUserId(Integer.parseInt(userId));
+            user.setUserId(parsedUserId);
+            user.setFullName(fullName);
+            user.setGender("MALE".equalsIgnoreCase(genderParam));
+            user.setDob(LocalDate.parse(dobParam));
+            user.setAboutMe(aboutMe);
+
             user.setUserName(username);
             user.setEmail(email);
+            user.setPassword(password);
             user.setPhone(phone);
             user.setAddress(address);
             user.setRoleId(Integer.parseInt(roleId));
+            user.setUserStatus("Active");
 
             userDAO.updateUser(user);
-            request.setAttribute("message", "User updated successfully!");
-            request.setAttribute("messageType", "success");
-        } catch (NumberFormatException e) {
-            request.setAttribute("message", "Invalid data format");
-            request.setAttribute("messageType", "danger");
+            response.sendRedirect(request.getContextPath() + "/admin/users");
         } catch (Exception e) {
             request.setAttribute("message", "Error updating user: " + e.getMessage());
             request.setAttribute("messageType", "danger");
+            request.getRequestDispatcher("/admin/user/account-edit.jsp").forward(request, response);
         }
-        response.sendRedirect(request.getContextPath() + "/admin/users");
     }
 
     private void toggleUserStatus(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
