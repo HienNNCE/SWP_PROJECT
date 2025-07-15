@@ -50,8 +50,12 @@ public class OrderServlet extends HttpServlet {
             }
         }
         // Hiển thị danh sách đơn hàng
-        Users user = (Users) session.getAttribute("user");
-        List<Order> orders = orderDAO.getOrdersByUserId(user.getUserId());
+        Integer userId = (Integer) session.getAttribute("userId");
+        if (userId == null) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
+        List<Order> orders = orderDAO.getOrdersByUserId(userId);
         request.setAttribute("orders", orders);
         request.getRequestDispatcher("order-customer.jsp").forward(request, response);
     }

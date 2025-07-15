@@ -68,19 +68,23 @@ public class OrderDAO extends DBContext {
         return null;
     }
 
-    public void insertOrder(Order o) {
+    public int insertOrder(Order order) {
         String sql = "INSERT INTO [Order] (user_id, order_price, order_status, order_date, payment_id) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, o.getUserId());
-            ps.setBigDecimal(2, o.getOrderPrice());
-            ps.setString(3, o.getOrderStatus());
-            ps.setTimestamp(4, new java.sql.Timestamp(o.getOrderDate().getTime()));
-            ps.setInt(5, o.getPaymentId());
+             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setInt(1, order.getUserId());
+            ps.setBigDecimal(2, order.getOrderPrice());
+            ps.setString(3, order.getOrderStatus());
+            ps.setTimestamp(4, new java.sql.Timestamp(order.getOrderDate().getTime()));
+            ps.setInt(5, order.getPaymentId());
             ps.executeUpdate();
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) return rs.getInt(1);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return -1;
     }
 
     public void updateOrder(Order o) {
@@ -198,5 +202,20 @@ public class OrderDAO extends DBContext {
             e.printStackTrace();
         }
         return details;
+    }
+
+    public void insertOrderDetail(OrderDetail detail) {
+        String sql = "INSERT INTO [OrderDetail] (order_id, part_id, quantity, price, total_price) VALUES (?, ?, ?, ?, ?)";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, detail.getOrderId());
+            ps.setInt(2, detail.getPartId());
+            ps.setInt(3, detail.getQuantity());
+            ps.setBigDecimal(4, detail.getPrice());
+            ps.setBigDecimal(5, detail.getTotalPrice());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

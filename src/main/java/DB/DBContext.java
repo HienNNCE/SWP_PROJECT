@@ -9,57 +9,50 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class DBContext {
-    
-    // Sửa DB_URL, DB_USER và DB_PWD cho phù hợp với Azure SQL
     private static final String DB_URL = "jdbc:sqlserver://dbswp.database.windows.net:1433;databaseName=DriveXO;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
-    private static final String DB_USER = "sqladmin@dbswp";  // Tên người dùng Azure SQL
-    private static final String DB_PWD = "admin@123";       // Mật khẩu của người dùng Azure SQL
-
-    private Connection conn;
+    private static final String DB_USER = "sqladmin@dbswp";
+    private static final String DB_PWD = "admin@123";
 
     public DBContext() {
         try {
-            // Load the SQLServer driver
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            // Establish the connection
-            this.conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PWD);
-        } catch (ClassNotFoundException | SQLException ex) {
+        } catch (ClassNotFoundException ex) {
             Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    // Getter method to return the connection
     public Connection getConnection() {
-        return conn;
+        try {
+            return DriverManager.getConnection(DB_URL, DB_USER, DB_PWD);
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
     }
 
-    // Method to execute INSERT, UPDATE, DELETE queries
     public int execQuery(String query, Object[] params) throws SQLException {
-        PreparedStatement pStatement = conn.prepareStatement(query);
-        if (params != null) {
-            // Set parameters in the prepared statement
-            for (int i = 0; i < params.length; i++) {
-                pStatement.setObject(i + 1, params[i]);
+        try (Connection conn = getConnection();
+             PreparedStatement pStatement = conn.prepareStatement(query)) {
+            if (params != null) {
+                for (int i = 0; i < params.length; i++) {
+                    pStatement.setObject(i + 1, params[i]);
+                }
             }
+            return pStatement.executeUpdate();
         }
-        // Execute the update (INSERT, UPDATE, DELETE)
-        return pStatement.executeUpdate();
     }
 
-    // Method to execute SELECT queries
     public ResultSet execSelectQuery(String query, Object[] params) throws SQLException {
+        Connection conn = getConnection();
         PreparedStatement pStatement = conn.prepareStatement(query);
         if (params != null) {
-            // Set parameters in the prepared statement
             for (int i = 0; i < params.length; i++) {
                 pStatement.setObject(i + 1, params[i]);
             }
         }
-        // Execute the query and return the result set
         return pStatement.executeQuery();
     }
 
-    // Overloaded method to execute SELECT queries without parameters
     public ResultSet execSelectQuery(String query) throws SQLException {
         return this.execSelectQuery(query, null);
     }
