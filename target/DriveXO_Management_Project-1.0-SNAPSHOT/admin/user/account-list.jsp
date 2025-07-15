@@ -140,7 +140,7 @@
                 <!-- SEARCH FORM -->
                 <form action="${pageContext.request.contextPath}/admin/users" method="get" style="margin-bottom: 20px;">
                     <div style="display: flex; gap: 10px;">
-                        <input type="text" name="keyword" value="${param.keyword}" placeholder="Search parts..."
+                        <input type="text" name="keyword" value="${param.keyword}" placeholder="Search users..."
                                style="flex:1; padding:12px; border:1px solid #ccc; border-radius:8px;">
                         <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Search</button>
                         <a href="${pageContext.request.contextPath}/admin/users" class="btn btn-secondary"><i class="fas fa-sync"></i> Reset</a>
@@ -160,6 +160,7 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
+                                    <th>Fullname</th>
                                     <th>Username</th>
                                     <th>Email</th>
                                     <th>Phone</th>
@@ -173,13 +174,14 @@
                                 <c:if test="${empty users}">
                                     <tr>
                                         <td colspan="8">
-                                            <div class="alert alert-warning">No parts found matching your search.</div>
+                                            <div class="alert alert-warning">No users found matching your search.</div>
                                         </td>
                                     </tr>
                                 </c:if>
                                 <c:forEach var="user" items="${users}" varStatus="loop">
                                     <tr>
                                         <td>${user.userId}</td>
+                                        <td>${user.fullName}</td>
                                         <td>${user.userName}</td>
                                         <td>${user.email}</td>
                                         <td>${user.phone}</td>

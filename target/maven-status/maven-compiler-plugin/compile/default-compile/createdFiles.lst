@@ -17,6 +17,7 @@ Model\Part.class
 DAO\CarDAO.class
 Controller\OTPServlet.class
 DAO\ServiceScheduleDAO.class
+Controller\ProfileServlet.class
 Model\Comment.class
 Controller\AdminCarServlet.class
 Controller\ResetPasswordServlet.class
@@ -40,6 +41,7 @@ Controller\BlogServlet.class
 Model\Order.class
 Controller\OrderServlet.class
 Model\Blog.class
+Model\Address.class
 com\mycompany\drivexo_management_project\resources\JakartaEE10Resource.class
 Controller\AdminPartServlet.class
 Controller\PartServlet.class
