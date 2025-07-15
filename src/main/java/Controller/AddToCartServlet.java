@@ -4,7 +4,6 @@
  */
 package Controller;
 
-import jakarta.mail.Part;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,9 +15,6 @@ import DAO.PartDAO;
 import Model.Cart;
 import jakarta.servlet.annotation.WebServlet;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-
 
 /**
  *
@@ -33,6 +29,7 @@ import java.util.List;
  *
  * @author ALIENWARE
  */
+@WebServlet("/AddToCartServlet")
 public class AddToCartServlet extends HttpServlet {
 
     @Override
@@ -43,31 +40,26 @@ public class AddToCartServlet extends HttpServlet {
         HttpSession session = request.getSession();
         Integer userId = (Integer) session.getAttribute("userId");
 
-        if (userId == null) {
-            System.out.println("Error: userId is null. Redirecting to login.");
-            response.sendRedirect("login"); // Chuyển hướng về trang đăng nhập
+        String partIdStr = request.getParameter("id");
+        if (partIdStr == null || !partIdStr.matches("\\d+")) {
+            System.out.println("Error: Invalid partId: " + partIdStr);
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Part id incorrect.");
             return;
         }
 
-        String gameIdStr = request.getParameter("id");
-        if (gameIdStr == null || !gameIdStr.matches("\\d+")) {
-            System.out.println("Error: Invalid gameId: " + gameIdStr);
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Game id incorrect.");
-            return;
-        }
-
-        int gameId = Integer.parseInt(gameIdStr);
-        System.out.println("userId: " + userId + ", gameId: " + gameId);
+        int partId = Integer.parseInt(partIdStr);
+        System.out.println("Recived partID: " + partId);
+        System.out.println("Recived userId: " + userId);
+        System.out.println("userId: " + userId + ", partId: " + partId);
 
         CartDAO cartDAO = new CartDAO();
 
-        //boolean exists = cartDAO.isGameInCart(userId, gameId);
-//        if (exists) {
-//            System.out.println("Game already in cart");
-//            response.getWriter().print("{\"status\":\"exists\"}");
-//            return;
-//        }
-
+        if (userId == null) {
+            System.out.println("Error: userId is null. Redirecting to login.");
+            response.sendRedirect(request.getContextPath() + "/login");
+            // Chuyển hướng về trang đăng nhập
+            return;
+        }
 
         // Đã login → xử lý giỏ hàng DB
         boolean success = cartDAO.addToCart(userId, partId);
@@ -107,8 +99,5 @@ public class AddToCartServlet extends HttpServlet {
                 response.getWriter().print("{\"status\":\"error\"}");
             }
         }
-
     }
-
 }
-

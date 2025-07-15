@@ -64,60 +64,61 @@
                             <button class="btn btn-dark w-100 rounded-pill mt-3" type="submit">Apply Filters</button>
                         </form>
                     </div>
-
-                </form>
-            </div>
-
-            <!-- Parts Grid -->
-            <div class="row g-4">
-                <c:forEach var="part" items="${parts}">
-                    <div class="col-md-4 col-lg-3">
-                        <div class="card h-150">
-                            <img src="${pageContext.request.contextPath}/asset/img/parts/${part.partImg}" class="part-img" alt="${part.partName}">
-                            <div class="card-body">
-                                <h5 class="card-title">${part.partName}</h5>
-                                <p class="card-text text-muted">${part.partBrand} - ${part.carModel}</p>
-                                <p class="card-text"><strong>$<c:out value="${part.partPrice}" /></strong></p>
-                                <p class="card-text stock-text"><i class="fas fa-box"></i> Stock: ${part.partStock}</p>
-                            </div>
-                            <div class="card-footer bg-transparent border-0 d-flex flex-column gap-2">
-                                <a href="${pageContext.request.contextPath}/part/detail?id=${part.partId}" class="btn btn-outline-secondary w-100">
-                                    <i class="fas fa-info-circle"></i> View Details
-                                </a>
-                                <button type="button" part-id='${part.partId}' class="btn btn-primary w-100 add_to_cart"
-                                        <c:if test="${part.partStock <= 0}">disabled</c:if>>
-                                            Add to Cart
-                                        </button>
+                </div>
+                <div class="col-md-9">
+                    <div class="row g-4">
+                        <c:forEach var="part" items="${parts}">
+                            <div class="col-md-4">
+                                <div class="card h-100">
+                                    <img src="${pageContext.request.contextPath}/asset/img/parts/${part.partImg}" class="part-img" alt="${part.partName}">
+                                    <div class="card-body">
+                                        <h6 class="fw-semibold">${part.partName}</h6>
+                                        <p class="text-muted small">${part.partBrand} • ${part.carModel}</p>
+                                        <p class="fw-bold">$<c:out value="${part.partPrice}"/></p>
+                                        <p class="small"><i class="fas fa-box"></i> Stock: ${part.partStock}</p>
+                                    </div>
+                                    <div class="card-footer bg-transparent border-0">
+                                        <a href="${pageContext.request.contextPath}/part/detail?id=${part.partId}" class="btn btn-sm btn-outline-secondary w-100 mb-2">
+                                            <i class="fas fa-info-circle"></i> Detail
+                                        </a>
+                                        <button type="button" part-id='${part.partId}' class="btn btn-primary w-100 add_to_cart"
+                                                <c:if test="${part.partStock <= 0}">disabled</c:if>>
+                                                    Add to Cart
+                                                </button>
+                                                </button>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                </c:forEach>
-
-                <c:if test="${empty parts}">
-                    <div class="alert alert-warning text-center mt-4">No parts found.</div>
-                </c:if>
-
+                        </c:forEach>
+                        <c:if test="${empty parts}">
+                            <div class="alert alert-warning text-center">No parts found.</div>
+                        </c:if>
+                    </div>
+                </div>
             </div>
         </div>
         <jsp:include page="/components/footer.jsp"/>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
         <script>
-                                            function addToCartInline(partId, partName, partPriceStr) {
-                                                const partPrice = parseFloat(partPriceStr);
-                                                if (!partName || isNaN(partPrice))
-                                                    return alert("Invalid part data!");
-                                                const countEl = document.querySelector('.cart-btn .item-count');
-                                                countEl.innerText = (parseInt(countEl.innerText) || 0) + 1;
-                                                const cartItems = document.querySelector('.cart-items');
-                                                const emptyMsg = document.querySelector('.empty-cart');
-                                                if (emptyMsg)
-                                                    emptyMsg.remove();
-                                                cartItems.insertAdjacentHTML('beforeend',
-                                                        `<div class="cart-item"><p><strong>${partName}</strong> – $${partPrice.toFixed(2)}</p></div>`);
-                                                const totalEl = document.querySelector('.total-amount');
-                                                const newTotal = (parseFloat(totalEl.innerText.replace('$', '')) || 0) + partPrice;
-                                                totalEl.innerText = '$' + newTotal.toFixed(2);
-                                            }
+            window.addEventListener('scroll', function () {
+                const header = document.querySelector('.header');
+                const logoWhite = document.querySelector('.logo-white');
+                const logoDark = document.querySelector('.logo-dark');
+
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                    if (logoWhite)
+                        logoWhite.style.display = 'none';
+                    if (logoDark)
+                        logoDark.style.display = 'block';
+                } else {
+                    header.classList.remove('scrolled');
+                    if (logoWhite)
+                        logoWhite.style.display = 'block';
+                    if (logoDark)
+                        logoDark.style.display = 'none';
+                }
+            });
         </script>
     </body>
 </html>

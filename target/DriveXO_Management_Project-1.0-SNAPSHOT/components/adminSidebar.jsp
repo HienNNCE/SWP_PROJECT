@@ -95,7 +95,7 @@
             </li>
 
             <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="${pageContext.request.contextPath}/OrderManagementServlet" class="nav-link">
                     <i class="fas fa-shopping-cart"></i>
                     <span>Orders</span>
                     <span class="badge badge-danger">3</span>

@@ -1,6 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <style>
     /* Minimal Modern Navbar Styles */
@@ -359,6 +360,17 @@
     }
 
     /* Badge for cart items */
+    .cart-icon {
+        display: flex;
+        align-items: center;
+        position: relative;
+        gap: 6px;
+    }
+
+    /* Bao icon để định vị badge */
+    .cart-icon-wrapper {
+        position: relative;
+    }
     .cart-badge {
         position: absolute;
         top: -8px;
@@ -373,6 +385,10 @@
         align-items: center;
         justify-content: center;
         font-weight: 500;
+    }
+    .cart-total {
+        font-size: 12px;
+        color: inherit;
     }
 
     /* Responsive Styles */
@@ -692,11 +708,10 @@
             <div class="right-section">
                 <c:if test="${sessionScope.account != null || user != null}">
                     <div class="header-actions">
-                        <a href="cart.jsp" class="cart-icon" title="Shopping Cart">
+                        <a href="${pageContext.request.contextPath}/cart" class="cart-icon" title="Shopping Cart">
                             <i class="fas fa-shopping-cart"></i>
-                            <span class="cart-badge">3</span>
+                            <span class="cart-badge" id = "cart-count">${cartCount}</span>
                         </a>
-
                         <!-- Profile dropdown -->
                         <div class="profile-dropdown">
                             <i class="fas fa-user profile-avatar"></i>
@@ -714,7 +729,6 @@
                         </div>
                     </div>
                 </c:if>
-
                 <c:if test="${sessionScope.account == null && user == null}">
                     <a href="${pageContext.request.contextPath}/auth/login.jsp" class="login-btn">Login</a>
                 </c:if>
@@ -722,6 +736,23 @@
         </div>
     </div>
 </header>
+<div id="cart-notification"
+     style="display: none;
+     position: fixed;
+     top: 80px; /* bên dưới header */
+     left: 50%;
+     transform: translateX(-50%);
+     background: rgba(0, 128, 0, 0.9);
+     color: white;
+     padding: 15px 20px;
+     border-radius: 8px;
+     font-size: 16px;
+     text-align: center;
+     z-index: 1000;
+     min-width: 250px;
+     max-width: 90%;
+     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);">
+</div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -760,3 +791,5 @@
         window.addEventListener('scroll', updateNavbar);
     });
 </script>
+<script src="${pageContext.request.contextPath}/asset/js/cart_AddToCart.js?v=<%= System.currentTimeMillis()%>"></script>
+

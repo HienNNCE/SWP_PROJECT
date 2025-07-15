@@ -25,14 +25,29 @@ public class CartDAO extends DBContext {
 
     public static void main(String[] a) {
         CartDAO cDAO = new CartDAO();
-        Cart cart = cDAO.getCartDetailByUserId(2);
-        System.out.println("Expected cart: " + cart.getCountItem());
-        List<Part> partList = cart.getPartList();
-        for (Part part : partList) {
-            System.out.println("Part ID: " + part.getPartId() + ", Name: " + part.getPartName()
-                    + ", Quantity: " + part.getQuantityInCart() + ", Total Price: " + part.getTotalPrice());
-        }
+        int cartCount = cDAO.getCartItemCount(1);
+        System.out.println("Cart Count: "+ cartCount);
 
+    }
+
+    public int getCartItemCount(int userId) {
+        String sql = "SELECT SUM(cd.pt_order_quantity) AS total_items " +
+                "FROM Cart c " +
+                "JOIN CartDetail cd ON c.cart_id = cd.cart_id " +
+                "WHERE c.user_id = ?";
+        try (Connection conn = this.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    int count = rs.getInt("total_items");
+                    return rs.wasNull() ? 0 : count; // Tránh null trả về 0
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     public boolean increaseQuantity(int userId, int partId) {
