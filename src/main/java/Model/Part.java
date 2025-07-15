@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package Model;
+
 import java.math.BigDecimal;
 
 public class Part {
@@ -14,11 +15,17 @@ public class Part {
     private String partImg;
     private int partStock;
     private BigDecimal partPrice;
+    private Part part;
+    // Thêm cho giỏ hàng
+    private int quantityInCart;
+    private BigDecimal totalPrice;
+
     // Constructors
-    public Part() {}
+    public Part() {
+    }
 
     public Part(int partId, String partName, String partBrand, String carModel, String description, String partImg,
-                int partStock, BigDecimal partPrice) {
+            int partStock, BigDecimal partPrice) {
         this.partId = partId;
         this.partName = partName;
         this.partBrand = partBrand;
@@ -29,12 +36,22 @@ public class Part {
         this.partPrice = partPrice;
     }
 
+    // Getter & Setter cho các trường cũ
+
+    public void setPartId(int partId) {
+        this.partId = partId;
+    }
+
     public int getPartId() {
         return partId;
     }
 
-    public void setPartId(int partId) {
-        this.partId = partId;
+    public Part getPart() {
+        return part;
+    }
+
+    public void setPart(Part part) {
+        this.part = part;
     }
 
     public String getPartName() {
@@ -92,6 +109,21 @@ public class Part {
     public void setPartPrice(BigDecimal partPrice) {
         this.partPrice = partPrice;
     }
-    
-}
 
+    // Getter & Setter cho quantityInCart và totalPrice
+    public int getQuantityInCart() {
+        return quantityInCart;
+    }
+
+    public void setQuantityInCart(int quantityInCart) {
+        this.quantityInCart = quantityInCart;
+    }
+
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+}

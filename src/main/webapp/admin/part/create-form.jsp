@@ -62,8 +62,14 @@
                     <c:if test="${errors.brand != null}"><div class="error">${errors.brand}</div></c:if>
 
                         <label>Car Model:</label>
-                        <input type="text" name="carModel" value="${oldPart.carModel}" />
+                        <select name="carModel">
+                            <option value="">-- Select Car Model --</option>
+                        <c:forEach var="cm" items="${carModels}">
+                            <option value="${cm}" ${cm == oldPart.carModel ? 'selected' : ''}>${cm}</option>
+                        </c:forEach>
+                    </select>
                     <c:if test="${errors.carModel != null}"><div class="error">${errors.carModel}</div></c:if>
+
 
                         <label>Description:</label>
                         <textarea name="description" rows="3">${oldPart.description}</textarea>

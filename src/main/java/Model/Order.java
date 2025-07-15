@@ -5,8 +5,7 @@
 package Model;
 
 import java.math.BigDecimal;
-import java.sql.Date;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  *
@@ -17,7 +16,55 @@ public class Order {
     private int userId;
     private BigDecimal orderPrice;
     private String orderStatus;
-    private LocalDateTime orderDate;
+    private Date orderDate;
     private int paymentId;
-    // Constructor, getters, setters
+
+    // Getters and setters
+    public int getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public BigDecimal getOrderPrice() {
+        return orderPrice;
+    }
+
+    public void setOrderPrice(BigDecimal orderPrice) {
+        this.orderPrice = orderPrice;
+    }
+
+    public String getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    public Date getOrderDate() {
+        return orderDate;
+    }
+
+    public void setOrderDate(Date orderDate) {
+        this.orderDate = orderDate;
+    }
+
+    public int getPaymentId() {
+        return paymentId;
+    }
+
+    public void setPaymentId(int paymentId) {
+        this.paymentId = paymentId;
+    }
 }

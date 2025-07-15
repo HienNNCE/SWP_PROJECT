@@ -1,17 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Model;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
-/**
- *
- * @author thien
- */
 public class Service {
     private int serviceId;
     private String serviceName;
@@ -20,7 +11,17 @@ public class Service {
     private LocalDateTime estimateTime;
     private String serviceImg;
 
-    // Constructor, getters, setters
+    public Service() {}
+
+    public Service(int serviceId, String serviceName, String serviceDescription,
+                   BigDecimal servicePrice, LocalDateTime estimateTime, String serviceImg) {
+        this.serviceId = serviceId;
+        this.serviceName = serviceName;
+        this.serviceDescription = serviceDescription;
+        this.servicePrice = servicePrice;
+        this.estimateTime = estimateTime;
+        this.serviceImg = serviceImg;
+    }
 
     public int getServiceId() {
         return serviceId;
@@ -69,5 +70,4 @@ public class Service {
     public void setServiceImg(String serviceImg) {
         this.serviceImg = serviceImg;
     }
-    
 }
