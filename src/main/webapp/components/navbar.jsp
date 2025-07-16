@@ -517,7 +517,16 @@
         max-height: 400px;
         overflow-y: auto;
         padding: 10px 0;
+
+        /* Ẩn scrollbar */
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; /* IE/Edge */
     }
+
+    .parts-dropdown::-webkit-scrollbar {
+        display: none; /* Chrome, Safari */
+    }
+
 
     .parts-dropdown .mega-menu-sidebar {
         width: 100% !important;
@@ -699,7 +708,7 @@
 
                     <a href="${pageContext.request.contextPath}/blog"
                        class="${pageContext.request.servletPath eq '/blog' ? 'active' : ''}">Blog</a>
-      
+
                     <li><a href="#" class="${pageContext.request.servletPath eq '/contact.jsp' ? 'active' : ''}">Contact</a></li>
                     <li><a href="feedback.jsp" class="${pageContext.request.servletPath eq '/feedback.jsp' ? 'active' : ''}">Feedback</a></li>
                 </ul>
