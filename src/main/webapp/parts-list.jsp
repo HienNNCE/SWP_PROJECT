@@ -34,12 +34,59 @@
                 border-radius: 10px;
                 padding: 20px;
             }
+            .part-page-banner {
+                position: relative;
+                width: 100%;
+                height: 400px;
+                margin: 60px 0 40px 0; 
+                overflow: hidden;
+                border-radius: 10px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+                background-color: #fff;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .part-page-banner img {
+                max-height: 100%;
+                width: auto;
+                object-fit: scale-down;
+                object-position: center;
+                display: block;
+            }
+            .fade-in {
+                animation: fadeIn ease 1s;
+                -webkit-animation: fadeIn ease 1s;
+            }
+            @keyframes fadeIn {
+                0% {
+                    opacity: 0;
+                }
+                100% {
+                    opacity: 1;
+                }
+            }
         </style>
     </head>
     <body>
         <jsp:include page="/components/navbar.jsp"/>
-        <div class="container" style="padding-top:100px">
+
+        <!-- Banner -->
+        <div class="part-page-banner">
+            <img src="${pageContext.request.contextPath}/asset/img/banner/parts-banner.jpg" alt="Parts Banner">
+        </div>
+
+        <!-- Section Title -->
+        <div class="container text-center my-4">
+            <h4 class="fw-bold text-uppercase">Auto parts - Supplies for cars</h4>
+            <p class="text-muted small">Explore high quality parts from a variety of brands to fit your car</p>
+        </div>
+
+        <!-- Filter + Parts List -->
+        <div class="container">
             <div class="row">
+                <!-- Filter -->
                 <div class="col-12 col-md-3">
                     <div class="filter-section">
                         <form action="${pageContext.request.contextPath}/parts" method="get">
@@ -65,6 +112,8 @@
                         </form>
                     </div>
                 </div>
+
+                <!-- Parts Grid -->
                 <div class="col-md-9">
                     <div class="row g-4">
                         <c:forEach var="part" items="${parts}">
@@ -95,7 +144,9 @@
                 </div>
             </div>
         </div>
+
         <jsp:include page="/components/footer.jsp"/>
+
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
         <script>
                                             function addToCartInline(partId, partName, partPriceStr) {
