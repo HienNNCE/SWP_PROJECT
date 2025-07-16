@@ -77,7 +77,6 @@ public class AddToCartServlet extends HttpServlet {
             response.getWriter().print(
                     "{\"status\":\"success\", \"cartCount\":" + cartCount + ", \"totalPrice\":" + totalPrice + ", \"partStock\":" + partStock +"}");
         } else {
-            //Kiem tra ton kho
             // Kiểm tra tồn kho để trả về đúng status
             int partStock = 0;
             try (java.sql.Connection conn = cartDAO.getConnection();
