@@ -130,12 +130,14 @@
                                         <a href="${pageContext.request.contextPath}/part/detail?id=${part.partId}" class="btn btn-sm btn-outline-secondary w-100 mb-2">
                                             <i class="fas fa-info-circle"></i> Detail
                                         </a>
-                                        <button class="btn btn-sm btn-dark w-100" onclick="addToCartInline('${part.partId}', '${fn:escapeXml(part.partName)}', '${part.partPrice}')">
-                                            <i class="fas fa-cart-plus"></i> Add to Cart
-                                        </button>
+                                        <button type="button" part-id='${part.partId}' class="btn btn-primary w-100 add_to_cart"
+                                                <c:if test="${part.partStock <= 0}">disabled</c:if>>
+                                                    Add to Cart
+                                                </button>
+                                                </button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
                         </c:forEach>
                         <c:if test="${empty parts}">
                             <div class="alert alert-warning text-center">No parts found.</div>
@@ -149,22 +151,25 @@
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
         <script>
-                                            function addToCartInline(partId, partName, partPriceStr) {
-                                                const partPrice = parseFloat(partPriceStr);
-                                                if (!partName || isNaN(partPrice))
-                                                    return alert("Invalid part data!");
-                                                const countEl = document.querySelector('.cart-btn .item-count');
-                                                countEl.innerText = (parseInt(countEl.innerText) || 0) + 1;
-                                                const cartItems = document.querySelector('.cart-items');
-                                                const emptyMsg = document.querySelector('.empty-cart');
-                                                if (emptyMsg)
-                                                    emptyMsg.remove();
-                                                cartItems.insertAdjacentHTML('beforeend',
-                                                        `<div class="cart-item"><p><strong>${partName}</strong> – $${partPrice.toFixed(2)}</p></div>`);
-                                                const totalEl = document.querySelector('.total-amount');
-                                                const newTotal = (parseFloat(totalEl.innerText.replace('$', '')) || 0) + partPrice;
-                                                totalEl.innerText = '$' + newTotal.toFixed(2);
-                                            }
+            window.addEventListener('scroll', function () {
+                const header = document.querySelector('.header');
+                const logoWhite = document.querySelector('.logo-white');
+                const logoDark = document.querySelector('.logo-dark');
+
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                    if (logoWhite)
+                        logoWhite.style.display = 'none';
+                    if (logoDark)
+                        logoDark.style.display = 'block';
+                } else {
+                    header.classList.remove('scrolled');
+                    if (logoWhite)
+                        logoWhite.style.display = 'block';
+                    if (logoDark)
+                        logoDark.style.display = 'none';
+                }
+            });
         </script>
     </body>
 </html>

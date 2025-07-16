@@ -1,6 +1,7 @@
 package Controller;
 
 import DAO.CarDAO;
+import DAO.CartDAO;
 import DAO.PartDAO;
 
 import Model.Car;
@@ -9,6 +10,7 @@ import util.MenuDataHelper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -30,10 +32,26 @@ public class HomeServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        Integer userId = (session != null) ? (Integer) session.getAttribute("userId") : null;
+            if (userId != null) {
+                DAO.CartDAO cartDAO = new DAO.CartDAO();
+                Model.Cart cart = cartDAO.getCartDetailByUserId(userId);
+                int cartCount = (cart != null) ? cart.getCountItem() : 0;
+                java.math.BigDecimal totalPrice = (cart != null && cart.getCartPrice() != null) ? cart.getCartPrice() : java.math.BigDecimal.ZERO;
+                session.setAttribute("cartCount", cartCount);
+                session.setAttribute("totalPrice", totalPrice);
+                
+                //Test cart count and total price
+                System.out.println("Cart count: " + cartCount);
+                System.out.println("Total price: " + totalPrice);
+            } else {
+                request.setAttribute("cartCount", 0);
+                request.setAttribute("totalPrice", java.math.BigDecimal.ZERO);
+            }
         try {
             MenuDataHelper.preloadCarList(request);     
             MenuDataHelper.preloadPartMenu(request);
-
             List<String> partBrands = partDAO.getAllBrands();
             request.setAttribute("partBrands", partBrands);
             request.getRequestDispatcher("/home.jsp").forward(request, response);

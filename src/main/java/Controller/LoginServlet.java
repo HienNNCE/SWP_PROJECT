@@ -4,15 +4,18 @@
  */
 package Controller;
 
-import DAO.AuthenticationDAO;
-import Model.Users;
 import java.io.IOException;
+import java.util.List;
+
+import DAO.AuthenticationDAO;
+import DAO.CartDAO;
+import Model.Cart;
+import Model.Users;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.io.PrintWriter;
 
 /**
  * LoginServlet handles user login and logout functionalities. It processes HTTP
@@ -27,10 +30,10 @@ public class LoginServlet extends HttpServlet {
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
 
     @Override
@@ -54,10 +57,10 @@ public class LoginServlet extends HttpServlet {
      * user submits the login form. It attempts to authenticate the user using
      * the provided username/email and password.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -72,12 +75,11 @@ public class LoginServlet extends HttpServlet {
         // Attempt to retrieve a user from the database using the provided credentials.
         Users user = authenDao.getUserById(username, password);
         // If a user object is returned, authentication was successful.
+
         if (user != null) {
-
             session.setAttribute("user", user);
-
-            int roleId = user.getRoleId(); 
-
+            int roleId = user.getRoleId();
+            session.setAttribute("userId", user.getUserId());
             // Check the role and redirect accordingly
             switch (roleId) {
                 case 1:
@@ -93,7 +95,6 @@ public class LoginServlet extends HttpServlet {
                     response.sendRedirect(request.getContextPath() + "/home");
                     break;
             }
-      
 
         } else {
             // If user not found, throw error and return to login page

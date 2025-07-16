@@ -9,22 +9,38 @@ public class Cart {
     private int countItem;
     private BigDecimal cartPrice;
     private int partId;
-
-    // Danh sách sản phẩm trong giỏ hàng
     private List<Part> partList;
+    private int partStock;
+    public jakarta.mail.Part[] getPartList;
 
     // Constructors
-    public Cart() {}
+    public Cart() {
+    }
 
-    public Cart(int cartId, int userId, int countItem, BigDecimal cartPrice, List<Part> partList) {
+    public Cart(int cartId, int userId, int countItem, BigDecimal cartPrice, List<Part> partList, int partStock) {
         this.cartId = cartId;
         this.userId = userId;
         this.countItem = countItem;
         this.cartPrice = cartPrice;
         this.partList = partList;
+        this.partStock = partStock;
     }
 
-    
+    public int getPartId() {
+        return partId;
+    }
+
+    public void setPartId(int partId) {
+        this.partId = partId;
+    }
+
+    public int getPartStock() {
+        return partStock;
+    }
+
+    public void setPartStock(int partStock) {
+        this.partStock = partStock;
+    }
 
     public Cart(int cartId, int userId, int countItem, BigDecimal cartPrice, int partId) {
         this.cartId = cartId;
