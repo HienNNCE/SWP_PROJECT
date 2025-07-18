@@ -39,6 +39,7 @@ com\mycompany\drivexo_management_project\JakartaRestConfiguration.class
 Controller\AdminServiceServlet.class
 Controller\BlogServlet.class
 Model\Order.class
+Controller\CheckoutServlet.class
 Controller\OrderServlet.class
 Model\Blog.class
 Model\Address.class
