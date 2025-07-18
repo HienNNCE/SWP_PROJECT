@@ -12,6 +12,7 @@ import DAO.CartDAO;
 import Model.Cart;
 import Model.Users;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -72,14 +73,32 @@ public class LoginServlet extends HttpServlet {
         // Retrieve the username (or email) and password from the login form.
         String username = request.getParameter("username");
         String password = request.getParameter("password");
+        String isRemember = request.getParameter("remember");
         // Attempt to retrieve a user from the database using the provided credentials.
         Users user = authenDao.getUserById(username, password);
+        
         // If a user object is returned, authentication was successful.
 
         if (user != null) {
             session.setAttribute("user", user);
             int roleId = user.getRoleId();
             session.setAttribute("userId", user.getUserId());
+            if(isRemember != null){
+                Cookie cookieUsername = new Cookie("username", username);
+                Cookie cookiePassword = new Cookie("password", password);
+                cookieUsername.setMaxAge(7 * 24 * 60 * 60);
+                cookiePassword.setMaxAge(7 * 24 * 60 * 60);
+                response.addCookie(cookiePassword);
+                response.addCookie(cookieUsername);
+            }else{
+                Cookie cookieUsername = new Cookie("username", "");
+                Cookie cookiePassword = new Cookie("password", "");
+                cookieUsername.setMaxAge(0);
+                cookiePassword.setMaxAge(0);
+                response.addCookie(cookiePassword);
+                response.addCookie(cookieUsername);
+            }
+            
             // Check the role and redirect accordingly
             switch (roleId) {
                 case 1:
