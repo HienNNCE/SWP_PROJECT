@@ -73,7 +73,10 @@ public class AdminServiceServlet extends HttpServlet {
     // === LIST ===
     private void listServices(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<Service> services = serviceDAO.getAllService();
+        String keyword = request.getParameter("keyword");
+        List<Service> services = (keyword != null && !keyword.trim().isEmpty())
+                ? serviceDAO.searchServiceByName(keyword)
+                : serviceDAO.getAllService();
         request.setAttribute("services", services);
         request.getRequestDispatcher("/admin/service/service-list.jsp").forward(request, response);
     }

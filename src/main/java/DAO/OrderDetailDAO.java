@@ -13,13 +13,13 @@ import Model.OrderDetail;
 import Model.Part;
 
 public class OrderDetailDAO extends DBContext {
-    public static void main(String[] args) {
-        OrderDetailDAO dao = new OrderDetailDAO();
-        List<OrderDetail> orderDetails = dao.getOrderDetailWithPartByOrderId(5);
-        for (OrderDetail orderDetail : orderDetails) {
-            System.out.println(orderDetail.getPart().getPartName());
-        }
-    }
+//    public static void main(String[] args) {
+//        OrderDetailDAO dao = new OrderDetailDAO();
+//        List<OrderDetail> orderDetails = dao.getOrderDetailWithPartByOrderId(5);
+//        for (OrderDetail orderDetail : orderDetails) {
+//            System.out.println(orderDetail.getPart().getPartName());
+//        }
+//    }
 
     public void updateOrderPrice(int orderId) {
         String sql = "SELECT SUM(total_price) AS total FROM [OrderDetail] WHERE order_id = ?";

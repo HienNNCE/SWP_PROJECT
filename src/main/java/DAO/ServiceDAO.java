@@ -14,23 +14,14 @@ public class ServiceDAO extends DBContext {
 
     // Get all services
     public List<Service> getAllService() {
-
-        if (cachedServices != null) {
-            return cachedServices;  // Return from cache if available
-        }
-
         List<Service> services = new ArrayList<>();
-        String sql = "SELECT * FROM dbo.Service";
+        String sql = "SELECT * FROM Service";
         try (Connection conn = this.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
-
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 services.add(mapRowToService(rs));
             }
-
-            cachedServices = services;  // Cache the results after the first load
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -119,15 +110,13 @@ public class ServiceDAO extends DBContext {
     // Search services by name (using LIKE)
     public List<Service> searchServiceByName(String keyword) {
         List<Service> services = new ArrayList<>();
-        String sql = "SELECT * FROM dbo.Service WHERE service_name LIKE ?";
-
-        try (Connection conn = this.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-
+        String sql = "SELECT * FROM Service WHERE LOWER(service_name) LIKE LOWER(?)";
+        try (Connection conn = this.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, "%" + keyword + "%");
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    services.add(mapRowToService(rs));
-                }
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                services.add(mapRowToService(rs));
             }
         } catch (SQLException e) {
             e.printStackTrace();

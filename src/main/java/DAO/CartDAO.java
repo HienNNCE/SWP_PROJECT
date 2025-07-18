@@ -26,17 +26,16 @@ public class CartDAO extends DBContext {
     public static void main(String[] a) {
         CartDAO cDAO = new CartDAO();
         int cartCount = cDAO.getCartItemCount(1);
-        System.out.println("Cart Count: "+ cartCount);
+        System.out.println("Cart Count: " + cartCount);
 
     }
 
     public int getCartItemCount(int userId) {
-        String sql = "SELECT SUM(cd.pt_order_quantity) AS total_items " +
-                "FROM Cart c " +
-                "JOIN CartDetail cd ON c.cart_id = cd.cart_id " +
-                "WHERE c.user_id = ?";
-        try (Connection conn = this.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql)) {
+        String sql = "SELECT SUM(cd.pt_order_quantity) AS total_items "
+                + "FROM Cart c "
+                + "JOIN CartDetail cd ON c.cart_id = cd.cart_id "
+                + "WHERE c.user_id = ?";
+        try (Connection conn = this.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, userId);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -547,6 +546,30 @@ public class CartDAO extends DBContext {
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    public void clearCartByUserId(int userId) {
+        String getCartIdSql = "SELECT cart_id FROM Cart WHERE user_id = ?";
+        String deleteDetailSql = "DELETE FROM CartDetail WHERE cart_id = ?";
+        String updateCartSql = "UPDATE Cart SET count_item = 0, cart_price = 0 WHERE cart_id = ?";
+        try (Connection conn = getConnection(); PreparedStatement ps1 = conn.prepareStatement(getCartIdSql)) {
+            ps1.setInt(1, userId);
+            try (ResultSet rs = ps1.executeQuery()) {
+                if (rs.next()) {
+                    int cartId = rs.getInt("cart_id");
+                    try (PreparedStatement ps2 = conn.prepareStatement(deleteDetailSql)) {
+                        ps2.setInt(1, cartId);
+                        ps2.executeUpdate();
+                    }
+                    try (PreparedStatement ps3 = conn.prepareStatement(updateCartSql)) {
+                        ps3.setInt(1, cartId);
+                        ps3.executeUpdate();
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }
