@@ -169,9 +169,9 @@
                                         </td>
                                     </tr>
                                 </c:if>
-                                <c:forEach var="service" items="${services}">
+                                <c:forEach var="service" items="${services}" varStatus="loop">
                                     <tr>
-                                        <td>${service.serviceId}</td>
+                                        <td>${loop.index + 1}</td>
                                         <td>
                                             <c:choose>
                                                 <c:when test="${not empty service.serviceImg}">
@@ -193,8 +193,6 @@
                                         </td>
                                     </tr>
                                 </c:forEach>
-
-
                             </tbody>
                         </table>
                     </div>
