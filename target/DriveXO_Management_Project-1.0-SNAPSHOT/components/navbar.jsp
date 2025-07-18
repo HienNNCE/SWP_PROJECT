@@ -391,6 +391,22 @@
         color: inherit;
     }
 
+    .brand-item {
+        color: #333;
+        text-decoration: none;
+        transition: background 0.3s ease;
+    }
+
+    .brand-item:hover {
+        background-color: #f0f0f0;
+    }
+
+    .brand-item.active-brand {
+        background-color: #f1f1f1;
+        font-weight: 600;
+        border-left: 3px solid #6B1700;
+    }
+
     /* Responsive Styles */
     @media (max-width: 1200px) {
         .mega-dropdown {
@@ -692,8 +708,17 @@
                                 <ul>
                                     <c:forEach var="brand" items="${partBrands}">
                                         <li>
-                                            <a href="${pageContext.request.contextPath}/parts?brand=${brand}">
-                                                ${brand}</i>
+                                            <a href="${pageContext.request.contextPath}/parts?brand=${brand}"
+                                               class="brand-item d-flex align-items-center px-3 py-2 <c:if test='${param.brand == brand}'>active-brand</c:if>">
+                                                <c:choose>
+                                                    <c:when test="${param.brand == brand}">
+                                                        <i class="fas fa-check-circle me-2 text-secondary"></i>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <i class="far fa-circle me-2 text-muted"></i>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                                ${brand}
                                             </a>
                                         </li>
                                     </c:forEach>
