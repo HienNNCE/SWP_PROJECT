@@ -40,7 +40,7 @@
         <jsp:include page="/components/navbar.jsp" />
 
         <div class="container" style="padding-top: 100px">
-            <h2 class="mb-4 text-center">Latest Blog Posts</h2>
+            <h2 class="mb-4 text-center">Blog Posts</h2>
 
             <div class="row g-4">
                 <c:forEach var="blog" items="${blogs}">

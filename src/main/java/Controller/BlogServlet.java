@@ -38,8 +38,25 @@ public class BlogServlet extends HttpServlet {
             }
 
             Date publishedDate = Date.from(selected.getPublishedAt().atZone(ZoneId.systemDefault()).toInstant());
+            List<Blog> latestBlogs = blogDAO.getLatestBlogsExcludeId(id, 4);
+
+            // ✅ Chuyển latestBlogs sang List<Map> chứa Date thay vì LocalDateTime
+            List<Map<String, Object>> latestWithDate = new ArrayList<>();
+            for (Blog b : latestBlogs) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("id", b.getId());
+                map.put("title", b.getTitle());
+                map.put("image", b.getImage());
+                map.put("publishedDate", Date.from(b.getPublishedAt().atZone(ZoneId.systemDefault()).toInstant()));
+                latestWithDate.add(map);
+            }
+
+            selected.setContent(selected.getContent().replace("\\n", "\n"));
+            
             request.setAttribute("blog", selected);
             request.setAttribute("publishedDate", publishedDate);
+            request.setAttribute("latestBlogs", latestWithDate); // ✅ dùng list đã convert
+
             request.getRequestDispatcher("/blog-detail.jsp").forward(request, response);
         } else {
             List<Blog> blogs = blogDAO.getAllBlogs();

@@ -201,6 +201,23 @@
     </style>
 </head>
 <body>
+    <%
+        Cookie[] cookies = request.getCookies();
+        String username = "";
+        String password = "";
+        boolean isRemember = false;
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("username".equals(cookie.getName())) {
+                    username = cookie.getValue();
+                } else if ("password".equals(cookie.getName())) {
+                    password = cookie.getValue();
+                }
+            }
+        }
+        
+        if(!password.isEmpty() && !username.isEmpty() ) isRemember = true;
+    %>
     <div class="auth-container">
         <div class="auth-image">
             <a href="../home" class="home-link">
@@ -244,17 +261,17 @@
                     
                     <div class="form-group">
                         <label class="form-label" for="username">Username or Email</label>
-                        <input type="text" class="form-control" id="username" name="username" required>
+                        <input type="text" class="form-control" id="username"  <% if(!username.isEmpty()){%> value="<%=username%>" <% } %>  name="username" required>
                     </div>
                     
                     <div class="form-group">
                         <label class="form-label" for="password">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
+                        <input type="password" class="form-control" id="password" <% if(!username.isEmpty()){%> value="<%=password%>" <% } %> name="password" required>
                     </div>
                     
                     <div class="form-check">
                         <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="remember">
+                            <input type="checkbox" class="form-check-input" <% if(isRemember){%> checked  <% } %>name="remember">
                             Remember me
                         </label>
                         <a href="forgot.jsp" class="forgot-link">Forgot password?</a>
