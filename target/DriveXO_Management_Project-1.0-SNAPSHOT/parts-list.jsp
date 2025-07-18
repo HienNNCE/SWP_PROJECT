@@ -38,7 +38,7 @@
                 position: relative;
                 width: 100%;
                 height: 400px;
-                margin: 60px 0 40px 0; 
+                margin: 60px 0 40px 0;
                 overflow: hidden;
                 border-radius: 10px;
                 box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
@@ -59,6 +59,18 @@
                 animation: fadeIn ease 1s;
                 -webkit-animation: fadeIn ease 1s;
             }
+
+            .btn-primary {
+                background-color: #000 !important;
+                border: none !important;
+                color: #fff !important;
+            }
+
+            .btn-primary:hover {
+                background-color: #333 !important;
+                color: #fff !important;
+            }
+
             @keyframes fadeIn {
                 0% {
                     opacity: 0;
@@ -85,6 +97,39 @@
 
         <!-- Filter + Parts List -->
         <div class="container">
+            <!-- Search Bar -->
+            <div class="row mb-4">
+                <div class="col-md-12">
+                    <form action="${pageContext.request.contextPath}/parts/search" method="get" class="d-flex">
+                        <input class="form-control me-2 rounded-pill" type="search" name="keyword" placeholder="Search parts..." aria-label="Search"
+                               value="${param.keyword}">
+                        <input type="hidden" name="brand" value="${param.brand}" />
+                        <button class="btn btn-outline-dark rounded-pill" type="submit">
+                            <i class="fas fa-search"></i> Search
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <c:if test="${empty parts}">
+                <div class="alert alert-warning text-center">
+                    <c:choose>
+                        <c:when test="${not empty param.keyword && not empty param.brand}">
+                            No parts found for "<strong>${param.keyword}</strong>" in brand "<strong>${param.brand}</strong>".
+                        </c:when>
+                        <c:when test="${not empty param.keyword}">
+                            No parts found for "<strong>${param.keyword}</strong>".
+                        </c:when>
+                        <c:when test="${not empty param.brand}">
+                            No parts found in brand "<strong>${param.brand}</strong>".
+                        </c:when>
+                        <c:otherwise>
+                            No parts found.
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+            </c:if>
+
             <div class="row">
                 <!-- Filter -->
                 <div class="col-12 col-md-3">
@@ -134,14 +179,10 @@
                                                 <c:if test="${part.partStock <= 0}">disabled</c:if>>
                                                     Add to Cart
                                                 </button>
-                                                </button>
                                         </div>
                                     </div>
                                 </div>
                         </c:forEach>
-                        <c:if test="${empty parts}">
-                            <div class="alert alert-warning text-center">No parts found.</div>
-                        </c:if>
                     </div>
                 </div>
             </div>

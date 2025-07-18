@@ -71,14 +71,26 @@ public class PartServlet extends HttpServlet {
     private void handleSearch(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String keyword = request.getParameter("keyword");
+        String brand = request.getParameter("brand");
 
         List<Part> parts = partDAO.searchPartsByName(keyword);
+
+        if (brand != null && !brand.trim().isEmpty()) {
+            parts = parts.stream()
+                    .filter(p -> p.getPartBrand().equalsIgnoreCase(brand))
+                    .collect(Collectors.toList());
+        }
+
         List<String> partBrands = partDAO.getAllBrands();
         List<String> carModels = partDAO.getAllCarModels();
 
         request.setAttribute("parts", parts);
         request.setAttribute("partBrands", partBrands);
         request.setAttribute("carModels", carModels);
+
+        request.setAttribute("paramKeyword", keyword);
+        request.setAttribute("paramBrand", brand);
+
         request.getRequestDispatcher("/parts-list.jsp").forward(request, response);
     }
 
