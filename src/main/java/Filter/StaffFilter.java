@@ -12,18 +12,19 @@ import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 /**
  *
- * @author thien
+ * @author Nguyen Huynh Nhat Thien
  */
-@WebFilter("/admin/*")
+@WebFilter("/staff/*")
 public class StaffFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-
+        HttpServletResponse res = (HttpServletResponse) response;
         HttpSession session = ((HttpServletRequest) request).getSession(false);
 
         if (session != null) {
@@ -39,7 +40,7 @@ public class StaffFilter implements Filter {
             }
         }
         // Nếu không hợp lệ
-        request.getRequestDispatcher("/pages/not_admin.jsp").forward(request, response);
+        res.sendRedirect(((HttpServletRequest) request).getContextPath() + "/home");
 
     }
 }
