@@ -445,7 +445,6 @@ public class AdminCarServlet extends HttpServlet {
                     }
                 }
             } else {
-                // Giữ lại ảnh cũ hoặc cập nhật tên file nếu có
                 String carImgText = request.getParameter("carImgText");
                 if (carImgText != null && !carImgText.trim().isEmpty()) {
                     carImg = carImgText;
@@ -458,7 +457,6 @@ public class AdminCarServlet extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/admin/car/edit?id=" + carId);
                 return;
             }
-            // Tiếp tục với ảnh cũ nếu có lỗi khác
         }
         
         Car car = new Car();

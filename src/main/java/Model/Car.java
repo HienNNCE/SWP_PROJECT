@@ -9,6 +9,7 @@ import java.sql.Date;
 
 public class Car {
 
+    private int yearRelease;
     private int carId;
     private String carName;
     private String carBrand;
@@ -46,6 +47,17 @@ public class Car {
     public int getCarId() {
         return carId;
     }
+    public int getYearRelease() {
+        return yearRelease;
+    }
+    public void setYearRelease(int yearRelease) {
+        this.yearRelease = yearRelease;
+    }
+    public int getYear() {
+        return yearRelease;
+    }
+    
+    
 
     public void setCarId(int carId) {
         this.carId = carId;
