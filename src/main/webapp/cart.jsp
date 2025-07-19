@@ -555,7 +555,9 @@
                                 <input type="text" class="coupon-input" placeholder="Enter coupon code">
                                 <button class="apply-coupon">Apply</button>
                             </div>
-                            <button class="checkout-btn">Proceed to Checkout</button>
+                            <form method="get" action="checkout" style="margin-bottom:10px;">
+                                <button type="submit" class="checkout-btn">Proceed to Checkout</button>
+                            </form>
                             <a href="${pageContext.request.contextPath}/car/list" class="continue-shopping">Continue Shopping</a>
                         </div>
                     </div>

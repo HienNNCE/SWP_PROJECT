@@ -1,27 +1,26 @@
 package util;
 
 import DAO.UserDAO;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.regex.Pattern;
 
 public class ValidationUtil {
 
     private static final String EMAIL_PATTERN = "^[A-Za-z0-9+_.-]+@(.+)$";
-    private static final String PHONE_PATTERN = "^[0-9]{10,15}$";
+    private static final String PHONE_PATTERN = "^(03|05|07|08|09)\\d{8}$";
     private static final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
 
     public static boolean isValidEmail(String email) {
-        if (email == null || email.trim().isEmpty()) {
-            return false;
-        }
-        return Pattern.compile(EMAIL_PATTERN).matcher(email).matches();
+        return email != null && Pattern.compile(EMAIL_PATTERN).matcher(email).matches();
     }
 
     public static boolean isValidPhoneNumber(String phoneNumber) {
-        return phoneNumber != null && phoneNumber.matches("^(03|05|07|08|09)\\d{8}$");
+        return phoneNumber != null && phoneNumber.matches(PHONE_PATTERN);
     }
 
     public static boolean isValidPassword(String password) {
-        return password != null && !password.trim().isEmpty();
+        return password != null && Pattern.compile(PASSWORD_PATTERN).matcher(password).matches();
     }
 
     public static boolean isValidUsername(String username) {
@@ -32,7 +31,35 @@ public class ValidationUtil {
         return address != null && !address.trim().isEmpty();
     }
 
-    public static String validateUserData(String username, String email, String password, String phone, String address) {
+    public static boolean isValidFullName(String fullName) {
+        return fullName != null && !fullName.trim().isEmpty();
+    }
+
+    public static boolean isValidGender(String gender) {
+        return gender != null && (gender.equalsIgnoreCase("MALE")
+                || gender.equalsIgnoreCase("FEMALE"));
+    }
+
+    public static boolean isValidDob(String dob) {
+        if (dob == null || dob.trim().isEmpty()) return false;
+        try {
+            LocalDate date = LocalDate.parse(dob);
+            return !date.isAfter(LocalDate.now());
+        } catch (DateTimeParseException e) {
+            return false;
+        }
+    }
+
+    public static boolean isValidAboutMe(String aboutMe) {
+        return aboutMe != null && !aboutMe.trim().isEmpty() && aboutMe.length() <= 1000;
+    }
+
+    public static String validateUserData(String fullName, String username, String email,
+                                          String password, String phone, String address,
+                                          String gender, String dob, String aboutMe) {
+        if (!isValidFullName(fullName)) {
+            return "Full name cannot be empty";
+        }
         if (!isValidUsername(username)) {
             return "Username must be at least 3 characters long";
         }
@@ -47,6 +74,15 @@ public class ValidationUtil {
         }
         if (!isValidAddress(address)) {
             return "Address cannot be empty";
+        }
+        if (!isValidGender(gender)) {
+            return "Invalid gender value";
+        }
+        if (!isValidDob(dob)) {
+            return "Invalid date of birth";
+        }
+        if (!isValidAboutMe(aboutMe)) {
+            return "About Me cannot be empty and must be less than 1000 characters";
         }
         return null;
     }

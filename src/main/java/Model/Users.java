@@ -1,12 +1,18 @@
 package Model;
 
+import java.time.LocalDate;
+
 public class Users {
 
     private int userId;
+    private String fullName;
     private String userName;
     private String email;
     private String password;
     private String phone;
+    private boolean gender;
+    private LocalDate dob;
+    private String aboutMe;
     private String address;
     private Integer roleId;
     private String userStatus;
@@ -15,24 +21,35 @@ public class Users {
     public Users() {
     }
 
-    // Constructor with parameters
-    public Users(int userId, String userName, String email, String phone, String address, Integer roleId, String userStatus) {
+    public Users(int userId, String fullName, String userName, String email, String password, String phone, boolean gender, LocalDate dob, String aboutMe, String address, Integer roleId, String userStatus) {
         this.userId = userId;
+        this.fullName = fullName;
         this.userName = userName;
         this.email = email;
+        this.password = password;
         this.phone = phone;
+        this.gender = gender;
+        this.dob = dob;
+        this.aboutMe = aboutMe;
         this.address = address;
         this.roleId = roleId;
         this.userStatus = userStatus;
     }
 
-    // Getters and setters
     public int getUserId() {
         return userId;
     }
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getUserName() {
@@ -67,6 +84,30 @@ public class Users {
         this.phone = phone;
     }
 
+    public boolean isGender() {
+        return gender;
+    }
+
+    public void setGender(boolean gender) {
+        this.gender = gender;
+    }
+
+    public LocalDate getDob() {
+        return dob;
+    }
+
+    public void setDob(LocalDate dob) {
+        this.dob = dob;
+    }
+
+    public String getAboutMe() {
+        return aboutMe;
+    }
+
+    public void setAboutMe(String aboutMe) {
+        this.aboutMe = aboutMe;
+    }
+
     public String getAddress() {
         return address;
     }
@@ -93,8 +134,10 @@ public class Users {
 
     @Override
     public String toString() {
-        return "User{" + "userId=" + userId + ", userName=" + userName + ", email=" + email + ", password=" + password + ", phone=" + phone + ", address=" + address + ", roleId=" + roleId + ", userStatus=" + userStatus + '}';
+        return "Users{" + "userId=" + userId + ", fullName=" + fullName + ", userName=" + userName + ", email=" + email + ", password=" + password + ", phone=" + phone + ", gender=" + gender + ", dob=" + dob + ", aboutMe=" + aboutMe + ", address=" + address + ", roleId=" + roleId + ", userStatus=" + userStatus + '}';
     }
+
+    
     
     
 }

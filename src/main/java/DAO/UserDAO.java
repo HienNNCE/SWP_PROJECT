@@ -1,6 +1,7 @@
 package DAO;
 
 import DB.DBContext;
+import Model.Address;
 import Model.Part;
 import Model.Users;
 
@@ -58,8 +59,8 @@ public class UserDAO extends DBContext {
 
         return null;
     }
-    
-    public  Users getUserByEmail(String email) {
+
+    public Users getUserByEmail(String email) {
         String query = "SELECT u.*, r.role_name FROM [User] u JOIN Role r ON u.role_id = r.role_id WHERE u.email = ?";
 
         try (
@@ -77,8 +78,8 @@ public class UserDAO extends DBContext {
 
         return null;
     }
-    
-    public  Users getUserByUsername(String username) {
+
+    public Users getUserByUsername(String username) {
         String query = "SELECT u.*, r.role_name FROM [User] u JOIN Role r ON u.role_id = r.role_id WHERE u.user_name = ?";
 
         try (
@@ -96,8 +97,8 @@ public class UserDAO extends DBContext {
 
         return null;
     }
-    
-    public  Users getUserByPhone(String phone) {
+
+    public Users getUserByPhone(String phone) {
         String query = "SELECT u.*, r.role_name FROM [User] u JOIN Role r ON u.role_id = r.role_id WHERE u.phone = ?";
 
         try (
@@ -116,12 +117,11 @@ public class UserDAO extends DBContext {
         return null;
     }
 
-
     public void addUser(Users user) {
-        String query = "INSERT INTO [User] (user_name, email, password, phone, address, role_id, user_status) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO [User] (user_name, email, password, phone, address, role_id, user_status, full_name, gender, dob, about_me) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try (
-                PreparedStatement ps = this.getConnection().prepareStatement(query)) {
+        try (PreparedStatement ps = this.getConnection().prepareStatement(query)) {
 
             ps.setString(1, user.getUserName());
             ps.setString(2, user.getEmail());
@@ -129,7 +129,12 @@ public class UserDAO extends DBContext {
             ps.setString(4, user.getPhone());
             ps.setString(5, user.getAddress());
             ps.setInt(6, user.getRoleId());
-            ps.setString(7, "Active");
+            ps.setString(7, user.getUserStatus()); // "Active" hoặc từ thuộc tính
+
+            ps.setString(8, user.getFullName());
+            ps.setBoolean(9, user.isGender()); // true = male, false = female/other
+            ps.setDate(10, java.sql.Date.valueOf(user.getDob())); // LocalDate → java.sql.Date
+            ps.setString(11, user.getAboutMe());
 
             ps.executeUpdate();
         } catch (Exception e) {
@@ -138,17 +143,24 @@ public class UserDAO extends DBContext {
     }
 
     public void updateUser(Users user) {
-        String query = "UPDATE [User] SET user_name = ?, email = ?, phone = ?, address = ?, role_id = ? WHERE user_id = ?";
+        String query = "UPDATE [User] SET "
+                + "user_name = ?, email = ?, password = ?, phone = ?, address = ?, role_id = ?, "
+                + "user_status = ?, full_name = ?, gender = ?, dob = ?, about_me = ? "
+                + "WHERE user_id = ?";
 
-        try (
-                PreparedStatement ps = this.getConnection().prepareStatement(query)) {
-
+        try (PreparedStatement ps = this.getConnection().prepareStatement(query)) {
             ps.setString(1, user.getUserName());
             ps.setString(2, user.getEmail());
-            ps.setString(3, user.getPhone());
-            ps.setString(4, user.getAddress());
-            ps.setInt(5, user.getRoleId());
-            ps.setInt(6, user.getUserId());
+            ps.setString(3, user.getPassword());
+            ps.setString(4, user.getPhone());
+            ps.setString(5, user.getAddress());
+            ps.setInt(6, user.getRoleId());
+            ps.setString(7, user.getUserStatus());
+            ps.setString(8, user.getFullName());
+            ps.setBoolean(9, user.isGender());
+            ps.setDate(10, java.sql.Date.valueOf(user.getDob()));
+            ps.setString(11, user.getAboutMe());
+            ps.setInt(12, user.getUserId());
 
             ps.executeUpdate();
         } catch (Exception e) {
@@ -227,6 +239,10 @@ public class UserDAO extends DBContext {
         user.setAddress(rs.getString("address"));
         user.setRoleId(rs.getInt("role_id"));
         user.setUserStatus(rs.getString("user_status"));
+        user.setFullName(rs.getString("full_name"));
+        user.setGender(rs.getBoolean("gender"));
+        user.setDob(rs.getDate("dob").toLocalDate());
+        user.setAboutMe(rs.getString("about_me"));
         // user.setRoleName(rs.getString("role_name"));
         return user;
     }
@@ -284,5 +300,103 @@ public class UserDAO extends DBContext {
         }
 
         return 0;
+    }
+
+    public void updateUserPassword(int userId, String newPassword) {
+        String query = "UPDATE [User] SET password = ? WHERE user_id = ?";
+        try (PreparedStatement ps = this.getConnection().prepareStatement(query)) {
+            ps.setString(1, newPassword); // Consider hashing the password in a real application
+            ps.setInt(2, userId);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+// Create Address
+    public void addAddress(Address address) {
+        String query = "INSERT INTO Address (user_id, address_name, address_details, phone, is_default) VALUES (?, ?, ?, ?, ?)";
+        try (PreparedStatement ps = getConnection().prepareStatement(query)) {
+            ps.setInt(1, address.getUserId());
+            ps.setString(2, address.getAddressName());
+            ps.setString(3, address.getAddressDetails());
+            ps.setString(4, address.getPhone());
+            ps.setBoolean(5, address.isDefault());
+            ps.executeUpdate();
+
+            // If this is the default address, unset others
+            if (address.isDefault()) {
+                unsetOtherDefaultAddresses(address.getUserId(), address.getAddressId());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Read Addresses by User ID
+    public List<Address> getAddressesByUserId(int userId) {
+        List<Address> addresses = new ArrayList<>();
+        String query = "SELECT * FROM Address WHERE user_id = ?";
+        try (PreparedStatement ps = getConnection().prepareStatement(query)) {
+            ps.setInt(1, userId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Address address = new Model.Address();
+                    address.setAddressId(rs.getInt("address_id"));
+                    address.setUserId(rs.getInt("user_id"));
+                    address.setAddressName(rs.getString("address_name"));
+                    address.setAddressDetails(rs.getString("address_details"));
+                    address.setPhone(rs.getString("phone"));
+                    address.setDefault(rs.getBoolean("is_default"));
+                    addresses.add(address);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return addresses;
+    }
+
+    // Update Address
+    public void updateAddress(Address address) {
+        String query = "UPDATE Address SET address_name = ?, address_details = ?, phone = ?, is_default = ? WHERE address_id = ?";
+        try (PreparedStatement ps = getConnection().prepareStatement(query)) {
+            ps.setString(1, address.getAddressName());
+            ps.setString(2, address.getAddressDetails());
+            ps.setString(3, address.getPhone());
+            ps.setBoolean(4, address.isDefault());
+            ps.setInt(5, address.getAddressId());
+            ps.executeUpdate();
+
+            // If this is the default address, unset others
+            if (address.isDefault()) {
+                unsetOtherDefaultAddresses(address.getUserId(), address.getAddressId());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Delete Address
+    public void deleteAddress(int addressId) {
+        String query = "DELETE FROM Address WHERE address_id = ?";
+        try (PreparedStatement ps = getConnection().prepareStatement(query)) {
+            ps.setInt(1, addressId);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Helper: Unset other default addresses for a user
+    private void unsetOtherDefaultAddresses(int userId, int currentAddressId) {
+        String query = "UPDATE Address SET is_default = 0 WHERE user_id = ? AND address_id != ?";
+        try (PreparedStatement ps = getConnection().prepareStatement(query)) {
+            ps.setInt(1, userId);
+            ps.setInt(2, currentAddressId);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

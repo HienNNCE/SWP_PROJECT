@@ -17,6 +17,7 @@ import jakarta.mail.internet.MimeMessage;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -24,13 +25,15 @@ import java.util.Random;
 
 /**
  *
- * @author 
+ * @author
  */
 public class AuthenticationDAO extends DBContext {
 
     /**
      * Retrieves a list of all users from the database.
-     * @return A List of User objects, or an empty list if no users are found or an error occurs.
+     *
+     * @return A List of User objects, or an empty list if no users are found or
+     * an error occurs.
      */
     public List<Users> getAllUser() {
         List<Users> list = new ArrayList<>();
@@ -50,6 +53,7 @@ public class AuthenticationDAO extends DBContext {
     /**
      * Retrieves a user from the database by their username/email and password.
      * This method is typically used for user authentication (login).
+     *
      * @param username The username or email of the user.
      * @param password The password of the user.
      * @return A User object if a matching user is found, otherwise null.
@@ -69,10 +73,15 @@ public class AuthenticationDAO extends DBContext {
                 String phone = rs.getString(5);
                 String address = rs.getString(6);
                 int roleId = 0;
-                if(rs.getString(7)!=null)
-                roleId = Integer.parseInt(rs.getString(7));
+                if (rs.getString(7) != null) {
+                    roleId = Integer.parseInt(rs.getString(7));
+                }
                 String userStatus = rs.getString(8);
-                Users u = new Users(userId, username, email, phone, address, roleId, userStatus);
+                String fullName = rs.getString(9);
+                boolean gender = rs.getBoolean(10);
+                LocalDate dob = rs.getDate(11).toLocalDate();
+                String aboutMe = rs.getString(12);
+                Users u = new Users(userId, fullName, username, email, password, phone, gender, dob, aboutMe, address, roleId, userStatus);
                 // set fields...
                 return u;
             }
@@ -84,17 +93,19 @@ public class AuthenticationDAO extends DBContext {
 
     /**
      * Registers a new user in the database.
+     *
      * @param username The username for the new user.
      * @param email The email for the new user.
      * @param password The password for the new user.
      */
-    public void registerUser(String username, String email, String passsword) {
-        String sql = "INSERT INTO [User] (user_id, user_name, email, password, phone) VALUES (?,?,?,?,0)";
+    public void registerUser(String username, String email, String password) {
+        String sql = "INSERT INTO [User] (user_name, email, password, role_id, user_status, phone, gender, dob) VALUES (?, ?, ?, ?, ?, 0, 1, '2000-01-01')";
         try (PreparedStatement ps = this.getConnection().prepareStatement(sql)) {
-            ps.setInt(1, getTotalUserCount()+1);
-            ps.setString(2, username);
-            ps.setString(3, email);
-            ps.setString(4, passsword);
+            ps.setString(1, username);
+            ps.setString(2, email);
+            ps.setString(3, password);
+            ps.setInt(4, 2);
+            ps.setString(5, "Active");
 
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -104,6 +115,7 @@ public class AuthenticationDAO extends DBContext {
 
     /**
      * Checks if a user with the given email already exists in the database.
+     *
      * @param email The email to check.
      * @return true if a user with the email exists, false otherwise.
      */
@@ -119,10 +131,15 @@ public class AuthenticationDAO extends DBContext {
                 String phone = rs.getString(5);
                 String address = rs.getString(6);
                 int roleId = 0;
-                if(rs.getString(7)!=null)
-                   roleId = Integer.parseInt(rs.getString(7));
+                if (rs.getString(7) != null) {
+                    roleId = Integer.parseInt(rs.getString(7));
+                }
                 String userStatus = rs.getString(8);
-                Users u = new Users(userId, username, email, phone, address, roleId, userStatus);
+                String fullName = rs.getString(9);
+                boolean gender = rs.getBoolean(10);
+                LocalDate dob = rs.getDate(11).toLocalDate();
+                String aboutMe = rs.getString(12);
+                Users u = new Users(userId, fullName, username, email, null, phone, gender, dob, aboutMe, address, roleId, userStatus);
                 // set fields...
                 if (u != null) {
                     return true;
@@ -136,6 +153,7 @@ public class AuthenticationDAO extends DBContext {
 
     /**
      * Retrieves the total count of users in the database.
+     *
      * @return The total number of users as an integer.
      */
     public int getTotalUserCount() {
@@ -155,8 +173,9 @@ public class AuthenticationDAO extends DBContext {
     }
 
     /**
-     * Sets or updates the password for a user based on their email.
-     * This is typically used for "forgot password" functionalities.
+     * Sets or updates the password for a user based on their email. This is
+     * typically used for "forgot password" functionalities.
+     *
      * @param femail The email of the user whose password needs to be updated.
      * @param password The new password to set.
      */
@@ -171,7 +190,7 @@ public class AuthenticationDAO extends DBContext {
             e.printStackTrace();
         }
     }
-    
+
     public static void sendEmail(String to, String subject, String content) throws MessagingException {
         final String from = "driverxo123@gmail.com"; // your email
         final String password = "fafe tdwc mxth zmhl"; // app password (not regular email password)
@@ -194,14 +213,14 @@ public class AuthenticationDAO extends DBContext {
         Message message = new MimeMessage(session);
         message.setFrom(new InternetAddress(from));
         message.setRecipients(
-            Message.RecipientType.TO, InternetAddress.parse(to));
+                Message.RecipientType.TO, InternetAddress.parse(to));
         message.setSubject(subject);
         message.setText(content);
 
         // Send message
         Transport.send(message);
     }
-    
+
     public static String generateFiveRandomNumbersString() {
         Random random = new Random();
         StringBuilder sb = new StringBuilder();

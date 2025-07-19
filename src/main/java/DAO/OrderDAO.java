@@ -18,17 +18,15 @@ import java.util.*;
  * @author acer
  */
 public class OrderDAO extends DBContext {
-    public static void main(String[] args) {
-        OrderDAO oderDAO = new OrderDAO();
-        oderDAO.updateOrderStatus(2, "Huy");
-    }
+//    public static void main(String[] args) {
+//        OrderDAO oderDAO = new OrderDAO();
+//        oderDAO.updateOrderStatus(2, "Huy");
+//    }
 
     public List<Order> getAllOrders() {
         List<Order> list = new ArrayList<>();
         String sql = "SELECT * FROM [Order]";
-        try (Connection conn = getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql);
-                ResultSet rs = ps.executeQuery()) {
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Order o = new Order();
                 o.setOrderId(rs.getInt("order_id"));
@@ -47,8 +45,7 @@ public class OrderDAO extends DBContext {
 
     public Order getOrderById(int orderId) {
         String sql = "SELECT * FROM [Order] WHERE order_id = ?";
-        try (Connection conn = getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, orderId);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -68,25 +65,29 @@ public class OrderDAO extends DBContext {
         return null;
     }
 
-    public void insertOrder(Order o) {
+    public int insertOrder(Order o) {
         String sql = "INSERT INTO [Order] (user_id, order_price, order_status, order_date, payment_id) VALUES (?, ?, ?, ?, ?)";
-        try (Connection conn = getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, o.getUserId());
             ps.setBigDecimal(2, o.getOrderPrice());
             ps.setString(3, o.getOrderStatus());
             ps.setTimestamp(4, new java.sql.Timestamp(o.getOrderDate().getTime()));
             ps.setInt(5, o.getPaymentId());
             ps.executeUpdate();
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return -1;
     }
 
     public void updateOrder(Order o) {
         String sql = "UPDATE [Order] SET user_id=?, order_price=?, order_status=?, order_date=?, payment_id=? WHERE order_id=?";
-        try (Connection conn = getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, o.getUserId());
             ps.setBigDecimal(2, o.getOrderPrice());
             ps.setString(3, o.getOrderStatus());
@@ -117,8 +118,7 @@ public class OrderDAO extends DBContext {
         try (Connection conn = getConnection()) {
             conn.setAutoCommit(false); // Bắt đầu transaction
 
-            try (PreparedStatement ps1 = conn.prepareStatement(deleteOrderDetailSql);
-                    PreparedStatement ps2 = conn.prepareStatement(deleteOrderSql)) {
+            try (PreparedStatement ps1 = conn.prepareStatement(deleteOrderDetailSql); PreparedStatement ps2 = conn.prepareStatement(deleteOrderSql)) {
 
                 ps1.setInt(1, orderId);
                 ps1.executeUpdate();
@@ -138,24 +138,23 @@ public class OrderDAO extends DBContext {
 
     public int getTotalOrderCount() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from
-                                                                       // nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        // nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     public BigDecimal getTotalRevenue() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from
-                                                                       // nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        // nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     public List<Order> getLatestOrders(int i) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from
-                                                                       // nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        // nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     public List<Order> getOrdersByUserId(int userId) {
         List<Order> list = new ArrayList<>();
         String sql = "SELECT * FROM [Order] WHERE user_id = ?";
-        try (Connection conn = getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, userId);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
@@ -198,5 +197,19 @@ public class OrderDAO extends DBContext {
             e.printStackTrace();
         }
         return details;
+    }
+
+    public void insertOrderDetail(OrderDetail detail) {
+        String sql = "INSERT INTO [OrderDetail] (order_id, part_id, quantity, price, total_price) VALUES (?, ?, ?, ?, ?)";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, detail.getOrderId());
+            ps.setInt(2, detail.getPartId());
+            ps.setInt(3, detail.getQuantity());
+            ps.setBigDecimal(4, detail.getPrice());
+            ps.setBigDecimal(5, detail.getTotalPrice());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
