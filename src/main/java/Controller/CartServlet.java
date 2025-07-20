@@ -32,9 +32,6 @@ public class CartServlet extends HttpServlet {
         request.setAttribute("cart", cart);
         request.setAttribute("partList", cart.getPartList());
         request.setAttribute("totalPrice", cart.getCartPrice());
-        for (Model.Part part : cart.getPartList()) {
-            System.out.println("Part Stock: " + part.getPartStock());
-        }
         request.getRequestDispatcher("/cart.jsp").forward(request, response);
     }
 

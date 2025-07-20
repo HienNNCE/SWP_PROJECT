@@ -56,7 +56,7 @@ public class AddToCartServlet extends HttpServlet {
 
         if (userId == null) {
             System.out.println("Error: userId is null. Redirecting to login.");
-            response.sendRedirect(request.getContextPath() + "/login");
+            response.sendRedirect(request.getContextPath() + "/auth/login.jsp");
             // Chuyển hướng về trang đăng nhập
             return;
         }
@@ -76,28 +76,9 @@ public class AddToCartServlet extends HttpServlet {
             System.out.println("Part added successfully. Cart Count: " + cartCount + ", Total Price: " + totalPrice + ", Part Stock: " + partStock);
             response.getWriter().print(
                     "{\"status\":\"success\", \"cartCount\":" + cartCount + ", \"totalPrice\":" + totalPrice + ", \"partStock\":" + partStock +"}");
-        } else {
-            // Kiểm tra tồn kho để trả về đúng status
-            int partStock = 0;
-            try (java.sql.Connection conn = cartDAO.getConnection();
-                    java.sql.PreparedStatement ps = conn
-                            .prepareStatement("SELECT part_stock FROM Part WHERE part_id = ?")) {
-                ps.setInt(1, partId);
-                try (java.sql.ResultSet rs = ps.executeQuery()) {
-                    if (rs.next()) {
-                        partStock = rs.getInt("part_stock");
-                    }
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-            if (partStock <= 0) {
+        } else {       
                 System.out.println("Error: Out of stock");
-                response.getWriter().print("{\"status\":\"out_of_stock\"}");
-            } else {
-                System.out.println("Error: Failed to add part to cart");
-                response.getWriter().print("{\"status\":\"error\"}");
-            }
+                response.getWriter().print("{\"status\":\"out_of_stock\"}");       
         }
     }
 }

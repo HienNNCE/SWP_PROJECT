@@ -83,6 +83,7 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("user", user);
             int roleId = user.getRoleId();
             session.setAttribute("userId", user.getUserId());
+            session.setAttribute("role", user.getRoleId());
             if(isRemember != null){
                 Cookie cookieUsername = new Cookie("username", username);
                 Cookie cookiePassword = new Cookie("password", password);

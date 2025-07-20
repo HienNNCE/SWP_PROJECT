@@ -63,7 +63,7 @@ public class OrderManagementServlet extends HttpServlet {
         // Hiển thị danh sách đơn hàng
         List<Order> orders = orderDAO.getAllOrders();
         request.setAttribute("orders", orders);
-        request.getRequestDispatcher("/admin/order/order.jsp").forward(request, response);
+        request.getRequestDispatcher("/admin/order/new-order.jsp").forward(request, response);
     }
 
     /**

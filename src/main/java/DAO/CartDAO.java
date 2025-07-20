@@ -25,8 +25,8 @@ public class CartDAO extends DBContext {
 
     public static void main(String[] a) {
         CartDAO cDAO = new CartDAO();
-        int cartCount = cDAO.getCartItemCount(1);
-        System.out.println("Cart Count: " + cartCount);
+        int availableStock = cDAO.getReservedQuantity(2, 102);
+        System.out.println(availableStock);
 
     }
 
@@ -35,7 +35,8 @@ public class CartDAO extends DBContext {
                 + "FROM Cart c "
                 + "JOIN CartDetail cd ON c.cart_id = cd.cart_id "
                 + "WHERE c.user_id = ?";
-        try (Connection conn = this.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        Connection conn = this.getConnection();
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, userId);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -55,9 +56,10 @@ public class CartDAO extends DBContext {
                 + "WHERE cart_id = (SELECT cart_id FROM Cart WHERE user_id = ?) AND part_id = ?";
         String updateCartSql = "UPDATE Cart SET count_item = count_item + 1, cart_price = cart_price + ? WHERE cart_id = (SELECT cart_id FROM Cart WHERE user_id = ?)";
         String getPartPriceSql = "SELECT part_price FROM Part WHERE part_id = ?";
-        try (Connection conn = this.getConnection()) {
+        int partCartCount = this.getReservedQuantity(partId, userId);
+        Connection conn = this.getConnection();
+        try {
             conn.setAutoCommit(false);
-
             // Kiểm tra tồn kho
             int partStock = 0;
             try (PreparedStatement ps = conn.prepareStatement(getStockSql)) {
@@ -68,7 +70,9 @@ public class CartDAO extends DBContext {
                     }
                 }
             }
-            if (partStock <= 0) {
+            System.out.println("Stock: " + partStock + ", Reserved: " + partCartCount);
+            int availableStock = partStock - partCartCount;
+            if (availableStock <= 0) {
                 conn.rollback();
                 return false; // Hết hàng
             }
@@ -95,12 +99,13 @@ public class CartDAO extends DBContext {
                 ps.setInt(2, userId);
                 ps.executeUpdate();
             }
-            // Update part stock
-            String updateStockSql = "UPDATE Part SET part_stock = part_stock - 1 WHERE part_id = ?";
-            try (PreparedStatement ps = conn.prepareStatement(updateStockSql)) {
-                ps.setInt(1, partId);
-                ps.executeUpdate();
-            }
+            // // Update part stock
+            // String updateStockSql = "UPDATE Part SET part_stock = part_stock - 1 WHERE
+            // part_id = ?";
+            // try (PreparedStatement ps = conn.prepareStatement(updateStockSql)) {
+            // ps.setInt(1, partId);
+            // ps.executeUpdate();
+            // }
             conn.commit();
             return true;
         } catch (SQLException e) {
@@ -116,8 +121,8 @@ public class CartDAO extends DBContext {
         String updateDetailSql = "UPDATE CartDetail SET pt_order_quantity = pt_order_quantity - 1 WHERE cart_id = ? AND part_id = ?";
         String updateCartSql = "UPDATE Cart SET count_item = count_item - 1, cart_price = cart_price - ? WHERE cart_id = ?";
         String getPartPriceSql = "SELECT part_price FROM Part WHERE part_id = ?";
-
-        try (Connection conn = this.getConnection()) {
+        Connection conn = this.getConnection();
+        try {
             conn.setAutoCommit(false);
 
             int cartId = -1;
@@ -188,12 +193,13 @@ public class CartDAO extends DBContext {
                     ps.executeUpdate();
                 }
 
-                // Update part stock
-                String updateStockSql = "UPDATE Part SET part_stock = part_stock + 1 WHERE part_id = ?";
-                try (PreparedStatement ps = conn.prepareStatement(updateStockSql)) {
-                    ps.setInt(1, partId);
-                    ps.executeUpdate();
-                }
+                // // Update part stock
+                // String updateStockSql = "UPDATE Part SET part_stock = part_stock + 1 WHERE
+                // part_id = ?";
+                // try (PreparedStatement ps = conn.prepareStatement(updateStockSql)) {
+                // ps.setInt(1, partId);
+                // ps.executeUpdate();
+                // }
             }
 
             conn.commit();
@@ -286,7 +292,8 @@ public class CartDAO extends DBContext {
                 + "        JOIN CartDetail cd ON c.cart_id = cd.cart_id\n"
                 + "        JOIN Part p ON cd.part_id = p.part_id\n"
                 + "        WHERE c.user_id = ?";
-        try (Connection conn = this.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        Connection conn = this.getConnection();
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, userId);
             try (ResultSet rs = ps.executeQuery()) {
                 List<Part> parts = new ArrayList<>();
@@ -427,8 +434,10 @@ public class CartDAO extends DBContext {
         String updateDetailSql = "UPDATE CartDetail SET pt_order_quantity = pt_order_quantity + 1 WHERE cart_id = ? AND part_id = ?";
         String getPartPriceSql = "SELECT part_price FROM Part WHERE part_id = ?";
         String updateCartSql = "UPDATE Cart SET count_item = ?, cart_price = ? WHERE cart_id = ?";
+        int partCartCount = this.getReservedQuantity(partId, userId);
 
-        try (Connection conn = this.getConnection()) {
+        Connection conn = this.getConnection();
+        try {
             conn.setAutoCommit(false); // Transaction
 
             // 0. Kiểm tra tồn kho
@@ -441,7 +450,8 @@ public class CartDAO extends DBContext {
                     }
                 }
             }
-            if (partStock <= 0) {
+            int availableStock = partStock - partCartCount;
+            if (availableStock <= 0) {
                 conn.rollback();
                 return false; // Hết hàng
             }
@@ -534,12 +544,13 @@ public class CartDAO extends DBContext {
             System.out.println("🛒 After update - cartId: " + cartId + ", countItem: " + newCountItem + ", total: "
                     + newCartPrice);
 
-            // 7. Giảm tồn kho sản phẩm
-            String updateStockSql = "UPDATE Part SET part_stock = part_stock - 1 WHERE part_id = ? AND part_stock > 0";
-            try (PreparedStatement ps = conn.prepareStatement(updateStockSql)) {
-                ps.setInt(1, partId);
-                ps.executeUpdate();
-            }
+            // // 7. Giảm tồn kho sản phẩm
+            // String updateStockSql = "UPDATE Part SET part_stock = part_stock - 1 WHERE
+            // part_id = ? AND part_stock > 0";
+            // try (PreparedStatement ps = conn.prepareStatement(updateStockSql)) {
+            // ps.setInt(1, partId);
+            // ps.executeUpdate();
+            // }
 
             conn.commit();
             return true;
@@ -549,11 +560,34 @@ public class CartDAO extends DBContext {
         }
     }
 
+    public int getReservedQuantity(int partId, int userId) {
+        int reserved = 0;
+        String sql = "SELECT SUM(cd.pt_order_quantity) AS reserved_quantity "
+                + "FROM CartDetail cd "
+                + "JOIN Cart c ON cd.cart_id = c.cart_id "
+                + "WHERE c.user_id = ? AND cd.part_id = ?";
+        Connection conn = this.getConnection();
+        try (
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            ps.setInt(2, partId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    reserved = rs.getInt("reserved_quantity");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return reserved;
+    }
+
     public void clearCartByUserId(int userId) {
         String getCartIdSql = "SELECT cart_id FROM Cart WHERE user_id = ?";
         String deleteDetailSql = "DELETE FROM CartDetail WHERE cart_id = ?";
         String updateCartSql = "UPDATE Cart SET count_item = 0, cart_price = 0 WHERE cart_id = ?";
-        try (Connection conn = getConnection(); PreparedStatement ps1 = conn.prepareStatement(getCartIdSql)) {
+        Connection conn = getConnection();
+        try (PreparedStatement ps1 = conn.prepareStatement(getCartIdSql)) {
             ps1.setInt(1, userId);
             try (ResultSet rs = ps1.executeQuery()) {
                 if (rs.next()) {
