@@ -6,6 +6,7 @@ Controller\BookingsServlet.class
 Controller\AddToCartServlet.class
 DAO\OrderDetailDAO.class
 Controller\StaffBlogServlet.class
+Controller\AppointmentServlet.class
 Model\Service.class
 Model\Payment.class
 util\MenuDataHelper.class

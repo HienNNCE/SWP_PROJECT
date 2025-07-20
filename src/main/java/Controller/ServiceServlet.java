@@ -31,6 +31,10 @@ public class ServiceServlet extends HttpServlet {
             throws ServletException, IOException {
         String action = request.getServletPath();
 
+        // Always set serviceTypes for filter display
+        List<String> serviceTypes = serviceDAO.getAllServiceTypes();
+        request.setAttribute("serviceTypes", serviceTypes);
+
         switch (action) {
             case "/services/search":
                 handleSearch(request, response);
@@ -51,7 +55,9 @@ public class ServiceServlet extends HttpServlet {
     // === LIST ===
     private void listServices(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<Service> services = serviceDAO.getAllService();
+        String serviceType = request.getParameter("serviceType");
+        String sort = request.getParameter("sort");
+        List<Service> services = serviceDAO.filterServices(serviceType, null, null, sort);
         request.setAttribute("services", services);
         request.getRequestDispatcher("/service-list.jsp").forward(request, response);
     }
@@ -68,21 +74,10 @@ public class ServiceServlet extends HttpServlet {
     // === FILTER ===
     private void handleFilter(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String keyword = request.getParameter("keyword");
         String serviceType = request.getParameter("serviceType");
-        Double priceFrom = parseDouble(request.getParameter("priceFrom"));
-        Double priceTo = parseDouble(request.getParameter("priceTo"));
-
-        // Filter services based on price and keyword
-        List<Service> services = serviceDAO.filterServices(keyword, BigDecimal.ZERO, BigDecimal.ZERO, keyword);
-
-        // Apply additional filtering if keyword is provided
-        if (keyword != null && !keyword.trim().isEmpty()) {
-            services = services.stream()
-                    .filter(s -> s.getServiceName().toLowerCase().contains(keyword.toLowerCase()))
-                    .collect(Collectors.toList());
-        }
-
+        String sort = request.getParameter("sort");
+        // You can add priceFrom/priceTo if needed
+        List<Service> services = serviceDAO.filterServices(serviceType, null, null, sort);
         request.setAttribute("services", services);
         request.getRequestDispatcher("/service-list.jsp").forward(request, response);
     }

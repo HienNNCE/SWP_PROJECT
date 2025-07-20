@@ -502,4 +502,35 @@ public class CarDAO extends DBContext {
         }
         return false;
     }
+
+    // Lấy danh sách xe ngẫu nhiên, loại trừ 1 xe theo id
+    public ArrayList<Car> getRandomCarsExcept(int limit, int excludeCarId) {
+        ArrayList<Car> cars = new ArrayList<>();
+        String query = "SELECT TOP (?) * FROM Car WHERE car_id <> ? ORDER BY NEWID()";
+        try {
+            PreparedStatement ps = this.getConnection().prepareStatement(query);
+            ps.setInt(1, limit);
+            ps.setInt(2, excludeCarId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                cars.add(new Car(
+                    rs.getInt("car_id"),
+                    rs.getString("car_name"),
+                    rs.getString("car_brand"),
+                    rs.getString("model"),
+                    rs.getBigDecimal("car_price"),
+                    rs.getDate("car_year"),
+                    rs.getString("car_img"),
+                    rs.getInt("car_stock"),
+                    rs.getBigDecimal("car_odo"),
+                    rs.getString("fuel_type"),
+                    rs.getBigDecimal("displacement"),
+                    rs.getInt("category_id")
+                ));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CarDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return cars;
+    }
 }

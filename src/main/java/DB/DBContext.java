@@ -9,7 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class DBContext {
-    
+
     // Sửa DB_URL, DB_USER và DB_PWD cho phù hợp với Azure SQL
     private static final String DB_URL = "jdbc:sqlserver://dbswp.database.windows.net:1433;databaseName=DriveXO;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
     private static final String DB_USER = "sqladmin@dbswp";  // Tên người dùng Azure SQL
@@ -29,8 +29,16 @@ public class DBContext {
     }
 
     // Getter method to return the connection
+//    public Connection getConnection() {
+//        return conn;
+//    }
     public Connection getConnection() {
-        return conn;
+        try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            return DriverManager.getConnection(DB_URL, DB_USER, DB_PWD);
+        } catch (Exception e) {
+            throw new RuntimeException("JDBC Driver not found", e);
+        }
     }
 
     // Method to execute INSERT, UPDATE, DELETE queries
