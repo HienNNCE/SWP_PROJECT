@@ -18,15 +18,18 @@ import java.util.*;
  * @author acer
  */
 public class OrderDAO extends DBContext {
-//    public static void main(String[] args) {
-//        OrderDAO oderDAO = new OrderDAO();
-//        oderDAO.updateOrderStatus(2, "Huy");
-//    }
+    public static void main(String[] args) {
+    OrderDAO oderDAO = new OrderDAO();
+    int count = oderDAO.countOrders();
+        System.out.println(count);
+    }
 
     public List<Order> getAllOrders() {
         List<Order> list = new ArrayList<>();
         String sql = "SELECT * FROM [Order]";
-        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+        try (Connection conn = getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Order o = new Order();
                 o.setOrderId(rs.getInt("order_id"));
@@ -118,7 +121,8 @@ public class OrderDAO extends DBContext {
         try (Connection conn = getConnection()) {
             conn.setAutoCommit(false); // Bắt đầu transaction
 
-            try (PreparedStatement ps1 = conn.prepareStatement(deleteOrderDetailSql); PreparedStatement ps2 = conn.prepareStatement(deleteOrderSql)) {
+            try (PreparedStatement ps1 = conn.prepareStatement(deleteOrderDetailSql);
+                    PreparedStatement ps2 = conn.prepareStatement(deleteOrderSql)) {
 
                 ps1.setInt(1, orderId);
                 ps1.executeUpdate();
@@ -136,9 +140,19 @@ public class OrderDAO extends DBContext {
         }
     }
 
-    public int getTotalOrderCount() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from
-        // nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public int countOrders() {
+        int count = 0;
+        String query = "SELECT COUNT(*) FROM [Order]"; // Thay "orders" bằng tên bảng thật nếu khác
+        try (Connection conn = new DBContext().getConnection();
+                PreparedStatement ps = conn.prepareStatement(query);
+                ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                count = rs.getInt(1); // Cột đầu tiên chứa số lượng
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Xử lý lỗi theo nhu cầu
+        }
+        return count;
     }
 
     public BigDecimal getTotalRevenue() {

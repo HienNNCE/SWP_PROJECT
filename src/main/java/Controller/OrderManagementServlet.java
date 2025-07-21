@@ -18,7 +18,7 @@ import java.util.List;
  *
  * @author thien
  */
-@WebServlet(name = "OrderManagementServlet", urlPatterns = { "/OrderManagementServlet" })
+@WebServlet(name = "OrderManagementServlet", urlPatterns = { "/admin/OrderManagementServlet" })
 public class OrderManagementServlet extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the

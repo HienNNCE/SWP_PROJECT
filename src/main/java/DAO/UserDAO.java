@@ -253,7 +253,8 @@ public class UserDAO extends DBContext {
                 + "WHERE (? IS NULL OR u.user_name LIKE ? OR u.email LIKE ? OR u.phone LIKE ?) "
                 + "ORDER BY u.user_id OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
-        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        Connection conn = this.getConnection(); 
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             boolean hasKeyword = keyword != null && !keyword.trim().isEmpty();
             String search = "%" + (hasKeyword ? keyword.trim() : "") + "%";
 
@@ -281,7 +282,8 @@ public class UserDAO extends DBContext {
         String sql = "SELECT COUNT(*) FROM [User] "
                 + "WHERE (? IS NULL OR user_name LIKE ? OR email LIKE ? OR phone LIKE ?)";
 
-        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        Connection conn = this.getConnection();
+        try ( PreparedStatement ps = conn.prepareStatement(sql)) {
             boolean hasKeyword = keyword != null && !keyword.trim().isEmpty();
             String search = "%" + (hasKeyword ? keyword.trim() : "") + "%";
 

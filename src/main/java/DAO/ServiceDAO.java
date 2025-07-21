@@ -16,9 +16,10 @@ public class ServiceDAO extends DBContext {
     public List<Service> getAllService() {
         List<Service> services = new ArrayList<>();
         String sql = "SELECT * FROM Service";
-        try (Connection conn = this.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+        Connection conn = this.getConnection();
+        try (
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 services.add(mapRowToService(rs));
             }
@@ -59,7 +60,6 @@ public class ServiceDAO extends DBContext {
             stmt.setString(5, service.getServiceImg());
             stmt.executeUpdate();
 
-            
             // Invalidate the cache after creating a new service
             cachedServices = null;
 
@@ -82,7 +82,6 @@ public class ServiceDAO extends DBContext {
             stmt.setInt(6, service.getServiceId());
             stmt.executeUpdate();
 
-            
             // Invalidate the cache after updating the service
             cachedServices = null;
 
@@ -98,7 +97,7 @@ public class ServiceDAO extends DBContext {
         try (Connection conn = this.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, serviceId);
             stmt.executeUpdate();
-            
+
             // Invalidate the cache after deleting the service
             cachedServices = null;
 
@@ -112,7 +111,7 @@ public class ServiceDAO extends DBContext {
         List<Service> services = new ArrayList<>();
         String sql = "SELECT * FROM Service WHERE LOWER(service_name) LIKE LOWER(?)";
         try (Connection conn = this.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, "%" + keyword + "%");
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
@@ -148,7 +147,6 @@ public class ServiceDAO extends DBContext {
         } else if ("desc".equalsIgnoreCase(sort)) {
             sql.append(" ORDER BY service_price DESC");
         }
-
 
         try (Connection conn = this.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
 
