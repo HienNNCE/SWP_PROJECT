@@ -998,91 +998,6 @@
     font-size: 30px;
 }
 
-/* Responsive styles */
-@media (max-width: 1200px) {
-    .filter-sliders-container {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .brand-carousel-container {
-        max-width: 90%;
-    }
-    
-    .brand-nav.prev {
-        left: -30px;
-    }
-    
-    .brand-nav.next {
-        right: -30px;
-    }
-}
-
-@media (max-width: 992px) {
-    .filter-sliders-container {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 15px;
-    }
-    
-    .brand-item {
-        padding: 5px 12px;
-        font-size: 11px;
-    }
-    
-    .filter-actions#filterActions_toolbar {
-        margin-right: 10px;
-    }
-    
-    .cars-view-options {
-        flex-wrap: wrap;
-        gap: 8px;
-    }
-}
-
-@media (max-width: 768px) {
-    .filter-sliders-container {
-        grid-template-columns: 1fr;
-    }
-    
-    .brand-carousel-container {
-        max-width: 85%;
-    }
-    
-    .brand-nav.prev {
-        left: -25px;
-    }
-    
-    .brand-nav.next {
-        right: -25px;
-    }
-    
-    .brand-nav {
-        width: 24px;
-        height: 24px;
-    }
-    
-    .cars-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 576px) {
-    .filter-actions {
-        width: 100%;
-        justify-content: space-between;
-    }
-    
-    .filter-button {
-        flex: 1;
-    }
-    
-    .brand-carousel-container {
-        max-width: 80%;
-    }
-    
-    .cars-grid {
-        grid-template-columns: 1fr;
-    }
-}
 
 /* Search Box */
 .search-filter {
@@ -1245,15 +1160,6 @@
     border-color: #ccc;
 }
 
-@media (max-width: 900px) {
-    .advanced-filter-grid {
-        grid-template-columns: 1fr;
-        max-width: 100%;
-    }
-    .fuel-filter {
-        grid-column: 1 / 2;
-    }
-}
 
 .fuel-segment-bar {
     display: flex;
@@ -1313,21 +1219,6 @@
     vertical-align: middle;
 }
 
-@media (max-width: 900px) {
-    .fuel-segment-bar {
-        flex-direction: column;
-        border-radius: 6px;
-    }
-    .fuel-segment-option {
-        border-right: none;
-        border-bottom: 1px solid #eee;
-        border-radius: 0;
-        padding: 8px 0;
-    }
-    .fuel-segment-option:last-child {
-        border-bottom: none;
-    }
-}
 
 .carlist-header-actions {
     position: fixed;

@@ -766,7 +766,7 @@
                                     <span>${car.fuelType}</span>
                                 </div>
                                 <div class="car-price">$<fmt:formatNumber value="${car.carPrice}" type="number" pattern="#,###" /></div>
-                                <a href="car-detail.jsp?id=${car.carId}" class="car-btn">Explore</a>
+                                <a href="${pageContext.request.contextPath}/car/detail?id=${car.carId}" class="car-btn">Explore</a>
                             </div>
                         </div>
                     </c:forEach>
