@@ -9,9 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ServiceDAO extends DBContext {
-    // Cache for the list of services
-    private static List<Service> cachedServices = null;
-
     // Get all services
     public List<Service> getAllService() {
         List<Service> services = new ArrayList<>();
@@ -60,9 +57,6 @@ public class ServiceDAO extends DBContext {
             stmt.setString(5, service.getServiceImg());
             stmt.executeUpdate();
 
-            // Invalidate the cache after creating a new service
-            cachedServices = null;
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -82,9 +76,6 @@ public class ServiceDAO extends DBContext {
             stmt.setInt(6, service.getServiceId());
             stmt.executeUpdate();
 
-            // Invalidate the cache after updating the service
-            cachedServices = null;
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -97,9 +88,6 @@ public class ServiceDAO extends DBContext {
         try (Connection conn = this.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, serviceId);
             stmt.executeUpdate();
-
-            // Invalidate the cache after deleting the service
-            cachedServices = null;
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -124,14 +112,14 @@ public class ServiceDAO extends DBContext {
     }
 
     // Filter services based on certain criteria
-    public List<Service> filterServices(String name, BigDecimal priceFrom, BigDecimal priceTo, String sort) {
+    public List<Service> filterServices(String serviceType, BigDecimal priceFrom, BigDecimal priceTo, String sort) {
         List<Service> services = new ArrayList<>();
-        StringBuilder sql = new StringBuilder("SELECT * FROM dbo.Service WHERE 1=1");
+        StringBuilder sql = new StringBuilder("SELECT * FROM Service WHERE 1=1");
         List<Object> params = new ArrayList<>();
 
-        if (name != null && !name.isEmpty()) {
-            sql.append(" AND service_name LIKE ?");
-            params.add("%" + name + "%");
+        if (serviceType != null && !serviceType.isEmpty()) {
+            sql.append(" AND service_description LIKE ?"); // or use a dedicated column if available
+            params.add("%" + serviceType + "%");
         }
         if (priceFrom != null) {
             sql.append(" AND service_price >= ?");
@@ -141,15 +129,12 @@ public class ServiceDAO extends DBContext {
             sql.append(" AND service_price <= ?");
             params.add(priceTo);
         }
-
         if ("asc".equalsIgnoreCase(sort)) {
             sql.append(" ORDER BY service_price ASC");
         } else if ("desc".equalsIgnoreCase(sort)) {
             sql.append(" ORDER BY service_price DESC");
         }
-
         try (Connection conn = this.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
-
             for (int i = 0; i < params.size(); i++) {
                 stmt.setObject(i + 1, params.get(i));
             }
@@ -161,6 +146,22 @@ public class ServiceDAO extends DBContext {
             e.printStackTrace();
         }
         return services;
+    }
+
+    // Get all distinct service types (for filter display)
+    public List<String> getAllServiceTypes() {
+        List<String> types = new ArrayList<>();
+        String sql = "SELECT DISTINCT service_description FROM Service WHERE service_description IS NOT NULL AND service_description <> ''";
+        try (Connection conn = this.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                types.add(rs.getString("service_description"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return types;
     }
 
     // Utility: Mapping result set row to Service object
