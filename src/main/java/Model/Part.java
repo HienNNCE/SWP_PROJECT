@@ -17,7 +17,7 @@ public class Part {
     private BigDecimal partPrice;
     private Part part;
     // Thêm cho giỏ hàng
-    private int quantityInCart;
+    private int quantityInCart;                       
     private BigDecimal totalPrice;
 
     // Constructors

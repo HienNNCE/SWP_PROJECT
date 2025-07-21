@@ -518,8 +518,9 @@
                                             <form method="post" action="cart" style="display: inline;">
                                                 <input type="hidden" name="partId" value="${item.partId}">
                                                 <input type="hidden" name="action" value="increase">
+                                                <c:set var="availableStock" value="${item.partStock - item.quantityInCart}" />
                                                 <button type="submit" class="quantity-btn"
-                                                        <c:if test="${item.partStock <= 0}">Disabled</c:if>
+                                                        <c:if test="${availableStock <= 0}">Disabled</c:if>
                                                             >+</button>
                                                 </form>
                                             </div>

@@ -11,9 +11,11 @@ Model\Service.class
 Model\Payment.class
 util\MenuDataHelper.class
 DAO\OrderDAO.class
+Filter\AdminFilter.class
 DB\TestDBConnect.class
 DB\DBContext.class
 Controller\HomeServlet.class
+Service\HashUtil.class
 Model\Part.class
 DAO\CarDAO.class
 Controller\OTPServlet.class
@@ -48,6 +50,7 @@ com\mycompany\drivexo_management_project\resources\JakartaEE10Resource.class
 Controller\AdminPartServlet.class
 Controller\PartServlet.class
 Model\Role.class
+Filter\StaffFilter.class
 Controller\LoginServlet.class
 Controller\AdminDashboardServlet.class
 Model\Car.class

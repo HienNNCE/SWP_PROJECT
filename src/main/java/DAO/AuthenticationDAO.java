@@ -6,6 +6,7 @@ package DAO;
 
 import DB.DBContext;
 import Model.Users;
+import Service.HashUtil;
 import jakarta.mail.Authenticator;
 import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
@@ -33,7 +34,7 @@ public class AuthenticationDAO extends DBContext {
      * Retrieves a list of all users from the database.
      *
      * @return A List of User objects, or an empty list if no users are found or
-     * an error occurs.
+     *         an error occurs.
      */
     public List<Users> getAllUser() {
         List<Users> list = new ArrayList<>();
@@ -63,7 +64,7 @@ public class AuthenticationDAO extends DBContext {
         try (PreparedStatement ps = this.getConnection().prepareStatement(sql)) {
             ps.setString(1, username);
             ps.setString(2, username);
-            ps.setString(3, password);
+            ps.setString(3, HashUtil.toMD5(password));
 
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -81,7 +82,8 @@ public class AuthenticationDAO extends DBContext {
                 boolean gender = rs.getBoolean(10);
                 LocalDate dob = rs.getDate(11).toLocalDate();
                 String aboutMe = rs.getString(12);
-                Users u = new Users(userId, fullName, username, email, password, phone, gender, dob, aboutMe, address, roleId, userStatus);
+                Users u = new Users(userId, fullName, username, email, password, phone, gender, dob, aboutMe, address,
+                        roleId, userStatus);
                 // set fields...
                 return u;
             }
@@ -91,21 +93,24 @@ public class AuthenticationDAO extends DBContext {
         return null;
     }
 
-    /**
-     * Registers a new user in the database.
-     *
-     * @param username The username for the new user.
-     * @param email The email for the new user.
-     * @param password The password for the new user.
-     */
-    public void registerUser(String username, String email, String password) {
-        String sql = "INSERT INTO [User] (user_name, email, password, role_id, user_status, phone, gender, dob) VALUES (?, ?, ?, ?, ?, 0, 1, '2000-01-01')";
+    public void registerUser(String userName, String email, String password, String phone,
+            String fullName, boolean gender, LocalDate dob,
+            String aboutMe, String address) {
+        String sql = "INSERT INTO [User] (user_name, email, password, phone, address, role_id, user_status, full_name, gender, dob, about_me) "
+                +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement ps = this.getConnection().prepareStatement(sql)) {
-            ps.setString(1, username);
+            ps.setString(1, userName);
             ps.setString(2, email);
-            ps.setString(3, password);
-            ps.setInt(4, 2);
-            ps.setString(5, "Active");
+            ps.setString(3, HashUtil.toMD5(password));
+            ps.setString(4, phone);
+            ps.setString(5, address);
+            ps.setInt(6, 2); // ví dụ: 2 = user, 1 = admin
+            ps.setString(7, "Active"); // ví dụ: "Active"
+            ps.setString(8, fullName);
+            ps.setBoolean(9, gender);
+            ps.setDate(10, java.sql.Date.valueOf(dob));
+            ps.setString(11, aboutMe);
 
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -139,7 +144,8 @@ public class AuthenticationDAO extends DBContext {
                 boolean gender = rs.getBoolean(10);
                 LocalDate dob = rs.getDate(11).toLocalDate();
                 String aboutMe = rs.getString(12);
-                Users u = new Users(userId, fullName, username, email, null, phone, gender, dob, aboutMe, address, roleId, userStatus);
+                Users u = new Users(userId, fullName, username, email, null, phone, gender, dob, aboutMe, address,
+                        roleId, userStatus);
                 // set fields...
                 if (u != null) {
                     return true;
@@ -176,7 +182,7 @@ public class AuthenticationDAO extends DBContext {
      * Sets or updates the password for a user based on their email. This is
      * typically used for "forgot password" functionalities.
      *
-     * @param femail The email of the user whose password needs to be updated.
+     * @param femail   The email of the user whose password needs to be updated.
      * @param password The new password to set.
      */
     public void setUserPasswordByEmail(String femail, String password) {
