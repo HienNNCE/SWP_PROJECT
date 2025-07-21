@@ -24,6 +24,20 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        html, body {
+            height: 100%;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .container {
+            flex: 1 0 auto;
+        }
+        footer {
+            flex-shrink: 0;
+        }
         .cart-header {
             text-align: center;
             margin: 60px 0 30px 0;

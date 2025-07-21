@@ -217,7 +217,7 @@
 <jsp:include page="/components/navbar.jsp"/>
 <div class="container" style="padding-top:100px;">    <div class="parts-header">
         <h1 class="parts-title">Parts Collection</h1>
-        <p class="parts-subtitle">Browse and filter genuine car parts for your vehicle. Minimalist, modern, and easy to use.</p>
+        <p class="parts-subtitle">Browse and filter genuine car parts for your vehicle.</p>
     </div>
     <section class="parts-filter-section">
         <div class="parts-advanced-filter-grid">

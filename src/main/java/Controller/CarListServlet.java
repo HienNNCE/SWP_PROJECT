@@ -1,6 +1,7 @@
 package Controller;
 
 import DAO.CarDAO;
+import DAO.PartDAO;
 import Model.Car;
 
 import jakarta.servlet.ServletException;
@@ -17,12 +18,14 @@ import java.util.List;
 public class CarListServlet extends HttpServlet {
 
     private CarDAO carDAO;
+    private PartDAO partDAO;
     private final int CARS_PER_PAGE = 12;
 
     @Override
     public void init() throws ServletException {
         super.init();
         carDAO = new CarDAO();
+        partDAO = new PartDAO();
     }
 
     @Override
@@ -239,6 +242,12 @@ public class CarListServlet extends HttpServlet {
             request.setAttribute("selectedFuelType", fuelType);
             request.setAttribute("selectedOdoRange", odoRange);
             request.setAttribute("searchTerm", searchTerm);
+
+            // --- Bổ sung biến cho navbar ---
+            request.setAttribute("carBrands", brands);
+            request.setAttribute("carCategories", categories);
+            request.setAttribute("latestCars", carDAO.getRandomCars(8));
+            request.setAttribute("partBrands", partDAO.getAllBrands());
             
             // Xử lý tùy theo loại request
             if (isAjaxRequest) {

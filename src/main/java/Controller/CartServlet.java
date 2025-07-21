@@ -35,6 +35,20 @@ public class CartServlet extends HttpServlet {
         for (Model.Part part : cart.getPartList()) {
             System.out.println("Part Stock: " + part.getPartStock());
         }
+        // Bổ sung biến cho navbar
+        DAO.CarDAO carDAO = new DAO.CarDAO();
+        DAO.PartDAO partDAO = new DAO.PartDAO();
+        List<String> carBrands = carDAO.getAllBrands();
+        List<String> carCategories = carDAO.getAllCategories();
+        List<Model.Car> latestCars = carDAO.getRandomCars(8);
+        if (latestCars == null || latestCars.isEmpty()) {
+            latestCars = carDAO.getAllCars();
+        }
+        List<String> partBrands = partDAO.getAllBrands();
+        request.setAttribute("carBrands", carBrands);
+        request.setAttribute("carCategories", carCategories);
+        request.setAttribute("latestCars", latestCars);
+        request.setAttribute("partBrands", partBrands);
         request.getRequestDispatcher("/cart.jsp").forward(request, response);
     }
 

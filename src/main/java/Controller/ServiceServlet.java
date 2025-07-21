@@ -1,6 +1,8 @@
 package Controller;
 
 import DAO.ServiceDAO;
+import DAO.CarDAO;
+import DAO.PartDAO;
 import Model.Service;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -20,10 +22,14 @@ import java.util.stream.Collectors;
 public class ServiceServlet extends HttpServlet {
 
     private ServiceDAO serviceDAO;
+    private CarDAO carDAO;
+    private PartDAO partDAO;
 
     @Override
     public void init() {
         serviceDAO = new ServiceDAO();
+        carDAO = new CarDAO();
+        partDAO = new PartDAO();
     }
 
     @Override
@@ -53,6 +59,18 @@ public class ServiceServlet extends HttpServlet {
             throws ServletException, IOException {
         List<Service> services = serviceDAO.getAllService();
         request.setAttribute("services", services);
+        // Bổ sung biến cho navbar
+        List<String> carBrands = carDAO.getAllBrands();
+        List<String> carCategories = carDAO.getAllCategories();
+        List<Model.Car> latestCars = carDAO.getRandomCars(8);
+        if (latestCars == null || latestCars.isEmpty()) {
+            latestCars = carDAO.getAllCars();
+        }
+        List<String> partBrands = partDAO.getAllBrands();
+        request.setAttribute("carBrands", carBrands);
+        request.setAttribute("carCategories", carCategories);
+        request.setAttribute("latestCars", latestCars);
+        request.setAttribute("partBrands", partBrands);
         request.getRequestDispatcher("/service-list.jsp").forward(request, response);
     }
 
@@ -62,6 +80,18 @@ public class ServiceServlet extends HttpServlet {
         String keyword = request.getParameter("keyword");
         List<Service> services = serviceDAO.searchServiceByName(keyword);
         request.setAttribute("services", services);
+        // Bổ sung biến cho navbar
+        List<String> carBrands = carDAO.getAllBrands();
+        List<String> carCategories = carDAO.getAllCategories();
+        List<Model.Car> latestCars = carDAO.getRandomCars(8);
+        if (latestCars == null || latestCars.isEmpty()) {
+            latestCars = carDAO.getAllCars();
+        }
+        List<String> partBrands = partDAO.getAllBrands();
+        request.setAttribute("carBrands", carBrands);
+        request.setAttribute("carCategories", carCategories);
+        request.setAttribute("latestCars", latestCars);
+        request.setAttribute("partBrands", partBrands);
         request.getRequestDispatcher("/service-list.jsp").forward(request, response);
     }
 
@@ -84,6 +114,18 @@ public class ServiceServlet extends HttpServlet {
         }
 
         request.setAttribute("services", services);
+        // Bổ sung biến cho navbar
+        List<String> carBrands = carDAO.getAllBrands();
+        List<String> carCategories = carDAO.getAllCategories();
+        List<Model.Car> latestCars = carDAO.getRandomCars(8);
+        if (latestCars == null || latestCars.isEmpty()) {
+            latestCars = carDAO.getAllCars();
+        }
+        List<String> partBrands = partDAO.getAllBrands();
+        request.setAttribute("carBrands", carBrands);
+        request.setAttribute("carCategories", carCategories);
+        request.setAttribute("latestCars", latestCars);
+        request.setAttribute("partBrands", partBrands);
         request.getRequestDispatcher("/service-list.jsp").forward(request, response);
     }
 

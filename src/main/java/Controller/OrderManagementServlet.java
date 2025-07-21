@@ -6,6 +6,8 @@ package Controller;
 
 import DAO.OrderDAO;
 import DAO.OrderDetailDAO;
+import DAO.CarDAO;
+import DAO.PartDAO;
 import Model.Order;
 import Model.OrderDetail;
 import jakarta.servlet.ServletException;
@@ -61,6 +63,18 @@ public class OrderManagementServlet extends HttpServlet {
             }
         }
         // Hiển thị danh sách đơn hàng
+        CarDAO carDAO = new CarDAO();
+        PartDAO partDAO = new PartDAO();
+        List<String> carBrands = carDAO.getAllBrands();
+        List<String> partBrands = partDAO.getAllBrands();
+        // Lấy danh sách xe preview cho dropdown
+        List<Model.Car> latestCars = carDAO.getRandomCars(8);
+        if (latestCars == null || latestCars.isEmpty()) {
+            latestCars = carDAO.getAllCars();
+        }
+        request.setAttribute("carBrands", carBrands);
+        request.setAttribute("partBrands", partBrands);
+        request.setAttribute("latestCars", latestCars);
         List<Order> orders = orderDAO.getAllOrders();
         request.setAttribute("orders", orders);
         request.getRequestDispatcher("/admin/order/order.jsp").forward(request, response);
