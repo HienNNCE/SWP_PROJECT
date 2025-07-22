@@ -30,7 +30,8 @@ public class ServiceDAO extends DBContext {
     public Service getServiceById(int serviceId) {
         String sql = "SELECT * FROM dbo.Service WHERE service_id = ?";
 
-        try (Connection conn = this.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+        Connection conn = this.getConnection();
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, serviceId);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -48,7 +49,8 @@ public class ServiceDAO extends DBContext {
     public void createService(Service service) {
         String sql = "INSERT INTO dbo.Service(service_name, service_description, service_price, estimate_time, service_img) VALUES (?, ?, ?, ?, ?)";
 
-        try (Connection conn = this.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+        Connection conn = this.getConnection();
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, service.getServiceName());
             stmt.setString(2, service.getServiceDescription());
@@ -65,8 +67,8 @@ public class ServiceDAO extends DBContext {
     // Update service
     public void updateService(Service service) {
         String sql = "UPDATE dbo.Service SET service_name = ?, service_description = ?, service_price = ?, estimate_time = ?, service_img = ? WHERE service_id = ?";
-
-        try (Connection conn = this.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+        Connection conn = this.getConnection();
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, service.getServiceName());
             stmt.setString(2, service.getServiceDescription());
@@ -98,7 +100,8 @@ public class ServiceDAO extends DBContext {
     public List<Service> searchServiceByName(String keyword) {
         List<Service> services = new ArrayList<>();
         String sql = "SELECT * FROM Service WHERE LOWER(service_name) LIKE LOWER(?)";
-        try (Connection conn = this.getConnection();
+        Connection conn = this.getConnection();
+        try (
                 PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, "%" + keyword + "%");
             ResultSet rs = stmt.executeQuery();
@@ -134,7 +137,8 @@ public class ServiceDAO extends DBContext {
         } else if ("desc".equalsIgnoreCase(sort)) {
             sql.append(" ORDER BY service_price DESC");
         }
-        try (Connection conn = this.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
+        Connection conn = this.getConnection();
+        try (PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
             for (int i = 0; i < params.size(); i++) {
                 stmt.setObject(i + 1, params.get(i));
             }
@@ -152,9 +156,10 @@ public class ServiceDAO extends DBContext {
     public List<String> getAllServiceTypes() {
         List<String> types = new ArrayList<>();
         String sql = "SELECT DISTINCT service_description FROM Service WHERE service_description IS NOT NULL AND service_description <> ''";
-        try (Connection conn = this.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+        Connection conn = this.getConnection();
+        try (
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 types.add(rs.getString("service_description"));
             }

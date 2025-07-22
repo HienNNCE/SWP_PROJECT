@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import DAO.CarAppointmentDAO;
+import DAO.CarDAO;
+import Model.Car;
 import Model.CarAppointment;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -41,14 +43,21 @@ public class CarAppointmentServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         Object userIdObj = session.getAttribute("userId");
+        String serviceIdS = request.getParameter("carId");
+        int carId = Integer.parseInt(serviceIdS);
+        CarDAO cDAO = new CarDAO();
+        Car car = cDAO.getCarById(carId);
+
+        LocalDate today = LocalDate.now();
+        String minDate = today.toString();
+        request.setAttribute("minDate", minDate);
 
         if (userIdObj == null) {
             // Nếu chưa đăng nhập, chuyển về trang login hoặc báo lỗi
             response.sendRedirect("auth/login.jsp");
             return;
         }
-        String serviceIdS = request.getParameter("carId");
-        int carId = Integer.parseInt(serviceIdS);
+        request.setAttribute("car", car);
         request.setAttribute("carId", carId);
         request.getRequestDispatcher("car_appointment.jsp").forward(request, response);
     }

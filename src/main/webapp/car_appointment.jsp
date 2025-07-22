@@ -93,14 +93,20 @@
                         <option value="maintenance">Maintenance</option>
                         <option value="consult">Vehicle Consultation</option>
                     </select>
-                    <label for="car">Car Infor</label>
-                    <input type="hiedden" id="carId" name="carId" value=${carId}>
+
+                    <label for="carName">Car Name</label>
+                    <input type="text" id="carName" name="carName" value="${car.carName}" readonly class="form-control" style="background-color: #fff8dc;">
+
+                    <label for="carModel">Car Model</label>
+                    <input type="text" id="carModel" name="carModel" value="${car.model}" readonly class="form-control" style="background-color: #fff8dc;">
+
+                    <input type="hidden" name="carModel" value="${car.model}">
 
                     <label for="date">Appointment Date</label>
-                    <input type="date" id="date" name="date" required>
+                    <input type="date" id="date" name="date" min="${minDate}" onkeydown="return false" required>
 
                     <label for="time">Appointment Time</label>
-                    <input type="time" id="time" name="time" required>
+                    <input type="time" id="time" name="time" min="09:00" max="20:00" onkeydown="return false" required>
 
                     <label for="note">Notes</label>
                     <textarea id="note" name="note" rows="3"></textarea>
