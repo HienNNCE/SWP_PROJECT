@@ -73,56 +73,40 @@
                 </div>
             </c:if>
             <c:if test="${empty successMsg}">
-            <form class="appointment-form" method="post" action="serviceAppointment">
-                <h2>Service Appointment Booking</h2>
+                <form class="appointment-form" method="post" action="carAppointment">
+                    <h2>Car Appointment Booking</h2>
 
-                <label for="fullname">Full Name</label>
-                <input type="text" id="fullname" name="fullname" required>
+                    <label for="fullname">Full Name</label>
+                    <input type="text" id="fullname" name="fullname" required>
 
-                <label for="phone">Phone Number</label>
+                    <label for="phone">Phone Number</label>
 
-                <input type="text" id="phone" name="phone" required>
+                    <input type="text" id="phone" name="phone" required>
 
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required>
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
 
-                <!-- Repair type dropdown (ẩn mặc định) -->
-                <div id="repairTypeContainer" style="margin-top: 10px;">
-                    <label for="repairType">Select Repair Type:</label>
-                    <select id="repairType" name="repairType" required>
-                        <option value="">-- Select Repair Type --</option>
-                        <option value="1">Oil Change</option>
-                        <option value="2">Brake Inspection</option>
-                        <option value="3">Tire Rotation</option>
-                        <option value="4">Engine Tune-up</option>
-                        <option value="5">Transmission Service</option>
-                        <option value="6">Suspension Check</option>
-                        <option value="7">Battery Replacement</option>
-                        <option value="8">Exhaust Repair</option>
-                        <option value="9">Cooling System Flush</option>
-                        <option value="10">Brake Pad Replacement</option>
-                        <option value="11">Wheel Alignment</option>
-                        <option value="12">Air Filter Replacement</option>
-                        <option value="13">Oil Filter Change</option>
-                        <option value="14">Radiator Repair</option>
-                        <option value="15">Clutch Adjustment</option>
+                    <label for="serviceType">Service Type</label>
+                    <select id="serviceType" name="serviceType" required>
+                        <option value="">-- Select Service Type --</option>
+                        <option value="testdrive">Test Drive</option>
+                        <option value="maintenance">Maintenance</option>
+                        <option value="consult">Vehicle Consultation</option>
                     </select>
-                </div>
+                    <label for="car">Car Infor</label>
+                    <input type="hiedden" id="carId" name="carId" value=${carId}>
 
-                <label for="car">Car Infor</label>
-                <input type="text" id="car" name="car" placeholder="e.g., Mercedes S-Class" required>
+                    <label for="date">Appointment Date</label>
+                    <input type="date" id="date" name="date" required>
 
-                <label for="date">Appointment Date</label>
-                <input type="date" id="date" name="date" required>
+                    <label for="time">Appointment Time</label>
+                    <input type="time" id="time" name="time" required>
 
-                <label for="time">Appointment Time</label>
-                <input type="time" id="time" name="time" required>
+                    <label for="note">Notes</label>
+                    <textarea id="note" name="note" rows="3"></textarea>
 
-                <label for="note">Notes</label>
-                <textarea id="note" name="note" rows="3"></textarea>
-
-                <button type="submit">Book Appointment</button>
-            </form>
+                    <button type="submit">Book Appointment</button>
+                </form>
             </c:if>
         </div>
         <jsp:include page="components/footer.jsp"/>

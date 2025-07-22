@@ -66,9 +66,16 @@
             </li>
 
             <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="${pageContext.request.contextPath}/admin/serviceAppointment" class="nav-link">
                     <i class="fas fa-calendar-alt"></i>
-                    <span>Appointments</span>
+                    <span>Service Appt</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="${pageContext.request.contextPath}/admin/carAppointment" class="nav-link">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Car Apppt</span>
                 </a>
             </li>
 
