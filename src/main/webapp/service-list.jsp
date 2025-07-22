@@ -84,9 +84,10 @@
                                         <a href="${pageContext.request.contextPath}/service/detail?id=${service.serviceId}" class="btn btn-sm btn-outline-secondary w-100 mb-2">
                                             <i class="fas fa-info-circle"></i> Detail
                                         </a>
-                                        <button type="button" service-id='${service.serviceId}' class="btn btn-primary w-100 add_to_cart">
-                                            Add to Cart
-                                        </button>
+                                        <a href="${pageContext.request.contextPath}/serviceAppointment?serviceId=${service.serviceId}" class="btn btn-primary w-100">
+                                            Booking Appointment
+                                        </a>
+
                                     </div>
                                 </div>
                             </div>

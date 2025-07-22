@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import DAO.ServiceAppointmentDAO;
+import DAO.ServiceDAO;
+import Model.Service;
 import Model.ServiceAppointment;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -41,14 +43,21 @@ public class ServiceAppointmentServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         Object userIdObj = session.getAttribute("userId");
+        
+        LocalDate today = LocalDate.now();
+        String minDate = today.toString(); 
+        request.setAttribute("minDate", minDate);
 
         if (userIdObj == null) {
-            // Nếu chưa đăng nhập, chuyển về trang login hoặc báo lỗi
             response.sendRedirect("auth/login.jsp");
             return;
         }
+
+        ServiceDAO sDAO = new ServiceDAO();
         String serviceIdS = request.getParameter("serviceId");
         int serviceId = Integer.parseInt(serviceIdS);
+        Service serice = sDAO.getServiceById(serviceId);
+        request.setAttribute("service", serice);
         request.setAttribute("serviceId", serviceId);
         request.getRequestDispatcher("contact.jsp").forward(request, response);
     }

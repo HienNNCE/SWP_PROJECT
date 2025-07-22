@@ -140,7 +140,7 @@
                         <div class="quick-info-grid">
                             <div class="quick-info-item">
                                 <i class="fas fa-tags"></i>
-                                <div class="info-value">${service.serviceType}</div>
+                                <div class="info-value">${service.serviceName}</div>
                                 <div class="info-label">Service Type</div>
                             </div>
                             <div class="quick-info-item">
@@ -154,7 +154,7 @@
                                 <div class="info-label">Category</div>
                             </div>
                         </div>
-                        <button class="btn-booking" onclick="window.location.href='${pageContext.request.contextPath}/service/booking?id=${service.serviceId}'">
+                        <button class="btn-booking" onclick="window.location.href='${pageContext.request.contextPath}/serviceAppointment?serviceId=${service.serviceId}'">
                             <i class="fas fa-calendar-check"></i> Book This Service
                         </button>
                         <div>
