@@ -25,6 +25,8 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="asset/css/style.css">
+
         <style>
             body {
                 font-family: 'Inter', sans-serif;
@@ -452,14 +454,10 @@
         </style>
     </head>
     <body>
-        <!-- Breadcrumb -->
-        <div class="container">
-            <div class="breadcrumb">
-                <a href="${pageContext.request.contextPath}/home">Home</a>
-                <span><i class="fas fa-angle-right"></i></span>
-                <span>Cart</span>
-            </div>
-        </div>
+    <div class="container">
+    <jsp:include page="components/navbar.jsp" />
+    </div>
+        
 
         <!-- Cart Section -->
         <section class="cart-section">
@@ -576,4 +574,5 @@
             </div>
         </section>
     </body>
+    <jsp:include page="components/footer.jsp" />
 </html>

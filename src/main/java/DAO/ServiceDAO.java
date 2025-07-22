@@ -13,9 +13,10 @@ public class ServiceDAO extends DBContext {
     public List<Service> getAllService() {
         List<Service> services = new ArrayList<>();
         String sql = "SELECT * FROM Service";
-        try (Connection conn = this.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+        Connection conn = this.getConnection();
+        try (
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 services.add(mapRowToService(rs));
             }
@@ -98,7 +99,7 @@ public class ServiceDAO extends DBContext {
         List<Service> services = new ArrayList<>();
         String sql = "SELECT * FROM Service WHERE LOWER(service_name) LIKE LOWER(?)";
         try (Connection conn = this.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, "%" + keyword + "%");
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {

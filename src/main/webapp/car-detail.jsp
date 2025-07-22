@@ -171,13 +171,13 @@
 
                         <!-- Contact Actions -->
                         <div class="contact-actions">
-                            <button class="contact-action-btn book-btn">
+                            <a href="${pageContext.request.contextPath}/carAppointment?carId=${car.carId}" class="contact-action-btn book-btn">
                                 <i class="far fa-calendar-alt"></i> 
                                 <span class="btn-text">
                                     <span class="btn-title">Book Appointment</span>
                                     <span class="btn-subtitle">Available today</span>
                                 </span>
-                        </button>
+                            </a>
                         
                             <button class="contact-action-btn drive-btn">
                                 <i class="fas fa-car"></i>
@@ -185,7 +185,7 @@
                                     <span class="btn-title">Schedule Test Drive</span>
                                     <span class="btn-subtitle">Experience it yourself</span>
                                 </span>
-                        </button>
+                            </button>
                         
                             <div class="guarantee-line">
                                 <i class="fas fa-shield-alt"></i> Guaranteed by DriverXO

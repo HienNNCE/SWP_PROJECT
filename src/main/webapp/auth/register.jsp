@@ -215,7 +215,7 @@
                         String error = (String) request.getAttribute("err");
                         if (error != null && !error.isEmpty()) {
                     %>
-                    <div style="color: red; margin-bottom: 15px; text-align: center;">
+                    <div id="error-message" style="color: red; margin-bottom: 15px; text-align: center;">
                         <%= error%>
                     </div>
                     <%
