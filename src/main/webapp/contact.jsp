@@ -72,8 +72,10 @@
                     ${successMsg}
                 </div>
             </c:if>
-            <form class="appointment-form" method="post">
-                <h2>Vehicle Appointment Booking</h2>
+            <c:if test="${empty successMsg}">
+            <form class="appointment-form" method="post" action="serviceAppointment" onsubmit="..." novalidate>
+                <input type="hidden" name="action" value="checkDate">
+                <h2>Service Appointment Booking</h2>
 
                 <label for="fullname">Full Name</label>
                 <input type="text" id="fullname" name="fullname" required>
@@ -85,43 +87,55 @@
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" required>
 
-                <label for="serviceType">Service Type</label>
-                <select id="serviceType" name="serviceType" required>
-                    <option value="">-- Select Service Type --</option>
-                    <option value="testdrive">Test Drive</option>
-                    <option value="maintenance">Maintenance</option>
-                    <option value="repair">Repair</option>
-                    <option value="consult">Vehicle Consultation</option>
-                </select>
+                <div id="repairTypeContainer" style="margin-top: 10px;">
+                    <label for="repairType">Repair Type:</label>
+                    <c:choose>
+                        <c:when test="${empty service}">
+                            <select id="repairType" name="repairType" required>
+                                <option value="">-- Select Repair Type --</option>
+                                <option value="1">Oil Change</option>
+                                <option value="2">Brake Inspection</option>
+                                <option value="3">Tire Rotation</option>
+                                <option value="4">Engine Tune-up</option>
+                                <option value="5">Transmission Service</option>
+                                <option value="6">Suspension Check</option>
+                                <option value="7">Battery Replacement</option>
+                                <option value="8">Exhaust Repair</option>
+                                <option value="9">Cooling System Flush</option>
+                                <option value="10">Brake Pad Replacement</option>
+                                <option value="11">Wheel Alignment</option>
+                                <option value="12">Air Filter Replacement</option>
+                                <option value="13">Oil Filter Change</option>
+                                <option value="14">Radiator Repair</option>
+                                <option value="15">Clutch Adjustment</option>
+                            </select>
+                        </c:when>
+                        <c:otherwise>
+                            <input type="hidden" name="repairType" value="${service.serviceId}" />
+                            <input type="text" class="form-control" value="${service.serviceName}" style="background-color: #fff8dc;" readonly />
+                        </c:otherwise>
+                    </c:choose>
+                </div>
 
-                <label for="car">Vehicle Model</label>
+
+                <label for="car">Car Infor</label>
                 <input type="text" id="car" name="car" placeholder="e.g., Mercedes S-Class" required>
 
                 <label for="date">Appointment Date</label>
-                <input type="date" id="date" name="date" required>
+                <input type="date" id="date" name="date" min="${minDate}" onkeydown="return false" required>
 
                 <label for="time">Appointment Time</label>
-                <input type="time" id="time" name="time" required>
+                <input type="time" id="time" name="time" required min="09:00" max="20:00" onkeydown="return false">
+
 
                 <label for="note">Notes</label>
                 <textarea id="note" name="note" rows="3"></textarea>
 
                 <button type="submit">Book Appointment</button>
             </form>
+            </c:if>
         </div>
         <jsp:include page="components/footer.jsp"/>
-
-        <!-- JS xử lý action động -->
-        <script>
-            document.querySelector('.appointment-form').addEventListener('submit', function (e) {
-                const service = document.getElementById('serviceType').value;
-                if (service === 'maintenance' || service === 'repair') {
-                    this.action = 'booking';
-                } else {
-                    this.action = 'appointment';
-                }
-            });
-        </script>
     </body>
 </html>
 

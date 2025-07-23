@@ -24,7 +24,7 @@
             </li>
 
             <li class="nav-item">
-                <a href="dashboard.jsp" class="nav-link active">
+                <a href="${pageContext.request.contextPath}/admin/dashboard.jsp" class="nav-link active">
                     <i class="fas fa-tachometer-alt"></i>
                     <span>Dashboard</span>
                     <span class="badge badge-primary">New</span>
@@ -36,7 +36,7 @@
             </li>
 
             <li class="nav-item">
-                <a href="../admin/car" class="nav-link">
+                <a href="${pageContext.request.contextPath}/admin/car" class="nav-link">
                     <i class="fas fa-car"></i>
                     <span>Cars</span>
                     <span class="badge badge-warning">8</span>
@@ -44,7 +44,7 @@
             </li>
 
             <li class="nav-item">
-                <a href="../admin/users" class="nav-link">
+                <a href="${pageContext.request.contextPath}/admin/users" class="nav-link">
                     <i class="fas fa-users"></i>
                     <span>Users</span>
                     <span class="badge badge-info">24</span>
@@ -66,9 +66,16 @@
             </li>
 
             <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="${pageContext.request.contextPath}/admin/serviceAppointment" class="nav-link">
                     <i class="fas fa-calendar-alt"></i>
-                    <span>Appointments</span>
+                    <span>Service Appt</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="${pageContext.request.contextPath}/admin/carAppointment" class="nav-link">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Car Apppt</span>
                 </a>
             </li>
 
@@ -95,10 +102,10 @@
             </li>
 
             <li class="nav-item">
-                <a href="${pageContext.request.contextPath}/OrderManagementServlet" class="nav-link">
+                <a href="${pageContext.request.contextPath}/admin/OrderManagementServlet" class="nav-link">
                     <i class="fas fa-shopping-cart"></i>
                     <span>Orders</span>
-                    <span class="badge badge-danger">3</span>
+                    <span class="badge badge-danger">${sessionScope.totalOrders}</span>
                 </a>
             </li>
 

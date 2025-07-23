@@ -104,11 +104,11 @@ public class LoginServlet extends HttpServlet {
             switch (roleId) {
                 case 1:
                     // If roleId is 1, redirect to admin dashboard page
-                    response.sendRedirect(request.getContextPath() + "/admin/dashboard.jsp");
+                    response.sendRedirect(request.getContextPath() + "/admin/dashboard");
                     break;
                 case 4:
                     // If roleId is 4, redirect to staff dashboard page
-                    response.sendRedirect(request.getContextPath() + "/staff/dashboard.jsp");
+                    response.sendRedirect(request.getContextPath() + "/staff/dashboard");
                     break;
                 default:
                     // For other roles, redirect to home page
