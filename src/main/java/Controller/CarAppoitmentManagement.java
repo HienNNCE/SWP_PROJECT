@@ -82,9 +82,6 @@ public class CarAppoitmentManagement extends HttpServlet {
                 String idRaw = request.getParameter("serviceAppointmentId");
                 String status = request.getParameter("status");
 
-                System.out.println("ID: " + idRaw);
-                System.out.println("Status: " + status);
-
                 int id = Integer.parseInt(idRaw);
 
                 CarAppointmentDAO dao = new CarAppointmentDAO();

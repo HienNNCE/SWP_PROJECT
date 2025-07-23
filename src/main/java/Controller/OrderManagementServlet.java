@@ -48,7 +48,6 @@ public class OrderManagementServlet extends HttpServlet {
             int orderId = Integer.parseInt(request.getParameter("id"));
             Order order = orderDAO.getOrderById(orderId);
             OrderDetailDAO orderDetailDAO = new OrderDetailDAO();
-            System.out.println("Order date: " + order.getOrderDate());
             List<OrderDetail> orderDetail = orderDetailDAO.getOrderDetailWithPartByOrderId(orderId);
             if (orderDetail != null) {
                 request.setAttribute("orderDetail", orderDetail);

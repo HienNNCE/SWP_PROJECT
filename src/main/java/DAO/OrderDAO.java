@@ -11,6 +11,10 @@ import java.math.BigDecimal;
 import DB.DBContext;
 
 import java.sql.*;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 
 /**
@@ -18,17 +22,29 @@ import java.util.*;
  * @author acer
  */
 public class OrderDAO extends DBContext {
-    public static void main(String[] args) {
-    OrderDAO oderDAO = new OrderDAO();
-    int count = oderDAO.countOrders();
-        System.out.println(count);
-    }
+    // public static void main(String[] args) {
+    //     OrderDAO oDAO = new OrderDAO();
+    //     BigDecimal price = new BigDecimal("28000.90");
+    //     Order o = new Order();
+    //     o.setUserId(102);
+    //     o.setOrderPrice(price);
+    //     o.setOrderStatus("Paid");
+    //     o.setOrderDate(new java.util.Date());
+    //     o.setPaymentId(1);
+
+    //     try {
+    //         int orderId = oDAO.insertOrder(o);
+    //         System.out.println("Inserted order ID: " + orderId);
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //     }
+    // }
 
     public List<Order> getAllOrders() {
         List<Order> list = new ArrayList<>();
         String sql = "SELECT * FROM [Order]";
-        try (Connection conn = getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql);
+        Connection conn = getConnection();
+        try (PreparedStatement ps = conn.prepareStatement(sql);
                 ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Order o = new Order();
@@ -48,7 +64,8 @@ public class OrderDAO extends DBContext {
 
     public Order getOrderById(int orderId) {
         String sql = "SELECT * FROM [Order] WHERE order_id = ?";
-        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        Connection conn = getConnection();
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, orderId);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -68,29 +85,35 @@ public class OrderDAO extends DBContext {
         return null;
     }
 
-    public int insertOrder(Order o) {
-        String sql = "INSERT INTO [Order] (user_id, order_price, order_status, order_date, payment_id) VALUES (?, ?, ?, ?, ?)";
-        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+    public int insertOrder(Order o) throws SQLException {
+        String sql = "INSERT INTO [Order] (user_id, order_price, order_status, order_date, payment_id) "
+                + "VALUES (?, ?, ?, ?, ?)";
+        Connection conn = getConnection();
+        try (PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
             ps.setInt(1, o.getUserId());
             ps.setBigDecimal(2, o.getOrderPrice());
             ps.setString(3, o.getOrderStatus());
             ps.setTimestamp(4, new java.sql.Timestamp(o.getOrderDate().getTime()));
             ps.setInt(5, o.getPaymentId());
+
             ps.executeUpdate();
+
             try (ResultSet rs = ps.getGeneratedKeys()) {
                 if (rs.next()) {
-                    return rs.getInt(1);
+                    int generatedId = rs.getInt(1);
+                    o.setOrderId(generatedId); // Gán lại để sử dụng sau (OrderDetail)
+                    return generatedId;
                 }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return -1;
+        return -1; // Insert thất bại
     }
 
     public void updateOrder(Order o) {
         String sql = "UPDATE [Order] SET user_id=?, order_price=?, order_status=?, order_date=?, payment_id=? WHERE order_id=?";
-        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        Connection conn = getConnection();
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, o.getUserId());
             ps.setBigDecimal(2, o.getOrderPrice());
             ps.setString(3, o.getOrderStatus());
@@ -118,7 +141,8 @@ public class OrderDAO extends DBContext {
     public void deleteOrder(int orderId) {
         String deleteOrderDetailSql = "DELETE FROM [OrderDetail] WHERE order_id=?";
         String deleteOrderSql = "DELETE FROM [Order] WHERE order_id=?";
-        try (Connection conn = getConnection()) {
+        Connection conn = getConnection();
+        try {
             conn.setAutoCommit(false); // Bắt đầu transaction
 
             try (PreparedStatement ps1 = conn.prepareStatement(deleteOrderDetailSql);
@@ -143,7 +167,8 @@ public class OrderDAO extends DBContext {
     public int countOrders() {
         int count = 0;
         String query = "SELECT COUNT(*) FROM [Order]"; // Thay "orders" bằng tên bảng thật nếu khác
-        try (Connection conn = new DBContext().getConnection();
+        Connection conn = this.getConnection();
+        try (
                 PreparedStatement ps = conn.prepareStatement(query);
                 ResultSet rs = ps.executeQuery()) {
             if (rs.next()) {
@@ -166,27 +191,35 @@ public class OrderDAO extends DBContext {
     }
 
     public List<Order> getOrdersByUserId(int userId) {
-        List<Order> list = new ArrayList<>();
-        String sql = "SELECT * FROM [Order] WHERE user_id = ?";
-        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, userId);
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    Order o = new Order();
-                    o.setOrderId(rs.getInt("order_id"));
-                    o.setUserId(rs.getInt("user_id"));
-                    o.setOrderPrice(rs.getBigDecimal("order_price"));
-                    o.setOrderStatus(rs.getString("order_status"));
-                    o.setOrderDate(rs.getTimestamp("order_date"));
-                    o.setPaymentId(rs.getInt("payment_id"));
-                    list.add(o);
-                }
+    List<Order> list = new ArrayList<>();
+    String sql ="SELECT o.*, COUNT(od.part_id) AS countItem\r\n" + //
+                "        FROM [Order] o\r\n" + //
+                "        LEFT JOIN OrderDetail od ON o.order_id = od.order_id\r\n" + //
+                "        WHERE o.user_id = ?\r\n" + //
+                "        GROUP BY o.order_id, o.user_id, o.order_price, o.order_status, o.order_date, o.payment_id";
+    
+    Connection conn = getConnection();
+    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, userId);
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Order o = new Order();
+                o.setOrderId(rs.getInt("order_id"));
+                o.setUserId(rs.getInt("user_id"));
+                o.setOrderPrice(rs.getBigDecimal("order_price"));
+                o.setOrderStatus(rs.getString("order_status"));
+                o.setOrderDate(rs.getTimestamp("order_date"));
+                o.setPaymentId(rs.getInt("payment_id"));
+                o.setCountItem(rs.getInt("countItem")); // <--- gán số lượng sản phẩm
+                list.add(o);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return list;
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+    return list;
+}
+
 
     public List<OrderDetail> getOrderDetailById(int orderId) {
         List<OrderDetail> details = new ArrayList<>();
@@ -213,17 +246,50 @@ public class OrderDAO extends DBContext {
         return details;
     }
 
-    public void insertOrderDetail(OrderDetail detail) {
-        String sql = "INSERT INTO [OrderDetail] (order_id, part_id, quantity, price, total_price) VALUES (?, ?, ?, ?, ?)";
-        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, detail.getOrderId());
-            ps.setInt(2, detail.getPartId());
-            ps.setInt(3, detail.getQuantity());
-            ps.setBigDecimal(4, detail.getPrice());
-            ps.setBigDecimal(5, detail.getTotalPrice());
+    public int countTotalQuantityByOrderId(int orderId) {
+        int totalQuantity = 0;
+        String sql = "SELECT SUM(quantity) AS total_quantity FROM OrderDetail WHERE order_id = ?";
+        Connection conn = this.getConnection();
+        try (
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, orderId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    totalQuantity = rs.getInt("total_quantity");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return totalQuantity;
+    }
+
+    public void insertOrderDetail(OrderDetail detail) throws SQLException {
+        int nextId = getNextServiceScheduleId();
+        String sql = "INSERT INTO [OrderDetail] (order_detail_id, order_id, part_id, quantity, price, total_price) VALUES (?, ?, ?, ?, ?, ?)";
+        Connection conn = getConnection();
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, nextId);
+            ps.setInt(2, detail.getOrderId());
+            ps.setInt(3, detail.getPartId());
+            ps.setInt(4, detail.getQuantity());
+            ps.setBigDecimal(5, detail.getPrice());
+            ps.setBigDecimal(6, detail.getTotalPrice());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public int getNextServiceScheduleId() throws SQLException {
+        String sql = "SELECT ISNULL(MAX([order_detail_id]), 0) + 1 FROM OrderDetail";
+        Connection conn = this.getConnection();
+        try (PreparedStatement ps = conn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+        return 1; // fallback nếu DB trống
     }
 }

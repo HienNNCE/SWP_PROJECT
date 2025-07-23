@@ -552,22 +552,6 @@
         <!-- Header -->
         <jsp:include page="/components/navbar.jsp" />
 
-        <!-- Page Title Section -->
-        <section class="page-title-section">
-            <div class="container">
-                <h1>Order Details</h1>
-                <div class="breadcrumb">
-                    <a href="home">Home</a>
-                    <span><i class="fas fa-angle-right"></i></span>
-                    <a href="profile">My Account</a>
-                    <span><i class="fas fa-angle-right"></i></span>
-                    <a href="order-history">Order History</a>
-                    <span><i class="fas fa-angle-right"></i></span>
-                    <span>Order ${userId}</span>
-                </div>
-            </div>
-        </section>
-
         <!-- Order Detail Section -->
         <section class="order-detail-section">
             <div class="container">

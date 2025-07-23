@@ -20,15 +20,6 @@ import java.sql.Date;
  * @author thien
  */
 public class CarDAO extends DBContext {
-
-    public static void main(String[] a) {
-        CarDAO cDAO = new CarDAO();
-        ArrayList<Car> cars = cDAO.getAllCars();
-        for (Car car : cars) {
-            System.out.println(car.getCarId() + car.getCarName() + car.getCarBrand());
-        }
-    }
-
     public ArrayList<Car> getAllCars() {
         ArrayList<Car> cars = new ArrayList<>();
         String query = "SELECT * FROM Car";

@@ -5,7 +5,6 @@
 package Controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -43,9 +42,9 @@ public class ServiceAppointmentServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         Object userIdObj = session.getAttribute("userId");
-        
+
         LocalDate today = LocalDate.now();
-        String minDate = today.toString(); 
+        String minDate = today.toString();
         request.setAttribute("minDate", minDate);
 
         if (userIdObj == null) {
@@ -55,10 +54,12 @@ public class ServiceAppointmentServlet extends HttpServlet {
 
         ServiceDAO sDAO = new ServiceDAO();
         String serviceIdS = request.getParameter("serviceId");
-        int serviceId = Integer.parseInt(serviceIdS);
-        Service serice = sDAO.getServiceById(serviceId);
-        request.setAttribute("service", serice);
-        request.setAttribute("serviceId", serviceId);
+        if (serviceIdS != null) {
+            int serviceId = Integer.parseInt(serviceIdS);
+            Service serice = sDAO.getServiceById(serviceId);
+            request.setAttribute("service", serice);
+            request.setAttribute("serviceId", serviceId);
+        }
         request.getRequestDispatcher("contact.jsp").forward(request, response);
     }
 
@@ -81,12 +82,7 @@ public class ServiceAppointmentServlet extends HttpServlet {
             response.sendRedirect("auth/login.jsp");
             return;
         }
-
-        int userId = (Integer) userIdObj;
         try {
-            String fullname = request.getParameter("fullname");
-            String phone = request.getParameter("phone");
-            String email = request.getParameter("email");
             String repairType = request.getParameter("repairType");
             String carInfor = request.getParameter("car");
             String date = request.getParameter("date");
@@ -96,7 +92,7 @@ public class ServiceAppointmentServlet extends HttpServlet {
             LocalDateTime appointmentDate = LocalDateTime.of(LocalDate.parse(date), LocalTime.parse(time));
 
             ServiceAppointment sa = new ServiceAppointment();
-            userId = (int) session.getAttribute("userId");
+            int userId = (int) session.getAttribute("userId");
             sa.setUserId(userId);
             sa.setServiceId(Integer.parseInt(repairType));
             sa.setSaDate(appointmentDate);

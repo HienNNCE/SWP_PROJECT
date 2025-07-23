@@ -579,7 +579,7 @@
                         </div>
                         
                         <div class="order-status">
-                            <span class="status-label status-processing">Processing</span>
+                            <span class="status-label status-processing">${order.orderStatus}</span>
                             <div class="order-actions">
                                 <a href="#" class="btn btn-outline" id="trackOrderBtn"><i class="fas fa-truck"></i> Track Order</a>
                                 <button class="btn btn-danger" id="cancelOrderBtn"><i class="fas fa-times"></i> Cancel Order</button>
@@ -671,55 +671,7 @@
                     </div>
                     
                     <!-- Order Timeline -->
-                    <div class="order-timeline">
-                        <h3 class="section-title">Order Status</h3>
-                        <div class="timeline">
-                            <div class="timeline-item completed">
-                                <div class="timeline-dot"></div>
-                                <div class="timeline-content">
-                                    <div class="timeline-time">May 25, 2025 - 10:30 AM</div>
-                                    <h4 class="timeline-title">Order Placed</h4>
-                                    <p class="timeline-desc">Your order has been received and is being processed.</p>
-                                </div>
-                            </div>
-                            
-                            <div class="timeline-item completed">
-                                <div class="timeline-dot"></div>
-                                <div class="timeline-content">
-                                    <div class="timeline-time">May 25, 2025 - 2:45 PM</div>
-                                    <h4 class="timeline-title">Payment Confirmed</h4>
-                                    <p class="timeline-desc">Your payment has been successfully processed.</p>
-                                </div>
-                            </div>
-                            
-                            <div class="timeline-item active">
-                                <div class="timeline-dot"></div>
-                                <div class="timeline-content">
-                                    <div class="timeline-time">May 27, 2025 - 9:15 AM</div>
-                                    <h4 class="timeline-title">Processing</h4>
-                                    <p class="timeline-desc">Your order is being prepared for shipment.</p>
-                                </div>
-                            </div>
-                            
-                            <div class="timeline-item">
-                                <div class="timeline-dot"></div>
-                                <div class="timeline-content">
-                                    <div class="timeline-time">Expected: May 29, 2025</div>
-                                    <h4 class="timeline-title">Shipped</h4>
-                                    <p class="timeline-desc">Your vehicle will be on its way to you.</p>
-                                </div>
-                            </div>
-                            
-                            <div class="timeline-item">
-                                <div class="timeline-dot"></div>
-                                <div class="timeline-content">
-                                    <div class="timeline-time">Expected: June 1-3, 2025</div>
-                                    <h4 class="timeline-title">Delivered</h4>
-                                    <p class="timeline-desc">Your vehicle will be delivered to your shipping address.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    
                     
                     <!-- Back to Orders Link -->
                     <div style="margin-top: 30px; text-align: center;">

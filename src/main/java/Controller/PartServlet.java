@@ -32,7 +32,20 @@ public class PartServlet extends HttpServlet {
         MenuDataHelper.preloadPartMenu(request);
 
         String action = request.getServletPath();
-
+        HttpSession session = request.getSession();
+        Integer userId = (session != null) ? (Integer) session.getAttribute("userId") : null;
+        if (userId != null) {
+            DAO.CartDAO cartDAO = new DAO.CartDAO();
+            Model.Cart cart = cartDAO.getCartDetailByUserId(userId);
+            int cartCount = (cart != null) ? cart.getCountItem() : 0;
+            java.math.BigDecimal totalPrice = (cart != null && cart.getCartPrice() != null) ? cart.getCartPrice()
+                    : java.math.BigDecimal.ZERO;
+            session.setAttribute("cartCount", cartCount);
+            session.setAttribute("totalPrice", totalPrice);
+        } else {
+            request.setAttribute("cartCount", 0);
+            request.setAttribute("totalPrice", java.math.BigDecimal.ZERO);
+        }
         switch (action) {
             case "/parts/search":
                 handleSearch(request, response);

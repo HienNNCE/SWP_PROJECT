@@ -75,17 +75,6 @@
             <c:if test="${empty successMsg}">
                 <form class="appointment-form" method="post" action="carAppointment">
                     <h2>Car Appointment Booking</h2>
-
-                    <label for="fullname">Full Name</label>
-                    <input type="text" id="fullname" name="fullname" required>
-
-                    <label for="phone">Phone Number</label>
-
-                    <input type="text" id="phone" name="phone" required>
-
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
-
                     <label for="serviceType">Service Type</label>
                     <select id="serviceType" name="serviceType" required>
                         <option value="">-- Select Service Type --</option>
@@ -101,6 +90,8 @@
                     <input type="text" id="carModel" name="carModel" value="${car.model}" readonly class="form-control" style="background-color: #fff8dc;">
 
                     <input type="hidden" name="carModel" value="${car.model}">
+
+                    <input type="hidden" name="carId" value="${car.carId}">
 
                     <label for="date">Appointment Date</label>
                     <input type="date" id="date" name="date" min="${minDate}" onkeydown="return false" required>

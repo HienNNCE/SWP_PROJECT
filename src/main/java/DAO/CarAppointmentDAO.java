@@ -9,10 +9,13 @@ import java.util.List;
 import DB.DBContext;
 
 public class CarAppointmentDAO extends DBContext {
-    public static void main(String[] args) throws SQLException {
-    CarAppointmentDAO cDAO = new CarAppointmentDAO();
-    cDAO.update("Confirm", 2);
-    }
+    // public static void main(String[] args) throws SQLException {
+    //     CarAppointmentDAO cDAO = new CarAppointmentDAO();
+    //     List<CarAppointment> list = cDAO.getByUserId(102);
+    //     for ( CarAppointment car : list){
+    //         System.out.println(car.getCarName());
+    //     }
+    // }
 
     public void add(CarAppointment ca) throws SQLException {
         int nextId = getNextServiceScheduleId(); // Lấy ID kế tiếp
@@ -60,6 +63,33 @@ public class CarAppointmentDAO extends DBContext {
                         rs.getString("ca_status"));
                 ca.setCarName(rs.getString("car_name"));
                 ca.setCarModel(rs.getString("car_model")); // thêm dòng này
+                list.add(ca);
+            }
+        }
+        return list;
+    }
+
+    public List<CarAppointment> getByUserId(int userId) throws SQLException {
+        List<CarAppointment> list = new ArrayList<>();
+        String sql = "SELECT ca.*, c.car_name, c.model AS car_model " +
+                "FROM CarAppointment ca " +
+                "JOIN Car c ON ca.car_id = c.car_id " +
+                "WHERE ca.user_id = ?";
+
+        Connection conn = this.getConnection();
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                CarAppointment ca = new CarAppointment(
+                        rs.getInt("car_appointment_id"),
+                        (Integer) rs.getObject("user_id"),
+                        (Integer) rs.getObject("car_id"),
+                        rs.getTimestamp("ca_date").toLocalDateTime(),
+                        rs.getString("ca_note"),
+                        rs.getString("ca_status"));
+                ca.setCarName(rs.getString("car_name"));
+                ca.setCarModel(rs.getString("car_model"));
                 list.add(ca);
             }
         }

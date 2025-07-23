@@ -43,8 +43,6 @@ public class HomeServlet extends HttpServlet {
                 session.setAttribute("totalPrice", totalPrice);
                 
                 //Test cart count and total price
-                System.out.println("Cart count: " + cartCount);
-                System.out.println("Total price: " + totalPrice);
             } else {
                 request.setAttribute("cartCount", 0);
                 request.setAttribute("totalPrice", java.math.BigDecimal.ZERO);

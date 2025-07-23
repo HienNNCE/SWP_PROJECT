@@ -76,17 +76,7 @@
             <form class="appointment-form" method="post" action="serviceAppointment" onsubmit="..." novalidate>
                 <input type="hidden" name="action" value="checkDate">
                 <h2>Service Appointment Booking</h2>
-
-                <label for="fullname">Full Name</label>
-                <input type="text" id="fullname" name="fullname" required>
-
-                <label for="phone">Phone Number</label>
-
-                <input type="text" id="phone" name="phone" required>
-
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required>
-
+                
                 <div id="repairTypeContainer" style="margin-top: 10px;">
                     <label for="repairType">Repair Type:</label>
                     <c:choose>

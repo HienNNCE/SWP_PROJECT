@@ -252,7 +252,7 @@
                         </c:forEach>
                     </div>
                 </div>
-                <div class="filter-group">
+                <%-- <div class="filter-group">
                     <label>Sort by Price</label>
                     <div class="filter-radio-list">
                         <div class="filter-radio">
@@ -264,7 +264,7 @@
                             <label for="sort-desc">High to Low</label>
                         </div>
                     </div>
-                </div>
+                </div> --%>
                 <div class="filter-group">
                     <label>Search</label>
                     <input type="text" name="keyword" value="${param.keyword}" class="form-control" placeholder="e.g., Oil Change">
@@ -283,13 +283,13 @@
                             </div>
                             <div class="service-card-body">
                                 <div class="service-name">${service.serviceName}</div>
-                                <div class="service-meta">${service.serviceType}</div>
+                                <%-- <div class="service-meta">${service.serviceType}</div> --%>
                                 <div class="service-price">$<c:out value="${service.servicePrice}"/></div>
                                 <div class="service-estimate"><i class="fas fa-clock"></i> Estimate: ${service.estimateTime}</div>
                             </div>
                             <div class="service-card-footer">
                                 <a href="${pageContext.request.contextPath}/service/detail?id=${service.serviceId}" class="service-detail-btn"><i class="fas fa-info-circle"></i> Detail</a>
-                                <button type="button" service-id='${service.serviceId}' class="service-add-btn">Add to Cart</button>
+                                <a class="service-add-btn" href="${pageContext.request.contextPath}/serviceAppointment?serviceId=${service.serviceId}">Book Now</a>
                             </div>
                         </div>
                     </c:forEach>

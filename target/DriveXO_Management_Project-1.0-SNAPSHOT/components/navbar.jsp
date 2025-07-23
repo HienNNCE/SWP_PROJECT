@@ -742,7 +742,7 @@
                     <li><a href="${pageContext.request.contextPath}/blog"
                        class="${pageContext.request.servletPath eq '/blog' ? 'active' : ''}">Blog</a></li>
       
-                    <li><a href="contact.jsp" class="${pageContext.request.servletPath eq '/contact.jsp' ? 'active' : ''}">Contact</a></li>
+                    <li><a href="${pageContext.request.contextPath}/serviceAppointment" class="${pageContext.request.servletPath eq '/contact.jsp' ? 'active' : ''}">Contact</a></li>
                     <li><a href="feedback.jsp" class="${pageContext.request.servletPath eq '/feedback.jsp' ? 'active' : ''}">Feedback</a></li>
                 </ul>
             </nav>
@@ -760,8 +760,8 @@
                             <div class="profile-menu">
                                 <ul>
                                     <li><a href="profile.jsp"><i class="fas fa-user"></i> Profile</a></li>
-                                    <li><a href="order"><i class="fas fa-shopping-bag"></i> Orders</a></li>
-                                    <li><a href="appointments.jsp"><i class="fas fa-calendar-check"></i> Appointment
+                                    <li><a href="${pageContext.request.contextPath}/order"><i class="fas fa-shopping-bag"></i> Orders</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/appointment"><i class="fas fa-calendar-check"></i> Appointment
                                         </a></li>
                                     <li><a href="service-bookings.jsp"><i class="fas fa-tools"></i> Service Booking</a></li>
                                     <li class="menu-divider"></li>

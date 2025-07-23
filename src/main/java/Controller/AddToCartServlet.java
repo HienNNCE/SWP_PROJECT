@@ -35,27 +35,19 @@ public class AddToCartServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("Request received!");
 
         HttpSession session = request.getSession();
         Integer userId = (Integer) session.getAttribute("userId");
 
         String partIdStr = request.getParameter("id");
         if (partIdStr == null || !partIdStr.matches("\\d+")) {
-            System.out.println("Error: Invalid partId: " + partIdStr);
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Part id incorrect.");
             return;
         }
-
         int partId = Integer.parseInt(partIdStr);
-        System.out.println("Recived partID: " + partId);
-        System.out.println("Recived userId: " + userId);
-        System.out.println("userId: " + userId + ", partId: " + partId);
-
         CartDAO cartDAO = new CartDAO();
 
         if (userId == null) {
-            System.out.println("Error: userId is null. Redirecting to login.");
             response.sendRedirect(request.getContextPath() + "/auth/login.jsp");
             // Chuyển hướng về trang đăng nhập
             return;
@@ -73,11 +65,9 @@ public class AddToCartServlet extends HttpServlet {
             totalPrice = cart.getCartPrice();
             int partStock = pDAO.getPartById(partId).getPartStock();
             session.setAttribute("totalPrice", totalPrice);
-            System.out.println("Part added successfully. Cart Count: " + cartCount + ", Total Price: " + totalPrice + ", Part Stock: " + partStock);
             response.getWriter().print(
                     "{\"status\":\"success\", \"cartCount\":" + cartCount + ", \"totalPrice\":" + totalPrice + ", \"partStock\":" + partStock +"}");
         } else {       
-                System.out.println("Error: Out of stock");
                 response.getWriter().print("{\"status\":\"out_of_stock\"}");       
         }
     }
