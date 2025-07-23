@@ -9,6 +9,8 @@ import java.util.List;
 
 import DAO.OrderDAO;
 import DAO.OrderDetailDAO;
+import DAO.CarDAO;
+import DAO.PartDAO;
 import Model.Order;
 import Model.OrderDetail;
 import Model.Users;
@@ -49,14 +51,36 @@ public class OrderServlet extends HttpServlet {
                 return;
             }
         }
+        if ("cancel".equals(action)) {
+            try {
+                int orderId = Integer.parseInt(request.getParameter("orderId"));
+                orderDAO.updateOrderStatus(orderId, "Cancelled");
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+            response.sendRedirect("order");
+            return;
+        }
         // Hiển thị danh sách đơn hàng
-        Users user = (Users) session.getAttribute("user");
         Integer userId = (Integer) session.getAttribute("userId");
         if (userId == null) {
             response.sendRedirect("login.jsp");
             return;
         }
-        List<Order> orders = orderDAO.getOrdersByUserId(user.getUserId());
+        // Lấy danh sách car brands và part brands cho navbar
+        CarDAO carDAO = new CarDAO();
+        PartDAO partDAO = new PartDAO();
+        List<String> carBrands = carDAO.getAllBrands();
+        List<String> partBrands = partDAO.getAllBrands();
+        // Lấy danh sách xe preview cho dropdown
+        List<Model.Car> latestCars = carDAO.getRandomCars(8);
+        if (latestCars == null || latestCars.isEmpty()) {
+            latestCars = carDAO.getAllCars();
+        }
+        request.setAttribute("carBrands", carBrands);
+        request.setAttribute("partBrands", partBrands);
+        request.setAttribute("latestCars", latestCars);
+        List<Order> orders = orderDAO.getOrdersByUserId(userId);
         request.setAttribute("orders", orders);
         request.getRequestDispatcher("order-customer.jsp").forward(request, response);
     }

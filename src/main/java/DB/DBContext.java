@@ -13,9 +13,9 @@ public class DBContext {
  
     private Connection conn;
 
-    private static final String DB_URL = "jdbc:sqlserver://localhost:1433;databaseName=DriveXO;trustServerCertificate=true;";
-    private static final String DB_USER = "sa";
-    private static final String DB_PWD = "1234";
+    private static final String DB_URL = "jdbc:sqlserver://dbswp.database.windows.net:1433;databaseName=DriveXO;trustServerCertificate=true;";
+    private static final String DB_USER = "sqladmin@dbswp";
+    private static final String DB_PWD = "admin@123";
     public DBContext() {
         try {
             // Load the SQLServer driver
@@ -25,6 +25,7 @@ public class DBContext {
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
     }
 
     // Getter method to return the connection
