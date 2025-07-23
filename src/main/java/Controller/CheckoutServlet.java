@@ -33,6 +33,20 @@ public class CheckoutServlet extends HttpServlet {
         request.setAttribute("cart", cart);
         request.setAttribute("partList", cart.getPartList());
         request.setAttribute("totalPrice", cart.getCartPrice());
+        // Bổ sung biến cho navbar
+        DAO.CarDAO carDAO = new DAO.CarDAO();
+        DAO.PartDAO partDAO = new DAO.PartDAO();
+        java.util.List<String> carBrands = carDAO.getAllBrands();
+        java.util.List<String> carCategories = carDAO.getAllCategories();
+        java.util.List<Model.Car> latestCars = carDAO.getRandomCars(8);
+        if (latestCars == null || latestCars.isEmpty()) {
+            latestCars = carDAO.getAllCars();
+        }
+        java.util.List<String> partBrands = partDAO.getAllBrands();
+        request.setAttribute("carBrands", carBrands);
+        request.setAttribute("carCategories", carCategories);
+        request.setAttribute("latestCars", latestCars);
+        request.setAttribute("partBrands", partBrands);
         request.getRequestDispatcher("checkout.jsp").forward(request, response);
     }
 

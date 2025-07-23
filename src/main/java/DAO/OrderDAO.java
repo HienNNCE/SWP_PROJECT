@@ -191,28 +191,35 @@ public class OrderDAO extends DBContext {
     }
 
     public List<Order> getOrdersByUserId(int userId) {
-        List<Order> list = new ArrayList<>();
-        String sql = "SELECT * FROM [Order] WHERE user_id = ?";
-        Connection conn = getConnection();
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, userId);
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    Order o = new Order();
-                    o.setOrderId(rs.getInt("order_id"));
-                    o.setUserId(rs.getInt("user_id"));
-                    o.setOrderPrice(rs.getBigDecimal("order_price"));
-                    o.setOrderStatus(rs.getString("order_status"));
-                    o.setOrderDate(rs.getTimestamp("order_date"));
-                    o.setPaymentId(rs.getInt("payment_id"));
-                    list.add(o);
-                }
+    List<Order> list = new ArrayList<>();
+    String sql ="SELECT o.*, COUNT(od.part_id) AS countItem\r\n" + //
+                "        FROM [Order] o\r\n" + //
+                "        LEFT JOIN OrderDetail od ON o.order_id = od.order_id\r\n" + //
+                "        WHERE o.user_id = ?\r\n" + //
+                "        GROUP BY o.order_id, o.user_id, o.order_price, o.order_status, o.order_date, o.payment_id";
+    
+    Connection conn = getConnection();
+    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, userId);
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Order o = new Order();
+                o.setOrderId(rs.getInt("order_id"));
+                o.setUserId(rs.getInt("user_id"));
+                o.setOrderPrice(rs.getBigDecimal("order_price"));
+                o.setOrderStatus(rs.getString("order_status"));
+                o.setOrderDate(rs.getTimestamp("order_date"));
+                o.setPaymentId(rs.getInt("payment_id"));
+                o.setCountItem(rs.getInt("countItem")); // <--- gán số lượng sản phẩm
+                list.add(o);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return list;
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+    return list;
+}
+
 
     public List<OrderDetail> getOrderDetailById(int orderId) {
         List<OrderDetail> details = new ArrayList<>();

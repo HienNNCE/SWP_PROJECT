@@ -75,17 +75,6 @@
             <c:if test="${empty successMsg}">
                 <form class="appointment-form" method="post" action="carAppointment">
                     <h2>Car Appointment Booking</h2>
-
-                    <label for="fullname">Full Name</label>
-                    <input type="text" id="fullname" name="fullname" required>
-
-                    <label for="phone">Phone Number</label>
-
-                    <input type="text" id="phone" name="phone" required>
-
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
-
                     <label for="serviceType">Service Type</label>
                     <select id="serviceType" name="serviceType" required>
                         <option value="">-- Select Service Type --</option>
