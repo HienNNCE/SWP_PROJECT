@@ -180,25 +180,4 @@ public class ServiceDAO extends DBContext {
         service.setServiceImg(rs.getString("service_img"));
         return service;
     }
-
-    // Main method for testing
-    public static void main(String[] args) {
-        ServiceDAO serviceDAO = new ServiceDAO();
-
-        // Test fetching all services
-        List<Service> services = serviceDAO.getAllService();
-
-        if (services.isEmpty()) {
-            System.out.println("No services found.");
-        } else {
-            for (Service service : services) {
-                System.out.println("Service ID: " + service.getServiceId());
-                System.out.println("Service Name: " + service.getServiceName());
-                System.out.println("Service Description: " + service.getServiceDescription());
-                System.out.println("Service Price: $" + service.getServicePrice());
-                System.out.println("Estimate Time: " + service.getEstimateTime());
-                System.out.println("------------");
-            }
-        }
-    }
 }

@@ -102,6 +102,8 @@
 
                     <input type="hidden" name="carModel" value="${car.model}">
 
+                    <input type="hidden" name="carId" value="${car.carId}">
+
                     <label for="date">Appointment Date</label>
                     <input type="date" id="date" name="date" min="${minDate}" onkeydown="return false" required>
 

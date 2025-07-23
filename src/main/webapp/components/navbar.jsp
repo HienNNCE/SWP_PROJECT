@@ -752,7 +752,7 @@
                                 <ul>
                                     <li><a href="profile.jsp"><i class="fas fa-user"></i> Profile</a></li>
                                     <li><a href="order"><i class="fas fa-shopping-bag"></i> Orders</a></li>
-                                    <li><a href="appointments.jsp"><i class="fas fa-calendar-check"></i> Appointment
+                                    <li><a href="${pageContext.request.contextPath}/appointment"><i class="fas fa-calendar-check"></i> Appointment
                                         </a></li>
                                     <li><a href="service-bookings.jsp"><i class="fas fa-tools"></i> Service Booking</a></li>
                                     <li class="menu-divider"></li>

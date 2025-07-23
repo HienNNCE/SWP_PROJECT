@@ -5,6 +5,8 @@
 package Model;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -18,10 +20,19 @@ public class Order {
     private String orderStatus;
     private Date orderDate;
     private int paymentId;
+    private int countItem;
 
     // Getters and setters
     public int getOrderId() {
         return orderId;
+    }
+
+    public int getCountItem() {
+        return countItem;
+    }
+
+    public void setCountItem(int countItem) {
+        this.countItem = countItem;
     }
 
     public void setOrderId(int orderId) {

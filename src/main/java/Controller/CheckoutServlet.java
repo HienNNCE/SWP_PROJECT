@@ -14,9 +14,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.util.Date;
 
-@WebServlet(name = "CheckoutServlet", urlPatterns = {"/checkout"})
+@WebServlet(name = "CheckoutServlet", urlPatterns = { "/checkout" })
 public class CheckoutServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -57,7 +58,12 @@ public class CheckoutServlet extends HttpServlet {
         order.setOrderStatus("Paid");
         order.setOrderDate(new java.util.Date());
         order.setPaymentId(1);
-        int orderId = orderDAO.insertOrder(order);
+        int orderId = 0;
+        try {
+            orderId = orderDAO.insertOrder(order);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         for (Part part : cart.getPartList()) {
             OrderDetail detail = new OrderDetail();
             detail.setOrderId(orderId);
@@ -65,9 +71,19 @@ public class CheckoutServlet extends HttpServlet {
             detail.setQuantity(part.getQuantityInCart());
             detail.setPrice(part.getPartPrice());
             detail.setTotalPrice(part.getTotalPrice());
-            orderDAO.insertOrderDetail(detail);
+            try {
+                orderDAO.insertOrderDetail(detail);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        cartDAO.checkoutCartAndUpdateStock(userId);
+        boolean success = cartDAO.checkoutCartAndUpdateStock(userId);
+        if (!success) {
+            response.sendRedirect("cart.jsp");
+            return;
         }
         cartDAO.clearCartByUserId(userId);
         response.sendRedirect("success.jsp");
     }
-} 
+}

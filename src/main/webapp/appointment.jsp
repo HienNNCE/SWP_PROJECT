@@ -499,7 +499,7 @@
                 <div class="order-filter">
                     <div class="filter-group">
                         <select class="filter-select">
-                            <option value="all">All Orders</option>
+                            <option value="all">All Appointments</option>
                             <option value="completed">Completed</option>
                             <option value="processing">Processing</option>
                             <option value="shipped">Shipped</option>
@@ -524,45 +524,71 @@
                     </div>
                 </div>
                 
-                <c:if test="${empty orders}">
+                <c:if test="${empty appointments}">
                     <div class="empty-orders">
                         <i class="fas fa-shopping-bag empty-icon"></i>
-                        <h2 class="empty-message">You haven't placed any orders yet</h2>
-                        <p>Explore our collection of premium vehicles and start shopping</p>
+                        <h2 class="empty-message">You haven't placed any apointmenet yet</h2>
+                        <p>Booking car or service appointment and come back later! </p>
                         <a href="parts" class="shop-now-btn">Shop Now</a>
                     </div>
                 </c:if>
                 
-                <c:if test="${not empty orders}">
+                <c:if test="${not empty appointments}">
                     <!-- For demo purposes, showing static order examples since orderList is not provided -->
                     <!-- Order 1 -->
-                    <c:forEach var="order" items="${orders}">
-                        <div class="order-card">
-                            <div class="order-header">
-                                <div class="order-id">Order Id: ${order.orderId}</div>
-                                <div class="order-date"><fmt:formatDate value="${order.getOrderDate()}" pattern="yyyy-MM-dd HH:mm"/></div>
-                                <div class="order-status status-completed">${order.orderStatus}</div>
-                            </div>
-                            <div class="order-body">
-                                <div class="order-items">
-                                    <div class="order-item">
-                                        <div class="item-details">
-                                            <div class="item-name">Total Item In Order: ${order.getCountItem()}</div>
-                                            <div class="item-price">Total price: ${order.orderPrice}</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="order-actions">
-                                    <a href="order?action=view&id=${order.orderId}" class="order-btn view-details-btn">
-                                        View Details
-                                    </a>
-                                </div>
+                    <style>
+                        .order-id.car {
+                            background-color: #fff8c4;
+                            border: 1px solid #e0c800;
+                            border-radius: 20px;
+                            padding: 6px 12px;
+                            font-weight: bold;
+                            color: #333;
+                            text-align: left;
+                        }
 
+                        .order-id.service {
+                            background-color: #cce5ff;
+                            border: 1px solid #5aa2e0;
+                            border-radius: 20px;
+                            padding: 6px 12px;
+                            font-weight: bold;
+                            color: #003366;
+                            text-align: left;
+                        }
+
+                        .order-header {
+                            display: grid;
+                            grid-template-columns: 160px 180px 250px 0.1fr 120px; /* Cố định từng cột */
+                            align-items: center;
+                            text-align: left;
+                            gap: 12px;
+                        }
+
+                        .order-header > div {
+                            overflow: hidden;
+                            white-space: nowrap;
+                            text-overflow: ellipsis;
+                        }
+                    </style>
+
+
+                    <c:forEach var="order" items="${appointments}">
+                        <div class="row">
+                            <div class="order-card">
+                                <div class="order-header">
+                                    <div class="order-id ${order.type == 'Car' ? 'car' : 'service'}">
+                                        ${order.type} Appointment
+                                    </div>
+                                    <div class="order-date">${order.formattedDate}</div>
+                                    <div class="order-status">${order.name}</div>
+                                    <div class="order-status status-completed">${order.note}</div>
+                                    <div class="order-status status-completed">${order.status}</div>
+                                </div>
                             </div>
                         </div>
                     </c:forEach>
-                    
-                    
+                  
                     <!-- Pagination -->
                     <div class="pagination">
                         <a href="#" class="active">1</a>

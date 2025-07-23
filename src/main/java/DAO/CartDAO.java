@@ -23,11 +23,62 @@ import java.util.logging.Logger;
  */
 public class CartDAO extends DBContext {
 
-    public static void main(String[] a) {
-        CartDAO cDAO = new CartDAO();
-        int availableStock = cDAO.getReservedQuantity(2, 102);
-        System.out.println(availableStock);
+    // public static void main(String[] a) {
+    // CartDAO cDAO = new CartDAO();
+    // cDAO.clearCartByUserId(102);
 
+    // }
+
+    public boolean checkoutCartAndUpdateStock(int userId) {
+        String getCartItemsSql = "SELECT cd.part_id, cd.pt_order_quantity FROM CartDetail cd "
+                + "JOIN Cart c ON cd.cart_id = c.cart_id "
+                + "WHERE c.user_id = ?";
+        String updateStockSql = "UPDATE Part SET part_stock = part_stock - ? WHERE part_id = ? AND part_stock >= ?";
+
+        Connection conn = this.getConnection();
+        try {
+            List<int[]> partList = new ArrayList<>(); // Danh sách [part_id, quantity]
+
+            // 1. Lấy tất cả sản phẩm và số lượng trong giỏ hàng
+            try (PreparedStatement ps = conn.prepareStatement(getCartItemsSql)) {
+                ps.setInt(1, userId);
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        int partId = rs.getInt("part_id");
+                        int quantity = rs.getInt("pt_order_quantity");
+                        partList.add(new int[] { partId, quantity });
+                    }
+                }
+            }
+
+            // 2. Cập nhật stock từng sản phẩm
+            for (int[] item : partList) {
+                int partId = item[0];
+                int quantity = item[1];
+
+                try (PreparedStatement ps = conn.prepareStatement(updateStockSql)) {
+                    ps.setInt(1, quantity);
+                    ps.setInt(2, partId);
+                    ps.setInt(3, quantity); // đảm bảo tồn kho >= số lượng đặt
+                    int rowsAffected = ps.executeUpdate();
+                    if (rowsAffected == 0) {
+                        conn.rollback();
+                        return false; // Không đủ hàng tồn kho
+                    }
+                }
+            }
+
+            conn.commit();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            try {
+                conn.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return false;
     }
 
     public int getCartItemCount(int userId) {
@@ -70,7 +121,6 @@ public class CartDAO extends DBContext {
                     }
                 }
             }
-            System.out.println("Stock: " + partStock + ", Reserved: " + partCartCount);
             int availableStock = partStock - partCartCount;
             if (availableStock <= 0) {
                 conn.rollback();
@@ -541,8 +591,6 @@ public class CartDAO extends DBContext {
                 ps.setInt(3, cartId);
                 ps.executeUpdate();
             }
-            System.out.println("🛒 After update - cartId: " + cartId + ", countItem: " + newCountItem + ", total: "
-                    + newCartPrice);
 
             // // 7. Giảm tồn kho sản phẩm
             // String updateStockSql = "UPDATE Part SET part_stock = part_stock - 1 WHERE

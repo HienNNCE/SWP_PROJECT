@@ -28,7 +28,6 @@ public class CarListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            System.out.println("CarListServlet: Xử lý request");
             
             // Lấy các tham số lọc từ request
             String category = request.getParameter("category");
@@ -38,12 +37,6 @@ public class CarListServlet extends HttpServlet {
             String fuelType = request.getParameter("fuel");
             String odoRange = request.getParameter("odo");
             String searchTerm = request.getParameter("search");
-            
-            // Debug log
-            System.out.println("Params: category=" + category + ", brand=" + brand + 
-                               ", year=" + year + ", price=" + price + 
-                               ", fuel=" + fuelType + ", odo=" + odoRange + 
-                               ", search=" + searchTerm);
             
             // Kiểm tra xem đây có phải là AJAX request
             boolean isAjaxRequest = "true".equals(request.getParameter("ajax"));
@@ -70,7 +63,6 @@ public class CarListServlet extends HttpServlet {
             
             // Xử lý tìm kiếm nếu có
             if (searchTerm != null && !searchTerm.isEmpty()) {
-                System.out.println("Tìm kiếm xe với từ khóa: " + searchTerm);
                 filteredCars = carDAO.searchCars(searchTerm);
                 hasFilters = true;
             }
@@ -82,7 +74,6 @@ public class CarListServlet extends HttpServlet {
                 
                 // Áp dụng filter theo category
                 if (category != null && !category.isEmpty()) {
-                    System.out.println("Lọc theo category: " + category);
                     ArrayList<Car> categoryFiltered = new ArrayList<>();
                     for (Car car : filteredCars) {
                         if (carDAO.isCarInCategory(car.getCarId(), category)) {
@@ -95,7 +86,6 @@ public class CarListServlet extends HttpServlet {
                 
                 // Áp dụng filter theo brand
                 if (brand != null && !brand.isEmpty()) {
-                    System.out.println("Lọc theo brand: " + brand);
                     ArrayList<Car> brandFiltered = new ArrayList<>();
                     for (Car car : filteredCars) {
                         if (car.getCarBrand().equalsIgnoreCase(brand)) {
@@ -110,7 +100,6 @@ public class CarListServlet extends HttpServlet {
                 if (year != null && !year.isEmpty()) {
                     try {
                         int yearInt = Integer.parseInt(year);
-                        System.out.println("Lọc theo year: " + yearInt);
                         ArrayList<Car> yearFiltered = new ArrayList<>();
                         for (Car car : filteredCars) {
                             if (car.getCarYear() != null && car.getCarYear().getYear() + 1900 == yearInt) {
@@ -120,13 +109,11 @@ public class CarListServlet extends HttpServlet {
                         filteredCars = yearFiltered;
                         hasFilters = true;
                     } catch (NumberFormatException e) {
-                        System.out.println("Năm không hợp lệ: " + year);
                     }
                 }
                 
                 // Áp dụng filter theo fuel type
                 if (fuelType != null && !fuelType.isEmpty()) {
-                    System.out.println("Lọc theo fuel type: " + fuelType);
                     ArrayList<Car> fuelFiltered = new ArrayList<>();
                     for (Car car : filteredCars) {
                         if (car.getFuelType() != null && car.getFuelType().equalsIgnoreCase(fuelType)) {
@@ -144,7 +131,6 @@ public class CarListServlet extends HttpServlet {
                         try {
                             double minPrice = Double.parseDouble(priceRange[0]);
                             double maxPrice = Double.parseDouble(priceRange[1]);
-                            System.out.println("Lọc theo price range: " + minPrice + " - " + maxPrice);
                             ArrayList<Car> priceFiltered = new ArrayList<>();
                             for (Car car : filteredCars) {
                                 if (car.getCarPrice() != null && 
@@ -156,7 +142,6 @@ public class CarListServlet extends HttpServlet {
                             filteredCars = priceFiltered;
                             hasFilters = true;
                         } catch (NumberFormatException e) {
-                            System.out.println("Price range không hợp lệ: " + price);
                         }
                     }
                 }
@@ -168,7 +153,6 @@ public class CarListServlet extends HttpServlet {
                         try {
                             double minOdo = Double.parseDouble(odoValues[0]);
                             double maxOdo = Double.parseDouble(odoValues[1]);
-                            System.out.println("Lọc theo odo range: " + minOdo + " - " + maxOdo);
                             ArrayList<Car> odoFiltered = new ArrayList<>();
                             for (Car car : filteredCars) {
                                 if (car.getCarOdo() != null && 
@@ -180,7 +164,6 @@ public class CarListServlet extends HttpServlet {
                             filteredCars = odoFiltered;
                             hasFilters = true;
                         } catch (NumberFormatException e) {
-                            System.out.println("Odo range không hợp lệ: " + odoRange);
                         }
                     }
                 }
@@ -188,17 +171,13 @@ public class CarListServlet extends HttpServlet {
             
             // Nếu không có bộ lọc nào được áp dụng, lấy trang xe hiện tại
             if (!hasFilters) {
-                System.out.println("Không có filter, lấy trang xe mặc định");
                 filteredCars = carDAO.getPaginatedCars(page, CARS_PER_PAGE);
             }
             
             // Tính toán phân trang
             int totalCars = hasFilters ? filteredCars.size() : carDAO.getTotalCarCount();
             int totalPages = (int) Math.ceil((double) totalCars / CARS_PER_PAGE);
-            if (page > totalPages && totalPages > 0) page = totalPages;
-            
-            System.out.println("Tổng số xe: " + totalCars + ", Tổng số trang: " + totalPages + ", Trang hiện tại: " + page);
-            
+            if (page > totalPages && totalPages > 0) page = totalPages;            
             // Nếu áp dụng bộ lọc, cần lấy subset của danh sách đã lọc cho trang hiện tại
             List<Car> currentPageCars;
             if (hasFilters) {
@@ -212,16 +191,12 @@ public class CarListServlet extends HttpServlet {
             } else {
                 currentPageCars = filteredCars; // Đã được phân trang từ DAO
             }
-            
-            System.out.println("Số xe trên trang hiện tại: " + currentPageCars.size());
-            
+                        
             // Lấy danh sách thương hiệu và danh mục cho bộ lọc
             ArrayList<String> brands = carDAO.getAllBrands();
             ArrayList<String> categories = carDAO.getAllCategories();
             
             // Debug: kiểm tra danh sách brand và category - có thể xóa sau khi fix
-            System.out.println("Brands fetched: " + brands.size() + " items");
-            System.out.println("Categories fetched: " + categories.size() + " items");
             
             // Thiết lập các thuộc tính cho JSP
             request.setAttribute("carList", currentPageCars);
@@ -243,11 +218,9 @@ public class CarListServlet extends HttpServlet {
             // Xử lý tùy theo loại request
             if (isAjaxRequest) {
                 // Đối với AJAX request, chỉ forward tới một phần của trang
-                System.out.println("Xử lý AJAX request");
                 request.getRequestDispatcher("/car-list-ajax.jsp").forward(request, response);
             } else {
                 // Đối với request thông thường, forward tới trang đầy đủ
-                System.out.println("Xử lý request thông thường");
                 request.getRequestDispatcher("/car-list.jsp").forward(request, response);
             }
         } catch (Exception e) {

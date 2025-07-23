@@ -159,17 +159,6 @@ public class AdminCarServlet extends HttpServlet {
                 if (!webappDir.exists()) {
                     webappDir.mkdirs();
                 }
-                
-                // Ghi log để debug
-                System.out.println("==== DEBUG INFO ====");
-                System.out.println("Upload path: " + uploadPath);
-                System.out.println("Webapp path: " + webappPath);
-                System.out.println("Directory exists (upload): " + uploadDir.exists());
-                System.out.println("Directory exists (webapp): " + webappDir.exists());
-                System.out.println("File name: " + fileName);
-                System.out.println("File size: " + filePart.getSize());
-                System.out.println("===================");
-                
                 // Đọc ảnh và nén
                 BufferedImage originalImage = ImageIO.read(filePart.getInputStream());
                 if (originalImage != null) {
@@ -181,36 +170,25 @@ public class AdminCarServlet extends HttpServlet {
                     try {
                         // Lưu ảnh vào thư mục target (triển khai)
                         boolean success = ImageIO.write(resizedImage, fileExtension.equals("png") ? "png" : "jpeg", outputFile);
-                        System.out.println("Image write success (target): " + success);
-                        System.out.println("Output file exists (target): " + outputFile.exists());
-                        System.out.println("Output file size (target): " + outputFile.length());
-                        
                         // Lưu ảnh vào thư mục webapp (mã nguồn)
                         File webappFile = new File(webappDir, fileName);
                         boolean webappSuccess = ImageIO.write(resizedImage, fileExtension.equals("png") ? "png" : "jpeg", webappFile);
-                        System.out.println("Image write success (webapp): " + webappSuccess);
-                        System.out.println("Output file exists (webapp): " + webappFile.exists());
-                        System.out.println("Output file size (webapp): " + webappFile.length());
                         
                         // Kiểm tra lại xem file đã được lưu thành công chưa
                         if (!outputFile.exists() || outputFile.length() == 0) {
-                            System.out.println("WARNING: Target file not saved or empty!");
                             request.getSession().setAttribute("errorMessage", "Có lỗi khi lưu ảnh. Vui lòng thử lại.");
                             throw new IOException("Failed to save image to target directory");
                         }
                         
                         if (!webappFile.exists() || webappFile.length() == 0) {
-                            System.out.println("WARNING: Webapp file not saved or empty!");
                             // Không throw exception vì file đã được lưu trong target
                         }
                     } catch (Exception e) {
-                        System.out.println("Error writing image: " + e.getMessage());
                         e.printStackTrace();
                     }
                     
                     carImg = fileName;
                 } else {
-                    System.out.println("Original image is null - not a valid image format");
                     // Nếu không phải ảnh hợp lệ, lưu trực tiếp
                     try (InputStream input = filePart.getInputStream()) {
                         // Lưu vào thư mục target
@@ -221,8 +199,6 @@ public class AdminCarServlet extends HttpServlet {
                             while ((bytesRead = input.read(buffer)) != -1) {
                                 output.write(buffer, 0, bytesRead);
                             }
-                            System.out.println("File saved directly (target): " + outputFile.exists());
-                            System.out.println("File size (target): " + outputFile.length());
                         }
                         
                         // Lưu vào thư mục webapp
@@ -233,8 +209,6 @@ public class AdminCarServlet extends HttpServlet {
                             while ((bytesRead = input2.read(buffer)) != -1) {
                                 output2.write(buffer, 0, bytesRead);
                             }
-                            System.out.println("File saved directly (webapp): " + new File(webappDir, fileName).exists());
-                            System.out.println("File size (webapp): " + new File(webappDir, fileName).length());
                         }
                         
                         carImg = fileName;
@@ -347,15 +321,6 @@ public class AdminCarServlet extends HttpServlet {
                     webappDir.mkdirs();
                 }
                 
-                // Ghi log để debug
-                System.out.println("==== DEBUG INFO ====");
-                System.out.println("Upload path: " + uploadPath);
-                System.out.println("Webapp path: " + webappPath);
-                System.out.println("Directory exists (upload): " + uploadDir.exists());
-                System.out.println("Directory exists (webapp): " + webappDir.exists());
-                System.out.println("File name: " + fileName);
-                System.out.println("File size: " + filePart.getSize());
-                System.out.println("===================");
                 
                 // Đọc ảnh và nén
                 BufferedImage originalImage = ImageIO.read(filePart.getInputStream());
@@ -368,30 +333,23 @@ public class AdminCarServlet extends HttpServlet {
                     try {
                         // Lưu ảnh vào thư mục target (triển khai)
                         boolean success = ImageIO.write(resizedImage, fileExtension.equals("png") ? "png" : "jpeg", outputFile);
-                        System.out.println("Image write success (target): " + success);
-                        System.out.println("Output file exists (target): " + outputFile.exists());
-                        System.out.println("Output file size (target): " + outputFile.length());
+
                         
                         // Lưu ảnh vào thư mục webapp (mã nguồn)
                         File webappFile = new File(webappDir, fileName);
                         boolean webappSuccess = ImageIO.write(resizedImage, fileExtension.equals("png") ? "png" : "jpeg", webappFile);
-                        System.out.println("Image write success (webapp): " + webappSuccess);
-                        System.out.println("Output file exists (webapp): " + webappFile.exists());
-                        System.out.println("Output file size (webapp): " + webappFile.length());
+
                         
                         // Kiểm tra lại xem file đã được lưu thành công chưa
                         if (!outputFile.exists() || outputFile.length() == 0) {
-                            System.out.println("WARNING: Target file not saved or empty!");
                             request.getSession().setAttribute("errorMessage", "Có lỗi khi lưu ảnh. Vui lòng thử lại.");
                             throw new IOException("Failed to save image to target directory");
                         }
                         
                         if (!webappFile.exists() || webappFile.length() == 0) {
-                            System.out.println("WARNING: Webapp file not saved or empty!");
                             // Không throw exception vì file đã được lưu trong target
                         }
                     } catch (Exception e) {
-                        System.out.println("Error writing image: " + e.getMessage());
                         e.printStackTrace();
                     }
                     
@@ -401,20 +359,17 @@ public class AdminCarServlet extends HttpServlet {
                         File oldFile = new File(uploadPath, currentCar.getCarImg());
                         if (oldFile.exists()) {
                             oldFile.delete();
-                            System.out.println("Deleted old image (target): " + currentCar.getCarImg());
                         }
                         
                         // Xóa ảnh cũ từ thư mục webapp
                         File oldWebappFile = new File(webappPath, currentCar.getCarImg());
                         if (oldWebappFile.exists()) {
                             oldWebappFile.delete();
-                            System.out.println("Deleted old image (webapp): " + currentCar.getCarImg());
                         }
                     }
                     
                     carImg = fileName;
                 } else {
-                    System.out.println("Original image is null - not a valid image format");
                     // Nếu không phải ảnh hợp lệ, lưu trực tiếp
                     try (InputStream input = filePart.getInputStream()) {
                         // Lưu vào thư mục target
@@ -425,8 +380,7 @@ public class AdminCarServlet extends HttpServlet {
                             while ((bytesRead = input.read(buffer)) != -1) {
                                 output.write(buffer, 0, bytesRead);
                             }
-                            System.out.println("File saved directly (target): " + outputFile.exists());
-                            System.out.println("File size (target): " + outputFile.length());
+
                         }
                         
                         // Lưu vào thư mục webapp
@@ -437,8 +391,7 @@ public class AdminCarServlet extends HttpServlet {
                             while ((bytesRead = input2.read(buffer)) != -1) {
                                 output2.write(buffer, 0, bytesRead);
                             }
-                            System.out.println("File saved directly (webapp): " + new File(webappDir, fileName).exists());
-                            System.out.println("File size (webapp): " + new File(webappDir, fileName).length());
+                            
                         }
                         
                         carImg = fileName;
@@ -501,7 +454,6 @@ public class AdminCarServlet extends HttpServlet {
                 File imgFile = new File(uploadPath, car.getCarImg());
                 if (imgFile.exists()) {
                     imgFile.delete();
-                    System.out.println("Deleted car image (target): " + car.getCarImg());
                 }
                 
                 // Xóa ảnh từ thư mục webapp
@@ -509,7 +461,6 @@ public class AdminCarServlet extends HttpServlet {
                 File webappImgFile = new File(webappPath, car.getCarImg());
                 if (webappImgFile.exists()) {
                     webappImgFile.delete();
-                    System.out.println("Deleted car image (webapp): " + car.getCarImg());
                 }
             }
             request.getSession().setAttribute("successMessage", "Xóa xe thành công.");

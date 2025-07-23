@@ -41,7 +41,6 @@ public class ProfileServlet extends HttpServlet {
         // Load addresses for display
         List<Address> addresses = userDAO.getAddressesByUserId(currentUser.getUserId());
         int count = addresses.size();
-        System.out.println("Count address================: " + count);
         request.setAttribute("addresses", addresses);
         request.getRequestDispatcher("profile.jsp").forward(request, response);
     }

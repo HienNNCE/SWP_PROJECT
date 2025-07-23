@@ -168,7 +168,6 @@ public class BookingsServlet extends HttpServlet {
         
         // In a real application, you would update the booking in the database
         // For demo purposes, we'll just log the action
-        System.out.println("Rescheduled booking " + bookingId + " to " + newDate + " " + newTime);
     }
 
     /**
@@ -185,7 +184,6 @@ public class BookingsServlet extends HttpServlet {
         
         // In a real application, you would update the booking status in the database
         // For demo purposes, we'll just log the action
-        System.out.println("Cancelled booking " + bookingId + " for reason: " + reason);
     }
     
     /**

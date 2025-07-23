@@ -44,7 +44,10 @@ public class CarAppointmentServlet extends HttpServlet {
         HttpSession session = request.getSession();
         Object userIdObj = session.getAttribute("userId");
         String serviceIdS = request.getParameter("carId");
+        System.out.println("serviceIdS: " + serviceIdS);
+
         int carId = Integer.parseInt(serviceIdS);
+
         CarDAO cDAO = new CarDAO();
         Car car = cDAO.getCarById(carId);
 
@@ -58,7 +61,6 @@ public class CarAppointmentServlet extends HttpServlet {
             return;
         }
         request.setAttribute("car", car);
-        request.setAttribute("carId", carId);
         request.getRequestDispatcher("car_appointment.jsp").forward(request, response);
     }
 
@@ -94,8 +96,6 @@ public class CarAppointmentServlet extends HttpServlet {
 
             // Gộp ngày giờ
             LocalDateTime appointmentDate = LocalDateTime.of(LocalDate.parse(date), LocalTime.parse(time));
-
-            // Tạo đối tượng
             int carId = Integer.parseInt(carIds);
             CarAppointment ca = new CarAppointment();
             userId = (int) session.getAttribute("userId");

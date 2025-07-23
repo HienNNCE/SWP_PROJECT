@@ -23,10 +23,10 @@ import jakarta.servlet.http.HttpSession;
  *
  * @author thien
  */
-@WebServlet(name = "OrderServlet", urlPatterns = {"/order"})
+@WebServlet(name = "OrderServlet", urlPatterns = { "/order" })
 public class OrderServlet extends HttpServlet {
 
-   @Override
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
@@ -37,12 +37,11 @@ public class OrderServlet extends HttpServlet {
             int orderId = Integer.parseInt(request.getParameter("id"));
             Order order = orderDAO.getOrderById(orderId);
             OrderDetailDAO orderDetailDAO = new OrderDetailDAO();
-            System.out.println("Order date: " + order.getOrderDate());
             List<OrderDetail> orderDetail = orderDetailDAO.getOrderDetailWithPartByOrderId(orderId);
             if (orderDetail != null) {
                 request.setAttribute("orderDetail", orderDetail);
                 request.setAttribute("order", order);
-                request.getRequestDispatcher("/admin/order/order-detail.jsp").forward(request, response);
+                request.getRequestDispatcher("/order-detail-customer.jsp").forward(request, response);
                 return;
             } else {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Order not found");
@@ -56,9 +55,14 @@ public class OrderServlet extends HttpServlet {
             response.sendRedirect("login.jsp");
             return;
         }
+
         List<Order> orders = orderDAO.getOrdersByUserId(user.getUserId());
+        for (Order order : orders) {
+            int countItem = orderDAO.countTotalQuantityByOrderId(order.getOrderId());
+            order.setCountItem(countItem);
+        }
         request.setAttribute("orders", orders);
-        request.getRequestDispatcher("order-customer.jsp").forward(request, response);
+        request.getRequestDispatcher("order-history.jsp").forward(request, response);
     }
 
     /**
@@ -102,6 +106,5 @@ public class OrderServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 
 }
