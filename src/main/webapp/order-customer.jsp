@@ -7,223 +7,212 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<html>
-    <head>
-        <title>Order Management</title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-        <style>
-            .custom-select {
-                width: 100%;
-                padding: 10px 12px;
-                border-radius: 12px;
-                border: 1px solid #ccc;
-                appearance: none;
-                background-color: #f9f9f9;
-                font-size: 16px;
-                box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
-                transition: border-color 0.3s, box-shadow 0.3s;
-                outline: none;
-                background-image: url("data:image/svg+xml;utf8,<svg fill='%23666' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
-                background-repeat: no-repeat;
-                background-position: right 10px center;
-                background-size: 16px 16px;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>My Orders - DriveXO</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="asset/css/style.css">
+    <link rel="stylesheet" href="asset/css/carlist.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .orders-header {
+            text-align: center;
+            margin: 60px 0 30px 0;
+        }
+        .orders-title {
+            font-size: 2.1rem;
+            font-weight: 400;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            color: #222;
+            text-transform: none;
+        }
+        .orders-subtitle {
+            font-size: 14px;
+            color: #888;
+            font-weight: 300;
+            line-height: 1.6;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .orders-table-section {
+            max-width: 1100px;
+            margin: 0 auto 60px auto;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.06);
+            padding: 40px 30px;
+        }
+        .orders-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+        }
+        .orders-table th, .orders-table td {
+            padding: 16px 12px;
+            text-align: left;
+        }
+        .orders-table th {
+            background: #fafbfc;
+            color: #222;
+            font-size: 15px;
+            font-weight: 500;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .orders-table tr {
+            border-bottom: 1px solid #f0f0f0;
+            transition: background 0.18s;
+        }
+        .orders-table tr:last-child {
+            border-bottom: none;
+        }
+        .orders-table tr:hover {
+            background: #f6f6f6;
+        }
+        .orders-table td {
+            font-size: 15px;
+            color: #333;
+        }
+        .order-status {
+            display: inline-block;
+            padding: 7px 18px;
+            border-radius: 30px;
+            font-weight: 500;
+            font-size: 14px;
+            background: #f3f3f3;
+            color: #444;
+            border: 1px solid #ededed;
+        }
+        .status-paid {
+            color: #219150 !important;
+            background: #eafaf1 !important;
+            border: 1px solid #b6e5ce;
+        }
+        .status-processing,
+        .status-shipped,
+        .status-delivered,
+        .status-cancelled {
+            background: #f3f3f3 !important;
+            color: #444 !important;
+            border: 1px solid #ededed;
+        }
+        .cancel-btn {
+            display: inline-block;
+            padding: 6px 18px;
+            border-radius: 20px;
+            background: #fff;
+            color: #b02a37;
+            border: 1px solid #b02a37;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.18s, color 0.18s;
+            margin-left: 4px;
+        }
+        .cancel-btn:hover {
+            background: #b02a37;
+            color: #fff;
+        }
+        .action-links a {
+            margin-right: 10px;
+            text-decoration: none;
+            color: #222;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .action-links a:last-child {
+            margin-right: 0;
+        }
+        .action-links a:hover {
+            color: #000;
+        }
+        @media (max-width: 900px) {
+            .orders-table-section {
+                padding: 20px 5px;
             }
-
-            .custom-select:focus {
-                border-color: #4CAF50;
-                box-shadow: 0 0 3px rgba(76, 175, 80, 0.5);
-                background-color: #fff;
+            .orders-table th, .orders-table td {
+                padding: 10px 6px;
             }
-
-            .modal-overlay {
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background-color: rgba(0, 0, 0, 0.5);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                z-index: 1000;
+        }
+        @media (max-width: 600px) {
+            .orders-header {
+                margin: 30px 0 18px 0;
             }
-
-            .modal-content {
-                background: white;
-                padding: 20px 30px;
-                border-radius: 15px;
-                box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-                width: 300px;
-                position: relative;
+            .orders-title {
+                font-size: 1.2rem;
             }
-
-            .close-btn {
-                position: absolute;
-                top: 10px;
-                right: 15px;
-                font-size: 20px;
-                cursor: pointer;
+            .orders-table-section {
+                padding: 10px 2px;
             }
-
-            .btn-save {
-                padding: 8px 16px;
-                background-color: #4CAF50;
-                border: none;
-                border-radius: 8px;
-                color: white;
-                cursor: pointer;
+            .orders-table th, .orders-table td {
+                font-size: 13px;
+                padding: 7px 2px;
             }
-
-            .btn-save:hover {
-                background-color: #45a049;
-            }
-
-            body {
-                background: #f5f7fa;
-                font-family: 'Segoe UI', Arial, sans-serif;
-                margin: 0;
-                padding: 0;
-            }
-            .order-list-section {
-                padding: 60px 0;
-            }
-            .container {
-                max-width: 1100px;
-                margin: 0 auto;
-                background: #fff;
-                border-radius: 12px;
-                box-shadow: 0 5px 24px rgba(0,0,0,0.08);
-                padding: 40px 30px;
-            }
-            .page-title {
-                font-size: 32px;
-                font-weight: 700;
-                color: #072eb0;
-                margin-bottom: 30px;
-                letter-spacing: 1px;
-            }
-            .order-table {
-                width: 100%;
-                border-collapse: collapse;
-                background: #fff;
-            }
-            .order-table th, .order-table td {
-                padding: 16px 12px;
-                text-align: left;
-            }
-            .order-table th {
-                background: #f0f4fa;
-                color: #072eb0;
-                font-size: 16px;
-                font-weight: 600;
-                border-bottom: 2px solid #e6eaf3;
-            }
-            .order-table tr {
-                border-bottom: 1px solid #e6eaf3;
-            }
-            .order-table tr:last-child {
-                border-bottom: none;
-            }
-            .order-table td {
-                font-size: 15px;
-                color: #333;
-            }
-            .order-status {
-                display: inline-block;
-                padding: 7px 18px;
-                border-radius: 30px;
-                font-weight: 600;
-                font-size: 14px;
-            }
-            .status-processing {
-                background: #ffe9cc;
-                color: #ff8c00;
-            }
-            .status-shipped {
-                background: #cce5ff;
-                color: #0066cc;
-            }
-            .status-delivered {
-                background: #d1e7dd;
-                color: #0a5c36;
-            }
-            .status-cancelled {
-                background: #f8d7da;
-                color: #b02a37;
-            }
-            .action-links a {
-                margin-right: 10px;
-                text-decoration: none;
-                color: #072eb0;
-                font-weight: 500;
-                transition: color 0.2s;
-            }
-            .action-links a:last-child {
-                margin-right: 0;
-            }
-            .action-links a:hover {
-                color: #ff8c00;
-            }
-            @media (max-width: 900px) {
-                .container {
-                    padding: 20px 5px;
-                }
-                .order-table th, .order-table td {
-                    padding: 10px 6px;
-                }
-            }
-            @media (max-width: 600px) {
-                .container {
-                    padding: 10px 2px;
-                }
-                .page-title {
-                    font-size: 22px;
-                }
-                .order-table th, .order-table td {
-                    font-size: 13px;
-                    padding: 7px 2px;
-                }
-            }
-        </style>
-    </head>
-    <body>
-        <section class="order-list-section">
-            <div class="container">
-                <div class="page-title"><i class="fas fa-shopping-cart"></i> Order List</div>
-                <table class="order-table">
-                    <tr>
-                        <th>Order ID</th>
-                        <th>Price</th>
-                        <th>Status</th>
-                        <th>Date</th>
-                                                <th>Action</th>
-                    </tr>
-                    <c:forEach var="order" items="${orders}">
-                        <tr>
-                            <td>${order.orderId}</td>
-                            <td>$${order.orderPrice}</td>
-                            <td>
-                                <span class="order-status 
-                                      <c:choose>
-                                          <c:when test="${order.orderStatus eq 'Processing'}">status-processing</c:when>
-                                          <c:when test="${order.orderStatus eq 'Shipped'}">status-shipped</c:when>
-                                          <c:when test="${order.orderStatus eq 'Delivered'}">status-delivered</c:when>
-                                          <c:when test="${order.orderStatus eq 'Cancelled'}">status-cancelled</c:when>
-                                      </c:choose>
-                                      ">
-                                    ${order.orderStatus}
-                                </span>
-                            </td>
-                            <td>
+        }
+    </style>
+</head>
+<body>
+<jsp:include page="/components/navbar.jsp"/>
+<div class="container" style="padding-top:100px;">
+    <div class="orders-header">
+        <h1 class="orders-title"><i class="fas fa-shopping-cart"></i> My Orders</h1>
+        <p class="orders-subtitle">View and track all your orders placed on DriveXO.</p>
+    </div>
+    <section class="orders-table-section">
+        <table class="orders-table">
+            <tr>
+                <th>Order ID</th>
+                <th>Price</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Action</th>
+            </tr>
+            <c:forEach var="order" items="${orders}">
+                <tr>
+                    <td>${order.orderId}</td>
+                    <td>$${order.orderPrice}</td>
+                    <td>
+                        <span class="order-status 
+                              <c:choose>
+                                  <c:when test="${order.orderStatus eq 'Paid'}">status-paid</c:when>
+                                  <c:when test="${order.orderStatus eq 'Processing'}">status-processing</c:when>
+                                  <c:when test="${order.orderStatus eq 'Shipped'}">status-shipped</c:when>
+                                  <c:when test="${order.orderStatus eq 'Delivered'}">status-delivered</c:when>
+                                  <c:when test="${order.orderStatus eq 'Cancelled'}">status-cancelled</c:when>
+                              </c:choose>
+                              ">
+                            ${order.orderStatus}
+                        </span>
+                    </td>
+                    <td>
                         <fmt:formatDate value="${order.getOrderDate()}" pattern="yyyy-MM-dd HH:mm"/>
-                        </td>
-                        <td class="action-links">
-                            <a href="order?action=view&id=${order.orderId}"><i class="fas fa-eye"></i> View</a>
-                        </tr>
-                    </c:forEach>
-                    <!-- Edit Status Modal -->
-                </table>
-            </div>
-        </section>
-    </body>
+                    </td>
+                    <td class="action-links">
+                        <a href="order?action=view&id=${order.orderId}"><i class="fas fa-eye"></i> View</a>
+                        <c:if test="${order.orderStatus ne 'Cancelled'}">
+                            <form method="post" action="order" style="display:inline;">
+                                <input type="hidden" name="action" value="cancel" />
+                                <input type="hidden" name="orderId" value="${order.orderId}" />
+                                <button type="submit" class="cancel-btn" onclick="return confirm('Are you sure you want to cancel this order?');">Cancel</button>
+                            </form>
+                        </c:if>
+                    </td>
+                </tr>
+            </c:forEach>
+            <c:if test="${empty orders}">
+                <tr>
+                    <td colspan="5" style="text-align:center; color:#888; padding:60px 0; font-size:18px;">No orders found.</td>
+                </tr>
+            </c:if>
+        </table>
+    </section>
+</div>
+<jsp:include page="/components/footer.jsp"/>
+</body>
 </html>

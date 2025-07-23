@@ -23,38 +23,11 @@
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
     </head>
     <body>
-        <!-- Back button bên trái -->
-        <a href="${pageContext.request.contextPath}/car/list" class="back-button">
-            <i class="fas fa-arrow-left"></i>
-        </a>
-        <!-- Header actions bên phải -->
-        <div class="carlist-header-actions">
-            <c:if test="${sessionScope.account != null || user != null}">
-                <a href="cart.jsp" class="cart-icon" title="Shopping Cart">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span class="cart-badge">3</span>
-                </a>
-                <div class="profile-dropdown">
-                    <i class="fas fa-user profile-avatar"></i>
-                    <div class="profile-menu">
-                        <ul>
-                            <li><a href="profile.jsp"><i class="fas fa-user"></i> Profile</a></li>
-                            <li><a href="orders.jsp"><i class="fas fa-shopping-bag"></i> Orders</a></li>
-                            <li><a href="appointments.jsp"><i class="fas fa-calendar-check"></i> Appointment</a></li>
-                            <li><a href="service-bookings.jsp"><i class="fas fa-tools"></i> Service Booking</a></li>
-                            <li class="menu-divider"></li>
-                            <li><a href="${pageContext.request.contextPath}/auth/LoginServlet?action=logout"><i class="fas fa-sign-out-alt"></i> Log out</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </c:if>
-            <c:if test="${sessionScope.account == null && user == null}">
-                <a href="${pageContext.request.contextPath}/auth/login.jsp" class="login-btn">Login</a>
-            </c:if>
-        </div>
+
+        <jsp:include page="/components/navbar.jsp"/>
         
         <!-- Car Detail Page Header - Similar to car-list.jsp -->
-        <div class="car-listing-page">
+        <div class="car-listing-page" style="padding-top: 80px;">
             <div class="container">
                 <!-- Header Section -->
                 <div class="car-listing-header-container">

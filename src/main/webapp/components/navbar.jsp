@@ -11,12 +11,13 @@
         left: 0;
         width: 100%;
         z-index: 1000;
-        transition: all 0.3s ease;
-        background-color: transparent;
+        transition: none;
+        background-color: #000 !important;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     }
 
     .header.scrolled {
-        background-color: #fff;
+        background-color: #000 !important;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     }
 
@@ -238,17 +239,29 @@
         text-align: center;
         padding: 8px;
         transition: all 0.3s ease;
+        /* Thêm chiều rộng cố định cho khung ảnh */
     }
 
-    .car-preview:hover {
-        transform: translateY(-5px);
+    .car-preview-img-wrapper {
+        width: 100%;
+        aspect-ratio: 16/9;
+        background: #f5f5f5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        border-radius: 8px;
+        margin-bottom: 15px;
     }
 
     .car-preview img {
         width: 100%;
-        height: auto;
-        margin-bottom: 15px;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        background: transparent;
         transition: all 0.3s ease;
+        display: block;
     }
 
     .car-model {
@@ -391,22 +404,6 @@
         color: inherit;
     }
 
-    .brand-item {
-        color: #333;
-        text-decoration: none;
-        transition: background 0.3s ease;
-    }
-
-    .brand-item:hover {
-        background-color: #f0f0f0;
-    }
-
-    .brand-item.active-brand {
-        background-color: #f1f1f1;
-        font-weight: 600;
-        border-left: 3px solid #6B1700;
-    }
-
     /* Responsive Styles */
     @media (max-width: 1200px) {
         .mega-dropdown {
@@ -533,16 +530,7 @@
         max-height: 400px;
         overflow-y: auto;
         padding: 10px 0;
-
-        /* Ẩn scrollbar */
-        scrollbar-width: none; /* Firefox */
-        -ms-overflow-style: none; /* IE/Edge */
     }
-
-    .parts-dropdown::-webkit-scrollbar {
-        display: none; /* Chrome, Safari */
-    }
-
 
     .parts-dropdown .mega-menu-sidebar {
         width: 100% !important;
@@ -563,6 +551,33 @@
 
     .parts-dropdown .mega-menu-sidebar ul li a i {
         display: none;
+    }
+
+    /* Chỉ đổi màu chữ trên thanh navbar chính khi scroll, không ảnh hưởng dropdown */
+    .header.scrolled .main-header > .left-section .logo a,
+    .header.scrolled .main-header > .main-nav > ul > li > a,
+    .header.scrolled .main-header > .right-section .header-actions > a,
+    .header.scrolled .main-header > .right-section .login-btn,
+    .header.scrolled .main-header > .right-section .profile-avatar {
+        color: #fff !important;
+        border-color: #fff !important;
+    }
+
+    .main-nav a:after {
+        background-color: #fff;
+    }
+
+    .logo-white {
+        display: block !important;
+    }
+    .logo-dark {
+        display: none !important;
+    }
+
+    /* Fix màu chữ và icon trong dropdown profile luôn là đen */
+    .header .profile-menu ul li a,
+    .header .profile-menu ul li a i {
+        color: #111 !important;
     }
 </style>
 
@@ -626,7 +641,9 @@
                                     <c:forEach var="car" items="${latestCars}" varStatus="loop">
                                         <c:if test="${loop.index < 8}">
                                             <div class="car-preview">
-                                                <img src="${pageContext.request.contextPath}/asset/img/cars/${car.carImg}" alt="${car.carBrand} ${car.carName}">
+                                                <div class="car-preview-img-wrapper">
+                                                    <img src="${pageContext.request.contextPath}/asset/img/cars/${car.carImg}" alt="${car.carBrand} ${car.carName}">
+                                                </div>
                                                 <div class="car-model">
                                                     ${car.carName} <span class="car-model-badge">®</span>
                                                 </div>
@@ -708,17 +725,8 @@
                                 <ul>
                                     <c:forEach var="brand" items="${partBrands}">
                                         <li>
-                                            <a href="${pageContext.request.contextPath}/parts?brand=${brand}"
-                                               class="brand-item d-flex align-items-center px-3 py-2 <c:if test='${param.brand == brand}'>active-brand</c:if>">
-                                                <c:choose>
-                                                    <c:when test="${param.brand == brand}">
-                                                        <i class="fas fa-check-circle me-2 text-secondary"></i>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <i class="far fa-circle me-2 text-muted"></i>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                                ${brand}
+                                            <a href="${pageContext.request.contextPath}/parts?brand=${brand}">
+                                                ${brand}</i>
                                             </a>
                                         </li>
                                     </c:forEach>
@@ -727,13 +735,14 @@
                         </div>
                     </li>
 
-                    <li><a href="${pageContext.request.contextPath}/service-list.jsp" class="${pageContext.request.servletPath eq 'service' ? 'active' : ''}">Services</a></li>
+                    <li><a href="${pageContext.request.contextPath}/services" class="${pageContext.request.servletPath eq '/services' ? 'active' : ''}">Services</a></li>
 
-                    <li><a href="#" class="${pageContext.request.servletPath eq '/about.jsp' ? 'active' : ''}">About</a></li>
-                    <a href="${pageContext.request.contextPath}/blog" class="${pageContext.request.servletPath eq '/blog' ? 'active' : ''}">Blog</a>
+                    <li><a href="${pageContext.request.contextPath}/about.jsp" class="${pageContext.request.servletPath eq '/about.jsp' ? 'active' : ''}">About</a></li>
 
-                    <li><a href="${pageContext.request.contextPath}/contact.jsp" class="${pageContext.request.servletPath eq '/contact.jsp' ? 'active' : ''}">Contact</a></li>
-
+                    <li><a href="${pageContext.request.contextPath}/blog"
+                       class="${pageContext.request.servletPath eq '/blog' ? 'active' : ''}">Blog</a></li>
+      
+                    <li><a href="contact.jsp" class="${pageContext.request.servletPath eq '/contact.jsp' ? 'active' : ''}">Contact</a></li>
                     <li><a href="feedback.jsp" class="${pageContext.request.servletPath eq '/feedback.jsp' ? 'active' : ''}">Feedback</a></li>
                 </ul>
             </nav>
