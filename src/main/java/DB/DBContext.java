@@ -13,9 +13,9 @@ public class DBContext {
  
     private Connection conn;
 
-    private static final String DB_URL = "jdbc:sqlserver://localhost:1433;databaseName=DriveXO;trustServerCertificate=true;";
-    private static final String DB_USER = "sa";
-    private static final String DB_PWD = "1234";
+    private static final String DB_URL = "jdbc:sqlserver://dbswp.database.windows.net:1433;databaseName=DriveXO;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
+    private static final String DB_USER = "sqladmin@dbswp";  // Tên người dùng Azure SQL
+    private static final String DB_PWD = "admin@123";       // Mật khẩu của người dùng Azure SQL
     public DBContext() {
         try {
             // Load the SQLServer driver

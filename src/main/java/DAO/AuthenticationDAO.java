@@ -188,7 +188,7 @@ public class AuthenticationDAO extends DBContext {
     public void setUserPasswordByEmail(String femail, String password) {
         String sql = "UPDATE [User] set password = ? where email = ?";
         try (PreparedStatement ps = this.getConnection().prepareStatement(sql)) {
-            ps.setString(1, password);
+            ps.setString(1, HashUtil.toMD5(password));
             ps.setString(2, femail);
 
             ps.executeUpdate();
