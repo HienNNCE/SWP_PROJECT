@@ -71,7 +71,7 @@ public class ProfileServlet extends HttpServlet {
             int userId = Integer.parseInt(request.getParameter("userId"));
 
             String errorMessage = ValidationUtil.validateUserData(fullName, userName, email, currentUser.getPassword(),
-                    phone, address, genderParam, dobParam, aboutMe);
+                    phone, address, genderParam, dobParam, aboutMe, false);
             if (errorMessage != null) {
                 request.setAttribute("message", errorMessage);
                 request.setAttribute("success", false);

@@ -81,6 +81,11 @@ public class LoginServlet extends HttpServlet {
         // If a user object is returned, authentication was successful.
 
         if (user != null) {
+            if(!"Active".equals(user.getUserStatus())){
+                request.setAttribute("err", "Account has been locked");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+                return;
+            }
             session.setAttribute("user", user);
             int roleId = user.getRoleId();
             session.setAttribute("userId", user.getUserId());

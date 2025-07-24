@@ -39,7 +39,7 @@
                 <a href="${pageContext.request.contextPath}/admin/car" class="nav-link">
                     <i class="fas fa-car"></i>
                     <span>Cars</span>
-                    <span class="badge badge-info">${sessionScope.countUsers}</span>
+                    <span class="badge badge-info">8</span>
                 </a>
             </li>
 
@@ -47,7 +47,7 @@
                 <a href="${pageContext.request.contextPath}/admin/users" class="nav-link">
                     <i class="fas fa-users"></i>
                     <span>Users</span>
-                    <span class="badge badge-info">24</span>
+                    <span class="badge badge-info">${sessionScope.countUsers}</span>
                 </a>
             </li>
 

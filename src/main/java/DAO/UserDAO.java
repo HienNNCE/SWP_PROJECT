@@ -4,6 +4,7 @@ import DB.DBContext;
 import Model.Address;
 import Model.Part;
 import Model.Users;
+import Service.HashUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -323,7 +324,7 @@ public class UserDAO extends DBContext {
     public void updateUserPassword(int userId, String newPassword) {
         String query = "UPDATE [User] SET password = ? WHERE user_id = ?";
         try (PreparedStatement ps = this.getConnection().prepareStatement(query)) {
-            ps.setString(1, newPassword); // Consider hashing the password in a real application
+            ps.setString(1, HashUtil.toMD5(newPassword)); // Consider hashing the password in a real application
             ps.setInt(2, userId);
             ps.executeUpdate();
         } catch (Exception e) {
