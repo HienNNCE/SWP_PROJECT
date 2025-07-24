@@ -133,7 +133,7 @@ public class AdminAccountServlet extends HttpServlet {
         String roleId = request.getParameter("roleId");
 
         // Validate data
-        String errorMessage = ValidationUtil.validateUserData(fullName, username, email, password, phone, address, genderParam, dobParam, aboutMe);
+        String errorMessage = ValidationUtil.validateUserData(fullName, username, email, password, phone, address, genderParam, dobParam, aboutMe, true);
         if (userDAO.getUserByEmail(email) != null) {
             errorMessage = "Email already exists";
         }
@@ -198,7 +198,7 @@ public class AdminAccountServlet extends HttpServlet {
         String roleId = request.getParameter("roleId");
 
         // Validate (có thể thêm validate cho fullName, dob, gender, aboutMe)
-        String errorMessage = ValidationUtil.validateUserData(fullName, username, email, password, phone, address, genderParam, dobParam, aboutMe);
+        String errorMessage = ValidationUtil.validateUserData(fullName, username, email, password, phone, address, genderParam, dobParam, aboutMe, true);
 
         Users existingEmailUser = userDAO.getUserByEmail(email);
         if (existingEmailUser != null && existingEmailUser.getUserId() != parsedUserId) {

@@ -485,13 +485,13 @@
                             <a href="#" class="profile-nav-item active" data-tab="personal-info">
                                 <i class="fas fa-user"></i> Personal Information
                             </a>
-                            <a href="#" class="profile-nav-item" data-tab="addresses">
+<!--                            <a href="#" class="profile-nav-item" data-tab="addresses">
                                 <i class="fas fa-map-marker-alt"></i> Addresses
-                            </a>
+                            </a>-->
                             <a href="#" class="profile-nav-item" data-tab="security">
                                 <i class="fas fa-lock"></i> Security
                             </a>
-                            <a href="#" class="profile-nav-item" data-tab="notifications">
+<!--                            <a href="#" class="profile-nav-item" data-tab="notifications">
                                 <i class="fas fa-bell"></i> Notifications
                             </a>
                             <a href="bookings" class="profile-nav-item">
@@ -502,7 +502,7 @@
                             </a>
                             <a href="#" class="profile-nav-item" data-tab="payment-methods">
                                 <i class="fas fa-credit-card"></i> Payment Methods
-                            </a>
+                            </a>-->
                             <a href="${pageContext.request.contextPath}/auth/LoginServlet?action=logout" class="profile-nav-item">
                                 <i class="fas fa-sign-out-alt"></i> Logout
                             </a>
@@ -704,11 +704,11 @@
                                     </div>
                                 </form>
 
-                                <div class="delete-account">
+<!--                                <div class="delete-account">
                                     <h3 class="profile-section-title">Delete Account</h3>
                                     <p>Once you delete your account, there is no going back. Please be certain.</p>
                                     <button class="delete-account-btn">Delete My Account</button>
-                                </div>
+                                </div>-->
                             </div>
                         </div>
 

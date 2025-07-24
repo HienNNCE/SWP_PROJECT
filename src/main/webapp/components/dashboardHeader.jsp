@@ -32,7 +32,7 @@
 
             <!-- User Account -->
             <li class="nav-item dropdown user-menu">
-                <a class="nav-link user-profile" data-toggle="dropdown" href="#">
+                <a class="nav-link user-profile dropdown-toggle" data-toggle="dropdown" href="#">
                     <img src="${pageContext.request.contextPath}/asset/img/avt/adminavt.png" alt="Admin Avatar" class="user-image">
                     <div class="user-info">
                         <span class="user-name">Admin User</span>
@@ -40,24 +40,27 @@
                     </div>
                 </a>
                 <div class="dropdown-menu">
-                    <div class="dropdown-header-img">
-                        <img src="${pageContext.request.contextPath}/asset/img/avt/adminavt.png" alt="Admin Avatar">
-                        <p>Admin User</p>
-                        <small>Member since Nov. 2025</small>
-                    </div>
+                    <!--                    <div class="dropdown-header-img">
+                                            <img src="${pageContext.request.contextPath}/asset/img/avt/adminavt.png" alt="Admin Avatar">
+                                            <p>Admin User</p>
+                                            <small>Member since Nov. 2025</small>
+                                        </div>
+                                        <div class="dropdown-divider"></div>
+                                        <a href="#" class="dropdown-item">
+                                            <i class="fas fa-user"></i> My Profile
+                                        </a>
+                                        <a href="#" class="dropdown-item">
+                                            <i class="fas fa-cog"></i> Settings
+                                        </a>-->
                     <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <i class="fas fa-user"></i> My Profile
-                    </a>
-                    <a href="#" class="dropdown-item">
-                        <i class="fas fa-cog"></i> Settings
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="../auth/login.jsp" class="dropdown-item text-danger">
+                    <a href="${pageContext.request.contextPath}/auth/LoginServlet?action=logout" class="dropdown-item text-danger">
                         <i class="fas fa-sign-out-alt"></i> Logout
                     </a>
                 </div>
             </li>
         </ul>
     </nav>
-</header> 
+</header>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>

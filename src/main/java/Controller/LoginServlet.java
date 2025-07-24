@@ -9,6 +9,7 @@ import java.util.List;
 
 import DAO.AuthenticationDAO;
 import DAO.CartDAO;
+import DAO.UserDAO;
 import Model.Cart;
 import Model.Users;
 import jakarta.servlet.ServletException;
@@ -109,6 +110,9 @@ public class LoginServlet extends HttpServlet {
             switch (roleId) {
                 case 1:
                     // If roleId is 1, redirect to admin dashboard page
+                    UserDAO userDAO = new UserDAO();
+                    HttpSession httpSession = request.getSession();
+                    httpSession.setAttribute("countUsers", userDAO.countAllUsers());
                     response.sendRedirect(request.getContextPath() + "/admin/dashboard");
                     break;
                 case 4:

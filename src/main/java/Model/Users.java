@@ -20,6 +20,10 @@ public class Users {
     // Default constructor
     public Users() {
     }
+    
+    public Users(int userId){
+        this.userId = userId;
+    }
 
     public Users(int userId, String fullName, String userName, String email, String password, String phone, boolean gender, LocalDate dob, String aboutMe, String address, Integer roleId, String userStatus) {
         this.userId = userId;

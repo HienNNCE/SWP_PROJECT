@@ -624,6 +624,24 @@
                                     <div class="item-meta">
                                         <span class="meta-item">Total: <span>$<fmt:formatNumber value="${item.totalPrice}" pattern="#,##0.00"/></span></span>
                                     </div>
+                                    <a href="${pageContext.request.contextPath}/part/detail?id=${item.getPart().getPartId()}"
+                                       style="
+                                       display: inline-block;
+                                       width: 115px;
+                                       margin-top: 12px;
+                                       padding: 8px 20px;
+                                       background-color: #000;
+                                       color: #fff;
+                                       text-decoration: none;
+                                       border-radius: 6px;
+                                       font-size: 14px;
+                                       font-weight: 600;
+                                       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+                                       transition: background-color 0.3s ease, transform 0.2s ease;
+                                       "
+                                       onmouseover="this.style.backgroundColor = '#333'; this.style.transform = 'translateY(-1px)'"
+                                       onmouseout="this.style.backgroundColor = '#000'; this.style.transform = 'translateY(0)'"
+                                       >Comment</a>
                                 </div>
                             </div>
                         </c:forEach>

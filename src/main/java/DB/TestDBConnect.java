@@ -10,7 +10,6 @@ public class TestDBConnect {
     public static void main(String[] args) throws SQLException {
         DBContext db = new DBContext();
         Connection conn = db.getConnection();
-
         if (conn != null) {
             System.out.println("Test Passed: Connection successfully.");
         } else {

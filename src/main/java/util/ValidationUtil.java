@@ -51,12 +51,12 @@ public class ValidationUtil {
     }
 
     public static boolean isValidAboutMe(String aboutMe) {
-        return aboutMe != null && !aboutMe.trim().isEmpty() && aboutMe.length() <= 1000;
+        return aboutMe != null && !aboutMe.trim().isEmpty();
     }
 
     public static String validateUserData(String fullName, String username, String email,
                                           String password, String phone, String address,
-                                          String gender, String dob, String aboutMe) {
+                                          String gender, String dob, String aboutMe, boolean isAdminUpdate) {
         if (!isValidFullName(fullName)) {
             return "Full name cannot be empty";
         }
@@ -66,7 +66,7 @@ public class ValidationUtil {
         if (!isValidEmail(email)) {
             return "Invalid email format";
         }
-        if (!isValidPassword(password)) {
+        if (!isValidPassword(password) && isAdminUpdate) {
             return "Password must be at least 8 characters long and contain uppercase, lowercase, number and special character";
         }
         if (!isValidPhoneNumber(phone)) {
@@ -82,7 +82,7 @@ public class ValidationUtil {
             return "Invalid date of birth";
         }
         if (!isValidAboutMe(aboutMe)) {
-            return "About Me cannot be empty and must be less than 1000 characters";
+            return "About Me cannot be empty";
         }
         return null;
     }

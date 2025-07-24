@@ -23,6 +23,10 @@ public class Part {
     // Constructors
     public Part() {
     }
+    
+    public Part(int partId){
+        this.partId = partId;
+    }
 
     public Part(int partId, String partName, String partBrand, String carModel, String description, String partImg,
             int partStock, BigDecimal partPrice) {
