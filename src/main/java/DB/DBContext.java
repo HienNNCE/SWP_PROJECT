@@ -15,7 +15,7 @@ public class DBContext {
 
     private static final String DB_URL = "jdbc:sqlserver://localhost:1433;databaseName=DriveXO;trustServerCertificate=true;";
     private static final String DB_USER = "sa";
-    private static final String DB_PWD = "1234";
+    private static final String DB_PWD = "123";
     public DBContext() {
         try {
             // Load the SQLServer driver
@@ -29,9 +29,15 @@ public class DBContext {
 
     // Getter method to return the connection
     public Connection getConnection() {
-        return conn;
+        try {
+            // Load the SQLServer driver
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            // Establish the connection
+            return DriverManager.getConnection(DB_URL, DB_USER, DB_PWD);
+        } catch (ClassNotFoundException | SQLException ex) {
+            throw new RuntimeException(ex.getMessage());
+        }
     }
-
     // Method to execute INSERT, UPDATE, DELETE queries
     public int execQuery(String query, Object[] params) throws SQLException {
         PreparedStatement pStatement = conn.prepareStatement(query);

@@ -210,6 +210,142 @@
                     grid-template-columns: 1fr;
                 }
             }
+
+            .comment-section {
+                margin-top: 40px;
+            }
+
+            .btn-comment {
+                display: inline-block;
+                padding: 10px 18px;
+                font-size: 14px;
+                font-weight: 600;
+                background-color: var(--primary-color, #007bff);
+                color: #fff;
+                border: none;
+                border-radius: 6px;
+                cursor: pointer;
+                margin-bottom: 20px;
+                transition: background-color 0.3s ease;
+            }
+
+            .btn-comment:hover {
+                background-color: #0056b3;
+            }
+
+            .comment-list {
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .comment-item {
+                background-color: #f8f9fa;
+                border-left: 4px solid var(--primary-color, #007bff);
+                padding: 15px 20px;
+                border-radius: 6px;
+                box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+            }
+
+            .comment-author {
+                font-weight: 600;
+                font-size: 14px;
+                margin-bottom: 5px;
+                color: #333;
+            }
+
+            .comment-rating i {
+                color: #f5c518;
+                font-size: 16px;
+                margin-right: 2px;
+            }
+
+            .comment-content {
+                font-size: 14px;
+                color: #444;
+                margin: 8px 0;
+            }
+
+            .comment-date {
+                font-size: 12px;
+                color: #888;
+            }
+
+            /* MODAL COMMENT */
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 9999;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0,0,0,0.5);
+                justify-content: center;
+                align-items: center;
+            }
+
+            .modal-content {
+                background-color: #fff;
+                padding: 30px;
+                border-radius: 10px;
+                max-width: 500px;
+                width: 90%;
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+                position: relative;
+                animation: fadeIn 0.3s ease;
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(-20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .close-modal {
+                position: absolute;
+                top: 15px;
+                right: 20px;
+                font-size: 22px;
+                color: #aaa;
+                cursor: pointer;
+            }
+
+            .close-modal:hover {
+                color: #000;
+            }
+
+            .rating-stars {
+                margin-bottom: 15px;
+            }
+
+            .star {
+                font-size: 24px;
+                color: #ccc;
+                cursor: pointer;
+                margin-right: 5px;
+                transition: color 0.2s ease;
+            }
+
+            .star.selected {
+                color: #f5c518;
+            }
+
+            .comment-input {
+                width: 100%;
+                min-height: 100px;
+                padding: 10px;
+                border-radius: 6px;
+                border: 1px solid #ccc;
+                resize: vertical;
+                margin-bottom: 20px;
+                font-size: 14px;
+            }
         </style>
     </head>
     <body class="part-detail-page">
@@ -331,9 +467,79 @@
                         </div>
                     </div>
                 </c:if>
+
+                <div class="container" style="margin-top: 60px;">
+                    <div class="comment-section">
+                        <h3 style="margin-bottom: 15px;">Comments</h3>
+                        <c:if test="${hasPurchased}">
+                            <button type="button" class="btn-comment" onclick="openCommentModal()">Comment</button>
+                        </c:if>
+
+                        <div class="comment-list">
+                            <c:forEach var="cmt" items="${comments}">
+                                <div class="comment-item">
+                                    <div class="comment-author">${cmt.user.fullName}</div>
+                                    <div class="comment-rating">
+                                        <c:forEach begin="1" end="${cmt.rating}">
+                                            <i class="fas fa-star"></i>
+                                        </c:forEach>
+                                    </div>
+                                    <div class="comment-content">${cmt.commentText}</div>
+                                    <div class="comment-date">${cmt.date}</div>
+                                </div>
+                            </c:forEach>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MODAL -->
+                <div id="commentModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close-modal" onclick="closeCommentModal()">&times;</span>
+                        <h3 style="margin-bottom: 15px;">Leave Your Review</h3>
+                        <form method="post" action="${pageContext.request.contextPath}/comment/add">
+                            <input type="hidden" name="partId" value="${part.partId}" />
+                            <div class="rating-stars">
+                                <input type="hidden" name="rating" id="ratingValue" value="5" />
+                                <c:forEach var="i" begin="1" end="5">
+                                    <i class="fas fa-star star" data-value="${i}"></i>
+                                </c:forEach>
+                            </div>
+                            <textarea name="content" class="comment-input" placeholder="Write your review..." required></textarea>
+                            <button type="submit" class="btn-comment">Submit Review</button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
         <jsp:include page="/components/footer.jsp" />
         <script src="${pageContext.request.contextPath}/asset/js/main.js"></script>
+
+        <script>
+                            function openCommentModal() {
+                                document.getElementById('commentModal').style.display = 'flex';
+                            }
+
+                            function closeCommentModal() {
+                                document.getElementById('commentModal').style.display = 'none';
+                            }
+
+                            document.addEventListener('DOMContentLoaded', function () {
+                                const stars = document.querySelectorAll('.star');
+                                const ratingInput = document.getElementById('ratingValue');
+
+                                stars.forEach(star => {
+                                    star.addEventListener('click', function () {
+                                        const rating = parseInt(this.getAttribute('data-value'));
+                                        ratingInput.value = rating;
+
+                                        stars.forEach(s => {
+                                            const value = parseInt(s.getAttribute('data-value'));
+                                            s.classList.toggle('selected', value <= rating);
+                                        });
+                                    });
+                                });
+                            });
+        </script>
     </body>
 </html>

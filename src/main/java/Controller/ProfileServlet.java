@@ -7,6 +7,7 @@ package Controller;
 import DAO.UserDAO;
 import Model.Address;
 import Model.Users;
+import Service.HashUtil;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -163,7 +164,7 @@ public class ProfileServlet extends HttpServlet {
                 return;
             }
 
-            if (!dbUser.getPassword().equals(currentPassword)) {
+            if (!dbUser.getPassword().equals(HashUtil.toMD5(currentPassword))) {
                 request.setAttribute("message", "Current password is incorrect!");
                 request.setAttribute("success", false);
                 request.getRequestDispatcher("profile.jsp").forward(request, response);

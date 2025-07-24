@@ -1,7 +1,11 @@
 package Controller;
 
+import DAO.CommentDAO;
 import DAO.PartDAO;
+import DAO.UserDAO;
+import Model.Comment;
 import Model.Part;
+import Model.Users;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
@@ -126,6 +130,10 @@ public class PartServlet extends HttpServlet {
     private void showDetail(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         MenuDataHelper.preloadCarList(request);
+        HttpSession session = request.getSession();
+        Users currentUser = (Users) session.getAttribute("user");
+        CommentDAO commentDAO = new CommentDAO();
+        UserDAO userDAO = new UserDAO();
         int id = parseInt(request.getParameter("id"));
         Part part = partDAO.getPartById(id);
         if (part == null) {
@@ -133,7 +141,17 @@ public class PartServlet extends HttpServlet {
             return;
         }
         List<Part> relatedParts = partDAO.getRelatedParts(part.getPartBrand(), part.getPartId());
-
+        List<Comment> comments = commentDAO.getCommentsByPartId(part.getPartId());
+        for (Comment comment : comments) {
+            Users users = userDAO.getUserById(comment.getUser().getUserId());
+            comment.setUser(users);
+        }
+        boolean hasPurchased = false;
+        if (currentUser != null) {
+            hasPurchased = commentDAO.hasUserPurchasedPart(currentUser.getUserId(), part.getPartId());
+        }
+        request.setAttribute("comments", comments);
+        request.setAttribute("hasPurchased", hasPurchased);
         request.setAttribute("relatedParts", relatedParts);
         request.setAttribute("activePage", "parts");
         request.setAttribute("part", part);
