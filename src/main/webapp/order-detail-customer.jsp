@@ -146,7 +146,7 @@
             
             .order-info-section {
                 display: grid;
-                grid-template-columns: repeat(3, 1fr);
+                grid-template-columns: repeat(2, 1fr);
                 gap: 20px;
                 margin-bottom: 30px;
             }
@@ -588,24 +588,14 @@
                     </div>
                     
                     <!-- Order Information -->
-                    <div class="order-info-section">
-                        <div class="info-box">
-                            <h3>Shipping Address</h3>
-                            <p class="info-detail">
-                                ${user.userName}<br>
-                                ${user.address}<br>
-                                ${user.phone}
-                            </p>
-                        </div>
-                        
+                    <div class="order-info-section">                       
                         <div class="info-box">
                             <h3>Shipping Method</h3>
                             <p class="info-detail">
-                                Standard Shipping<br>
-                                Estimated Delivery: June 1 - June 3, 2025
+                                In-store pickup<br>
+                                We will contact you as soon as possible to inform the pickup time
                             </p>
-                        </div>
-                        
+                        </div>                 
                         <div class="info-box">
                             <h3>Billing Information</h3>
                             <p class="info-detail">
@@ -616,16 +606,7 @@
                                 United States
                             </p>
                         </div>
-                    </div>
-                    
-                    <!-- Tracking Information -->
-                    <div class="tracking-info">
-                        <p>
-                            <span class="tracking-number">Tracking Number: DX9876543210</span>
-                            <a href="#" class="tracking-link">Track <i class="fas fa-external-link-alt"></i></a>
-                        </p>
-                        <p class="tracking-status">Last Update: Package has left our warehouse and is on its way to the carrier.</p>
-                    </div>
+                    </div>                    
                     
                     <!-- Order Items -->
                     <div class="order-items">

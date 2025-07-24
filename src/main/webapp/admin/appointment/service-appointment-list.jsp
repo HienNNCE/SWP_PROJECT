@@ -352,9 +352,10 @@
                             <table class="car-table">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
+                                        <th>User Name</th>
+                                        <th>User Phone</th>
+                                        <th>User Email</th>
                                         <th>Service Name</th>
-                                        <th>User ID</th>
                                         <th>Car Infor</th>
                                         <th>Appointmet Time</th>
                                         <th>Note</th>
@@ -371,9 +372,10 @@
                                     
                                     <c:forEach var="service" items="${serviceAppointments}">
                                         <tr>
-                                            <td>${service.getServiceAppointmentId()}</td>
+                                            <td class="car-name">${service.getUser().getFullName()}</td>
+                                            <td class="car-name">${service.getUser().getPhone()}</td>
+                                            <td class="car-name">${service.getUser().getEmail()}</td>
                                             <td class="car-name">${service.getServiceName()}</td>                                         
-                                            <td class="car-name">${service.getUserId()}</td>
                                             <td>${service.getCarInfo()}</td>
                                             <td>${service.getFormattedSaDate()}</td>
                                             <td>${service.getSaNote()}</td>

@@ -12,6 +12,7 @@ public class ServiceAppointment {
     private String saStatus;
     private String carInfo;
     private String serviceName;
+    private Users user;
 
     // Constructors
     public ServiceAppointment() {
@@ -106,5 +107,13 @@ public class ServiceAppointment {
 
     public void setSaStatus(String saStatus) {
         this.saStatus = saStatus;
+    }
+
+    public Users getUser() {
+        return user;
+    }
+
+    public void setUser(Users user) {
+        this.user = user;
     }
 }

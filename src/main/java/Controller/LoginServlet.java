@@ -76,22 +76,27 @@ public class LoginServlet extends HttpServlet {
         String isRemember = request.getParameter("remember");
         // Attempt to retrieve a user from the database using the provided credentials.
         Users user = authenDao.getUserById(username, password);
-        
         // If a user object is returned, authentication was successful.
-
+        System.out.println(user.getUserStatus());
         if (user != null) {
+            String status = user.getUserStatus();
+            if (status != null && status.equalsIgnoreCase("Banned")) {
+                request.setAttribute("err", "Your account has been banned. Please contact support for more details. Hotline: 19008198");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+                return; // cần return để không chạy tiếp phần set session
+            }
             session.setAttribute("user", user);
             int roleId = user.getRoleId();
             session.setAttribute("userId", user.getUserId());
             session.setAttribute("role", user.getRoleId());
-            if(isRemember != null){
+            if (isRemember != null) {
                 Cookie cookieUsername = new Cookie("username", username);
                 Cookie cookiePassword = new Cookie("password", password);
                 cookieUsername.setMaxAge(7 * 24 * 60 * 60);
                 cookiePassword.setMaxAge(7 * 24 * 60 * 60);
                 response.addCookie(cookiePassword);
                 response.addCookie(cookieUsername);
-            }else{
+            } else {
                 Cookie cookieUsername = new Cookie("username", "");
                 Cookie cookiePassword = new Cookie("password", "");
                 cookieUsername.setMaxAge(0);
@@ -99,7 +104,7 @@ public class LoginServlet extends HttpServlet {
                 response.addCookie(cookiePassword);
                 response.addCookie(cookieUsername);
             }
-            
+
             // Check the role and redirect accordingly
             switch (roleId) {
                 case 1:

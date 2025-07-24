@@ -529,7 +529,6 @@
                         <i class="fas fa-shopping-bag empty-icon"></i>
                         <h2 class="empty-message">You haven't placed any apointmenet yet</h2>
                         <p>Booking car or service appointment and come back later! </p>
-                        <a href="parts" class="shop-now-btn">Shop Now</a>
                     </div>
                 </c:if>
                 

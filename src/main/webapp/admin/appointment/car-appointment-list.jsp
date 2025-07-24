@@ -349,13 +349,15 @@
                         
                         <!-- Cars Table -->
                         <div class="table-responsive">
-                            <table class="car-table">
+                            <table class="table table-bordered table-hover car-table">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
-                                        <th>User ID</th>
+                                        <th>User Name</th>
+                                        <th>User Phone</th>
+                                        <th>User Email</th>
                                         <th>Car Name</th>      
                                         <th>Car Model</th>
+                                        <th>Booking Type</th>
                                         <th>Appointmet Time</th>
                                         <th>Note</th>
                                         <th>Status</th>
@@ -371,10 +373,12 @@
                                     
                                     <c:forEach var="car" items="${carAppointments}">
                                         <tr>
-                                            <td>${car.getCarAppointmentId()}</td>
-                                            <td class="car-name">${car.getUserId()}</td>
-                                            <td class="car-name">${car.getCarName()}</td>                                         
+                                            <td class="car-name">${car.getUser().getFullName()}</td>
+                                            <td class="car-name">${car.getUser().getPhone()}</td>
+                                            <td class="car-name">${car.getUser().getEmail()}</td>                                         
+                                            <td>${car.getCarName()}</td>
                                             <td>${car.getCarModel()}</td>
+                                            <td>${car.getServicerType()}</td>
                                             <td>${car.getFormattedCaDate()}</td>
                                             <td>${car.getCaNote()}</td>
                                             <td>${car.getCaStatus()}</td>
