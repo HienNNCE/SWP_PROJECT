@@ -210,17 +210,10 @@
                         <span>DriverXO</span>
                     </div>
 
-                    <h1 class="auth-heading">Create your account</h1>
-                    <%
-                        String error = (String) request.getAttribute("err");
-                        if (error != null && !error.isEmpty()) {
-                    %>
+                    <h1 class="auth-heading">Create your account</h1>               
                     <div id="error-message" style="color: red; margin-bottom: 15px; text-align: center;">
-                        <%= error%>
-                    </div>
-                    <%
-                        }
-                    %>
+                        ${error}
+                    </div>                  
                     <form action="RegisterServlet" method="post">
                         <div class="form-group">
                             <label class="form-label" for="fullname">Full Name</label>
@@ -261,9 +254,9 @@
 
                         <div class="form-group">
                             <label class="form-label">Gender</label><br>
-                            <input type="radio" id="male" name="gender" value="true" required>
+                            <input type="radio" id="male" name="gender" value="MALE" required>
                             <label for="male">Male</label>
-                            <input type="radio" id="female" name="gender" value="false" required>
+                            <input type="radio" id="female" name="gender" value="FEMALE" required>
                             <label for="female">Female</label>
                         </div>
 

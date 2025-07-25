@@ -24,8 +24,8 @@ import java.util.logging.Logger;
 public class CartDAO extends DBContext {
 
     public static void main(String[] a) {
-    CartDAO cDAO = new CartDAO();
-    cDAO.clearCartByUserId(102);
+        CartDAO cDAO = new CartDAO();
+        cDAO.clearCartByUserId(102);
 
     }
 
@@ -640,20 +640,44 @@ public class CartDAO extends DBContext {
     public void clearCartByUserId(int userId) {
         String getCartIdSql = "SELECT cart_id FROM Cart WHERE user_id = ?";
         String deleteDetailSql = "DELETE FROM CartDetail WHERE cart_id = ?";
+        String deleteCartSql = "DELETE FROM Cart WHERE cart_id = ?";
+
         Connection conn = this.getConnection();
-        try (PreparedStatement ps1 = conn.prepareStatement(getCartIdSql)) {
-            ps1.setInt(1, userId);
-            try (ResultSet rs = ps1.executeQuery()) {
-                if (rs.next()) {
-                    int cartId = rs.getInt("cart_id");
-                    try (PreparedStatement ps2 = conn.prepareStatement(deleteDetailSql)) {
-                        ps2.setInt(1, cartId);
-                        ps2.executeUpdate();
+
+        try {
+            conn.setAutoCommit(false); // Bắt đầu transaction
+
+            try (PreparedStatement ps1 = conn.prepareStatement(getCartIdSql)) {
+                ps1.setInt(1, userId);
+                try (ResultSet rs = ps1.executeQuery()) {
+                    if (rs.next()) {
+                        int cartId = rs.getInt("cart_id");
+
+                        // Xóa chi tiết giỏ hàng
+                        try (PreparedStatement ps2 = conn.prepareStatement(deleteDetailSql)) {
+                            ps2.setInt(1, cartId);
+                            ps2.executeUpdate();
+                        }
+
+                        // Xóa chính giỏ hàng
+                        try (PreparedStatement ps3 = conn.prepareStatement(deleteCartSql)) {
+                            ps3.setInt(1, cartId);
+                            ps3.executeUpdate();
+                        }
+
+                        conn.commit(); // Nếu mọi thứ OK thì commit
                     }
                 }
+            } catch (SQLException e) {
+                conn.rollback(); // Nếu lỗi thì rollback toàn bộ
+                e.printStackTrace();
+            } finally {
+                conn.setAutoCommit(true); // Khôi phục lại trạng thái mặc định
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
 }

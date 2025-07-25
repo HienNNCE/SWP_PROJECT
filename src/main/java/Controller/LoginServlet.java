@@ -47,11 +47,13 @@ public class LoginServlet extends HttpServlet {
         String action = request.getParameter("action");
         // Check if the action is "logout".
         if (action != null && action.equalsIgnoreCase("logout")) {
-            // Invalidate or remove the user attribute from the session.
-            session.setAttribute("user", null);
-            // Redirect the user to the home page after logout.
+            // Hủy toàn bộ session hiện tại
+            session.invalidate();
+
+            // Redirect về trang chủ sau khi đăng xuất
             response.sendRedirect(request.getContextPath() + "/home");
         }
+
     }
 
     /**

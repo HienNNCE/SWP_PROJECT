@@ -1,6 +1,5 @@
 package util;
 
-import DAO.UserDAO;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.regex.Pattern;
@@ -9,7 +8,7 @@ public class ValidationUtil {
 
     private static final String EMAIL_PATTERN = "^[A-Za-z0-9+_.-]+@(.+)$";
     private static final String PHONE_PATTERN = "^(03|05|07|08|09)\\d{8}$";
-    private static final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
+    private static final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,}$";
 
     public static boolean isValidEmail(String email) {
         return email != null && Pattern.compile(EMAIL_PATTERN).matcher(email).matches();

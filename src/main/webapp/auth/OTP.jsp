@@ -225,7 +225,7 @@
                 </div>
 
                 <h1 class="auth-heading">Enter verification code</h1>
-                <p class="auth-subheading">A 5-digit code has been sent to your email: <strong><%= session.getAttribute("femail") %></strong></p>
+                <p class="auth-subheading">A 5-digit code has been sent to your email</p>
 
              
                 <%

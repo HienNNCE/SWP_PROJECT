@@ -14,38 +14,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDAO extends DBContext {
-        private static List<Users> cachedUsers = null;  // Cache for parts list
+    private static List<Users> cachedUsers = null; // Cache for parts list
 
-
-    
-
-    
     public List<Users> getAllUsers() {
-        if(cachedUsers!=null){
+        if (cachedUsers != null) {
             return cachedUsers;
         }
         List<Users> list = new ArrayList<>();
         String query = "SELECT u.*, r.role_name FROM [User] u JOIN Role r ON u.role_id = r.role_id";
 
         try (
-                PreparedStatement ps = this.getConnection().prepareStatement(query); ResultSet rs = ps.executeQuery()) {
+                PreparedStatement ps = this.getConnection().prepareStatement(query);
+                ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
                 Users user = mapUser(rs);
                 list.add(user);
             }
         } catch (Exception e) {
-            e.printStackTrace();  // hoặc ghi log
+            e.printStackTrace(); // hoặc ghi log
         }
-
 
         return list;
     }
 
     public Users getUserById(int userId) {
         String query = "SELECT u.*, r.role_name FROM [User] u JOIN Role r ON u.role_id = r.role_id WHERE u.user_id = ?";
-        Connection conn = this.getConnection();
-        try (PreparedStatement ps = conn.prepareStatement(query)) {
+
+        try (
+                PreparedStatement ps = this.getConnection().prepareStatement(query)) {
 
             ps.setInt(1, userId);
             try (ResultSet rs = ps.executeQuery()) {
@@ -125,7 +122,7 @@ public class UserDAO extends DBContext {
 
             ps.setString(1, user.getUserName());
             ps.setString(2, user.getEmail());
-            ps.setString(3, HashUtil.toMD5(user.getPassword())); // Consider hashing the password in a real application
+            ps.setString(3, HashUtil.toMD5(user.getPassword()));
             ps.setString(4, user.getPhone());
             ps.setString(5, user.getAddress());
             ps.setInt(6, user.getRoleId());
@@ -205,7 +202,8 @@ public class UserDAO extends DBContext {
     public int getTotalUserCount() {
         String query = "SELECT COUNT(*) FROM [User]";
         try (
-                PreparedStatement ps = this.getConnection().prepareStatement(query); ResultSet rs = ps.executeQuery()) {
+                PreparedStatement ps = this.getConnection().prepareStatement(query);
+                ResultSet rs = ps.executeQuery()) {
             if (rs.next()) {
                 return rs.getInt(1);
             }
@@ -218,7 +216,8 @@ public class UserDAO extends DBContext {
     public int getActiveUserCount() {
         String query = "SELECT COUNT(*) FROM [User] WHERE user_status = 'Active'";
         try (
-                PreparedStatement ps = this.getConnection().prepareStatement(query); ResultSet rs = ps.executeQuery()) {
+                PreparedStatement ps = this.getConnection().prepareStatement(query);
+                ResultSet rs = ps.executeQuery()) {
             if (rs.next()) {
                 return rs.getInt(1);
             }
@@ -253,7 +252,7 @@ public class UserDAO extends DBContext {
                 + "WHERE (? IS NULL OR u.user_name LIKE ? OR u.email LIKE ? OR u.phone LIKE ?) "
                 + "ORDER BY u.user_id OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
-        Connection conn = this.getConnection(); 
+        Connection conn = this.getConnection();
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             boolean hasKeyword = keyword != null && !keyword.trim().isEmpty();
             String search = "%" + (hasKeyword ? keyword.trim() : "") + "%";
@@ -283,7 +282,7 @@ public class UserDAO extends DBContext {
                 + "WHERE (? IS NULL OR user_name LIKE ? OR email LIKE ? OR phone LIKE ?)";
 
         Connection conn = this.getConnection();
-        try ( PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             boolean hasKeyword = keyword != null && !keyword.trim().isEmpty();
             String search = "%" + (hasKeyword ? keyword.trim() : "") + "%";
 
@@ -303,11 +302,11 @@ public class UserDAO extends DBContext {
 
         return 0;
     }
-    
-    public int countAllUsers(){
+
+    public int countAllUsers() {
         String sql = "SELECT COUNT(*) FROM [User] ";
         Connection conn = this.getConnection();
-        try ( PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return rs.getInt(1);
@@ -331,7 +330,7 @@ public class UserDAO extends DBContext {
         }
     }
 
-// Create Address
+    // Create Address
     public void addAddress(Address address) {
         String query = "INSERT INTO Address (user_id, address_name, address_details, phone, is_default) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement ps = getConnection().prepareStatement(query)) {

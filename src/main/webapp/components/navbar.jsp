@@ -743,7 +743,6 @@
                        class="${pageContext.request.servletPath eq '/blog' ? 'active' : ''}">Blog</a></li>
       
                     <li><a href="${pageContext.request.contextPath}/serviceAppointment" class="${pageContext.request.servletPath eq '/contact.jsp' ? 'active' : ''}">Contact</a></li>
-                    <li><a href="feedback.jsp" class="${pageContext.request.servletPath eq '/feedback.jsp' ? 'active' : ''}">Feedback</a></li>
                 </ul>
             </nav>
 

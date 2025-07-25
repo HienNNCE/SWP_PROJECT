@@ -79,7 +79,6 @@
                     <select id="serviceType" name="serviceType" required>
                         <option value="">-- Select Service Type --</option>
                         <option value="testdrive">Test Drive</option>
-                        <option value="maintenance">Maintenance</option>
                         <option value="consult">Vehicle Consultation</option>
                     </select>
 

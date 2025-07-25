@@ -5,6 +5,7 @@
 package Controller;
 
 import DAO.AuthenticationDAO;
+import DAO.UserDAO;
 import Model.Users;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,6 +16,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import util.ValidationUtil;
 
 /**
  * RegisterServlet handles user registration requests. It processes form
@@ -27,10 +29,9 @@ public class RegisterServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // processRequest(request, response);
         AuthenticationDAO authenDao = new AuthenticationDAO();
         HttpSession session = request.getSession();
-        // Retrieve parameters from the registration form.
+
         String fullName = request.getParameter("fullname");
         String email = request.getParameter("email");
         String userName = request.getParameter("username");
@@ -43,41 +44,51 @@ public class RegisterServlet extends HttpServlet {
         String dobParam = request.getParameter("dob");
         LocalDate dob = LocalDate.parse(dobParam);
         String aboutMe = request.getParameter("aboutMe");
+        UserDAO userDAO = new UserDAO();
 
-        String passwordPattern = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$";
-
+        String errorMessage = ValidationUtil.validateUserData(fullName, userName, email, password, phone, address,
+                genderParam, dobParam, aboutMe, true);
+        if (userDAO.getUserByEmail(email) != null) {
+            errorMessage = "Email already exists";
+        }
+        if (userDAO.getUserByUsername(userName) != null) {
+            errorMessage = "Username already exists";
+        }
+        if (userDAO.getUserByPhone(phone) != null) {
+            errorMessage = "Phone already exists";
+        }
         if (!password.equals(confirm)) {
-            request.setAttribute("err", "Passwords do not match.");
+            errorMessage = "Passwords do not match.";
+        }
+        System.out.println("Error Message: " + errorMessage);
+        if (errorMessage != null) {
+            request.setAttribute("error", errorMessage);
             request.getRequestDispatcher("register.jsp").forward(request, response);
             return;
         }
 
-        if (!password.matches(passwordPattern)) {
-            request.setAttribute("err",
-                    "Password must be at least 8 characters long and contain a mix of letters, numbers, and symbols.");
+
+        String otp = AuthenticationDAO.generateFiveRandomNumbersString();
+        session.setAttribute("otp", otp);
+
+        session.setAttribute("reg_email", email);
+        session.setAttribute("reg_password", password);
+        session.setAttribute("reg_fullname", fullName);
+        session.setAttribute("reg_username", userName);
+        session.setAttribute("reg_phone", phone);
+        session.setAttribute("reg_address", address);
+        session.setAttribute("reg_gender", gender);
+        session.setAttribute("reg_dob", dob);
+        session.setAttribute("reg_aboutme", aboutMe);
+
+        try {
+            AuthenticationDAO.sendEmail(email, "Your DriverXO Verification Code", otp);
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("err", "Failed to send verification code. Please try again.");
             request.getRequestDispatcher("register.jsp").forward(request, response);
             return;
         }
-
-        boolean emailExists = authenDao.checkEmailUser(email);
-        if (emailExists) {
-            request.setAttribute("err", "This email has already been registered.");
-            request.getRequestDispatcher("register.jsp").forward(request, response);
-        } else {
-            authenDao.registerUser(userName, email, password, phone, fullName, gender, dob, aboutMe, address);
-            request.setAttribute("success_msg", "Registration successful! Please log in.");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
-        }
+        request.getRequestDispatcher("OTP.jsp").forward(request, response);
     }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
 }

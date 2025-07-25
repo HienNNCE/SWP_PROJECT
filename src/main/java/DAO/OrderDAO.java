@@ -192,7 +192,7 @@ public class OrderDAO extends DBContext {
 
     public List<Order> getOrdersByUserId(int userId) {
         List<Order> list = new ArrayList<>();
-        String sql = "SELECT o.*, COUNT(od.part_id) AS countItem " +
+        String sql = "SELECT o.*, SUM(od.quantity) AS countItem " +
                 "FROM [Order] o " +
                 "LEFT JOIN OrderDetail od ON o.order_id = od.order_id " +
                 "WHERE o.user_id = ? " +
