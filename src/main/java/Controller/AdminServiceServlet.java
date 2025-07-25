@@ -9,15 +9,18 @@ import jakarta.servlet.http.*;
 
 import java.io.*;
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-@WebServlet(name = "AdminServiceServlet",
-        urlPatterns = {"/admin/service",
-            "/admin/service/create",
-            "/admin/service/edit",
-            "/admin/service/delete",
-            "/admin/service/detail"})
+@WebServlet(name = "AdminServiceServlet", urlPatterns = { "/admin/service",
+        "/admin/service/create",
+        "/admin/service/edit",
+        "/admin/service/delete",
+        "/admin/service/detail" })
 @MultipartConfig
 public class AdminServiceServlet extends HttpServlet {
 
@@ -65,8 +68,15 @@ public class AdminServiceServlet extends HttpServlet {
                 handleAdd(request, response);
                 break;
             case "/admin/service/edit":
-                handleEdit(request, response);
+            {
+                try {
+                    handleEdit(request, response);
+                } catch (SQLException ex) {
+                    Logger.getLogger(AdminServiceServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
                 break;
+
         }
     }
 
@@ -111,10 +121,14 @@ public class AdminServiceServlet extends HttpServlet {
             throws ServletException, IOException {
         int id = parseInt(request.getParameter("id"));
         Service service = serviceDAO.getServiceById(id);
+
         if (service == null) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
+        LocalDateTime ldt = service.getEstimateTime();
+        Date date = java.util.Date.from(ldt.atZone(ZoneId.systemDefault()).toInstant());
+        request.setAttribute("estimateTime", date);
 
         request.setAttribute("service", service);
         request.getRequestDispatcher("/admin/service/edit-form.jsp").forward(request, response);
@@ -122,15 +136,18 @@ public class AdminServiceServlet extends HttpServlet {
 
     // === HANDLE EDIT ===
     private void handleEdit(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, SQLException {
         request.setCharacterEncoding("UTF-8");
         int id = parseInt(request.getParameter("id"));
         Service existingService = serviceDAO.getServiceById(id);
+
+        System.out.println("Editing service with ID: " + id);
 
         if (existingService == null) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
+        System.out.println("Sucessfull 1");
 
         Service service = extractServiceFromRequest(request, existingService.getServiceImg());
         service.setServiceId(id);
@@ -143,6 +160,7 @@ public class AdminServiceServlet extends HttpServlet {
             request.getRequestDispatcher("/admin/service/edit-form.jsp").forward(request, response);
             return;
         }
+        System.out.println("Sucessfull 2");
 
         serviceDAO.updateService(service);
         response.sendRedirect(request.getContextPath() + "/admin/service?msg=updated");
@@ -165,6 +183,9 @@ public class AdminServiceServlet extends HttpServlet {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
+        LocalDateTime ldt = service.getEstimateTime();
+        Date date = java.util.Date.from(ldt.atZone(ZoneId.systemDefault()).toInstant());
+        request.setAttribute("estimateTime", date);
 
         request.setAttribute("service", service);
         request.getRequestDispatcher("/admin/service/service-detail.jsp").forward(request, response);
@@ -173,9 +194,9 @@ public class AdminServiceServlet extends HttpServlet {
     // === UTILS ===
     private Service extractServiceFromRequest(HttpServletRequest request, String existingImg)
             throws IOException, ServletException {
-        String name = request.getParameter("name");
-        String description = request.getParameter("description");
-        BigDecimal price = parseBigDecimal(request.getParameter("price"));
+        String name = request.getParameter("serviceName");
+        String description = request.getParameter("serviceDescription");
+        BigDecimal price = parseBigDecimal(request.getParameter("servicePrice"));
 
         String imageName = existingImg;
         jakarta.servlet.http.Part filePart = request.getPart("img");
@@ -190,7 +211,8 @@ public class AdminServiceServlet extends HttpServlet {
                 uploadDir.mkdirs();
             }
 
-            try (InputStream input = filePart.getInputStream(); FileOutputStream output = new FileOutputStream(new File(uploadPath, imageName))) {
+            try (InputStream input = filePart.getInputStream();
+                    FileOutputStream output = new FileOutputStream(new File(uploadPath, imageName))) {
                 byte[] buffer = new byte[1024];
                 int bytesRead;
                 while ((bytesRead = input.read(buffer)) != -1) {
@@ -198,7 +220,7 @@ public class AdminServiceServlet extends HttpServlet {
                 }
             }
         }
-
+        System.out.println("Service extracted: " + name + ", " + description + ", " + price + ", " + imageName);
         return new Service(0, name, description, price, LocalDateTime.now(), imageName);
     }
 

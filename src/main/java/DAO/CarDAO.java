@@ -17,7 +17,7 @@ import java.sql.Date;
 
 /**
  *
- * @author thien
+ * @author 
  */
 public class CarDAO extends DBContext {
     public ArrayList<Car> getAllCars() {
@@ -77,9 +77,8 @@ public class CarDAO extends DBContext {
         return cars;
     }
 
-    public byte[] getCarImageById(int carId) {
-        // Phương thức này sẽ được triển khai sau khi có cấu trúc lưu trữ hình ảnh
-        return null; // Trả về null thay vì throw exception để tránh lỗi
+    public byte[] getCarImageById(int carId) {    
+        return null; 
     }
 
     public Car getCarById(int carId) {
@@ -125,22 +124,22 @@ public class CarDAO extends DBContext {
     }
     
     public boolean addCar(Car car) {
-        String query = "INSERT INTO Car (car_name, car_brand, model, car_price, car_year, car_img, car_stock, car_odo, fuel_type, displacement, category_id) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO Car (car_id, car_name, car_brand, model, car_price, car_year, car_img, car_stock, car_odo, fuel_type, displacement, category_id) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement ps = this.getConnection().prepareStatement(query);
-            ps.setString(1, car.getCarName());
-            ps.setString(2, car.getCarBrand());
-            ps.setString(3, car.getModel());
-            ps.setBigDecimal(4, car.getCarPrice());
-            ps.setDate(5, car.getCarYear());
-            ps.setString(6, car.getCarImg());
-            ps.setInt(7, car.getCarStock());
-            ps.setBigDecimal(8, car.getCarOdo());
-            ps.setString(9, car.getFuelType());
-            ps.setBigDecimal(10, car.getDisplacement());
-            ps.setInt(11, car.getCategoryId());
-            
+            ps.setInt(1, car.getCarId());
+            ps.setString(2, car.getCarName());
+            ps.setString(3, car.getCarBrand());
+            ps.setString(4, car.getModel());
+            ps.setBigDecimal(5, car.getCarPrice());
+            ps.setDate(6, car.getCarYear());
+            ps.setString(7, car.getCarImg());
+            ps.setInt(8, car.getCarStock());
+            ps.setBigDecimal(9, car.getCarOdo());
+            ps.setString(10, car.getFuelType());
+            ps.setBigDecimal(11, car.getDisplacement());
+            ps.setInt(12, car.getCategoryId());
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException ex) {
@@ -467,7 +466,6 @@ public class CarDAO extends DBContext {
     }
     
     /**
-     * Kiểm tra xem một xe có thuộc category không
      * @param carId ID của xe
      * @param categoryName Tên category
      * @return true nếu xe thuộc category, false nếu không
@@ -523,5 +521,22 @@ public class CarDAO extends DBContext {
             Logger.getLogger(CarDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return cars;
+    }
+
+    public int getMaxCarId() {
+        int maxId = 0;
+        String query = "SELECT ISNULL(MAX(car_id), 0) FROM Car";
+        try {
+            PreparedStatement ps = this.getConnection().prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                maxId = rs.getInt(1);
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(CarDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return maxId;
     }
 }

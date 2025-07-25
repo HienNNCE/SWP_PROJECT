@@ -29,14 +29,6 @@
                     <div class="row align-items-center">
                         <div class="col">
                             <h1 class="page-title">Dashboard Overview</h1>
-                            
-                        </div>
-                        <div class="col-auto">
-                            <div class="date-range-picker">
-                                <i class="fas fa-calendar"></i>
-                                <span>Last 30 days</span>
-                                <i class="fas fa-chevron-down"></i>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -51,48 +43,64 @@
                             <div class="stats-info">
                                 <div class="stats-header">
                                     <h5>Total Cars</h5>
-                                <div class="stats-icon">
-                                    <i class="fas fa-car"></i>
+                                    <div class="stats-icon">
+                                        <i class="fas fa-car"></i>
                                     </div>
                                 </div>
                                 <div class="stats-data">
                                     <h3>${totalCars}</h3>
-                                    <div class="stats-trend positive">
-                                        <i class="fas fa-arrow-up"></i>
-                                        <span>3.48%</span>
-                                        <span class="trend-label">vs last month</span>
-                                    </div>
                                 </div>
                             </div>
-                            <div class="stats-chart" id="carsChart"></div>
                         </div>
                     </div>
-
                     <div class="stats-card info">
                         <div class="stats-card-content">
                             <div class="stats-info">
                                 <div class="stats-header">
-                                    <h5>Active Users</h5>
+                                    <h5>Total Parts</h5>
                                     <div class="stats-icon">
-                                    <i class="fas fa-users"></i>
+                                        <i class="fas fa-cogs"></i>
                                     </div>
                                 </div>
                                 <div class="stats-data">
-                                    <h3>${activeUsers} / ${totalUsers}</h3>
-                                    <div class="stats-trend positive">
-                                        <i class="fas fa-arrow-up"></i>
-                                        <span>ts%</span>
-                                        <span class="trend-label">vs last month</span>
-                                    </div>
+                                    <h3>${totalParts}</h3>
                                 </div>
                             </div>
-                            <div class="stats-chart" id="usersChart"></div>
                         </div>
                     </div>
-
                     <div class="stats-card success">
                         <div class="stats-card-content">
-                                <div class="stats-info">
+                            <div class="stats-info">
+                                <div class="stats-header">
+                                    <h5>Total Services</h5>
+                                    <div class="stats-icon">
+                                        <i class="fas fa-tools"></i>
+                                    </div>
+                                </div>
+                                <div class="stats-data">
+                                    <h3>${totalServices}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stats-card warning">
+                        <div class="stats-card-content">
+                            <div class="stats-info">
+                                <div class="stats-header">
+                                    <h5>Total Users</h5>
+                                    <div class="stats-icon">
+                                        <i class="fas fa-users"></i>
+                                    </div>
+                                </div>
+                                <div class="stats-data">
+                                    <h3>${totalUsers}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stats-card dark">
+                        <div class="stats-card-content">
+                            <div class="stats-info">
                                 <div class="stats-header">
                                     <h5>Total Orders</h5>
                                     <div class="stats-icon">
@@ -101,244 +109,114 @@
                                 </div>
                                 <div class="stats-data">
                                     <h3>${totalOrders}</h3>
-                                    <div class="stats-trend negative">
-                                        <i class="fas fa-arrow-down"></i>
-                                        <span>1.08%</span>
-                                        <span class="trend-label">vs last month</span>
-                                    </div>
                                 </div>
                             </div>
-                            <div class="stats-chart" id="ordersChart"></div>
                         </div>
                     </div>
-
-                    <div class="stats-card warning">
+                    <div class="stats-card info">
                         <div class="stats-card-content">
-                                <div class="stats-info">
+                            <div class="stats-info">
                                 <div class="stats-header">
-                                    <h5>Revenue</h5>
+                                    <h5>Total Car Appointments</h5>
                                     <div class="stats-icon">
-                                        <i class="fas fa-dollar-sign"></i>
+                                        <i class="fas fa-calendar-check"></i>
                                     </div>
                                 </div>
                                 <div class="stats-data">
-                                    <h3>$<c:out value="${totalRevenue}" /></h3>
-                                    <div class="stats-trend positive">
-                                        <i class="fas fa-arrow-up"></i>
-                                        <span>8.32%</span>
-                                        <span class="trend-label">vs last month</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="stats-chart" id="revenueChart"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Charts Row -->
-                <div class="dashboard-grid">
-                    <!-- Sales Overview -->
-                    <div class="dashboard-item sales-overview">
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="card-header-left">
-                                <h5 class="card-title">Sales Overview</h5>
-                                    <span class="card-subtitle">Monthly revenue statistics</span>
-                                </div>
-                                
-                            </div>
-                            <div class="card-body">
-                                <div id="salesOverviewChart"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Top Selling Cars -->
-                    <div class="dashboard-item top-selling">
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="card-header-left">
-                                <h5 class="card-title">Top Selling Cars</h5>
-                                    <span class="card-subtitle">Best performing vehicles</span>
-                                </div>
-                                <div class="card-header-right">
-                                    <button class="btn btn-light btn-sm">
-                                        View All <i class="fas fa-arrow-right"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="top-selling-list">
-                                    <div class="top-selling-item">
-                                        <div class="item-info">
-                                            <img src="../asset/img/cars/camry-explorer.png" alt="Car">
-                                            <div class="item-details">
-                                            <h6>Chevrolet CamFó Explorer</h6>
-                                                <span class="text-muted">Luxury Sedan</span>
-                                            </div>
-                                        </div>
-                                        <div class="item-stats">
-                                            <div class="stats-progress">
-                                                <div class="progress">
-                                                    <div class="progress-bar" style="width: 75%"></div>
-                                                </div>
-                                                <span>75%</span>
-                                            </div>
-                                            <div class="stats-numbers">
-                                                <span class="sales">32 Sales</span>
-                                                <span class="price">$120,000</span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="top-selling-item">
-                                        <div class="item-info">
-                                            <img src="../asset/img/cars/alfa-romeo.png" alt="Car">
-                                            <div class="item-details">
-                                            <h6>Nissan Alfa Romeo</h6>
-                                                <span class="text-muted">Sports Car</span>
-                                            </div>
-                                        </div>
-                                        <div class="item-stats">
-                                            <div class="stats-progress">
-                                                <div class="progress">
-                                                    <div class="progress-bar" style="width: 65%"></div>
-                                                </div>
-                                                <span>65%</span>
-                                            </div>
-                                            <div class="stats-numbers">
-                                                <span class="sales">28 Sales</span>
-                                                <span class="price">$180,000</span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="top-selling-item">
-                                        <div class="item-info">
-                                            <img src="../asset/img/cars/atra-benz-yellow.png" alt="Car">
-                                            <div class="item-details">
-                                            <h6>Chevrolet Altra Benz</h6>
-                                                <span class="text-muted">Premium SUV</span>
-                                            </div>
-                                        </div>
-                                        <div class="item-stats">
-                                            <div class="stats-progress">
-                                                <div class="progress">
-                                                    <div class="progress-bar" style="width: 45%"></div>
-                                                </div>
-                                                <span>45%</span>
-                                            </div>
-                                            <div class="stats-numbers">
-                                                <span class="sales">24 Sales</span>
-                                                <span class="price">$500,000</span>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <h3>${totalCarAppointments}</h3>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <!-- Recent Orders -->
-                <div class="card recent-orders">
-                            <div class="card-header">
-                        <div class="card-header-left">
-                                <h5 class="card-title">Recent Orders</h5>
-                            <span class="card-subtitle">Latest transactions</span>
-                        </div>
-                        <div class="card-header-right">
-                            <div class="card-actions">
-                                <div class="search-box">
-                                    <i class="fas fa-search"></i>
-                                    <input type="text" placeholder="Search orders...">
+                    <div class="stats-card success">
+                        <div class="stats-card-content">
+                            <div class="stats-info">
+                                <div class="stats-header">
+                                    <h5>Total Service Appointments</h5>
+                                    <div class="stats-icon">
+                                        <i class="fas fa-calendar-alt"></i>
+                                    </div>
+                                </div>
+                                <div class="stats-data">
+                                    <h3>${totalServiceAppointments}</h3>
                                 </div>
                             </div>
                         </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                            <table class="table">
-                                        <thead>
-                                            <tr>
-                                        <th>
-                                            <div class="form-check">
-                                                <input type="checkbox" class="form-check-input">
-                                            </div>
-                                        </th>
-                                                <th>Order ID</th>
-                                                <th>Customer</th>
-                                                <th>Car</th>
-                                                <th>Date</th>
-                                                <th>Amount</th>
-                                                <th>Status</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <c:forEach var="order" items="${latestOrders}">
-                                            <tr>
-                                        <td>
-                                            <div class="form-check">
-                                                <input type="checkbox" class="form-check-input">
-                                            </div>
-                                        </td>
-                                        <td>
-                                                        <span class="order-id">#ORD-${order.orderId}</span>
-                                        </td>
-                                        <td>
-                                            <div class="customer-info">
-                                                <img src="../asset/img/avt/adminavt.png" alt="Customer">
-                                                            <span>User ID: ${order.userId}</span>
-                                                    </div>
-                                                </td>
-                                                    <td>Car ID: ${order.carId}</td>
-                                        <td>
-                                            <div class="order-date">
-                                                            <span class="date"><c:out value="${order.orderDate}" /></span>
-                                                            <span class="time">N/A</span>
-                                                    </div>
-                                                </td>
-                                        <td>
-                                                        <span class="order-amount">$<c:out value="${order.orderPrice}" /></span>
-                                        </td>
-                                        <td>
-                                                        <span class="badge badge-<c:choose><c:when test="${order.orderStatus == 'Completed'}">success</c:when><c:when test="${order.orderStatus == 'Pending'}">warning</c:when><c:when test="${order.orderStatus == 'Processing'}">info</c:when><c:else>secondary</c:else></c:choose>">${order.orderStatus}</span>
-                                        </td>
-                                        <td>
-                                            <div class="action-buttons">
-                                                <button class="btn btn-icon btn-light" title="View">
-                                                    <i class="fas fa-eye"></i>
-                                                </button>
-                                                <button class="btn btn-icon btn-light" title="Edit">
-                                                    <i class="fas fa-edit"></i>
-                                                </button>
-                                                <button class="btn btn-icon btn-light" title="Delete">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            </c:forEach>
-                                        </tbody>
-                                    </table>
+                    </div>
+                    <div class="stats-card primary">
+                        <div class="stats-card-content">
+                            <div class="stats-info">
+                                <div class="stats-header">
+                                    <h5>Total Blogs</h5>
+                                    <div class="stats-icon">
+                                        <i class="fas fa-blog"></i>
+                                    </div>
+                                </div>
+                                <div class="stats-data">
+                                    <h3>${totalBlogs}</h3>
                                 </div>
                             </div>
-                    <div class="card-footer">
-                        <div class="pagination-info">
-                            Showing 1 to 10 of 50 entries
                         </div>
-                        <ul class="pagination">
-                            <li class="page-item disabled">
-                                <a class="page-link" href="#"><i class="fas fa-chevron-left"></i></a>
-                            </li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#"><i class="fas fa-chevron-right"></i></a>
-                            </li>
-                        </ul>
+                    </div>
+                    <div class="stats-card warning">
+                        <div class="stats-card-content">
+                            <div class="stats-info">
+                                <div class="stats-header">
+                                    <h5>Total Car Brands</h5>
+                                    <div class="stats-icon">
+                                        <i class="fas fa-flag-checkered"></i>
+                                    </div>
+                                </div>
+                                <div class="stats-data">
+                                    <h3>${totalCarBrands}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stats-card info">
+                        <div class="stats-card-content">
+                            <div class="stats-info">
+                                <div class="stats-header">
+                                    <h5>Total Car Models</h5>
+                                    <div class="stats-icon">
+                                        <i class="fas fa-car-side"></i>
+                                    </div>
+                                </div>
+                                <div class="stats-data">
+                                    <h3>${totalCarModels}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stats-card success">
+                        <div class="stats-card-content">
+                            <div class="stats-info">
+                                <div class="stats-header">
+                                    <h5>Total Part Brands</h5>
+                                    <div class="stats-icon">
+                                        <i class="fas fa-industry"></i>
+                                    </div>
+                                </div>
+                                <div class="stats-data">
+                                    <h3>${totalPartBrands}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stats-card dark">
+                        <div class="stats-card-content">
+                            <div class="stats-info">
+                                <div class="stats-header">
+                                    <h5>Total Service Types</h5>
+                                    <div class="stats-icon">
+                                        <i class="fas fa-list"></i>
+                                    </div>
+                                </div>
+                                <div class="stats-data">
+                                    <h3>${totalServiceTypes}</h3>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

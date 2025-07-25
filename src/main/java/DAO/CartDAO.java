@@ -23,11 +23,11 @@ import java.util.logging.Logger;
  */
 public class CartDAO extends DBContext {
 
-    // public static void main(String[] a) {
-    // CartDAO cDAO = new CartDAO();
-    // cDAO.clearCartByUserId(102);
+    public static void main(String[] a) {
+    CartDAO cDAO = new CartDAO();
+    cDAO.clearCartByUserId(102);
 
-    // }
+    }
 
     public boolean checkoutCartAndUpdateStock(int userId) {
         String getCartItemsSql = "SELECT cd.part_id, cd.pt_order_quantity FROM CartDetail cd "
@@ -37,9 +37,14 @@ public class CartDAO extends DBContext {
 
         Connection conn = this.getConnection();
         try {
-            List<int[]> partList = new ArrayList<>(); // Danh sách [part_id, quantity]
+            if (conn == null)
+                throw new SQLException("Cannot get DB connection");
 
-            // 1. Lấy tất cả sản phẩm và số lượng trong giỏ hàng
+            conn.setAutoCommit(false); // ❗ Bắt đầu transaction
+
+            List<int[]> partList = new ArrayList<>();
+
+            // 1. Lấy sản phẩm và số lượng trong giỏ
             try (PreparedStatement ps = conn.prepareStatement(getCartItemsSql)) {
                 ps.setInt(1, userId);
                 try (ResultSet rs = ps.executeQuery()) {
@@ -51,7 +56,7 @@ public class CartDAO extends DBContext {
                 }
             }
 
-            // 2. Cập nhật stock từng sản phẩm
+            // 2. Cập nhật tồn kho
             for (int[] item : partList) {
                 int partId = item[0];
                 int quantity = item[1];
@@ -59,21 +64,23 @@ public class CartDAO extends DBContext {
                 try (PreparedStatement ps = conn.prepareStatement(updateStockSql)) {
                     ps.setInt(1, quantity);
                     ps.setInt(2, partId);
-                    ps.setInt(3, quantity); // đảm bảo tồn kho >= số lượng đặt
+                    ps.setInt(3, quantity);
                     int rowsAffected = ps.executeUpdate();
                     if (rowsAffected == 0) {
                         conn.rollback();
-                        return false; // Không đủ hàng tồn kho
+                        return false;
                     }
                 }
             }
 
-            conn.commit();
+            conn.commit(); // ✅ Commit thành công
             return true;
+
         } catch (SQLException e) {
             e.printStackTrace();
             try {
-                conn.rollback();
+                if (conn != null)
+                    conn.rollback(); // Rollback nếu lỗi
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
@@ -633,8 +640,7 @@ public class CartDAO extends DBContext {
     public void clearCartByUserId(int userId) {
         String getCartIdSql = "SELECT cart_id FROM Cart WHERE user_id = ?";
         String deleteDetailSql = "DELETE FROM CartDetail WHERE cart_id = ?";
-        String updateCartSql = "UPDATE Cart SET count_item = 0, cart_price = 0 WHERE cart_id = ?";
-        Connection conn = getConnection();
+        Connection conn = this.getConnection();
         try (PreparedStatement ps1 = conn.prepareStatement(getCartIdSql)) {
             ps1.setInt(1, userId);
             try (ResultSet rs = ps1.executeQuery()) {
@@ -643,10 +649,6 @@ public class CartDAO extends DBContext {
                     try (PreparedStatement ps2 = conn.prepareStatement(deleteDetailSql)) {
                         ps2.setInt(1, cartId);
                         ps2.executeUpdate();
-                    }
-                    try (PreparedStatement ps3 = conn.prepareStatement(updateCartSql)) {
-                        ps3.setInt(1, cartId);
-                        ps3.executeUpdate();
                     }
                 }
             }

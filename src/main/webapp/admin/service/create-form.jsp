@@ -1,5 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -67,7 +69,7 @@
                     <img id="imgPreview" style="display:none; width:200px; margin-top:10px; border-radius:10px;"/>
 
                     <label>Estimate Time:</label>
-                    <input type="datetime-local" name="estimateTime" value="${fn:formatDate(oldService.estimateTime, 'yyyy-MM-dd\'T\'HH:mm')}" />
+                    <input type="datetime-local" name="estimateTime" value="${estimateTimeStr}" />
                     <c:if test="${errors.estimateTime != null}"><div class="error">${errors.estimateTime}</div></c:if>
 
                     <div style="text-align:center; margin-top:15px;">

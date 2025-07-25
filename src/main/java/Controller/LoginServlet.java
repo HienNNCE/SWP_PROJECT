@@ -78,11 +78,11 @@ public class LoginServlet extends HttpServlet {
         // Attempt to retrieve a user from the database using the provided credentials.
         Users user = authenDao.getUserById(username, password);
         // If a user object is returned, authentication was successful.
-        System.out.println(user.getUserStatus());
         if (user != null) {
             String status = user.getUserStatus();
             if (status != null && status.equalsIgnoreCase("Banned")) {
-                request.setAttribute("err", "Your account has been banned. Please contact support for more details. Hotline: 19008198");
+                request.setAttribute("err",
+                        "Your account has been banned. Please contact support for more details. Hotline: 19008198");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
                 return; // cần return để không chạy tiếp phần set session
             }

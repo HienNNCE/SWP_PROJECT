@@ -44,9 +44,8 @@ public class UserDAO extends DBContext {
 
     public Users getUserById(int userId) {
         String query = "SELECT u.*, r.role_name FROM [User] u JOIN Role r ON u.role_id = r.role_id WHERE u.user_id = ?";
-
-        try (
-                PreparedStatement ps = this.getConnection().prepareStatement(query)) {
+        Connection conn = this.getConnection();
+        try (PreparedStatement ps = conn.prepareStatement(query)) {
 
             ps.setInt(1, userId);
             try (ResultSet rs = ps.executeQuery()) {
@@ -126,7 +125,7 @@ public class UserDAO extends DBContext {
 
             ps.setString(1, user.getUserName());
             ps.setString(2, user.getEmail());
-            ps.setString(3, user.getPassword());
+            ps.setString(3, HashUtil.toMD5(user.getPassword())); // Consider hashing the password in a real application
             ps.setString(4, user.getPhone());
             ps.setString(5, user.getAddress());
             ps.setInt(6, user.getRoleId());
@@ -152,7 +151,7 @@ public class UserDAO extends DBContext {
         try (PreparedStatement ps = this.getConnection().prepareStatement(query)) {
             ps.setString(1, user.getUserName());
             ps.setString(2, user.getEmail());
-            ps.setString(3, user.getPassword());
+            ps.setString(3, HashUtil.toMD5(user.getPassword()));
             ps.setString(4, user.getPhone());
             ps.setString(5, user.getAddress());
             ps.setInt(6, user.getRoleId());

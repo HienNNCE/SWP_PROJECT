@@ -131,7 +131,8 @@ public class PartServlet extends HttpServlet {
             throws ServletException, IOException {
         MenuDataHelper.preloadCarList(request);
         HttpSession session = request.getSession();
-        Users currentUser = (Users) session.getAttribute("user");
+        //Users currentUser = (Users) session.getAttribute("user");
+        int userId = (session != null) ? (Integer) session.getAttribute("userId") : -1;
         CommentDAO commentDAO = new CommentDAO();
         UserDAO userDAO = new UserDAO();
         int id = parseInt(request.getParameter("id"));
@@ -147,9 +148,11 @@ public class PartServlet extends HttpServlet {
             comment.setUser(users);
         }
         boolean hasPurchased = false;
-        if (currentUser != null) {
-            hasPurchased = commentDAO.hasUserPurchasedPart(currentUser.getUserId(), part.getPartId());
+        if (userId != -1) {
+            hasPurchased = commentDAO.hasUserPurchasedPart(userId, part.getPartId());
         }
+        System.out.println("User ID: " + userId);
+        System.out.println("Hash purchased is: "+ hasPurchased);
         request.setAttribute("comments", comments);
         request.setAttribute("hasPurchased", hasPurchased);
         request.setAttribute("relatedParts", relatedParts);

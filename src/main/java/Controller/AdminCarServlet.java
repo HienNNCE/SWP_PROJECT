@@ -231,6 +231,9 @@ public class AdminCarServlet extends HttpServlet {
         }
         
         Car newCar = new Car();
+        // Tự động sinh car_id mới
+        int newCarId = carDAO.getMaxCarId() + 1;
+        newCar.setCarId(newCarId);
         newCar.setCarName(carName);
         newCar.setCarBrand(carBrand);
         newCar.setModel(model);

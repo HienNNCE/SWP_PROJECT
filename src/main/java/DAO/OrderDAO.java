@@ -43,7 +43,7 @@ public class OrderDAO extends DBContext {
     public List<Order> getAllOrders() {
         List<Order> list = new ArrayList<>();
         String sql = "SELECT * FROM [Order]";
-        Connection conn = getConnection();
+        Connection conn = this.getConnection();
         try (PreparedStatement ps = conn.prepareStatement(sql);
                 ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
@@ -64,7 +64,7 @@ public class OrderDAO extends DBContext {
 
     public Order getOrderById(int orderId) {
         String sql = "SELECT * FROM [Order] WHERE order_id = ?";
-        Connection conn = getConnection();
+        Connection conn = this.getConnection();
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, orderId);
             try (ResultSet rs = ps.executeQuery()) {
@@ -88,7 +88,7 @@ public class OrderDAO extends DBContext {
     public int insertOrder(Order o) throws SQLException {
         String sql = "INSERT INTO [Order] (user_id, order_price, order_status, order_date, payment_id) "
                 + "VALUES (?, ?, ?, ?, ?)";
-        Connection conn = getConnection();
+        Connection conn = this.getConnection();
         try (PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setInt(1, o.getUserId());
@@ -112,7 +112,7 @@ public class OrderDAO extends DBContext {
 
     public void updateOrder(Order o) {
         String sql = "UPDATE [Order] SET user_id=?, order_price=?, order_status=?, order_date=?, payment_id=? WHERE order_id=?";
-        Connection conn = getConnection();
+        Connection conn = this.getConnection();
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, o.getUserId());
             ps.setBigDecimal(2, o.getOrderPrice());
@@ -141,7 +141,7 @@ public class OrderDAO extends DBContext {
     public void deleteOrder(int orderId) {
         String deleteOrderDetailSql = "DELETE FROM [OrderDetail] WHERE order_id=?";
         String deleteOrderSql = "DELETE FROM [Order] WHERE order_id=?";
-        Connection conn = getConnection();
+        Connection conn = this.getConnection();
         try {
             conn.setAutoCommit(false); // Bắt đầu transaction
 
@@ -198,7 +198,7 @@ public class OrderDAO extends DBContext {
                 "WHERE o.user_id = ? " +
                 "GROUP BY o.order_id, o.user_id, o.order_price, o.order_status, o.order_date, o.payment_id " +
                 "ORDER BY o.order_id DESC";
-        Connection conn = getConnection();
+        Connection conn = this.getConnection();
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, userId);
             try (ResultSet rs = ps.executeQuery()) {
@@ -266,7 +266,7 @@ public class OrderDAO extends DBContext {
     public void insertOrderDetail(OrderDetail detail) throws SQLException {
         int nextId = getNextServiceScheduleId();
         String sql = "INSERT INTO [OrderDetail] (order_detail_id, order_id, part_id, quantity, price, total_price) VALUES (?, ?, ?, ?, ?, ?)";
-        Connection conn = getConnection();
+        Connection conn = this.getConnection();
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, nextId);
             ps.setInt(2, detail.getOrderId());

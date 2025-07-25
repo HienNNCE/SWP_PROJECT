@@ -1,7 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <div class="sidebar">
     <div class="sidebar-header">
-        <a href="#" class="logo-link">
+        <a href="${pageContext.request.contextPath}/home" class="logo-link">
             <img src="${pageContext.request.contextPath}/asset/img/driverxo-logo-white.png" alt="DriverXO" class="logo-icon">
             <span>DriverXO</span>
         </a>
