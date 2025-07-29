@@ -13,13 +13,16 @@ import org.checkerframework.checker.units.qual.C;
 import Model.CarAppointment;
 import Model.Service;
 import Model.ServiceAppointment;
+import Model.Users;
 import DAO.CarAppointmentDAO;
 import DAO.ServiceAppointmentDAO;
+import DAO.UserDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
@@ -57,6 +60,12 @@ public class CarAppoitmentManagement extends HttpServlet {
         }
         try {
             listCarAppointments = cDAO.getAll();
+            UserDAO uDAO = new UserDAO();
+            for (CarAppointment ca: listCarAppointments){
+                int userId = ca.getUserId();
+                Users user = uDAO.getUserById(userId);
+                ca.setUser(user);
+            }
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

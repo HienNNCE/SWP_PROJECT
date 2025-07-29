@@ -10,25 +10,49 @@ import DB.DBContext;
 
 public class CarAppointmentDAO extends DBContext {
     // public static void main(String[] args) throws SQLException {
-    //     CarAppointmentDAO cDAO = new CarAppointmentDAO();
-    //     List<CarAppointment> list = cDAO.getByUserId(102);
-    //     for ( CarAppointment car : list){
-    //         System.out.println(car.getCarName());
-    //     }
+    // CarAppointmentDAO cDAO = new CarAppointmentDAO();
+    // List<CarAppointment> list = cDAO.getByUserId(102);
+    // for ( CarAppointment car : list){
+    // System.out.println(car.getCarName());
+    // }
     // }
 
     public void add(CarAppointment ca) throws SQLException {
-        int nextId = getNextServiceScheduleId(); // Lấy ID kế tiếp
-        String sql = "INSERT INTO CarAppointment ([car_appointment_id], user_id, car_id, ca_date, ca_note, ca_status) VALUES (?, ?, ?, ?, ?, ?)";
+        int nextId = getNextServiceScheduleId(); // ID cho CarAppointment
+
+        String sql1 = "INSERT INTO CarAppointment (car_appointment_id, user_id, car_id, ca_date, ca_note, ca_status) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql2 = "INSERT INTO CaBookingType (car_appointment_id, ca_type_name) VALUES (?, ?)"; // ca_type_id tự
+                                                                                                    // tăng
+
         Connection conn = this.getConnection();
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, nextId);
-            ps.setObject(2, ca.getUserId(), Types.INTEGER);
-            ps.setObject(3, ca.getCarId(), Types.INTEGER);
-            ps.setTimestamp(4, Timestamp.valueOf(ca.getCaDate()));
-            ps.setString(5, ca.getCaNote());
-            ps.setString(6, ca.getCaStatus());
-            ps.executeUpdate();
+        try {
+            conn.setAutoCommit(false); // Bắt đầu transaction
+
+            // Insert CarAppointment
+            try (PreparedStatement ps1 = conn.prepareStatement(sql1)) {
+                ps1.setInt(1, nextId);
+                ps1.setObject(2, ca.getUserId(), Types.INTEGER);
+                ps1.setObject(3, ca.getCarId(), Types.INTEGER);
+                ps1.setTimestamp(4, Timestamp.valueOf(ca.getCaDate()));
+                ps1.setString(5, ca.getCaNote());
+                ps1.setString(6, ca.getCaStatus());
+                ps1.executeUpdate();
+            }
+
+            // Insert CaBookingType
+            try (PreparedStatement ps2 = conn.prepareStatement(sql2)) {
+                ps2.setInt(1, nextId); // Gán theo car_appointment_id vừa tạo
+                ps2.setString(2, ca.getServicerType()); // Giả sử có getCaTypeName()
+                ps2.executeUpdate();
+            }
+
+            conn.commit(); // Thành công cả 2 thì mới lưu
+        } catch (SQLException e) {
+            conn.rollback(); // Lỗi thì rollback cả 2
+            throw e;
+        } finally {
+            conn.setAutoCommit(true);
+            conn.close();
         }
     }
 
@@ -46,9 +70,10 @@ public class CarAppointmentDAO extends DBContext {
 
     public List<CarAppointment> getAll() throws SQLException {
         List<CarAppointment> list = new ArrayList<>();
-        String sql = "SELECT ca.*, c.car_name, c.model AS car_model " +
+        String sql = "SELECT ca.*, c.car_name, c.model AS car_model, cb.ca_type_name " +
                 "FROM CarAppointment ca " +
-                "JOIN Car c ON ca.car_id = c.car_id";
+                "JOIN Car c ON ca.car_id = c.car_id " +
+                "LEFT JOIN CaBookingType cb ON ca.car_appointment_id = cb.car_appointment_id";
 
         Connection conn = this.getConnection();
         try (PreparedStatement ps = conn.prepareStatement(sql);
@@ -62,7 +87,8 @@ public class CarAppointmentDAO extends DBContext {
                         rs.getString("ca_note"),
                         rs.getString("ca_status"));
                 ca.setCarName(rs.getString("car_name"));
-                ca.setCarModel(rs.getString("car_model")); // thêm dòng này
+                ca.setCarModel(rs.getString("car_model"));
+                ca.setServicerType(rs.getString("ca_type_name"));
                 list.add(ca);
             }
         }

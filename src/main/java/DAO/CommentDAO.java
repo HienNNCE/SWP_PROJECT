@@ -23,8 +23,8 @@ public class CommentDAO extends DBContext {
     public void createComment(Comment comment) {
         String query = "INSERT INTO [Comment] (user_id, comment_text, part_id, rating, status, date) "
                 + "VALUES (?, ?, ?, ?, ?, ?)";
-
-        try (PreparedStatement ps = this.getConnection().prepareStatement(query)) {
+        Connection conn = this.getConnection();
+        try (PreparedStatement ps = conn.prepareStatement(query)) {
 
             ps.setInt(1, comment.getUser().getUserId());
             ps.setString(2, comment.getCommentText());
@@ -43,7 +43,8 @@ public class CommentDAO extends DBContext {
 
     public void updateCommentStatus(int commentId) {
         String query = "UPDATE [Comment] SET status = CASE WHEN status = 'Active' THEN 'Banned' ELSE 'Active' END WHERE comment_id = ?";
-        try (PreparedStatement ps = this.getConnection().prepareStatement(query)) {
+        Connection conn = this.getConnection();
+        try (PreparedStatement ps = conn.prepareStatement(query)) {
 
             ps.setInt(1, commentId);
             ps.executeUpdate();
@@ -58,7 +59,7 @@ public class CommentDAO extends DBContext {
                 + "FROM [Comment] WHERE part_id = ? AND status = 'Active' "
                 + "ORDER BY date DESC";
 
-        try (Connection conn = this.getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
+        Connection conn = this.getConnection(); try (PreparedStatement ps = conn.prepareStatement(query)) {
 
             ps.setInt(1, partId);
 
@@ -86,7 +87,8 @@ public class CommentDAO extends DBContext {
     public boolean hasUserPurchasedPart(int userId, int partId) {
         String query = " SELECT 1 FROM [Order] o JOIN [OrderDetail] od ON o.order_id = od.order_id WHERE o.user_id = ? AND od.part_id = ?";
 
-        try (Connection conn = this.getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
+        Connection conn = this.getConnection();
+        try (PreparedStatement ps = conn.prepareStatement(query)) {
 
             ps.setInt(1, userId);
             ps.setInt(2, partId);
@@ -104,7 +106,7 @@ public class CommentDAO extends DBContext {
     public List<Comment> getAllComments(int offset, int limit) {
         List<Comment> comments = new ArrayList<>();
         String sql = "SELECT * FROM Comment ORDER BY date DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
-        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        Connection conn = getConnection(); try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, offset);
             ps.setInt(2, limit);
             ResultSet rs = ps.executeQuery();
@@ -127,7 +129,7 @@ public class CommentDAO extends DBContext {
 
     public int countAllComments() {
         String sql = "SELECT COUNT(*) FROM Comment";
-        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        Connection conn = getConnection(); try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 return rs.getInt(1);

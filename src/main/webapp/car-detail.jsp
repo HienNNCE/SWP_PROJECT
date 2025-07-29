@@ -143,14 +143,15 @@
                         </div>
 
                         <!-- Contact Actions -->
-                        <div class="contact-actions">
-                            <button class="w-100 contact-action-btn book-btn">
-                                <i class="far fa-calendar-alt"></i> 
-                                <span class="btn-text">
-                                    <span class="btn-title">Book Appointment</span>
-                                    <span class="btn-subtitle">Available today</span>
-                                </span>
-                        </button>                       
+                        <div class="contact-actions">                        
+                                <button class="w-100 contact-action-btn book-btn"
+                                        onclick="location.href='${pageContext.request.contextPath}/carAppointment?carId=${car.carId}'">
+                                    <i class="far fa-calendar-alt"></i> 
+                                    <span class="btn-text">
+                                        <span class="btn-title">Book Appointment</span>                                  
+                                        <span class="btn-subtitle">Available today</span>
+                                    </span>
+                                </button>                    
                             <div class="guarantee-line">
                                 <i class="fas fa-shield-alt"></i> Guaranteed by DriverXO
                             </div>

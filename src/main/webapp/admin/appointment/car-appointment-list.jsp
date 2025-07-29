@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="../asset/css/adminstyle.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-    .custom-select {
+            .custom-select {
                 width: 100%;
                 padding: 10px 12px;
                 border-radius: 12px;
@@ -157,18 +157,6 @@
             background-color: #f8f9fa;
             color: #0d6efd;
             border: 1px solid #dee2e6;
-        }
-        
-        .edit-btn {
-            background-color: #fff7e0;
-            color: #ffc107;
-            border: 1px solid #ffe69c;
-        }
-        
-        .delete-btn {
-            background-color: #ffe0e0;
-            color: #dc3545;
-            border: 1px solid #f5c2c7;
         }
         
         .view-btn:hover {
@@ -348,14 +336,16 @@
                         </div>
                         
                         <!-- Cars Table -->
-                        <div class="table-responsive">
-                            <table class="car-table">
+                        <div class="table-responsive" style="max-width: 100%; overflow-x: auto;">
+                            <table class="table table-bordered table-hover car-table" style="min-width: 1500px;">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
-                                        <th>User ID</th>
+                                        <th>User Name</th>
+                                        <th>User Phone</th>
+                                        <th>User Email</th>
                                         <th>Car Name</th>      
                                         <th>Car Model</th>
+                                        <th>Booking Type</th>
                                         <th>Appointmet Time</th>
                                         <th>Note</th>
                                         <th>Status</th>
@@ -371,10 +361,12 @@
                                     
                                     <c:forEach var="car" items="${carAppointments}">
                                         <tr>
-                                            <td>${car.getCarAppointmentId()}</td>
-                                            <td class="car-name">${car.getUserId()}</td>
-                                            <td class="car-name">${car.getCarName()}</td>                                         
+                                            <td class="car-name">${car.getUser().getFullName()}</td>
+                                            <td class="car-name">${car.getUser().getPhone()}</td>
+                                            <td class="car-name">${car.getUser().getEmail()}</td>                                         
+                                            <td>${car.getCarName()}</td>
                                             <td>${car.getCarModel()}</td>
+                                            <td>${car.getServicerType()}</td>
                                             <td>${car.getFormattedCaDate()}</td>
                                             <td>${car.getCaNote()}</td>
                                             <td>${car.getCaStatus()}</td>
@@ -386,35 +378,35 @@
                                                         data-status="${car.getCaStatus()}">
                                                         <i class="fas fa-edit"></i>
                                                     </button>
-                                                    <button class="action-btn delete-btn" onclick="confirmDelete('${car.getCarAppointmentId()}')">
-                                                        <i class="fas fa-trash"></i>
+                                                    <button class="btn btn-sm btn-danger" onclick="confirmDelete('${car.getCarAppointmentId()}')">
+                                                        <i class="fas fa-ban"></i>
                                                     </button>
                                                 </div>
                                             </td>
                                         </tr>
                                     </c:forEach>
-                                </tbody>
-                            <div id="editServiceModal" class="modal-overlay" style="display: none;">
-                                <div class="modal-content">
-                                    <span class="close-btn">&times;</span>
-                                    <form action="${pageContext.request.contextPath}/admin/carAppointment" method="post">
-                                        <input type="hidden" name="action" value="updateStatus">
-                                        <input type="hidden" name="serviceAppointmentId" id="modalServiceId">
-                                        <label for="statusSelectService">Select Status:</label>
-                                        <select name="status" id="statusSelectService" class="custom-select" required>
-                                            <option value="Pending">Pending</option>
-                                            <option value="Confirmed">Confirmed</option>
-                                            <option value="Cancelled">Cancelled</option>
-                                            <option value="Completed">Completed</option>
-                                        </select>
-                                        <br><br>
-                                        <button type="submit" class="btn-save">Update</button>
-                                    </form>
-                                </div>
-                            </div>
-                            </table>
+                                </tbody>                        
+                            </table>                          
                         </div>
-                        
+                        <div id="editServiceModal" class="modal-overlay" style="display: none;">
+                            <div class="modal-content">
+                                <span class="close-btn">&times;</span>
+                                <form action="${pageContext.request.contextPath}/admin/carAppointment" method="post">
+                                    <input type="hidden" name="action" value="updateStatus">
+                                    <input type="hidden" name="serviceAppointmentId" id="modalServiceId">
+                                    <label for="statusSelectService">Select Status:</label>
+                                    <select name="status" id="statusSelectService" class="custom-select" required>
+                                        <option value="Pending">Pending</option>
+                                        <option value="Confirmed">Confirmed</option>
+                                        <option value="Cancelled">Cancelled</option>
+                                        <option value="Completed">Completed</option>
+                                    </select>
+                                    <br><br>
+                                    <button type="submit" class="btn-save">Update</button>
+                                </form>
+                            </div>
+                        </div>
+                    
                         <!-- Pagination - Sẽ triển khai sau khi có phân trang -->
                         <%-- <c:if test="${not empty carList && carList.size() > 10}">
                             <div class="pagination">

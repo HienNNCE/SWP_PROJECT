@@ -11,13 +11,16 @@ import java.util.List;
 import Model.CarAppointment;
 import Model.Service;
 import Model.ServiceAppointment;
+import Model.Users;
 import DAO.CarAppointmentDAO;
 import DAO.ServiceAppointmentDAO;
+import DAO.UserDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
@@ -42,6 +45,8 @@ public class ServiceAppointmentManagement extends HttpServlet {
         ServiceAppointmentDAO sDAO = new ServiceAppointmentDAO();
         List<ServiceAppointment> listServiceAppointments = null;
         String action = request.getParameter("action");
+
+        
         if ("delete".equals(action)) {
             // Xóa đơn hàng
             int id = Integer.parseInt(request.getParameter("id"));
@@ -55,6 +60,12 @@ public class ServiceAppointmentManagement extends HttpServlet {
         }
         try {
             listServiceAppointments = sDAO.getAll();
+            UserDAO uDAO = new UserDAO();
+            for (ServiceAppointment ca: listServiceAppointments){
+                int userId = ca.getUserId();
+                Users user = uDAO.getUserById(userId);
+                ca.setUser(user);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

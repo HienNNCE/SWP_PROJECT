@@ -743,7 +743,6 @@
                        class="${pageContext.request.servletPath eq '/blog' ? 'active' : ''}">Blog</a></li>
       
                     <li><a href="${pageContext.request.contextPath}/serviceAppointment" class="${pageContext.request.servletPath eq '/contact.jsp' ? 'active' : ''}">Contact</a></li>
-                    <li><a href="feedback.jsp" class="${pageContext.request.servletPath eq '/feedback.jsp' ? 'active' : ''}">Feedback</a></li>
                 </ul>
             </nav>
 
@@ -764,6 +763,14 @@
                                     <li><a href="${pageContext.request.contextPath}/appointment"><i class="fas fa-calendar-check"></i> Appointment
                                         </a></li>
                                     <li><a href="service-bookings.jsp"><i class="fas fa-tools"></i> Service Booking</a></li>
+                                     <c:if test="${sessionScope.user != null && sessionScope.user.roleId == 1}">
+                                        <li>
+                                            <a href="${pageContext.request.contextPath}/admin/dashboard"
+                                            class="admin-dashboard-btn ${pageContext.request.servletPath eq '/admin/dashboard.jsp' ? 'active' : ''}">
+                                            <i class="fas fa-desktop"></i>Dashboard
+                                            </a>
+                                        </li>
+                                    </c:if>
                                     <li class="menu-divider"></li>
                                     <li><a href="${pageContext.request.contextPath}/auth/LoginServlet?action=logout"><i class="fas fa-sign-out-alt"></i> Log out</a></li>
                                 </ul>

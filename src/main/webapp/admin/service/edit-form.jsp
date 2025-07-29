@@ -1,6 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 
 
 <!DOCTYPE html>
@@ -89,7 +91,9 @@
 
             <div class="card">
                 <h1>Edit Service</h1>
-
+                <c:if test="${not empty errors}">
+                    <div class="alert alert-success">${errors}</div>
+                </c:if>
                 <form action="${pageContext.request.contextPath}/admin/service/edit" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="id" value="${service.serviceId}"/>
 
@@ -133,7 +137,9 @@
                     <img id="imgPreview" style="display:none; width:200px; border-radius:10px;"/>
 
                     <label>Estimate Time:</label>
-                    <input type="datetime-local" name="estimateTime" value="${fn:formatDate(service.estimateTime, 'yyyy-MM-dd\'T\'HH:mm')}" />
+                    <input type="datetime-local" name="estimateTime" value="${estimateTimeStr}" />
+
+                    
                     <c:if test="${errors.estimateTime != null}"><div class="error">${errors.estimateTime}</div></c:if>
 
                     <div class="button-area">
@@ -149,7 +155,6 @@
                             <i class="fas fa-list"></i> Back to List
                         </a>
                     </div>
-
                 </form>
             </div>
             <jsp:include page="/components/dashboardFooter.jsp" />

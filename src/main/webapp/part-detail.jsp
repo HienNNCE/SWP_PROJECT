@@ -213,6 +213,7 @@
 
             .comment-section {
                 margin-top: 40px;
+                padding: 20px;
             }
 
             .btn-comment {
@@ -429,7 +430,7 @@
                             <div class="feature-chip"><i class="fas fa-check-circle"></i> Fast Delivery</div>
                         </div>
                         <!-- Contact Actions -->
-                        <div class="contact-actions">
+                        <div class="contact-actions card">
                             <button type="button" part-id="${part.partId}" class="contact-action-btn add_to_cart">
                                 <i class="fas fa-shopping-cart"></i> Add to Cart
                             </button>
@@ -469,7 +470,7 @@
                 </c:if>
 
                 <div class="container" style="margin-top: 60px;">
-                    <div class="comment-section">
+                    <div class="comment-section p-3">
                         <h3 style="margin-bottom: 15px;">Comments</h3>
                         <c:if test="${hasPurchased}">
                             <button type="button" class="btn-comment" onclick="openCommentModal()">Comment</button>

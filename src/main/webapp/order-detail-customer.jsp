@@ -13,7 +13,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Order Detail - DriverXO</title>
-        <link rel="stylesheet" href="asset/css/style.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/asset/css/style.css">
         <!-- Font Awesome -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
         <style>
@@ -146,7 +146,7 @@
             
             .order-info-section {
                 display: grid;
-                grid-template-columns: repeat(3, 1fr);
+                grid-template-columns: repeat(2, 1fr);
                 gap: 20px;
                 margin-bottom: 30px;
             }
@@ -580,52 +580,30 @@
                         
                         <div class="order-status">
                             <span class="status-label status-processing">${order.orderStatus}</span>
-                            <div class="order-actions">
-                                <a href="#" class="btn btn-outline" id="trackOrderBtn"><i class="fas fa-truck"></i> Track Order</a>
-                                <button class="btn btn-danger" id="cancelOrderBtn"><i class="fas fa-times"></i> Cancel Order</button>
-                            </div>
+                            
                         </div>
                     </div>
                     
                     <!-- Order Information -->
-                    <div class="order-info-section">
-                        <div class="info-box">
-                            <h3>Shipping Address</h3>
-                            <p class="info-detail">
-                                ${user.userName}<br>
-                                ${user.address}<br>
-                                ${user.phone}
-                            </p>
-                        </div>
-                        
+                    <div class="order-info-section">                       
                         <div class="info-box">
                             <h3>Shipping Method</h3>
                             <p class="info-detail">
-                                Standard Shipping<br>
-                                Estimated Delivery: June 1 - June 3, 2025
+                                In-store pickup<br>
+                                We will contact you as soon as possible to inform the pickup time
                             </p>
-                        </div>
-                        
+                        </div>                 
                         <div class="info-box">
-                            <h3>Billing Information</h3>
+                            <h3>Recipient information</h3>
                             <p class="info-detail">
-                                John Doe<br>
-                                123 Main Street<br>
-                                Apt 4B<br>
-                                New York, NY 10001<br>
-                                United States
+                                ${user.userName}<br>
+                                ${user.address}<br>
+                                ${user.phone}<br>
+                                ${user.email}
+
                             </p>
                         </div>
-                    </div>
-                    
-                    <!-- Tracking Information -->
-                    <div class="tracking-info">
-                        <p>
-                            <span class="tracking-number">Tracking Number: DX9876543210</span>
-                            <a href="#" class="tracking-link">Track <i class="fas fa-external-link-alt"></i></a>
-                        </p>
-                        <p class="tracking-status">Last Update: Package has left our warehouse and is on its way to the carrier.</p>
-                    </div>
+                    </div>                    
                     
                     <!-- Order Items -->
                     <div class="order-items">
@@ -693,8 +671,8 @@
                     
                     <!-- Back to Orders Link -->
                     <div style="margin-top: 30px; text-align: center;">
-                        <a href="OrderManagementServlet" class="btn btn-outline" style="margin-right: 15px;"><i class="fas fa-arrow-left"></i> Back to Order History</a>
-                        <a href="feedback" class="btn btn-primary">Leave Feedback</a>
+                        <a href="order" class="btn btn-outline" style="margin-right: 15px;"><i class="fas fa-arrow-left"></i> Back to Order History</a>
+                        <a href="${pageContext.request.contextPath}/feedback.jsp" class="btn btn-primary">Leave Feedback</a>
                     </div>
                     
                     <!-- Help Section -->
@@ -705,37 +683,8 @@
             </div>
         </section>
         
-        <!-- Cancel Order Modal -->
-        <div class="modal" id="cancelOrderModal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2 class="modal-title">Cancel Order</h2>
-                    <button class="close-modal">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <p>Are you sure you want to cancel this order? This action cannot be undone.</p>
-                    <div class="form-group">
-                        <label for="cancel_reason">Reason for Cancellation</label>
-                        <select id="cancel_reason" class="form-control">
-                            <option value="">-- Select a reason --</option>
-                            <option value="changed_mind">Changed my mind</option>
-                            <option value="found_better_price">Found a better price elsewhere</option>
-                            <option value="ordered_by_mistake">Ordered by mistake</option>
-                            <option value="delivery_too_long">Estimated delivery time is too long</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-                    <div class="form-group" id="other_reason_group" style="display: none;">
-                        <label for="other_reason">Please specify</label>
-                        <textarea id="other_reason" class="form-control" placeholder="Please provide details..."></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-outline close-btn">No, Keep Order</button>
-                    <button class="btn btn-danger" id="confirmCancelBtn">Yes, Cancel Order</button>
-                </div>
-            </div>
-        </div>
+        
+        
 
         <!-- Footer -->
         <jsp:include page="/components/footer.jsp" />

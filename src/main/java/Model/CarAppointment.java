@@ -12,7 +12,8 @@ public class CarAppointment {
     private String caStatus;
     private String carName;
     private String carModel;
-
+    private String servicerType;
+    private Users user;
     // Constructors
     public CarAppointment() {
     }
@@ -33,6 +34,14 @@ public class CarAppointment {
         this.caDate = caDate;
         this.caNote = caNote;
         this.caStatus = caStatus;
+    }
+
+    public String getServicerType() {
+        return servicerType;
+    }
+
+    public void setServicerType(String servicerType) {
+        this.servicerType = servicerType;
     }
 
     public String getCarModel() {
@@ -103,5 +112,13 @@ public class CarAppointment {
 
     public void setCaStatus(String caStatus) {
         this.caStatus = caStatus;
+    }
+
+    public Users getUser() {
+        return user;
+    }
+
+    public void setUser(Users user) {
+        this.user = user;
     }
 }

@@ -75,11 +75,10 @@
             <c:if test="${empty successMsg}">
                 <form class="appointment-form" method="post" action="carAppointment">
                     <h2>Car Appointment Booking</h2>
-                    <label for="serviceType">Service Type</label>
+                    <label for="serviceType">Booking Type</label>
                     <select id="serviceType" name="serviceType" required>
                         <option value="">-- Select Service Type --</option>
                         <option value="testdrive">Test Drive</option>
-                        <option value="maintenance">Maintenance</option>
                         <option value="consult">Vehicle Consultation</option>
                     </select>
 

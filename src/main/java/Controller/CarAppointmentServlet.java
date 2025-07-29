@@ -44,7 +44,6 @@ public class CarAppointmentServlet extends HttpServlet {
         HttpSession session = request.getSession();
         Object userIdObj = session.getAttribute("userId");
         String serviceIdS = request.getParameter("carId");
-        System.out.println("serviceIdS: " + serviceIdS);
 
         int carId = Integer.parseInt(serviceIdS);
 
@@ -86,9 +85,7 @@ public class CarAppointmentServlet extends HttpServlet {
         int userId = (Integer) userIdObj;
         try {
             // Lấy dữ liệu từ form
-            String fullname = request.getParameter("fullname");
-            String phone = request.getParameter("phone");
-            String email = request.getParameter("email");
+            String serviceTye = request.getParameter("serviceType");
             String carIds = request.getParameter("carId");
             String date = request.getParameter("date");
             String time = request.getParameter("time");
@@ -104,7 +101,7 @@ public class CarAppointmentServlet extends HttpServlet {
             ca.setCaDate(appointmentDate);
             ca.setCaNote(note);
             ca.setCaStatus("Pending");
-
+            ca.setServicerType(serviceTye);
             // Lưu DB
             CarAppointmentDAO dao = new CarAppointmentDAO();
             dao.add(ca);

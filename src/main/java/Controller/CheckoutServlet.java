@@ -59,17 +59,20 @@ public class CheckoutServlet extends HttpServlet {
             response.sendRedirect("login.jsp");
             return;
         }
+
         CartDAO cartDAO = new CartDAO();
         Cart cart = cartDAO.getCartDetailByUserId(userId);
         if (cart == null || cart.getPartList() == null || cart.getPartList().isEmpty()) {
             response.sendRedirect("cart.jsp");
             return;
         }
+
+
         OrderDAO orderDAO = new OrderDAO();
         Order order = new Order();
         order.setUserId(userId);
         order.setOrderPrice(cart.getCartPrice());
-        order.setOrderStatus("Paid");
+        order.setOrderStatus("Processing");
         order.setOrderDate(new java.util.Date());
         order.setPaymentId(1);
         int orderId = 0;
@@ -78,6 +81,9 @@ public class CheckoutServlet extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+
+
         for (Part part : cart.getPartList()) {
             OrderDetail detail = new OrderDetail();
             detail.setOrderId(orderId);
@@ -91,12 +97,14 @@ public class CheckoutServlet extends HttpServlet {
                 e.printStackTrace();
             }
         }
-        cartDAO.checkoutCartAndUpdateStock(userId);
+
+
         boolean success = cartDAO.checkoutCartAndUpdateStock(userId);
         if (!success) {
             response.sendRedirect("cart.jsp");
             return;
         }
+        System.out.println("User ID: " + userId);
         cartDAO.clearCartByUserId(userId);
         response.sendRedirect("success.jsp");
     }

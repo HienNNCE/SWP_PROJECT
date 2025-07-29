@@ -257,6 +257,9 @@
                 <%
                     }
                 %>
+                <div id="error-message" style="color: green; margin-bottom: 15px; text-align: center;">
+                        ${success}
+                </div>
                 <form action="LoginServlet" method="post">
                     
                     <div class="form-group">

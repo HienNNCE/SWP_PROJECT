@@ -23,27 +23,27 @@ import java.util.*;
  */
 public class OrderDAO extends DBContext {
     // public static void main(String[] args) {
-    //     OrderDAO oDAO = new OrderDAO();
-    //     BigDecimal price = new BigDecimal("28000.90");
-    //     Order o = new Order();
-    //     o.setUserId(102);
-    //     o.setOrderPrice(price);
-    //     o.setOrderStatus("Paid");
-    //     o.setOrderDate(new java.util.Date());
-    //     o.setPaymentId(1);
+    // OrderDAO oDAO = new OrderDAO();
+    // BigDecimal price = new BigDecimal("28000.90");
+    // Order o = new Order();
+    // o.setUserId(102);
+    // o.setOrderPrice(price);
+    // o.setOrderStatus("Paid");
+    // o.setOrderDate(new java.util.Date());
+    // o.setPaymentId(1);
 
-    //     try {
-    //         int orderId = oDAO.insertOrder(o);
-    //         System.out.println("Inserted order ID: " + orderId);
-    //     } catch (Exception e) {
-    //         e.printStackTrace();
-    //     }
+    // try {
+    // int orderId = oDAO.insertOrder(o);
+    // System.out.println("Inserted order ID: " + orderId);
+    // } catch (Exception e) {
+    // e.printStackTrace();
+    // }
     // }
 
     public List<Order> getAllOrders() {
         List<Order> list = new ArrayList<>();
         String sql = "SELECT * FROM [Order]";
-        Connection conn = getConnection();
+        Connection conn = this.getConnection();
         try (PreparedStatement ps = conn.prepareStatement(sql);
                 ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
@@ -64,7 +64,7 @@ public class OrderDAO extends DBContext {
 
     public Order getOrderById(int orderId) {
         String sql = "SELECT * FROM [Order] WHERE order_id = ?";
-        Connection conn = getConnection();
+        Connection conn = this.getConnection();
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, orderId);
             try (ResultSet rs = ps.executeQuery()) {
@@ -88,7 +88,7 @@ public class OrderDAO extends DBContext {
     public int insertOrder(Order o) throws SQLException {
         String sql = "INSERT INTO [Order] (user_id, order_price, order_status, order_date, payment_id) "
                 + "VALUES (?, ?, ?, ?, ?)";
-        Connection conn = getConnection();
+        Connection conn = this.getConnection();
         try (PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setInt(1, o.getUserId());
@@ -112,7 +112,7 @@ public class OrderDAO extends DBContext {
 
     public void updateOrder(Order o) {
         String sql = "UPDATE [Order] SET user_id=?, order_price=?, order_status=?, order_date=?, payment_id=? WHERE order_id=?";
-        Connection conn = getConnection();
+        Connection conn = this.getConnection();
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, o.getUserId());
             ps.setBigDecimal(2, o.getOrderPrice());
@@ -141,7 +141,7 @@ public class OrderDAO extends DBContext {
     public void deleteOrder(int orderId) {
         String deleteOrderDetailSql = "DELETE FROM [OrderDetail] WHERE order_id=?";
         String deleteOrderSql = "DELETE FROM [Order] WHERE order_id=?";
-        Connection conn = getConnection();
+        Connection conn = this.getConnection();
         try {
             conn.setAutoCommit(false); // Bắt đầu transaction
 
@@ -191,35 +191,34 @@ public class OrderDAO extends DBContext {
     }
 
     public List<Order> getOrdersByUserId(int userId) {
-    List<Order> list = new ArrayList<>();
-    String sql ="SELECT o.*, COUNT(od.part_id) AS countItem\r\n" + //
-                "        FROM [Order] o\r\n" + //
-                "        LEFT JOIN OrderDetail od ON o.order_id = od.order_id\r\n" + //
-                "        WHERE o.user_id = ?\r\n" + //
-                "        GROUP BY o.order_id, o.user_id, o.order_price, o.order_status, o.order_date, o.payment_id";
-    
-    Connection conn = getConnection();
-    try (PreparedStatement ps = conn.prepareStatement(sql)) {
-        ps.setInt(1, userId);
-        try (ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                Order o = new Order();
-                o.setOrderId(rs.getInt("order_id"));
-                o.setUserId(rs.getInt("user_id"));
-                o.setOrderPrice(rs.getBigDecimal("order_price"));
-                o.setOrderStatus(rs.getString("order_status"));
-                o.setOrderDate(rs.getTimestamp("order_date"));
-                o.setPaymentId(rs.getInt("payment_id"));
-                o.setCountItem(rs.getInt("countItem")); // <--- gán số lượng sản phẩm
-                list.add(o);
+        List<Order> list = new ArrayList<>();
+        String sql = "SELECT o.*, SUM(od.quantity) AS countItem " +
+                "FROM [Order] o " +
+                "LEFT JOIN OrderDetail od ON o.order_id = od.order_id " +
+                "WHERE o.user_id = ? " +
+                "GROUP BY o.order_id, o.user_id, o.order_price, o.order_status, o.order_date, o.payment_id " +
+                "ORDER BY o.order_id DESC";
+        Connection conn = this.getConnection();
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Order o = new Order();
+                    o.setOrderId(rs.getInt("order_id"));
+                    o.setUserId(rs.getInt("user_id"));
+                    o.setOrderPrice(rs.getBigDecimal("order_price"));
+                    o.setOrderStatus(rs.getString("order_status"));
+                    o.setOrderDate(rs.getTimestamp("order_date"));
+                    o.setPaymentId(rs.getInt("payment_id"));
+                    o.setCountItem(rs.getInt("countItem")); // <--- gán số lượng sản phẩm
+                    list.add(o);
+                }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return list;
     }
-    return list;
-}
-
 
     public List<OrderDetail> getOrderDetailById(int orderId) {
         List<OrderDetail> details = new ArrayList<>();
@@ -267,7 +266,7 @@ public class OrderDAO extends DBContext {
     public void insertOrderDetail(OrderDetail detail) throws SQLException {
         int nextId = getNextServiceScheduleId();
         String sql = "INSERT INTO [OrderDetail] (order_detail_id, order_id, part_id, quantity, price, total_price) VALUES (?, ?, ?, ?, ?, ?)";
-        Connection conn = getConnection();
+        Connection conn = this.getConnection();
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, nextId);
             ps.setInt(2, detail.getOrderId());

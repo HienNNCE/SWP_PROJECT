@@ -1,6 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 
 <!DOCTYPE html>
@@ -122,7 +123,7 @@
 
                                 <div class="detail-row">
                                     <strong>Estimate Time:</strong>
-                                    <input type="datetime-local" name="estimateTime" value="${fn:formatDate(service.estimateTime, 'yyyy-MM-dd\'T\'HH:mm')}" />
+                                <input type="datetime-local" name="estimateTime" value="${estimateTimeStr}" />
                                 </div>
 
                                 <div class="detail-row">
@@ -148,7 +149,7 @@
                             <div class="detail-row"><strong>Description:</strong> ${service.serviceDescription}</div>
 
                             <div class="detail-row"><strong>Price:</strong> $${service.servicePrice}</div>
-                            <div class="detail-row"><strong>Estimate Time:</strong> ${fn:formatDate(service.estimateTime, 'yyyy-MM-dd HH:mm')}</div>
+                            <div class="detail-row"><strong>Estimate Time:</strong> name="estimateTime" value="${estimateTimeStr}"</div>
                         </c:otherwise>
                     </c:choose>
                 </div>

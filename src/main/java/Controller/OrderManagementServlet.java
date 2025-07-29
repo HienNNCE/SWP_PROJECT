@@ -6,8 +6,10 @@ package Controller;
 
 import DAO.OrderDAO;
 import DAO.OrderDetailDAO;
+import DAO.UserDAO;
 import Model.Order;
 import Model.OrderDetail;
+import Model.Users;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
@@ -50,6 +52,10 @@ public class OrderManagementServlet extends HttpServlet {
             OrderDetailDAO orderDetailDAO = new OrderDetailDAO();
             List<OrderDetail> orderDetail = orderDetailDAO.getOrderDetailWithPartByOrderId(orderId);
             if (orderDetail != null) {
+                UserDAO uDAO = new UserDAO();
+                int userId = order.getUserId();
+                Users user = uDAO.getUserById(userId);
+                request.setAttribute("user", user);
                 request.setAttribute("orderDetail", orderDetail);
                 request.setAttribute("order", order);
                 request.getRequestDispatcher("/admin/order/order-detail.jsp").forward(request, response);

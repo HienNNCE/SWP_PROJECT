@@ -1,5 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 
 <!DOCTYPE html>
 <html>
@@ -149,13 +151,7 @@
                 background: #f8d7da;
                 color: #b02a37;
             }
-            .action-links a {
-                margin-right: 10px;
-                text-decoration: none;
-                color: #072eb0;
-                font-weight: 500;
-                transition: color 0.2s;
-            }
+            
             .action-links a:last-child {
                 margin-right: 0;
             }
@@ -301,12 +297,12 @@
                 <!-- SEARCH FORM -->
                 <form action="${pageContext.request.contextPath}/OrderManagementServlet" method="get" style="margin-bottom: 20px;">
                 <%-- <a type='hidden' name='action' value='search'> --%>
-                    <div style="display: flex; gap: 10px;">
+                    <%-- <div style="display: flex; gap: 10px;">
                         <input type="text" name="keyword" value="${param.keyword}" placeholder="Search parts..."
                                style="flex:1; padding:12px; border:1px solid #ccc; border-radius:8px;">
                         <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Search</button>
                         <a href="${pageContext.request.contextPath}/OrderManagementServlet" class="btn btn-secondary"><i class="fas fa-sync"></i> Reset</a>
-                    </div>
+                    </div> --%>
                 </form>
 
                 <!-- MAIN TABLE -->
@@ -344,18 +340,16 @@
                                             ${order.orderStatus}
                                         </span>
                                     </td>
-                                    <td>
-                                <fmt:formatDate value="${order.orderDate}" pattern="yyyy-MM-dd HH:mm"/>
-                                </td>
+                                <td><fmt:formatDate value="${order.getOrderDate()}" pattern="yyyy-MM-dd HH:mm"/></td>
                                 <td>${order.paymentId}</td>
                                 <td class="action-links">
-                                    <a href="OrderManagementServlet?action=view&id=${order.orderId}"><i class="fas fa-eye"></i> View</a>
-                                    <a href="#" class="edit-btn" 
+                                    <a href="OrderManagementServlet?action=view&id=${order.orderId}"><i class="fas fa-eye"></i></a>
+                                    <a href="#" class="btn btn-sm btn-warning" 
                                        data-id="${order.orderId}" 
                                        data-status="${order.orderStatus}">
-                                        <i class="fas fa-edit"></i> Edit
+                                        <i class="fas fa-edit"></i>
                                     </a>                            
-                                    <a href="OrderManagementServlet?action=delete&id=${order.orderId}" onclick="return confirm('Delete?')"><i class="fas fa-trash"></i> Delete</a>
+                                    <a href="OrderManagementServlet?action=delete&id=${order.orderId}" onclick="return confirm('Delete?')" class="btn btn-sm btn-danger"><i class="fas fa-ban"></i></a>
                                 </td>
                                 </tr>
                             </c:forEach>

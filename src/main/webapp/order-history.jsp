@@ -539,7 +539,7 @@
                     <c:forEach var="order" items="${orders}">
                         <div class="order-card">
                             <div class="order-header">
-                                <div class="order-id">Order Id: ${order.orderId}</div>
+                                <div class="order-id">Invoice code: ${order.orderId}</div>
                                 <div class="order-date"><fmt:formatDate value="${order.getOrderDate()}" pattern="yyyy-MM-dd HH:mm"/></div>
                                 <div class="order-status status-completed">${order.orderStatus}</div>
                             </div>
@@ -563,13 +563,13 @@
                     </c:forEach>
                     
                     
-                    <!-- Pagination -->
+                    <%-- <!-- Pagination -->
                     <div class="pagination">
                         <a href="#" class="active">1</a>
                         <a href="#">2</a>
                         <a href="#">3</a>
                         <a href="#"><i class="fas fa-angle-right"></i></a>
-                    </div>
+                    </div> --%>
                 </c:if>
             </div>
         </section>

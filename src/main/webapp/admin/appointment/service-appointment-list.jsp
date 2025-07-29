@@ -158,12 +158,7 @@
             color: #0d6efd;
             border: 1px solid #dee2e6;
         }
-        
-        .edit-btn {
-            background-color: #fff7e0;
-            color: #ffc107;
-            border: 1px solid #ffe69c;
-        }
+
         
         .delete-btn {
             background-color: #ffe0e0;
@@ -352,9 +347,10 @@
                             <table class="car-table">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
+                                        <th>User Name</th>
+                                        <th>User Phone</th>
+                                        <th>User Email</th>
                                         <th>Service Name</th>
-                                        <th>User ID</th>
                                         <th>Car Infor</th>
                                         <th>Appointmet Time</th>
                                         <th>Note</th>
@@ -371,9 +367,10 @@
                                     
                                     <c:forEach var="service" items="${serviceAppointments}">
                                         <tr>
-                                            <td>${service.getServiceAppointmentId()}</td>
+                                            <td class="car-name">${service.getUser().getFullName()}</td>
+                                            <td class="car-name">${service.getUser().getPhone()}</td>
+                                            <td class="car-name">${service.getUser().getEmail()}</td>
                                             <td class="car-name">${service.getServiceName()}</td>                                         
-                                            <td class="car-name">${service.getUserId()}</td>
                                             <td>${service.getCarInfo()}</td>
                                             <td>${service.getFormattedSaDate()}</td>
                                             <td>${service.getSaNote()}</td>
@@ -387,8 +384,8 @@
                                                         <i class="fas fa-edit"></i>
                                                     </button>
 
-                                                    <button class="action-btn delete-btn" onclick="confirmDelete('${service.getServiceAppointmentId()}')">
-                                                        <i class="fas fa-trash"></i>
+                                                    <button class="btn btn-sm btn-danger" onclick="confirmDelete('${service.getServiceAppointmentId()}')">
+                                                        <i class="fas fa-ban"></i>
                                                     </button>
                                                 </div>
                                             </td>

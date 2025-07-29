@@ -47,25 +47,43 @@ public class ServiceDAO extends DBContext {
 
     // Create new service
     public void createService(Service service) {
-        String sql = "INSERT INTO dbo.Service(service_name, service_description, service_price, estimate_time, service_img) VALUES (?, ?, ?, ?, ?)";
+        int nextId = getNextServiceId(); // Lấy ID mới
+        service.setServiceId(nextId); // Gán vào đối tượng Service
+
+        String sql = "INSERT INTO dbo.Service(service_id, service_name, service_description, service_price, estimate_time, service_img) VALUES (?, ?, ?, ?, ?, ?)";
 
         Connection conn = this.getConnection();
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, service.getServiceId());
+            stmt.setString(2, service.getServiceName());
+            stmt.setString(3, service.getServiceDescription());
+            stmt.setBigDecimal(4, service.getServicePrice());
+            stmt.setTimestamp(5, Timestamp.valueOf(service.getEstimateTime()));
+            stmt.setString(6, service.getServiceImg());
 
-            stmt.setString(1, service.getServiceName());
-            stmt.setString(2, service.getServiceDescription());
-            stmt.setBigDecimal(3, service.getServicePrice());
-            stmt.setTimestamp(4, Timestamp.valueOf(service.getEstimateTime()));
-            stmt.setString(5, service.getServiceImg());
             stmt.executeUpdate();
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
+    public int getNextServiceId() {
+        String sql = "SELECT ISNULL(MAX(service_id), 0) + 1 FROM dbo.Service";
+        Connection conn = this.getConnection();
+        try (PreparedStatement stmt = conn.prepareStatement(sql);
+                ResultSet rs = stmt.executeQuery()) {
+
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 1; // fallback nếu có lỗi
+    }
+
     // Update service
-    public void updateService(Service service) {
+    public void updateService(Service service) throws SQLException {
         String sql = "UPDATE dbo.Service SET service_name = ?, service_description = ?, service_price = ?, estimate_time = ?, service_img = ? WHERE service_id = ?";
         Connection conn = this.getConnection();
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -87,7 +105,8 @@ public class ServiceDAO extends DBContext {
     public void deleteService(int serviceId) {
         String sql = "DELETE FROM dbo.Service WHERE service_id = ?";
 
-        try (Connection conn = this.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+        Connection conn = this.getConnection();
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, serviceId);
             stmt.executeUpdate();
 

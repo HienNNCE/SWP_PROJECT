@@ -87,9 +87,9 @@ public class AdminCarServlet extends HttpServlet {
             
             // Xử lý lỗi kích thước file quá lớn
             if (errorMsg != null && errorMsg.contains("FileSizeLimitExceededException")) {
-                request.getSession().setAttribute("errorMessage", "Kích thước ảnh quá lớn. Vui lòng chọn ảnh nhỏ hơn 5MB.");
+                request.getSession().setAttribute("errorMessage", "Image size is too large. Please select an image smaller than 5MB.");
             } else {
-                request.getSession().setAttribute("errorMessage", "Lỗi: " + errorMsg);
+                request.getSession().setAttribute("errorMessage", "Error: " + errorMsg);
             }
             
             response.sendRedirect(request.getContextPath() + "/admin/car");
@@ -135,7 +135,7 @@ public class AdminCarServlet extends HttpServlet {
             if (filePart != null && filePart.getSize() > 0 && filePart.getSubmittedFileName() != null && !filePart.getSubmittedFileName().isEmpty()) {
                 // Kiểm tra kích thước file
                 if (filePart.getSize() > 10 * 1024 * 1024) { // 10MB - giới hạn ban đầu trước khi nén
-                    request.getSession().setAttribute("errorMessage", "Kích thước ảnh quá lớn. Vui lòng chọn ảnh nhỏ hơn 10MB.");
+                    request.getSession().setAttribute("errorMessage", "Image size is too large. Please select an image smaller than 10MB.");
                     response.sendRedirect(request.getContextPath() + "/admin/car/add");
                     return;
                 }
@@ -176,7 +176,7 @@ public class AdminCarServlet extends HttpServlet {
                         
                         // Kiểm tra lại xem file đã được lưu thành công chưa
                         if (!outputFile.exists() || outputFile.length() == 0) {
-                            request.getSession().setAttribute("errorMessage", "Có lỗi khi lưu ảnh. Vui lòng thử lại.");
+                            request.getSession().setAttribute("errorMessage", "There was an error saving the image. Please try again.");
                             throw new IOException("Failed to save image to target directory");
                         }
                         
@@ -223,7 +223,7 @@ public class AdminCarServlet extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
             if (e.getMessage() != null && e.getMessage().contains("FileSizeLimitExceededException")) {
-                request.getSession().setAttribute("errorMessage", "Kích thước ảnh quá lớn. Vui lòng chọn ảnh nhỏ hơn 5MB.");
+                request.getSession().setAttribute("errorMessage", "Image size is too large. Please select an image smaller than 5MB.");
                 response.sendRedirect(request.getContextPath() + "/admin/car/add");
                 return;
             }
@@ -231,6 +231,9 @@ public class AdminCarServlet extends HttpServlet {
         }
         
         Car newCar = new Car();
+        // Tự động sinh car_id mới
+        int newCarId = carDAO.getMaxCarId() + 1;
+        newCar.setCarId(newCarId);
         newCar.setCarName(carName);
         newCar.setCarBrand(carBrand);
         newCar.setModel(model);
@@ -245,9 +248,9 @@ public class AdminCarServlet extends HttpServlet {
         
         boolean success = carDAO.addCar(newCar);
         if (success) {
-            request.getSession().setAttribute("successMessage", "Thêm xe thành công.");
+            request.getSession().setAttribute("successMessage", "Car added successfully.");
         } else {
-            request.getSession().setAttribute("errorMessage", "Không thể thêm xe. Vui lòng thử lại.");
+            request.getSession().setAttribute("errorMessage", "Cannot add car. Please try again.");
         }
         
         response.sendRedirect(request.getContextPath() + "/admin/car");
@@ -259,7 +262,7 @@ public class AdminCarServlet extends HttpServlet {
         ArrayList<String> brandList = carDAO.getAllBrands();
         
         if (existingCar == null) {
-            request.getSession().setAttribute("errorMessage", "Không tìm thấy xe.");
+            request.getSession().setAttribute("errorMessage", "Car not found.");
             response.sendRedirect(request.getContextPath() + "/admin/car");
             return;
         }
@@ -296,7 +299,7 @@ public class AdminCarServlet extends HttpServlet {
             if (filePart != null && filePart.getSize() > 0 && filePart.getSubmittedFileName() != null && !filePart.getSubmittedFileName().isEmpty()) {
                 // Kiểm tra kích thước file
                 if (filePart.getSize() > 10 * 1024 * 1024) { // 10MB - giới hạn ban đầu trước khi nén
-                    request.getSession().setAttribute("errorMessage", "Kích thước ảnh quá lớn. Vui lòng chọn ảnh nhỏ hơn 10MB.");
+                    request.getSession().setAttribute("errorMessage", "Image size is too large. Please select an image smaller than 10MB.");
                     response.sendRedirect(request.getContextPath() + "/admin/car/edit?id=" + carId);
                     return;
                 }
@@ -342,7 +345,7 @@ public class AdminCarServlet extends HttpServlet {
                         
                         // Kiểm tra lại xem file đã được lưu thành công chưa
                         if (!outputFile.exists() || outputFile.length() == 0) {
-                            request.getSession().setAttribute("errorMessage", "Có lỗi khi lưu ảnh. Vui lòng thử lại.");
+                            request.getSession().setAttribute("errorMessage", "There was an error saving the image. Please try again.");
                             throw new IOException("Failed to save image to target directory");
                         }
                         
@@ -407,7 +410,7 @@ public class AdminCarServlet extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
             if (e.getMessage() != null && e.getMessage().contains("FileSizeLimitExceededException")) {
-                request.getSession().setAttribute("errorMessage", "Kích thước ảnh quá lớn. Vui lòng chọn ảnh nhỏ hơn 5MB.");
+                request.getSession().setAttribute("errorMessage", "Image size is too large. Please select an image smaller than 5MB.");
                 response.sendRedirect(request.getContextPath() + "/admin/car/edit?id=" + carId);
                 return;
             }
@@ -430,9 +433,9 @@ public class AdminCarServlet extends HttpServlet {
         
         boolean success = carDAO.updateCar(car);
         if (success) {
-            request.getSession().setAttribute("successMessage", "Cập nhật xe thành công.");
+            request.getSession().setAttribute("successMessage", "Car updated successfully.");
         } else {
-            request.getSession().setAttribute("errorMessage", "Không thể cập nhật xe. Vui lòng thử lại.");
+            request.getSession().setAttribute("errorMessage", "Cannot update car. Please try again.");
         }
         
         response.sendRedirect(request.getContextPath() + "/admin/car");
@@ -463,9 +466,9 @@ public class AdminCarServlet extends HttpServlet {
                     webappImgFile.delete();
                 }
             }
-            request.getSession().setAttribute("successMessage", "Xóa xe thành công.");
+            request.getSession().setAttribute("successMessage", "Car deleted successfully.");
         } else {
-            request.getSession().setAttribute("errorMessage", "Không thể xóa xe. Xe có thể đang được tham chiếu bởi các bản ghi khác.");
+            request.getSession().setAttribute("errorMessage", "Cannot delete car. The car might be referenced by other records.");
         }
         
         response.sendRedirect(request.getContextPath() + "/admin/car");
@@ -476,7 +479,7 @@ public class AdminCarServlet extends HttpServlet {
         Car car = carDAO.getCarById(carId);
         
         if (car == null) {
-            request.getSession().setAttribute("errorMessage", "Không tìm thấy xe.");
+            request.getSession().setAttribute("errorMessage", "Car not found.");
             response.sendRedirect(request.getContextPath() + "/admin/car");
             return;
         }
