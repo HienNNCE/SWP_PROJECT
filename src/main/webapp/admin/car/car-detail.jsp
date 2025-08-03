@@ -136,7 +136,12 @@
 </head>
 <body class="admin-panel">
     <!-- Import Sidebar -->
-    <jsp:include page="../../components/adminSidebar.jsp" />
+    <c:if test="${role == 1}">
+        <jsp:include page="../../components/adminSidebar.jsp" />
+    </c:if>
+    <c:if test="${role == 4}">
+        <jsp:include page="../../components/staffSidebar.jsp" />   
+    </c:if>
 
     <!-- Main Content -->
     <div class="main-content">

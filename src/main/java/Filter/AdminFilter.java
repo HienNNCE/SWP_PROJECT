@@ -32,7 +32,7 @@ public class AdminFilter implements Filter {
             if (roleObj instanceof Integer) {
                 int role = (Integer) roleObj;
 
-                if (role == 1) {
+                if (role == 1 || role == 4) { // Assuming 1 is for admin and 2 for staff
                     chain.doFilter(request, response);
                     return;
                 }

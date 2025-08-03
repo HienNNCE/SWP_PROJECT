@@ -99,7 +99,12 @@
     </head>
 
     <body class="admin-panel">
-        <jsp:include page="/components/adminSidebar.jsp" />
+        <c:if test="${role == 1}">
+        <jsp:include page="../../components/adminSidebar.jsp" />
+    </c:if>
+    <c:if test="${role == 4}">
+        <jsp:include page="../../components/staffSidebar.jsp" />   
+    </c:if>
         <div class="main-content">
             <jsp:include page="/components/dashboardHeader.jsp" />
 

@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Car Management - DriverXO Admin</title>
+    <title>Appt Management - DriverXO Admin</title>
     
     <!-- CSS -->
     <link rel="stylesheet" href="../asset/css/style.css">
@@ -268,7 +268,12 @@
 </head>
 <body class="admin-panel">
     <!-- Import Sidebar -->
-    <jsp:include page="../../components/adminSidebar.jsp" />
+    <c:if test="${role == 1}">
+        <jsp:include page="../../components/adminSidebar.jsp" />
+    </c:if>
+    <c:if test="${role == 4}">
+        <jsp:include page="../../components/staffSidebar.jsp" />   
+    </c:if>
 
     <!-- Main Content -->
     <div class="main-content">
@@ -282,7 +287,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col">
-                            <h1 class="page-title">Appointment Management</h1>
+                            <h1 class="page-title">Cars Appointment Management</h1>
                         </div>
                     </div>
                 </div>

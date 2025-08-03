@@ -24,10 +24,9 @@
             </li>
             
             <li class="nav-item">
-                <a href="../admin/car/car.jsp" class="nav-link">
+                <a href="${pageContext.request.contextPath}/admin/car" class="nav-link">
                     <i class="fas fa-car"></i>
                     <span>Cars</span>
-                    <span class="badge badge-warning">8</span>
                 </a>
             </li>
             
@@ -39,19 +38,19 @@
             </li>
             
             <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="fas fa-wrench"></i>
-                    <span>Services</span>
-                </a>
-            </li>
-            
-            <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="${pageContext.request.contextPath}/admin/serviceAppointment" class="nav-link">
                     <i class="fas fa-calendar-alt"></i>
-                    <span>Appointments</span>
+                    <span>Service Appt</span>
                 </a>
             </li>
-            
+
+            <li class="nav-item">
+                <a href="${pageContext.request.contextPath}/admin/carAppointment" class="nav-link">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Car Apppt</span>
+                </a>
+            </li>
+
             <li class="nav-item">
                 <a href="#" class="nav-link">
                     <i class="fas fa-credit-card"></i>
@@ -74,10 +73,10 @@
             </li>
             
             <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="${pageContext.request.contextPath}/admin/OrderManagementServlet" class="nav-link">
                     <i class="fas fa-shopping-cart"></i>
                     <span>Orders</span>
-                    <span class="badge badge-danger">3</span>
+                    <span class="badge badge-danger">${sessionScope.totalOrders}</span>
                 </a>
             </li>
             
